@@ -424,6 +424,56 @@ pip install -e .
 - SciPy ≥ 1.7
 - Matplotlib ≥ 3.3
 
+## Running the Visualizations (GUI)
+
+### Quick Start - Run All Examples with Figures
+
+The easiest way to see all APGI examples with interactive plots:
+
+```bash
+# Run all examples with figure windows (GUI)
+python tinker_app.py
+```
+
+This will execute all 9 examples and display matplotlib figure windows for each result.
+
+### Run Specific Example Groups
+
+```bash
+# Run only basic ignition examples
+python run_apgi.py --group basic
+
+# Run only neuromodulator examples
+python run_apgi.py --group neuromod
+
+# Run all examples via run_apgi.py
+python run_apgi.py --group all
+```
+
+### Run Individual Examples
+
+```bash
+# List all available examples
+python run_apgi.py --list
+
+# Run specific examples
+python run_apgi.py --examples "basic:example_basic_ignition"
+python run_apgi.py --examples "neuromod:example_threat_response"
+
+# Run multiple specific examples
+python run_apgi.py --examples "basic:example_basic_ignition,neuromod:example_vigilance_states"
+```
+
+### Save Figures Without Displaying
+
+```bash
+# Save all figures without showing GUI windows (headless)
+python tinker_app.py --no-show --save-figs
+
+# Save with custom settings
+python tinker_app.py --no-show --save-figs --format pdf --dpi 300 --outdir my_figures
+```
+
 ## Quick Start
 
 ### Basic Simulation
