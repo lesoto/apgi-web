@@ -239,11 +239,34 @@ fig.show()
 
 ### Testing
 
-**Current Status:** No formal test suite yet (opportunity for contribution)
+**Comprehensive Test Suite:**
+- `tinker_app.py`: Comprehensive test execution suite that runs ALL examples
+- Executes all 9 examples (4 basic + 5 neuromodulator)
+- Provides detailed reporting, timing metrics, and figure generation
+- Supports headless execution, HTML/JSON reports, and error handling
 
-**Verification:**
+**Usage:**
+```bash
+# Run all tests with default settings
+python tinker_app.py
+
+# Run all tests and save figures with HTML report
+python tinker_app.py --save-figs --report
+
+# Headless execution with verbose output
+python tinker_app.py --no-show --save-figs --report --verbose
+
+# Custom configuration
+python tinker_app.py --save-figs --outdir results --format pdf --dpi 300 --continue-on-error
+```
+
+**Output Structure:**
+- `tinker_output/figures/`: All generated figures
+- `tinker_output/reports/`: JSON and HTML test reports
+- Provides pass/fail statistics, timing breakdown, and error details
+
+**Basic Verification:**
 - `test_install.py`: Basic import verification
-- Manual testing via examples in `apgi/examples/`
 
 **CI/CD:**
 - GitHub Actions runs Pylint on all Python files
@@ -381,6 +404,7 @@ from ..core.parameters import APGIParameters
 ### Utility Files
 
 - `run_apgi.py`: CLI for examples (modify when adding new examples)
+- `tinker_app.py`: Comprehensive test suite that executes ALL examples with reporting
 - `delete_pycache.py`: Cleanup script (no modification needed)
 - `test_install.py`: Installation verification (modify if adding import tests)
 

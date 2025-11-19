@@ -424,6 +424,56 @@ pip install -e .
 - SciPy ≥ 1.7
 - Matplotlib ≥ 3.3
 
+## Running the Visualizations (GUI)
+
+### Quick Start - Run All Examples with Figures
+
+The easiest way to see all APGI examples with interactive plots:
+
+```bash
+# Run all examples with figure windows (GUI)
+python tinker_app.py
+```
+
+This will execute all 9 examples and display matplotlib figure windows for each result.
+
+### Run Specific Example Groups
+
+```bash
+# Run only basic ignition examples
+python run_apgi.py --group basic
+
+# Run only neuromodulator examples
+python run_apgi.py --group neuromod
+
+# Run all examples via run_apgi.py
+python run_apgi.py --group all
+```
+
+### Run Individual Examples
+
+```bash
+# List all available examples
+python run_apgi.py --list
+
+# Run specific examples
+python run_apgi.py --examples "basic:example_basic_ignition"
+python run_apgi.py --examples "neuromod:example_threat_response"
+
+# Run multiple specific examples
+python run_apgi.py --examples "basic:example_basic_ignition,neuromod:example_vigilance_states"
+```
+
+### Save Figures Without Displaying
+
+```bash
+# Save all figures without showing GUI windows (headless)
+python tinker_app.py --no-show --save-figs
+
+# Save with custom settings
+python tinker_app.py --no-show --save-figs --format pdf --dpi 300 --outdir my_figures
+```
+
 ## Quick Start
 
 ### Basic Simulation
@@ -510,6 +560,52 @@ Demonstrates:
 - Phasic threat response with NE burst
 - Somatic bias parameter (β)
 - Simulated pharmacological manipulations
+
+### Comprehensive Test Suite (Tinker App)
+
+For comprehensive testing and validation, use the tinker app which executes ALL examples systematically:
+
+```bash
+# Run all tests with default settings
+python tinker_app.py
+
+# Run all tests and save figures
+python tinker_app.py --save-figs
+
+# Run with detailed logging and HTML report
+python tinker_app.py --verbose --report --save-figs
+
+# Headless execution (no figure display)
+python tinker_app.py --no-show --save-figs --report
+
+# Custom output directory and format
+python tinker_app.py --save-figs --outdir results --format pdf --dpi 300
+```
+
+**Features:**
+- Executes all 9 examples from both basic and neuromodulator groups
+- Detailed performance metrics and timing breakdown
+- Error handling with continue-on-error option
+- Automatic figure saving in multiple formats (PNG, PDF, SVG)
+- JSON and HTML test reports
+- Comprehensive summary statistics (pass rate, duration, etc.)
+
+**Output Structure:**
+```
+tinker_output/
+├── figures/          # All generated figures
+├── logs/             # Execution logs
+└── reports/          # JSON and HTML test reports
+    ├── test_results.json
+    └── test_report.html
+```
+
+The tinker app is ideal for:
+- Validating installation and dependencies
+- Regression testing during development
+- Generating complete figure sets for publications
+- Performance benchmarking
+- Continuous integration workflows
 
 ## Key Phenomena Explained
 
