@@ -5,7 +5,7 @@ Provides common stimulus patterns for APGI simulations.
 """
 
 import numpy as np
-from typing import Callable, Tuple
+from typing import Callable, Tuple, Optional
 
 
 def constant_stimulus(Pi_e: float = 1.0,
