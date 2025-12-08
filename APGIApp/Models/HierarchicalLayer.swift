@@ -1,82 +1,86 @@
 import Foundation
-import CoreML
+import Darwin
 
-struct APGIState {
-    // Neural states (MLMultiArray for CoreML)
-    var interoStatesFlat: MLMultiArray
-    var exteroStatesFlat: MLMultiArray
-    var workspaceState: MLMultiArray
+struct HierarchicalLayer {
+    let level: Int
+    let inputSize: Int
+    let hiddenSize: Int
+    let config: APGIConfiguration
     
-    // Probabilistic representations
-    var qMean: MLMultiArray
-    var qVar: MLMultiArray
-    var pMean: MLMultiArray
-    var pVar: MLMultiArray
+    // Simple linear transformation (can be upgraded to LTC later)
+    var weights: [[Float]]  // [hiddenSize x inputSize]
+    var bias: [Float]       // [hiddenSize]
     
-    // Precision and threshold
-    var piIntero: Double
-    var piExtero: Double
-    var theta: Double
-    
-    // Temporal tracking
-    var prevS: Double
-    var prevIgnition: Double
-    
-    // Metabolic state
-    var energyReserves: Double
-    var allostaticLoad: Double
-    
-    // Refractory period
-    var refractoryTimer: Double
-    
-    // Additional state
-    var volatility: Double
-    var norepinephrine: Double
-    var acetylcholine: Double
-    
-    // Remove @MainActor from static method
-    static func initialize(hiddenSize: Int = 128, numLevels: Int = 3) -> APGIState {
-        let interoStates = try! MLMultiArray(shape: [1, NSNumber(value: hiddenSize * numLevels)], dataType: .float32)
-        let exteroStates = try! MLMultiArray(shape: [1, NSNumber(value: hiddenSize * numLevels)], dataType: .float32)
-        let workspace = try! MLMultiArray(shape: [1, NSNumber(value: hiddenSize)], dataType: .float32)
-        let qMean = try! MLMultiArray(shape: [1, NSNumber(value: hiddenSize)], dataType: .float32)
-        let qVar = try! MLMultiArray(shape: [1, NSNumber(value: hiddenSize)], dataType: .float32)
-        let pMean = try! MLMultiArray(shape: [1, NSNumber(value: hiddenSize)], dataType: .float32)
-        let pVar = try! MLMultiArray(shape: [1, NSNumber(value: hiddenSize)], dataType: .float32)
+    init(level: Int, inputSize: Int, hiddenSize: Int, config: APGIConfiguration) {
+        self.level = level
+        self.inputSize = inputSize
+        self.hiddenSize = hiddenSize
+        self.config = config
         
-        // Initialize with default values
-        for i in 0..<(hiddenSize * numLevels) {
-            interoStates[i] = 0.0
-            exteroStates[i] = 0.0
+        // Xavier initialization
+        // Xavier initialization
+        let scale = sqrt(2.0 / Float(inputSize))
+        self.weights = (0..<hiddenSize).map { _ in
+            (0..<inputSize).map { _ in Float.random(in: -scale...scale) }
         }
-        
+        self.bias = Array(repeating: 0.0, count: hiddenSize)
+    }
+    
+    func forward(input: [Float], prevState: [Float]) -> (state: [Float], prediction: [Float]) {
+        // Compute new state: tanh(W·input + b)
+        var newState: [Float] = []
         for i in 0..<hiddenSize {
-            workspace[i] = 0.0
-            qMean[i] = 0.0
-            qVar[i] = 1.0
-            pMean[i] = 0.0
-            pVar[i] = 1.0
+            var sum = bias[i]
+            for j in 0..<min(input.count, inputSize) {
+                sum += weights[i][j] * input[j]
+            }
+            newState.append(tanh(sum))
         }
         
-        return APGIState(
-            interoStatesFlat: interoStates,
-            exteroStatesFlat: exteroStates,
-            workspaceState: workspace,
-            qMean: qMean,
-            qVar: qVar,
-            pMean: pMean,
-            pVar: pVar,
-            piIntero: 1.0,
-            piExtero: 1.0,
-            theta: 1.0,
-            prevS: 0.0,
-            prevIgnition: 0.0,
-            energyReserves: 0.8,
-            allostaticLoad: 0.0,
-            refractoryTimer: 0.0,
-            volatility: 0.0,
-            norepinephrine: 0.0,
-            acetylcholine: 0.0
-        )
+        // Generate prediction for lower level (simple linear)
+        let prediction = newState  // Simplified
+        
+        return (newState, prediction)
+    }
+}
+
+/// Container for hierarchical processing
+struct HierarchicalProcessor {
+    var layers: [HierarchicalLayer]
+    let config: APGIConfiguration
+    
+    init(numLevels: Int, inputSize: Int, hiddenSize: Int, config: APGIConfiguration) {
+        self.config = config
+        self.layers = (0..<numLevels).map { level in
+            HierarchicalLayer(
+                level: level,
+                inputSize: level == 0 ? inputSize : hiddenSize,
+                hiddenSize: hiddenSize,
+                config: config
+            )
+        }
+    }
+    
+    func processHierarchy(
+        input: [Float],
+        states: [[Float]]
+    ) -> (newStates: [[Float]], errors: [[Float]]) {
+        var newStates: [[Float]] = []
+        var errors: [[Float]] = []
+        var currentInput = input
+        
+        for (index, layer) in layers.enumerated() {
+            let prevState = states[index]
+            let (state, prediction) = layer.forward(input: currentInput, prevState: prevState)
+            
+            // Compute prediction error
+            let error = zip(currentInput, prediction).map { $0 - $1 }
+            
+            newStates.append(state)
+            errors.append(error)
+            currentInput = state  // Feed forward to next level
+        }
+        
+        return (newStates, errors)
     }
 }

@@ -42,6 +42,11 @@ struct APGIConfiguration: Equatable {
     let historyLength: Int
     let eps: Float
     
+    // Additional properties for LTC neurons
+    let reservoirScaling: Float
+    let reservoirSparsity: Float
+    let precisionHistoryMax: Int
+    
     init(
         inputSize: Int = 64,
         hiddenSize: Int = 128,
@@ -73,7 +78,10 @@ struct APGIConfiguration: Equatable {
         allostaticMax: Float = 2.0,
         maxRefractoryMs: Float = 200.0,
         historyLength: Int = 100,
-        eps: Float = 1e-8
+        eps: Float = 1e-8,
+        reservoirScaling: Float = 1.0,
+        reservoirSparsity: Float = 0.1,
+        precisionHistoryMax: Int = 1000
     ) {
         self.inputSize = inputSize
         self.hiddenSize = hiddenSize
@@ -106,6 +114,9 @@ struct APGIConfiguration: Equatable {
         self.maxRefractoryMs = maxRefractoryMs
         self.historyLength = historyLength
         self.eps = eps
+        self.reservoirScaling = reservoirScaling
+        self.reservoirSparsity = reservoirSparsity
+        self.precisionHistoryMax = precisionHistoryMax
     }
     
     @MainActor

@@ -20,10 +20,12 @@ enum IgnitionState: String, Codable {
         // Simple logic for state classification
         if probability >= 0.8 {
             return .high
-        } else if probability >= 0.3 {
+        } else if probability >= 0.5 {
             return .moderate
-        } else {
+        } else if probability >= 0.2 {
             return .low
+        } else {
+            return .refractory
         }
     }
 }

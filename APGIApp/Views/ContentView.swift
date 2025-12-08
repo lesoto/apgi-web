@@ -2,7 +2,7 @@ import SwiftUI
 import Charts
 
 struct ContentView: View {
-    @StateObject private var engine = APGIInferenceEngine()
+    @StateObject private var engine = APGIInferenceEngine(configuration: .default)
     @State private var isLoading = true
     @State private var loadError: String?
     @State private var context = APGIContext()
@@ -51,7 +51,7 @@ struct ContentView: View {
             Spacer()
             
             VStack(alignment: .trailing) {
-                Text(String(format: "%.1f FPS", engine.fps))
+                Text(String(format: "%.1f FPS", engine.currentFPS))
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.blue)
@@ -112,8 +112,8 @@ struct ContentView: View {
                     ignitionBadge
                 }
                 
-                if let diag = engine.diagnostics {
-                    HStack {
+                let diag = engine.diagnostics
+                HStack {
                         VStack(alignment: .leading, spacing: 5) {
                             Text("Surprise (S)")
                                 .font(.caption)
@@ -146,7 +146,6 @@ struct ContentView: View {
                                 .foregroundColor(ignitionColor(diag.ignitionProb))
                         }
                     }
-                }
             }
             .padding()
         } label: {
@@ -155,26 +154,15 @@ struct ContentView: View {
     }
     
     private var ignitionBadge: some View {
-        Group {
-            if let diag = engine.diagnostics {
-                let state = IgnitionState.from(probability: diag.ignitionProb)
-                Text(state.rawValue)
-                    .font(.headline)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(state.color.opacity(0.2))
-                    .foregroundColor(state.color)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-            } else {
-                Text("UNKNOWN")
-                    .font(.headline)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color.gray.opacity(0.2))
-                    .foregroundColor(.gray)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-            }
-        }
+        let diag = engine.diagnostics
+        let state = IgnitionState.from(probability: diag.ignitionProb)
+        return Text(state.rawValue)
+            .font(.headline)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(state.color.opacity(0.2))
+            .foregroundColor(state.color)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
     }
     
     private var dynamicsChartSection: some View {
@@ -233,8 +221,8 @@ struct ContentView: View {
     
     private var diagnosticsSection: some View {
         GroupBox {
-            if let diag = engine.diagnostics {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
+            let diag = engine.diagnostics
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
                     diagnosticCell("Π Intero", value: diag.piIntero, format: "%.3f")
                     diagnosticCell("Π Extero", value: diag.piExtero, format: "%.3f")
                     diagnosticCell("Cost", value: diag.broadcastCost, format: "%.4f")
@@ -243,11 +231,6 @@ struct ContentView: View {
                     diagnosticCell("Load", value: diag.allostaticLoad, format: "%.3f")
                 }
                 .padding()
-            } else {
-                Text("No diagnostics available")
-                    .foregroundColor(.secondary)
-                    .padding()
-            }
         } label: {
             Label("Diagnostics", systemImage: "chart.bar.doc.horizontal")
         }

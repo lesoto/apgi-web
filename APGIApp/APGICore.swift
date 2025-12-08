@@ -1,13 +1,4 @@
-import SwiftUI
+import Foundation
+import Accelerate
 
-@main
-struct APGIApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .frame(minWidth: 800, minHeight: 600)
-        }
-        .windowStyle(.hiddenTitleBar)
-        .windowResizability(.contentSize)
-    }
-}
+// APGICore implementation moved to SimpleAPGIModel.swift to avoid duplicate declaration

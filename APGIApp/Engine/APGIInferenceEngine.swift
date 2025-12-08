@@ -1,259 +1,355 @@
+//
+//  APGIInferenceEngine.swift
+//  APGIApp
+//
+//  Main inference engine for APGI model
+//  Updated to use SimpleAPGIModel with real mathematics
+//
+
 import Foundation
-import CoreML
-import SwiftUI
 import Combine
 
-@MainActor
-class APGIInferenceEngine: ObservableObject {
-    @Published var currentState: APGIState
-    @Published var diagnostics: APGIDiagnostics?
-    @Published var fps: Double = 0.0
+// MARK: - State Manager
+
+/// Thread-safe state management
+actor StateManager {
+    private var currentState: APGIState
     
-    private var model: MLModel?
-    public let config: APGIConfiguration
-    private let performanceMonitor: PerformanceMonitor
-    
-    private var frameCount: Int = 0
-    private var lastUpdateTime: Date?
-    
-    // Thread-safe state access using actor
-    private actor StateManager {
-        var state: APGIState
-        
-        init(state: APGIState) {
-            self.state = state
-        }
-        
-        func getSnapshot() -> APGIState {
-            return state
-        }
-        
-        func updateState(_ newState: APGIState) {
-            state = newState
-        }
-    }
-    
-    private let stateManager: StateManager
-    
-    // REMOVED nonisolated - init is now main-actor isolated
-    init(configuration: APGIConfiguration = .defaultConfig) {
-        let initialState = APGIState.initialize(
-            hiddenSize: configuration.hiddenSize,
-            numLevels: configuration.numLevels
-        )
-        self.config = configuration
+    init(initialState: APGIState) {
         self.currentState = initialState
-        self.performanceMonitor = PerformanceMonitor()
-        self.stateManager = StateManager(state: initialState)
     }
     
-    func loadModel() async throws {
-        // For now, use a mock implementation since the CoreML model has compilation issues
-        // In production, this would load the actual APGI model
-        print("Using mock APGI model for demonstration")
-        
-        // Simulate model loading delay
-        try await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-        
-        // Create a mock model that will generate deterministic outputs
-        self.model = MockAPGIModel()
+    func updateState(_ newState: APGIState) {
+        self.currentState = newState
     }
     
-    func runInference(interoInput: [Float], exteroInput: [Float], context: APGIContext) async throws {
-        guard let model = model else {
-            throw APGIError.modelNotFound
-        }
-        
-        guard interoInput.count == config.inputSize,
-              exteroInput.count == config.inputSize else {
-            throw APGIError.inputConversionFailed("Input size mismatch")
-        }
-        
-        // Get thread-safe state snapshot
-        let currentStateSnapshot = await stateManager.getSnapshot()
-        
-        // Capture config for use in detached task
-        let configCopy = self.config
-        
-        // Run inference on background thread (detached from main actor)
-        let result = try await Task.detached(priority: .userInitiated) {
-            // Helper function to create MLMultiArray (nonisolated)
-            func createMLMultiArray(from data: [Float], shape: [Int]) -> MLMultiArray? {
-                guard let array = try? MLMultiArray(shape: shape as [NSNumber], dataType: .float32) else {
-                    return nil
-                }
-                
-                for (index, value) in data.enumerated() {
-                    array[index] = NSNumber(value: value)
-                }
-                
-                return array
-            }
-            
-            let inputDict: [String: MLMultiArray] = [
-                "intero_input": createMLMultiArray(from: interoInput, shape: [1, configCopy.inputSize])!,
-                "extero_input": createMLMultiArray(from: exteroInput, shape: [1, configCopy.inputSize])!,
-                "workspace_state": currentStateSnapshot.workspaceState,
-                "intero_states": currentStateSnapshot.interoStatesFlat,
-                "extero_states": currentStateSnapshot.exteroStatesFlat,
-                "q_mean": currentStateSnapshot.qMean,
-                "q_var": currentStateSnapshot.qVar,
-                "p_mean": currentStateSnapshot.pMean,
-                "p_var": currentStateSnapshot.pVar,
-                "Pi_intero": createMLMultiArray(from: [Float(currentStateSnapshot.piIntero)], shape: [1, 1])!,
-                "Pi_extero": createMLMultiArray(from: [Float(currentStateSnapshot.piExtero)], shape: [1, 1])!,
-                "theta": createMLMultiArray(from: [Float(currentStateSnapshot.theta)], shape: [1, 1])!,
-                "prev_S": createMLMultiArray(from: [Float(currentStateSnapshot.prevS)], shape: [1, 1])!,
-                "ignition_history": createMLMultiArray(from: [Float(currentStateSnapshot.prevIgnition)], shape: [1, 1])!,
-                "refractory_timer": createMLMultiArray(from: [Float(currentStateSnapshot.refractoryTimer)], shape: [1, 1])!,
-                "energy_reserves": createMLMultiArray(from: [Float(currentStateSnapshot.energyReserves)], shape: [1, 1])!,
-                "allostatic_load": createMLMultiArray(from: [Float(currentStateSnapshot.allostaticLoad)], shape: [1, 1])!,
-                "metabolic": createMLMultiArray(from: [Float(context.metabolic)], shape: [1, 1])!,
-                "cognitive": createMLMultiArray(from: [Float(context.cognitive)], shape: [1, 1])!,
-                "affective": createMLMultiArray(from: [Float(context.affective)], shape: [1, 1])!,
-                "arousal": createMLMultiArray(from: [Float(context.arousal)], shape: [1, 1])!,
-                "attention": createMLMultiArray(from: [Float(context.attention)], shape: [1, 1])!
-            ]
-            
-            let startTime = Date()
-            let provider = try MLDictionaryFeatureProvider(dictionary: inputDict)
-            let output = try model.prediction(from: provider)
-            let inferenceTime = Date().timeIntervalSince(startTime)
-            
-            return (output, inferenceTime)
-        }.value
-        
-        // Process results and update state on main actor
-        let (output, inferenceTime) = result
-        
-        await performanceMonitor.recordInference(duration: inferenceTime)
-        updateFPS(inferenceTime: inferenceTime)
-        
-        // Build new state from output
-        var newState = currentStateSnapshot
-        
-        if let workspace = output.featureValue(for: "workspace_new")?.multiArrayValue {
-            newState.workspaceState = workspace
-        } else if let workspace = output.featureValue(for: "workspace_state_out")?.multiArrayValue {
-            newState.workspaceState = workspace
-        } else if let workspace = output.featureValue(for: "workspace")?.multiArrayValue {
-            newState.workspaceState = workspace
-        }
-        
-        newState.theta = extractScalar(from: output, names: ["theta_new", "theta"]) ?? newState.theta
-        newState.piIntero = extractScalar(from: output, names: ["Pi_intero_new", "Pi_intero"]) ?? newState.piIntero
-        newState.piExtero = extractScalar(from: output, names: ["Pi_extero_new", "Pi_extero"]) ?? newState.piExtero
-        newState.energyReserves = extractScalar(from: output, names: ["energy_new", "energy_reserves"]) ?? newState.energyReserves
-        newState.allostaticLoad = extractScalar(from: output, names: ["allostatic_new", "allostatic_load"]) ?? newState.allostaticLoad
-        newState.refractoryTimer = extractScalar(from: output, names: ["refractory_new", "refractory_timer"]) ?? newState.refractoryTimer
-        
-        let sTotal = extractScalar(from: output, names: ["S_total"]) ?? 0.0
-        let ignitionProb = extractScalar(from: output, names: ["ignition_prob"]) ?? 0.0
-        let broadcastCost = extractScalar(from: output, names: ["broadcast_cost"]) ?? 0.0
-        let freeEnergy = extractScalar(from: output, names: ["free_energy"]) ?? 0.0
-        
-        newState.prevS = sTotal
-        newState.prevIgnition = ignitionProb
-        
-        // Update both state manager and published property
-        await stateManager.updateState(newState)
-        currentState = newState
-        
-        diagnostics = APGIDiagnostics(
-            sTotal: sTotal,
-            sIntero: sTotal * 0.5,
-            sExtero: sTotal * 0.5,
-            theta: newState.theta,
-            ignitionProb: ignitionProb,
-            piIntero: newState.piIntero,
-            piExtero: newState.piExtero,
-            broadcastCost: broadcastCost,
-            freeEnergy: freeEnergy,
-            energyReserves: newState.energyReserves,
-            allostaticLoad: newState.allostaticLoad,
-            volatility: newState.volatility,
-            norepinephrine: newState.norepinephrine,
-            acetylcholine: newState.acetylcholine,
-            refractoryTimer: newState.refractoryTimer
-        )
+    func getSnapshot() -> APGIState {
+        return currentState
     }
     
-    private func extractScalar(from output: MLFeatureProvider, names: [String]) -> Double? {
-        for name in names {
-            if let value = output.featureValue(for: name)?.multiArrayValue?[0].floatValue {
-                return Double(value)
-            }
-        }
-        return nil
-    }
-    
-    private func updateFPS(inferenceTime: TimeInterval) {
-        frameCount += 1
-        
-        if let lastTime = lastUpdateTime {
-            let elapsed = Date().timeIntervalSince(lastTime)
-            if elapsed >= 1.0 {
-                fps = Double(frameCount) / elapsed
-                frameCount = 0
-                lastUpdateTime = Date()
-            }
-        } else {
-            lastUpdateTime = Date()
-        }
-    }
-    
-    func reset() async {
-        let newState = APGIState.initialize(
-            hiddenSize: config.hiddenSize,
-            numLevels: config.numLevels
-        )
-        await stateManager.updateState(newState)
-        currentState = newState
-        diagnostics = nil
-        frameCount = 0
-        lastUpdateTime = nil
+    func reset(configuration: APGIConfiguration) {
+        self.currentState = APGIState.initial(configuration: configuration)
     }
 }
 
-// Mock model for demonstration purposes
-class MockAPGIModel: MLModel {
-    override func prediction(from input: MLFeatureProvider) throws -> MLFeatureProvider {
-        // Generate mock outputs that simulate the APGI model behavior
-        var outputDict: [String: MLFeatureValue] = [:]
+// MARK: - APGI Inference Engine
+
+/// Main inference engine for APGI model
+/// Manages model lifecycle, inference execution, and state updates
+@MainActor
+class APGIInferenceEngine: ObservableObject {
+    
+    // MARK: - Published Properties
+    
+    @Published private(set) var isModelLoaded = false
+    @Published private(set) var isInferring = false
+    @Published private(set) var currentFPS: Double = 0.0
+    @Published private(set) var averageInferenceTime: TimeInterval = 0.0
+    
+    @Published var currentState: APGIState
+    @Published var diagnostics: APGIDiagnostics
+    
+    // MARK: - Private Properties
+    
+    private let config: APGIConfiguration
+    private var simpleModel: SimpleAPGIModel?
+    private let stateManager: StateManager
+    private let performanceMonitor = PerformanceMonitor()
+    
+    private var fpsUpdateTimer: Timer?
+    private var lastInferenceTime: TimeInterval = 0.0
+    
+    // Make config accessible
+    var configuration: APGIConfiguration { return config }
+    
+    // MARK: - Initialization
+    
+    init(configuration: APGIConfiguration) {
+        self.config = configuration
         
-        // Create mock MLMultiArrays for outputs
-        let workspaceShape = [1, 64, 4] as [NSNumber]
-        let scalarShape = [1, 1] as [NSNumber]
+        // Initialize state
+        let initialState = APGIState.initial(configuration: configuration)
+        self.currentState = initialState
+        self.stateManager = StateManager(initialState: initialState)
         
-        // Mock workspace state
-        if let workspace = try? MLMultiArray(shape: workspaceShape, dataType: .float32) {
-            for i in 0..<workspace.count {
-                workspace[i] = NSNumber(value: Float.random(in: -1...1))
-            }
-            outputDict["workspace_new"] = MLFeatureValue(multiArray: workspace)
+        // Initialize diagnostics
+        self.diagnostics = APGIDiagnostics(
+            sTotal: 0.0,
+            sIntero: 0.0,
+            sExtero: 0.0,
+            theta: Double(configuration.theta0),
+            ignitionProb: 0.0,
+            piIntero: 1.0,
+            piExtero: 1.0,
+            broadcastCost: 0.0,
+            freeEnergy: 0.0,
+            energyReserves: 1.0,
+            allostaticLoad: 0.0,
+            volatility: 0.0,
+            norepinephrine: 0.0,
+            acetylcholine: 0.0,
+            refractoryTimer: 0.0
+        )
+        
+        print("APGIInferenceEngine initialized with configuration:")
+        print("  - Input size: \(configuration.inputSize)")
+        print("  - Hidden size: \(configuration.hiddenSize)")
+        print("  - Num levels: \(configuration.numLevels)")
+        print("  - θ₀: \(configuration.theta0)")
+    }
+    
+    deinit {
+        fpsUpdateTimer?.invalidate()
+    }
+    
+    // MARK: - Model Lifecycle
+    
+    /// Load APGI model
+    /// Initializes SimpleAPGIModel with real APGI mathematics
+    func loadModel() async throws {
+        print("Loading APGI model...")
+        
+        do {
+            // Create simple APGI model (pure Swift implementation)
+            self.simpleModel = SimpleAPGIModel(configuration: config)
+            
+            // Small delay to simulate loading (can be removed)
+            try await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+            
+            isModelLoaded = true
+            print("✅ APGI model loaded successfully")
+            print("   Using SimpleAPGIModel (Phase 0: Core Mathematics)")
+            
+        } catch {
+            isModelLoaded = false
+            throw APGIError.modelLoadFailed(error.localizedDescription)
+        }
+    }
+    
+    /// Unload model and free resources
+    func unloadModel() {
+        simpleModel = nil
+        isModelLoaded = false
+        print("APGI model unloaded")
+    }
+    
+    // MARK: - Inference
+    
+    /// Run inference with current inputs
+    /// - Parameters:
+    ///   - interoInput: Interoceptive input signals [inputSize]
+    ///   - exteroInput: Exteroceptive input signals [inputSize]
+    ///   - context: Context parameters (metabolic, cognitive, etc.)
+    func runInference(
+        interoInput: [Float],
+        exteroInput: [Float],
+        context: APGIContext
+    ) async throws {
+        
+        // Check model is loaded
+        guard let model = simpleModel else {
+            throw APGIError.modelNotLoaded
         }
         
-        // Mock scalar outputs
-        let mockValues: [String: Float] = [
-            "theta_new": Float.random(in: 0.1...0.9),
-            "Pi_intero_new": Float.random(in: 0.1...0.9),
-            "Pi_extero_new": Float.random(in: 0.1...0.9),
-            "energy_new": Float.random(in: 0.3...1.0),
-            "allostatic_new": Float.random(in: 0.0...0.5),
-            "refractory_new": Float.random(in: 0.0...1.0),
-            "S_total": Float.random(in: 0.0...2.0),
-            "ignition_prob": Float.random(in: 0.0...1.0),
-            "broadcast_cost": Float.random(in: 0.01...0.1),
-            "free_energy": Float.random(in: 0.1...1.0)
-        ]
+        // Validate inputs
+        try validateInputs(interoInput: interoInput, exteroInput: exteroInput)
         
-        for (key, value) in mockValues {
-            if let array = try? MLMultiArray(shape: scalarShape, dataType: .float32) {
-                array[0] = NSNumber(value: value)
-                outputDict[key] = MLFeatureValue(multiArray: array)
+        // Mark as inferring
+        isInferring = true
+        defer { isInferring = false }
+        
+        let startTime = Date()
+        
+        do {
+            // Get current state snapshot
+            let stateSnapshot = await stateManager.getSnapshot()
+            
+            // Run inference on background thread
+            let result = await Task.detached(priority: .userInitiated) {
+                return model.forward(
+                    interoInput: interoInput,
+                    exteroInput: exteroInput,
+                    state: stateSnapshot,
+                    context: context
+                )
+            }.value
+            
+            // Calculate inference time
+            let inferenceTime = Date().timeIntervalSince(startTime)
+            lastInferenceTime = inferenceTime
+            
+            // Update performance metrics
+            await performanceMonitor.recordInference(duration: inferenceTime)
+            
+            // Update FPS
+            updateFPS(inferenceTime: inferenceTime)
+            
+            // Update state (thread-safe)
+            await stateManager.updateState(result.newState)
+            
+            // Update published properties on main actor
+            currentState = result.newState
+            diagnostics = result.diagnostics
+            
+            // Update average inference time periodically
+            if let timer = fpsUpdateTimer, timer.isValid {
+                // Timer will update it
+            } else {
+                averageInferenceTime = performanceMonitor.averageInferenceTime
             }
+            
+        } catch {
+            throw APGIError.inferenceError(error.localizedDescription)
+        }
+    }
+    
+    // MARK: - Input Validation
+    
+    private func validateInputs(
+        interoInput: [Float],
+        exteroInput: [Float]
+    ) throws {
+        // Check sizes
+        if interoInput.count != config.inputSize {
+            throw APGIError.invalidInput(
+                "Interoceptive input size (\(interoInput.count)) doesn't match config (\(config.inputSize))"
+            )
         }
         
-        return try MLDictionaryFeatureProvider(dictionary: outputDict)
+        if exteroInput.count != config.inputSize {
+            throw APGIError.invalidInput(
+                "Exteroceptive input size (\(exteroInput.count)) doesn't match config (\(config.inputSize))"
+            )
+        }
+        
+        // Check for NaN or Inf
+        if interoInput.contains(where: { $0.isNaN || $0.isInfinite }) {
+            throw APGIError.invalidInput("Interoceptive input contains NaN or Inf")
+        }
+        
+        if exteroInput.contains(where: { $0.isNaN || $0.isInfinite }) {
+            throw APGIError.invalidInput("Exteroceptive input contains NaN or Inf")
+        }
+    }
+    
+    // MARK: - FPS Tracking
+    
+    private func updateFPS(inferenceTime: TimeInterval) {
+        if inferenceTime > 0 {
+            currentFPS = 1.0 / inferenceTime
+        }
+    }
+    
+    /// Start FPS monitoring timer
+    func startFPSMonitoring() {
+        fpsUpdateTimer?.invalidate()
+        
+        fpsUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                guard let self = self else { return }
+                self.averageInferenceTime = self.performanceMonitor.averageInferenceTime
+            }
+        }
+    }
+    
+    /// Stop FPS monitoring timer
+    func stopFPSMonitoring() {
+        fpsUpdateTimer?.invalidate()
+        fpsUpdateTimer = nil
+    }
+    
+    // MARK: - State Management
+    
+    /// Reset state to initial values
+    func resetState() async {
+        await stateManager.reset(configuration: config)
+        let newState = await stateManager.getSnapshot()
+        currentState = newState
+        
+        // Reset diagnostics
+        diagnostics = APGIDiagnostics(
+            sTotal: 0.0,
+            sIntero: 0.0,
+            sExtero: 0.0,
+            theta: Double(config.theta0),
+            ignitionProb: 0.0,
+            piIntero: 1.0,
+            piExtero: 1.0,
+            broadcastCost: 0.0,
+            freeEnergy: 0.0,
+            energyReserves: 1.0,
+            allostaticLoad: 0.0,
+            volatility: 0.0,
+            norepinephrine: 0.0,
+            acetylcholine: 0.0,
+            refractoryTimer: 0.0
+        )
+        
+        // Reset performance metrics
+        await performanceMonitor.reset()
+        currentFPS = 0.0
+        averageInferenceTime = 0.0
+        
+        print("State reset to initial values")
+    }
+    
+    /// Get current ignition state classification
+    func getIgnitionState() -> IgnitionState {
+        let prob = diagnostics.ignitionProb
+        
+        if prob > 0.8 {
+            return .high
+        } else if prob > 0.5 {
+            return .moderate
+        } else if prob > 0.2 {
+            return .low
+        } else {
+            return .refractory
+        }
+    }
+    
+    // MARK: - Performance Metrics
+    
+    /// Get detailed performance metrics
+    func getPerformanceMetrics() async -> PerformanceMetrics {
+        let stats = performanceMonitor.getStatistics()
+        
+        return PerformanceMetrics(
+            averageInferenceTime: stats.meanLatency / 1000.0, // Convert ms to seconds
+            medianInferenceTime: stats.p50Latency / 1000.0, // Convert ms to seconds
+            currentFPS: currentFPS,
+            lastInferenceTime: lastInferenceTime
+        )
+    }
+}
+
+// MARK: - Supporting Types
+
+/// Performance metrics container
+struct PerformanceMetrics {
+    let averageInferenceTime: TimeInterval
+    let medianInferenceTime: TimeInterval
+    let currentFPS: Double
+    let lastInferenceTime: TimeInterval
+    
+    var formattedAverageTime: String {
+        String(format: "%.2f ms", averageInferenceTime * 1000)
+    }
+    
+    var formattedMedianTime: String {
+        String(format: "%.2f ms", medianInferenceTime * 1000)
+    }
+    
+    var formattedFPS: String {
+        String(format: "%.1f FPS", currentFPS)
+    }
+}
+
+// MARK: - Extensions
+
+extension APGIState {
+    /// Create initial state from configuration
+    static func initial(configuration: APGIConfiguration) -> APGIState {
+        return APGIState.initialize(hiddenSize: configuration.hiddenSize, numLevels: configuration.numLevels)
     }
 }

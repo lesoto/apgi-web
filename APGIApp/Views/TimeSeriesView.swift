@@ -51,11 +51,9 @@ struct TimeSeriesView: View {
             }
             .padding()
             .onChange(of: engine.diagnostics) { _, newDiag in
-                if let diag = newDiag {
-                    history.append(diag)
-                    if history.count > engine.config.historyLength {
-                        history.removeFirst()
-                    }
+                history.append(newDiag)
+                if history.count > engine.configuration.historyLength {
+                    history.removeFirst()
                 }
             }
         } else {
