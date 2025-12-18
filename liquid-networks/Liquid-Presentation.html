@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Framework | Allostatic Precision-Gated Ignition</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;600;700&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Space Grotesk', 'monospace'],
+                    },
+                    colors: {
+                        neuro: {
+                            base: '#030712', // Deepest dark
+                            surface: '#0B1221',
+                            accent: '#06b6d4', // Cyan
+                            purple: '#7c3aed',
+                            gold: '#fbbf24',
+                            glass: 'rgba(15, 23, 42, 0.6)'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-delay-200': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite 200ms',
+                        'pulse-delay-500': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite 500ms',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            background-color: #030712;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        /* Canvas positioning */
+        #neuro-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .pillar-card {
+            transition: all 0.4s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.1);
+        }
+
+        .glowing-text {
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+        }
+
+        /* Gradient Overlay to ensure text readability over canvas */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, #030712 90%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .section-connector {
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, #06b6d4, transparent);
+            opacity: 0.2;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-neuro-accent selection:text-neuro-base">
+
+    <!-- Background Simulation -->
+    <canvas id="neuro-canvas"></canvas>
+    <div class="vignette"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="brain-circuit" class="text-neuro-accent h-8 w-8"></i>
+                    <span class="font-mono text-xl font-bold tracking-tighter">APGI<span class="text-gray-500">.FRAMEWORK</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#overview" class="hover:text-neuro-accent transition-colors px-3 py-2 text-sm font-medium">Overview</a>
+                        <a href="#pillars" class="hover:text-neuro-accent transition-colors px-3 py-2 text-sm font-medium">Four Pillars</a>
+                        <a href="#dynamics" class="hover:text-neuro-accent transition-colors px-3 py-2 text-sm font-medium">Dynamics</a>
+                        <button onclick="copyCitation()" class="bg-white/5 hover:bg-neuro-accent hover:text-black transition-all border border-white/10 px-4 py-2 rounded-full text-xs font-mono flex items-center gap-2">
+                            <i data-lucide="quote" class="h-3 w-3"></i> Cite
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-neuro-base/50 to-neuro-base z-0"></div>
+        
+        <div class="relative z-10 max-w-5xl mx-auto px-4 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neuro-accent/10 border border-neuro-accent/20 text-neuro-accent text-xs font-mono mb-8 animate-float">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neuro-accent opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-neuro-accent"></span>
+                </span>
+                LIVE SIMULATION ACTIVE
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-tight">
+                Allostatic <span class="text-transparent bg-clip-text bg-gradient-to-r from-neuro-accent to-neuro-purple glowing-text">Precision-Gated</span> Ignition
+            </h1>
+            
+            <p class="mt-4 text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-light leading-relaxed">
+                A unified theory of consciousness integrating predictive coding, thalamic gating, and global neuronal workspace dynamics within a liquid computing substrate.
+            </p>
+
+            <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#pillars" class="group relative px-8 py-4 bg-neuro-accent text-neuro-base font-bold rounded-lg overflow-hidden transition-all hover:scale-105">
+                    <div class="absolute inset-0 w-full h-full bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12"></div>
+                    <span class="flex items-center gap-2">Explore The Pillars <i data-lucide="arrow-down" class="h-4 w-4"></i></span>
+                </a>
+                <a href="#abstract" class="px-8 py-4 glass-panel rounded-lg font-medium hover:bg-white/5 transition-colors border border-white/10">
+                    Read Abstract
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Abstract / Overview -->
+    <section id="abstract" class="relative py-24 bg-neuro-surface/30">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="border-l-2 border-neuro-accent pl-6">
+                <h2 class="text-3xl font-bold mb-6 font-mono text-neuro-accent">The Theoretical Core</h2>
+                <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                    The <strong>APGI Framework</strong> proposes that consciousness emerges not from static architecture, but from a dynamic interplay of four specific neurocomputational processes. It treats the brain as a 'liquid' state machine that maintains stability (Allostasis) while selectively amplifying (Precision Gating) specific sensory inputs to trigger widespread network synchronization (Global Ignition).
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                    <div class="p-4 rounded bg-white/5 border border-white/5">
+                        <div class="text-2xl font-bold text-white mb-1">40Hz</div>
+                        <div class="text-xs text-gray-400 uppercase tracking-widest">Gamma Synch</div>
+                    </div>
+                    <div class="p-4 rounded bg-white/5 border border-white/5">
+                        <div class="text-2xl font-bold text-white mb-1">300ms</div>
+                        <div class="text-xs text-gray-400 uppercase tracking-widest">P300 Latency</div>
+                    </div>
+                    <div class="p-4 rounded bg-white/5 border border-white/5">
+                        <div class="text-2xl font-bold text-white mb-1">Liquid</div>
+                        <div class="text-xs text-gray-400 uppercase tracking-widest">State Dynamics</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The 4 Pillars -->
+    <section id="pillars" class="relative py-32">
+        <!-- Connecting Line -->
+        <div class="section-connector hidden lg:block"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-20">
+                <span class="text-neuro-purple font-mono text-sm tracking-widest uppercase">System Architecture</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-2">The Four Pillars</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                
+                <!-- Pillar 1: Allostatic Regulation -->
+                <div class="pillar-card glass-panel rounded-2xl p-8 md:p-10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="scale" class="h-32 w-32 text-neuro-purple"></i>
+                    </div>
+                    <div class="h-12 w-12 rounded-lg bg-neuro-purple/20 flex items-center justify-center text-neuro-purple mb-6 border border-neuro-purple/30">
+                        <i data-lucide="activity" class="h-6 w-6"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">1. Allostatic Regulation</h3>
+                    <p class="text-gray-400 leading-relaxed mb-6">
+                        The foundation of the system. Unlike homeostasis (stability through constancy), allostasis maintains stability through change. The brain acts as a predictive engine, budgeting metabolic energy to anticipate future needs rather than just reacting to errors.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-300 font-mono">
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-purple rounded-full"></div> Interoceptive inference</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-purple rounded-full"></div> Metabolic budgeting</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-purple rounded-full"></div> Predictive physiological control</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 2: Precision Gating -->
+                <div class="pillar-card glass-panel rounded-2xl p-8 md:p-10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="filter" class="h-32 w-32 text-neuro-gold"></i>
+                    </div>
+                    <div class="h-12 w-12 rounded-lg bg-neuro-gold/20 flex items-center justify-center text-neuro-gold mb-6 border border-neuro-gold/30">
+                        <i data-lucide="scan-eye" class="h-6 w-6"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">2. Precision Gating</h3>
+                    <p class="text-gray-400 leading-relaxed mb-6">
+                        The Thalamic filter. Not all prediction errors are equal. Precision gating assigns "weight" to incoming sensory data. High-precision signals breach the gate, updating the internal model, while noise is suppressed. This creates the "searchlight" of attention.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-300 font-mono">
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-gold rounded-full"></div> Thalamic Reticular Nucleus function</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-gold rounded-full"></div> Signal-to-noise optimization</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-gold rounded-full"></div> Top-down attention control</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 3: Global Ignition -->
+                <div class="pillar-card glass-panel rounded-2xl p-8 md:p-10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="zap" class="h-32 w-32 text-neuro-accent"></i>
+                    </div>
+                    <div class="h-12 w-12 rounded-lg bg-neuro-accent/20 flex items-center justify-center text-neuro-accent mb-6 border border-neuro-accent/30">
+                        <i data-lucide="network" class="h-6 w-6"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">3. Global Ignition</h3>
+                    <p class="text-gray-400 leading-relaxed mb-6">
+                        The threshold of awareness. When a precision-weighted signal is strong enough, it triggers a non-linear "ignition" event. Neural activity propagates across long-range axons (workspace), allowing information to be broadcast globally to motor, language, and memory systems.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-300 font-mono">
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-accent rounded-full"></div> Non-linear phase transition</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-accent rounded-full"></div> P300 Event-Related Potential</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-neuro-accent rounded-full"></div> Conscious access</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 4: Liquid Dynamics -->
+                <div class="pillar-card glass-panel rounded-2xl p-8 md:p-10 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="waves" class="h-32 w-32 text-indigo-400"></i>
+                    </div>
+                    <div class="h-12 w-12 rounded-lg bg-indigo-400/20 flex items-center justify-center text-indigo-400 mb-6 border border-indigo-400/30">
+                        <i data-lucide="workflow" class="h-6 w-6"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">4. Liquid Dynamics</h3>
+                    <p class="text-gray-400 leading-relaxed mb-6">
+                        The substrate. The neural network operates as a Liquid State Machine. Ripples of activity (transient dynamics) hold information in time without stable attractors, allowing the brain to process temporal patterns and context.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-300 font-mono">
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-indigo-400 rounded-full"></div> Recurrent Neural Networks (RNN)</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-indigo-400 rounded-full"></div> High-dimensional projection</li>
+                        <li class="flex items-center gap-2"><div class="w-1 h-1 bg-indigo-400 rounded-full"></div> Fading memory property</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Dynamics Deep Dive -->
+    <section id="dynamics" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-neuro-base via-neuro-surface to-transparent opacity-80 z-0"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">From Noise to Clarity</h2>
+                    <p class="text-gray-400 text-lg mb-6">
+                        In the APGI model, consciousness is the process of collapsing high-dimensional neural noise into a low-dimensional "reportable" state.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1">
+                                <i data-lucide="arrow-right-circle" class="text-neuro-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Pre-Conscious Processing</h4>
+                                <p class="text-sm text-gray-500">Massive parallel processing in local cortical loops. High capacity, short duration.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1">
+                                <i data-lucide="arrow-right-circle" class="text-neuro-purple"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">The Ignition Event</h4>
+                                <p class="text-sm text-gray-500">Gating thresholds are breached. Synchrony explodes across parietal and frontal lobes.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1">
+                                <i data-lucide="arrow-right-circle" class="text-neuro-gold"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white">Conscious Access</h4>
+                                <p class="text-sm text-gray-500">Information is sustained and available for verbal report or executive planning.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative h-96 w-full rounded-2xl border border-white/10 bg-black/50 overflow-hidden flex items-center justify-center">
+                    <!-- Stylized Representation of a Cortical Column -->
+                    <div class="absolute inset-0 grid grid-cols-6 gap-1 p-2 opacity-30">
+                        <div class="col-span-1 bg-neuro-purple/20 h-full rounded animate-pulse"></div>
+                        <div class="col-span-1 bg-neuro-purple/10 h-full rounded"></div>
+                        <div class="col-span-1 bg-neuro-accent/20 h-full rounded animate-pulse-delay-500" aria-label="Animated column with 0.5s delay"></div>
+                        <div class="col-span-1 bg-neuro-accent/40 h-full rounded animate-pulse-delay-200" aria-label="Animated column with 0.2s delay"></div>
+                        <div class="col-span-1 bg-neuro-purple/10 h-full rounded"></div>
+                        <div class="col-span-1 bg-neuro-purple/20 h-full rounded animate-pulse"></div>
+                    </div>
+                    <div class="text-center z-10">
+                        <h3 class="text-5xl font-mono font-bold text-white tracking-widest">300ms</h3>
+                        <p class="text-neuro-accent uppercase text-xs tracking-[0.3em] mt-2">Latency Threshold</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Citation -->
+    <footer class="border-t border-white/10 bg-neuro-base py-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-gray-500 text-sm">
+                <p>&copy; 2024 APGI Research Initiative. Open Access.</p>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <a href="#" class="text-gray-500 hover:text-white transition-colors" aria-label="GitHub"><i data-lucide="github" class="h-5 w-5"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors" aria-label="Twitter"><i data-lucide="twitter" class="h-5 w-5"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors" aria-label="Email"><i data-lucide="mail" class="h-5 w-5"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification for Copy -->
+    <div id="toast" class="fixed bottom-8 right-8 bg-neuro-accent text-black px-6 py-3 rounded-lg font-bold transform translate-y-24 transition-transform duration-300 shadow-lg shadow-cyan-500/20 z-50">
+        Citation copied to clipboard
+    </div>
+
+    <!-- Script: Canvas Animation & Logic -->
+    <script>
+        // --- Icon Initialization ---
+        lucide.createIcons();
+
+        // --- Canvas Animation: Liquid Network ---
+        const canvas = document.getElementById('neuro-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let nodes = [];
+        const config = {
+            nodeCount: 60,
+            connectionDistance: 150,
+            mouseDistance: 200,
+            baseSpeed: 0.3,
+            ignitionChance: 0.005
+        };
+
+        // Resize handling
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initNodes();
+        }
+
+        window.addEventListener('resize', resize);
+
+        class Node {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * config.baseSpeed;
+                this.vy = (Math.random() - 0.5) * config.baseSpeed;
+                this.radius = Math.random() * 2 + 1;
+                this.baseColor = '#1e293b'; // Slate 800
+                this.ignited = false;
+                this.ignitionTimer = 0;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                // Random Ignition
+                if (!this.ignited && Math.random() < config.ignitionChance) {
+                    this.ignite();
+                }
+
+                if (this.ignited) {
+                    this.ignitionTimer--;
+                    if (this.ignitionTimer <= 0) {
+                        this.ignited = false;
+                    }
+                }
+            }
+
+            ignite() {
+                this.ignited = true;
+                this.ignitionTimer = 60; // frames
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                
+                if (this.ignited) {
+                    ctx.fillStyle = '#06b6d4'; // Cyan
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = '#06b6d4';
+                } else {
+                    ctx.fillStyle = 'rgba(148, 163, 184, 0.5)';
+                    ctx.shadowBlur = 0;
+                }
+                
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset
+            }
+        }
+
+        function initNodes() {
+            nodes = [];
+            let count = window.innerWidth < 768 ? 30 : config.nodeCount;
+            for (let i = 0; i < count; i++) {
+                nodes.push(new Node());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Update and draw connections
+            for (let i = 0; i < nodes.length; i++) {
+                const nodeA = nodes[i];
+                nodeA.update();
+
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const nodeB = nodes[j];
+                    const dx = nodeA.x - nodeB.x;
+                    const dy = nodeA.y - nodeB.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < config.connectionDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodeA.x, nodeA.y);
+                        ctx.lineTo(nodeB.x, nodeB.y);
+
+                        // Dynamic opacity based on distance
+                        const alpha = 1 - (distance / config.connectionDistance);
+                        
+                        if (nodeA.ignited || nodeB.ignited) {
+                            ctx.strokeStyle = `rgba(6, 182, 212, ${alpha * 0.8})`; // Bright Cyan connection
+                            ctx.lineWidth = 1.5;
+                        } else {
+                            ctx.strokeStyle = `rgba(71, 85, 105, ${alpha * 0.3})`; // Dark grey connection
+                            ctx.lineWidth = 0.5;
+                        }
+                        
+                        ctx.stroke();
+                        
+                        // Propagate ignition (simplified)
+                        if (nodeA.ignited && !nodeB.ignited && Math.random() < 0.05) nodeB.ignite();
+                        if (nodeB.ignited && !nodeA.ignited && Math.random() < 0.05) nodeA.ignite();
+                    }
+                }
+                nodeA.draw();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Init
+        resize();
+        animate();
+
+        // --- Interaction Logic ---
+
+        function copyCitation() {
+            const text = "Smith, J. (2024). Allostatic Precision-Gated Ignition: A Unifying Framework. APGI Research.";
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('translate-y-24');
+                setTimeout(() => {
+                    toast.classList.add('translate-y-24');
+                }, 3000);
+            });
+        }
+    </script>
+</body>
+</html>

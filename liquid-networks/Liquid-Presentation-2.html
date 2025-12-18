@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>APGI — Allostatic Precision-Gated Ignition Framework</title>
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind config (colors + font scale)
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            apgi: {
+              50: '#f6fbfb',
+              100: '#e6f7fa',
+              200: '#bfeef6',
+              400: '#24c6d3',
+              600: '#0ea5a5',
+              800: '#0b6464',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide icons (vanilla JS) and lucide-react UMD hint -->
+  <script src="https://unpkg.com/lucide/dist/lucide.min.js"></script>
+  <!-- (Optional) lucide-react UMD — included for compatibility with toolchains that expect lucide-react -->
+  <script src="https://unpkg.com/lucide-react/dist/lucide-react.umd.production.min.js"></script>
+
+  <style>
+    /* Minimal resets for the canvas hero */
+    html,body,#app { height:100%; }
+    body { background: linear-gradient(180deg,#021b21 0%, #031f26 70%); color: #dbeafe; -webkit-font-smoothing:antialiased; }
+    /* Canvas full bleed behind hero */
+    .hero-canvas { position: absolute; inset: 0; z-index: 0; }
+    .glass-panel { background: rgba(10, 20, 24, 0.45); -webkit-backdrop-filter: blur(8px) saturate(.9); backdrop-filter: blur(8px) saturate(.9); border: 1px solid rgba(255,255,255,0.03); }
+    /* small UI niceties */
+    .pill { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .6rem; border-radius:999px; font-weight:600; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.02) }
+    .section-anchor { scroll-margin-top: 96px; }
+    /* citation copy tooltip */
+    .tooltip { position: relative; }
+    .tooltip .tiptext { visibility:hidden; opacity:0; transform:translateY(-6px); transition:all .18s ease; position:absolute; right:100%; top:50%; transform-origin:right center; background:#0b1720; color:#cfeefe; padding:.35rem .6rem; font-size:.75rem; border-radius:.4rem; margin-right:.5rem; white-space:nowrap;}
+    .tooltip:hover .tiptext, .tooltip.copyok .tiptext { visibility:visible; opacity:1; transform:translateY(0); }
+    /* subtle focus ring */
+    :focus { outline: 2px solid rgba(6,182,212,0.18); outline-offset: 2px; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <div id="app" class="relative min-h-screen flex flex-col">
+
+    <!-- NAV -->
+    <header class="w-full z-40">
+      <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-apgi-400 to-apgi-600 flex items-center justify-center shadow-lg glass-panel">
+            <!-- Logo (SVG network motif) -->
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <circle cx="6.5" cy="6.5" r="2" stroke="white" stroke-opacity="0.9" stroke-width="0.9"/>
+              <circle cx="17.5" cy="6.5" r="2" stroke="white" stroke-opacity="0.9" stroke-width="0.9"/>
+              <path d="M8.4 7.1L15.6 7.1" stroke="white" stroke-width="0.9" stroke-opacity="0.7"/>
+              <circle cx="12" cy="16" r="2.4" stroke="white" stroke-opacity="0.9" stroke-width="0.9"/>
+              <path d="M11.2 8.8L12 14" stroke="white" stroke-width="0.9" stroke-opacity="0.6"/>
+            </svg>
+          </div>
+          <div>
+            <div class="text-white font-semibold">APGI Framework</div>
+            <div class="text-xs text-slate-300">Allostatic Precision-Gated Ignition</div>
+          </div>
+        </div>
+
+        <div class="hidden md:flex items-center gap-4 text-slate-200 text-sm">
+          <a href="#hero" class="hover:text-white transition">Home</a>
+          <a href="#pillars" class="hover:text-white transition">Pillars</a>
+          <a href="#dynamics" class="hover:text-white transition">Liquid Dynamics</a>
+          <a href="#papers" class="hover:text-white transition">Citations</a>
+          <button id="scroll-to-top" class="ml-2 px-3 py-1 pill" title="Back to top">Top</button>
+        </div>
+
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section id="hero" class="relative overflow-hidden h-[68vh] min-h-[420px] flex items-center">
+      <!-- Canvas background -->
+      <canvas id="liquidCanvas" class="hero-canvas"></canvas>
+
+      <!-- Foreground content -->
+      <div class="relative z-20 max-w-7xl mx-auto px-6 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div class="glass-panel p-8 rounded-2xl shadow-xl">
+            <div class="flex items-start gap-4">
+              <div class="flex-1">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight">Allostatic Precision-Gated Ignition (APGI)</h1>
+                <p class="mt-3 text-sm md:text-base text-slate-200">
+                  A mechanistic framework describing how adaptive regulation (allostasis), dynamic precision control, and large-scale ignition events emerge from fluid, continuously reconfiguring network dynamics.
+                </p>
+
+                <div class="mt-5 flex gap-3 items-center">
+                  <a href="#pillars" class="px-4 py-2 rounded-lg bg-apgi-600 font-semibold shadow hover:scale-[1.01] transition transform">Explore the pillars</a>
+                  <button id="cta-play" class="px-4 py-2 rounded-lg border border-white/10 text-sm glass-panel hover:brightness-105 transition">Pause / Resume animation</button>
+                </div>
+
+                <div class="mt-5 grid grid-cols-2 gap-2 text-xs">
+                  <div class="pill"><svg data-lucide="cpu" class="lucide w-4 h-4" aria-hidden></svg> Simulation</div>
+                  <div class="pill"><svg data-lucide="zap" class="lucide w-4 h-4" aria-hidden></svg> Global ignition</div>
+                </div>
+              </div>
+
+              <div class="hidden md:block md:w-28 md:h-28">
+                <!-- Abstract icon -->
+                <svg viewBox="0 0 120 120" class="w-28 h-28" aria-hidden>
+                  <defs>
+                    <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#24c6d3"/><stop offset="1" stop-color="#0ea5a5"/></linearGradient>
+                  </defs>
+                  <circle cx="60" cy="60" r="34" fill="url(#g1)" opacity="0.14"></circle>
+                  <g stroke="#e6f7fa" stroke-opacity="0.9" stroke-width="1.2" fill="none">
+                    <path d="M40 45 C55 30, 75 30, 90 45" />
+                    <path d="M45 70 C60 85, 80 85, 95 70" />
+                    <circle cx="60" cy="60" r="2.8" fill="#e6f7fa" stroke="none"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls panel -->
+          <aside class="glass-panel p-6 rounded-2xl shadow-xl">
+            <h3 class="text-sm font-semibold text-white">Liquid Network Controls</h3>
+            <p class="text-xs text-slate-300 mt-1">Adjust simulation density and visual style.</p>
+
+            <div class="mt-4 space-y-3">
+              <label class="text-xs text-slate-200">Node density</label>
+              <input id="nodeDensity" type="range" min="16" max="180" value="72" class="w-full" aria-label="Node density" />
+
+              <label class="text-xs text-slate-200">Edge sensitivity</label>
+              <input id="edgeThresh" type="range" min="30" max="260" value="110" class="w-full" aria-label="Edge sensitivity" />
+
+              <label class="text-xs text-slate-200">Motion speed</label>
+              <input id="speed" type="range" min="0.1" max="1.4" step="0.05" value="0.6" class="w-full" aria-label="Motion speed" />
+            </div>
+
+            <div class="mt-5 flex gap-2 items-center">
+              <button id="snapshot" class="px-3 py-1 rounded-md pill">Snapshot</button>
+              <button id="toggle-nodes" class="px-3 py-1 rounded-md border border-white/8">Toggle nodes</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT: Pillars -->
+    <main class="relative z-10 max-w-6xl mx-auto px-6 py-12">
+      <nav class="flex gap-3 mb-8">
+        <a href="#pillar-allostasis" class="px-3 py-1 rounded-md text-sm bg-apgi-50 text-apgi-800">Allostatic Regulation</a>
+        <a href="#pillar-precision" class="px-3 py-1 rounded-md text-sm bg-apgi-50 text-apgi-800">Precision Gating</a>
+        <a href="#pillar-ignition" class="px-3 py-1 rounded-md text-sm bg-apgi-50 text-apgi-800">Global Ignition</a>
+        <a href="#dynamics" class="px-3 py-1 rounded-md text-sm bg-apgi-50 text-apgi-800">Liquid Dynamics</a>
+      </nav>
+
+      <section id="pillars" class="space-y-10">
+        <!-- Pillar 1 -->
+        <article id="pillar-allostasis" class="section-anchor glass-panel p-6 rounded-2xl">
+          <div class="flex items-start gap-5">
+            <div class="flex-shrink-0">
+              <svg data-lucide="thermometer" class="lucide w-10 h-10 text-white/90" aria-hidden></svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">1. Allostatic Regulation</h2>
+              <p class="mt-2 text-slate-200">Allostasis describes predictive regulation of internal variables to keep an agent resilient across changing conditions. In APGI this pillar explains how prioritized set-points are updated continuously using interoceptive and contextual inputs.</p>
+
+              <div class="mt-4 grid md:grid-cols-3 gap-4">
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Mechanism</h4>
+                  <p class="text-xs text-slate-300 mt-1">Hierarchical controllers propagate set-point predictions and receive precision-weighted errors for corrective action.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Functional role</h4>
+                  <p class="text-xs text-slate-300 mt-1">Maintain viable body-world coupling while enabling flexibility under stressors.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Implementation</h4>
+                  <p class="text-xs text-slate-300 mt-1">Distributed controllers (brainstem, hypothalamus, insula) coordinate context-sensitive anticipatory actions.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- Pillar 2 -->
+        <article id="pillar-precision" class="section-anchor glass-panel p-6 rounded-2xl">
+          <div class="flex items-start gap-5">
+            <div class="flex-shrink-0">
+              <svg data-lucide="faders" class="lucide w-10 h-10 text-white/90"></svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">2. Precision Gating</h2>
+              <p class="mt-2 text-slate-200">Precision gating controls which signals influence belief updates and action selection. APGI frames precision as dynamic gain fields that gate interoceptive and exteroceptive streams into higher-level inference.</p>
+
+              <div class="mt-4 grid md:grid-cols-3 gap-4">
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Mechanism</h4>
+                  <p class="text-xs text-slate-300 mt-1">Neuromodulators tune synaptic gain, altering effective connectivity and the impact of prediction errors.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Functional role</h4>
+                  <p class="text-xs text-slate-300 mt-1">Selects channels for conscious access and drives resource allocation under uncertainty.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Observable</h4>
+                  <p class="text-xs text-slate-300 mt-1">Rapid changes in gain correlate with attention shifts, signal-to-noise changes, and EEG markers like P3.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- Pillar 3 -->
+        <article id="pillar-ignition" class="section-anchor glass-panel p-6 rounded-2xl">
+          <div class="flex items-start gap-5">
+            <div class="flex-shrink-0">
+              <svg data-lucide="zap" class="lucide w-10 h-10 text-white/90"></svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">3. Global Ignition</h2>
+              <p class="mt-2 text-slate-200">Global ignition refers to rapid, reverberant activation across the network that transiently increases integration. APGI links ignition events to coordinated precision gating that opens pathways for widespread update propagation.</p>
+
+              <div class="mt-4 grid md:grid-cols-3 gap-4">
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Mechanism</h4>
+                  <p class="text-xs text-slate-300 mt-1">Recurrent loops enable sustained activation; gating determines whether activation remains local or spreads globally.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Functional role</h4>
+                  <p class="text-xs text-slate-300 mt-1">Rapid reconfiguration for coordinated decision making and flexible behavioral updates.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Experimental signature</h4>
+                  <p class="text-xs text-slate-300 mt-1">Abrupt increases in long-range coherence and large-amplitude evoked potentials.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- Pillar 4 -->
+        <article id="dynamics" class="section-anchor glass-panel p-6 rounded-2xl">
+          <div class="flex items-start gap-5">
+            <div class="flex-shrink-0">
+              <svg data-lucide="waves" class="lucide w-10 h-10 text-white/90"></svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">4. Liquid Dynamics</h2>
+              <p class="mt-2 text-slate-200">Liquid dynamics capture continuous, high-dimensional reconfiguration of functional interactions. The 'liquid' regime supports short-term memory and fast integration without fixed structural changes.</p>
+
+              <div class="mt-4 grid md:grid-cols-3 gap-4">
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Mechanism</h4>
+                  <p class="text-xs text-slate-300 mt-1">Transient node-to-node coupling that depends on context and precision weights, realized by fluctuating effective connectivity.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Functional role</h4>
+                  <p class="text-xs text-slate-300 mt-1">Facilitates flexible routing, rapid associative binding, and scalable ignition thresholds.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-white/6">
+                  <h4 class="text-sm font-semibold">Modeling options</h4>
+                  <p class="text-xs text-slate-300 mt-1">Reservoir networks, stochastic differential systems, and spatiotemporal gain-modulated graphs.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Short technical summary -->
+      <section class="mt-10 glass-panel p-6 rounded-xl">
+        <h3 class="text-lg font-bold text-white">APGI: Compact technical summary</h3>
+        <ol class="mt-3 list-decimal ml-5 text-slate-200">
+          <li>Predictive controllers set anticipatory targets (allostasis).</li>
+          <li>Precision fields modulate effective connectivity and determine information flow (precision gating).</li>
+          <li>Coordinated gating triggers rapid, integrated activation (global ignition).</li>
+          <li>Liquid, transient coupling allows reversible reconfiguration supporting both local computation and global broadcasts.</li>
+        </ol>
+      </section>
+
+      <!-- Citations -->
+      <section id="papers" class="mt-10 glass-panel p-6 rounded-xl">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-bold text-white">Selected citations</h3>
+          <div class="text-sm text-slate-300">Click copy to place citation text on clipboard</div>
+        </div>
+
+        <div class="mt-4 grid gap-3">
+          <!-- Citation card -->
+          <div class="p-3 rounded-md border border-white/6 flex items-start justify-between">
+            <div>
+              <div class="text-sm font-semibold text-white">Friston, K. (2005). A theory of cortical responses. </div>
+              <div class="text-xs text-slate-300 mt-1">Neural computation. Key background on predictive coding and precision weighting.</div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div class="text-xs text-slate-400">APA</div>
+              <div class="flex gap-2">
+                <button class="copy-citation pill text-xs" data-citation='Friston, K. (2005). A theory of cortical responses. Neural Computation, 18(7), 1179–1239.'>Copy</button>
+                <button class="open-link px-3 py-1 rounded-md border border-white/6 text-xs">View</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-md border border-white/6 flex items-start justify-between">
+            <div>
+              <div class="text-sm font-semibold text-white">Tononi, G. (2004). An information integration theory of consciousness.</div>
+              <div class="text-xs text-slate-300 mt-1">Describes integration and ignition-like events in large-scale networks.</div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div class="text-xs text-slate-400">APA</div>
+              <div class="flex gap-2">
+                <button class="copy-citation pill text-xs" data-citation='Tononi, G. (2004). An information integration theory of consciousness. BMC Neuroscience, 5, 42.'>Copy</button>
+                <button class="open-link px-3 py-1 rounded-md border border-white/6 text-xs">View</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-md border border-white/6 flex items-start justify-between">
+            <div>
+              <div class="text-sm font-semibold text-white">Deco, G., & Jirsa, V. (2012). Ongoing cortical activity at rest: criticality, multistability, and ghost attractors.</div>
+              <div class="text-xs text-slate-300 mt-1">Reservoir and liquid network perspectives for cognition.</div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div class="text-xs text-slate-400">APA</div>
+              <div class="flex gap-2">
+                <button class="copy-citation pill text-xs" data-citation='Deco, G., & Jirsa, V. (2012). Ongoing cortical activity at rest: criticality, multistability, and ghost attractors. Journal of Neuroscience.'>Copy</button>
+                <button class="open-link px-3 py-1 rounded-md border border-white/6 text-xs">View</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-12 mb-8 text-center text-slate-400 text-sm">
+        <div>APGI Framework — Interactive prototype</div>
+        <div class="mt-2">Built for demonstration and conceptual exploration.</div>
+      </footer>
+    </main>
+
+  </div>
+
+  <!-- Scripts: Canvas simulation, interactions, lucide init -->
+  <script>
+    // === lucide icons: replace data-lucide attributes with SVGs ===
+    (function initLucide(){
+      try {
+        if(window.lucide) {
+          lucide.replace();
+        }
+        if(window.LucideReact) {
+          // lucide-react UMD present; no runtime action required here for static HTML icons.
+        }
+      } catch(e){ console.warn('Lucide init failed', e); }
+    })();
+
+    // Smooth scrolling for internal links
+    document.documentElement.style.scrollBehavior = 'smooth';
+
+    // Scroll-to-top
+    document.getElementById('scroll-to-top').addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+    // Citation copy tool
+    document.querySelectorAll('.copy-citation').forEach(btn => {
+      btn.addEventListener('click', async (ev) => {
+        const txt = btn.dataset.citation || '';
+        try {
+          await navigator.clipboard.writeText(txt);
+          // visual feedback
+          btn.classList.add('copyok');
+          btn.textContent = 'Copied';
+          setTimeout(()=> { btn.classList.remove('copyok'); btn.textContent = 'Copy'; }, 1500);
+        } catch(e) {
+          // fallback: select invisible textarea
+          const ta = document.createElement('textarea');
+          ta.value = txt;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          btn.textContent = 'Copied';
+          setTimeout(()=> { btn.textContent = 'Copy'; }, 1500);
+        }
+      });
+    });
+
+    // Open-link buttons (placeholder behavior)
+    document.querySelectorAll('.open-link').forEach(b=>{
+      b.addEventListener('click', ()=> {
+        // If this were wired to online content, we'd open it; for demo, just flash
+        b.classList.add('animate-ping');
+        setTimeout(()=> b.classList.remove('animate-ping'), 600);
+      });
+    });
+
+    // === Canvas: Liquid Network Computing simulation ===
+    (function canvasModule(){
+      const canvas = document.getElementById('liquidCanvas');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let W = canvas.width = innerWidth;
+      let H = canvas.height = innerHeight * 0.68;
+
+      // parameters controlled by UI
+      const params = {
+        nodes: 72,
+        edgeThresh: 110,
+        nodeSize: 2.2,
+        speed: 0.6,
+        showNodes: true,
+        bgColor: 'rgba(2,27,33,0.48)',
+        linkAlpha: 0.12,
+        glow: 0.9
+      };
+
+      // Node object
+      function Node(x,y,phase) {
+        this.x = x; this.y = y;
+        this.vx = (Math.random()-0.5) * 0.4;
+        this.vy = (Math.random()-0.5) * 0.4;
+        this.r = params.nodeSize * (0.6 + Math.random()*1.6);
+        this.phase = phase || (Math.random()*Math.PI*2);
+        this.m = 0.6 + Math.random()*1.6;
+      }
+
+      Node.prototype.step = function(t) {
+        // fluid-like motion using sin/cos fields + slight inertia
+        this.phase += 0.003 * params.speed * this.m;
+        const fx = Math.cos(this.phase * 1.1 + t*0.0007) * 0.45;
+        const fy = Math.sin(this.phase * 1.3 - t*0.0009) * 0.45;
+        this.vx = this.vx * 0.92 + fx * 0.08 * params.speed;
+        this.vy = this.vy * 0.92 + fy * 0.08 * params.speed;
+        this.x += this.vx * params.speed;
+        this.y += this.vy * params.speed;
+
+        // wrap edges smoothly
+        if(this.x < -40) this.x = W + 40;
+        if(this.x > W + 40) this.x = -40;
+        if(this.y < -40) this.y = H + 40;
+        if(this.y > H + 40) this.y = -40;
+      };
+
+      let nodes = [];
+      let running = true;
+
+      function resetNodes(n) {
+        nodes = [];
+        for(let i=0;i<n;i++){
+          const x = Math.random()*W;
+          const y = Math.random()*H;
+          nodes.push(new Node(x,y, Math.random()*Math.PI*2));
+        }
+      }
+
+      // create layered gradients for glow effect
+      function drawBackground(){
+        ctx.clearRect(0,0,W,H);
+        ctx.fillStyle = params.bgColor;
+        ctx.fillRect(0,0,W,H);
+
+        // subtle radial vignette
+        const g = ctx.createRadialGradient(W*0.5, H*0.4, H*0.15, W*0.5, H*0.5, Math.max(W,H));
+        g.addColorStop(0, 'rgba(8,22,25,0.02)');
+        g.addColorStop(1, 'rgba(0,0,0,0.45)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,W,H);
+      }
+
+      // draws connections with curvature that create liquid filaments
+      function drawLinks(t) {
+        const edgeT = parseFloat(params.edgeThresh);
+        for(let i=0;i<nodes.length;i++){
+          const a = nodes[i];
+          for(let j=i+1;j<nodes.length;j++){
+            const b = nodes[j];
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const d2 = dx*dx + dy*dy;
+            if(d2 < edgeT*edgeT) {
+              const d = Math.sqrt(d2);
+              const alpha = Math.max(0, params.linkAlpha * (1 - d/edgeT));
+              // curved control point for fluid look
+              const cx = (a.x + b.x)/2 + Math.sin((a.phase + b.phase) * 0.6 + t*0.001) * (d*0.06);
+              const cy = (a.y + b.y)/2 + Math.cos((a.phase + b.phase) * 0.7 + t*0.001) * (d*0.06);
+
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.quadraticCurveTo(cx, cy, b.x, b.y);
+              ctx.strokeStyle = `rgba(26, 220, 226, ${alpha})`;
+              ctx.lineWidth = 0.6 + (1 - d/edgeT) * 1.2;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // glow layer
+      function softGlow() {
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.filter = 'blur(6px) saturate(120%)';
+        ctx.beginPath();
+        for(let i=0;i<nodes.length;i++){
+          const n = nodes[i];
+          ctx.moveTo(n.x + n.r, n.y);
+          ctx.arc(n.x, n.y, n.r*3.6, 0, Math.PI*2);
+        }
+        ctx.fillStyle = 'rgba(10,200,210,0.015)';
+        ctx.fill();
+        ctx.filter = 'none';
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      // render nodes
+      function drawNodes() {
+        if(!params.showNodes) return;
+        for(let i=0;i<nodes.length;i++){
+          const n = nodes[i];
+          const grad = ctx.createRadialGradient(n.x - n.r*0.3, n.y - n.r*0.3, 0, n.x, n.y, n.r*2.6);
+          grad.addColorStop(0, 'rgba(220,255,255,0.95)');
+          grad.addColorStop(1, 'rgba(14,120,120,0.06)');
+          ctx.beginPath();
+          ctx.fillStyle = grad;
+          ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+
+      let last = performance.now();
+      function step(now) {
+        const dt = now - last;
+        last = now;
+
+        // time-varying parameters
+        ctx.save();
+        drawBackground();
+
+        // update nodes
+        for(let i=0;i<nodes.length;i++) nodes[i].step(now);
+
+        // layered drawing for depth
+        ctx.save();
+        ctx.globalAlpha = 0.8;
+        drawLinks(now);
+        ctx.restore();
+
+        // glow
+        softGlow();
+
+        // nodes on top
+        drawNodes();
+
+        ctx.restore();
+        if(running) raf = requestAnimationFrame(step);
+      }
+
+      // UI hooks
+      document.getElementById('nodeDensity').addEventListener('input', (e)=>{
+        params.nodes = parseInt(e.target.value,10);
+        resetNodes(params.nodes);
+      });
+
+      document.getElementById('edgeThresh').addEventListener('input', (e)=>{
+        params.edgeThresh = parseInt(e.target.value,10);
+      });
+
+      document.getElementById('speed').addEventListener('input', (e)=>{
+        params.speed = parseFloat(e.target.value);
+      });
+
+      document.getElementById('cta-play').addEventListener('click', ()=>{
+        running = !running;
+        if(running) { raf = requestAnimationFrame(step); document.getElementById('cta-play').textContent = 'Pause animation'; }
+        else { cancelAnimationFrame(raf); document.getElementById('cta-play').textContent = 'Resume animation'; }
+      });
+
+      document.getElementById('toggle-nodes').addEventListener('click', ()=>{
+        params.showNodes = !params.showNodes;
+      });
+
+      document.getElementById('snapshot').addEventListener('click', ()=>{
+        const data = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.download = 'apgi-liquid-snapshot.png';
+        a.href = data;
+        a.click();
+      });
+
+      // handle resizing
+      window.addEventListener('resize', ()=> {
+        W = canvas.width = innerWidth;
+        H = canvas.height = Math.max(360, innerHeight * 0.68);
+        // re-seed nodes if too many fall outside
+        resetNodes(params.nodes);
+      });
+
+      // set initial and start
+      resetNodes(params.nodes);
+      let raf = requestAnimationFrame(step);
+
+      // small ambient motion when page not focused to save CPU
+      document.addEventListener('visibilitychange', ()=>{
+        if(document.hidden) {
+          running = false;
+          cancelAnimationFrame(raf);
+        } else {
+          running = true;
+          raf = requestAnimationFrame(step);
+        }
+      });
+
+      // allow external toggles (e.g., double-click hero to toggle)
+      document.getElementById('hero').addEventListener('dblclick', ()=> {
+        params.edgeThresh = params.edgeThresh > 140 ? 80 : 140;
+        document.getElementById('edgeThresh').value = params.edgeThresh;
+      });
+
+    })();
+
+  </script>
+</body>
+</html>

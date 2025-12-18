@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When Consciousness Turns On - The APGI Framework</title>
+    <meta name="description" content="Discover how your consciousness works and learn to adjust it. The APGI Framework maps your unique consciousness signature across three dimensions.">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1a2332 0%, #2d3748 50%, #4a5568 100%);
+            min-height: 100vh;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .header {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            align-items: flex-start;
+        }
+        .book-cover {
+            width: 240px;
+            height: 360px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: linear-gradient(135deg, #1a2332 0%, #2b6cb0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+        }
+        .book-cover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        .book-info {
+            flex-grow: 1;
+            padding-top: 10px;
+        }
+        h1 {
+            margin-top: 0;
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2b6cb0 0%, #805ad5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+        .subtitle {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .description {
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #2d3748;
+        }
+        .highlight {
+            background: linear-gradient(135deg, rgba(43, 108, 176, 0.1) 0%, rgba(128, 90, 213, 0.1) 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #2b6cb0;
+        }
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .button {
+            padding: 12px 24px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .button:hover::before {
+            left: 100%;
+        }
+        .button.primary { 
+            background: linear-gradient(135deg, #e53e3e 0%, #fc8181 100%);
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+        }
+        .button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 62, 62, 0.4);
+        }
+        .button.secondary { 
+            background: linear-gradient(135deg, #2b6cb0 0%, #805ad5 100%);
+            box-shadow: 0 4px 15px rgba(43, 108, 176, 0.3);
+        }
+        .button.secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(43, 108, 176, 0.4);
+        }
+        .button.tertiary { 
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+        }
+        .button.tertiary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
+        }
+        .section {
+            margin-bottom: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(43, 108, 176, 0.1);
+        }
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        .section h2 {
+            color: #2d3748;
+            font-size: 20px;
+            margin: 0;
+            padding: 20px 25px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            user-select: none;
+        }
+        .section h2::after {
+            content: '▶';
+            font-size: 0.7em;
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+            color: #2b6cb0;
+        }
+        .section.active h2::after {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        .section h2:hover {
+            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+            color: #1a202c;
+        }
+        .section-content {
+            background-color: #f8fafc;
+            padding: 25px;
+            border-top: 1px solid #e2e8f0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .section.active .section-content {
+            max-height: 1000px;
+            padding: 25px;
+        }
+        .section-content p {
+            margin: 0 0 12px 0;
+            font-size: 15px;
+            color: #2d3748;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        .section-content p:hover {
+            background-color: rgba(43, 108, 176, 0.06);
+            transform: translateX(4px);
+        }
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+        .section-content ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        .section-content li {
+            margin: 8px 0;
+            color: #2d3748;
+            font-size: 15px;
+        }
+        .dimension-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .badge-threshold {
+            background: rgba(0, 180, 255, 0.15);
+            color: #0096CC;
+        }
+        .badge-interoception {
+            background: rgba(255, 51, 102, 0.15);
+            color: #CC0033;
+        }
+        .badge-somatic {
+            background: rgba(255, 204, 0, 0.15);
+            color: #CC9900;
+        }
+        .cta-box {
+            background: linear-gradient(135deg, #2b6cb0 0%, #805ad5 100%);
+            padding: 35px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: center;
+            color: white;
+            box-shadow: 0 15px 35px rgba(43, 108, 176, 0.25);
+        }
+        .cta-box h3 {
+            margin-top: 0;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .cta-box p {
+            margin-bottom: 20px;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        .cta-box .button {
+            background: white;
+            color: #2b6cb0;
+        }
+        .cta-box .button:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        .subscription-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a2332 0%, #2b6cb0 100%);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(43, 108, 176, 0.25);
+        }
+        .subscription-form h3 {
+            color: white;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .subscription-form p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+        .subscription-form input[type="email"] {
+            flex-grow: 1;
+            padding: 14px 18px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+        .subscription-form input[type="email"]:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        .subscription-form button {
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+        .subscription-form button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        .testimonial {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #2b6cb0;
+            font-style: italic;
+        }
+        .testimonial-author {
+            font-style: normal;
+            font-weight: 600;
+            color: #2b6cb0;
+            margin-top: 10px;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            .container {
+                padding: 30px 20px;
+            }
+            .header {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+            .book-cover {
+                width: 200px;
+                height: 300px;
+                margin: 0 auto;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            .subtitle {
+                font-size: 16px;
+            }
+            .buttons {
+                justify-content: center;
+            }
+            .subscription-form {
+                flex-direction: column;
+            }
+            .form-group {
+                flex-direction: column;
+            }
+            .section.active .section-content {
+                max-height: 1500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="book-cover">
+                WHEN<br>CONSCIOUSNESS<br>TURNS ON<br><br>The APGI Framework
+            </div>
+            <div class="book-info">
+                <h1>When Consciousness Turns On</h1>
+                <div class="subtitle">Understanding the Architecture of Awareness</div>
+                <div class="description">
+                    <p>What if consciousness isn't a thing you <em>have</em>, but a process your brain <em>runs</em>? The APGI Framework reveals the mathematical architecture behind conscious experience—and shows you how to work with it intentionally.</p>
+                </div>
+                <div class="buttons">
+                    <a href="#quiz" class="button primary">Take the Free Assessment</a>
+                    <a href="#buy" class="button secondary">Get the Book</a>
+                    <a href="#read" class="button tertiary">Download Free Chapter</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>The Three Dimensions of Consciousness:</strong>
+            <div style="margin-top: 15px;">
+                <span class="dimension-badge badge-threshold">Threshold Sensitivity</span>
+                <span class="dimension-badge badge-interoception">Interoceptive Accuracy</span>
+                <span class="dimension-badge badge-somatic">Somatic Bias</span>
+            </div>
+            <p style="margin-top: 15px; margin-bottom: 0;">Your unique consciousness signature is defined by how you score across these three dimensions. Discover yours in 3 minutes.</p>
+        </div>
+
+        <div class="section active">
+            <h2>Introduction: The Prediction Machine</h2>
+            <div class="section-content">
+                <p><strong>Why consciousness feels different every day</strong> — Some days meditation feels crystal clear. Other days, it's foggy and scattered. Most explanations blame sleep, stress, or moon phases. But what if there's a mathematical reason?</p>
+                <p><strong>Your brain predicts reality before you experience it</strong> — Consciousness doesn't arise from passively receiving information. Your brain generates models of the world, then updates them only when reality surprises you.</p>
+                <p><strong>The architecture revealed</strong> — The APGI Framework (Allostatic Precision-Gated Ignition) maps how prediction errors, precision weighting, and threshold dynamics create everything from focus states to emotional experiences.</p>
+                <p><strong>Not optimization, but understanding</strong> — This isn't about "hacking" your brain. It's about seeing the architecture clearly—understanding why you experience reality the way you do, and learning to adjust when needed.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Part I: The Framework Foundations</h2>
+            <div class="section-content">
+                <p><strong>Chapter 1: Consciousness as Emergency Mode</strong> — Why consciousness isn't a continuous stream but an intermittent broadcast system that activates only when stakes are high enough.</p>
+                <p><strong>Chapter 2: The Prediction Error Engine</strong> — How your brain generates models of reality and consciousness spikes when predictions fail. The mathematical basis: Π × |ε| > Bₜ</p>
+                <p><strong>Chapter 3: Threshold Sensitivity (Bₜ)</strong> — The gate that determines what crosses from unconscious to conscious. Why some people notice everything while others achieve deep focus.</p>
+                <p><strong>Chapter 4: Interoceptive Precision (Π)</strong> — How accurately you perceive internal bodily states. The difference between sensing your heartbeat and being completely disconnected from physical signals.</p>
+                <p><strong>Chapter 5: Somatic Bias (β)</strong> — The degree to which bodily sensations dominate your conscious experience. Why some people "think" with their gut while others analyze abstractly.</p>
+                <p><strong>Chapter 6: Your Consciousness Signature</strong> — How these three dimensions combine to create your unique way of processing reality. Introduction to the five primary archetypes.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Part II: The Neural Mechanisms</h2>
+            <div class="section-content">
+                <p><strong>Chapter 7: Global Workspace Theory Meets Predictive Processing</strong> — How APGI reconciles competing consciousness theories into a unified computational model.</p>
+                <p><strong>Chapter 8: The Thalamic Gating System</strong> — Understanding the blue "threshold" parameter in action. How the thalamic reticular nucleus controls what becomes conscious.</p>
+                <p><strong>Chapter 9: Interoceptive Pathways</strong> — From gut to insula to anterior cingulate cortex. Tracing the red precision-weighted signals that inform consciousness.</p>
+                <p><strong>Chapter 10: Neuromodulator Dynamics</strong> — How dopamine, norepinephrine, serotonin, and acetylcholine modulate your consciousness parameters in real-time.</p>
+                <p><strong>Chapter 11: The Thermodynamic Constraint</strong> — Why consciousness is metabolically expensive and thus selective. The evolutionary logic of intermittent awareness.</p>
+                <p><strong>Chapter 12: Time Scales of Consciousness</strong> — From millisecond-level ignition to hour-scale threshold modulation. Understanding the temporal dynamics.</p>
+            </div>
+        </div>
+
+        <div class="cta-box" id="quiz">
+            <h3>Discover Your Consciousness Signature</h3>
+            <p>Take the 12-question APGI Self-Assessment and get your personalized results instantly. Find out your scores across Threshold Sensitivity, Interoceptive Accuracy, and Somatic Bias.</p>
+            <a href="#quiz" class="button">Start the Free Assessment →</a>
+        </div>
+
+        <div class="section">
+            <h2>Part III: The Five Archetypes</h2>
+            <div class="section-content">
+                <p><strong>Chapter 13: The Analyst</strong> — Low threshold, high interoception, low somatic bias. Deep focus, analytical thinking, excellent self-awareness without being controlled by sensation.</p>
+                <p><strong>Chapter 14: The Empath</strong> — High threshold, high interoception, high somatic bias. Rich sensory experiences, strong intuition, deeply connected to physical and emotional states.</p>
+                <p><strong>Chapter 15: The Pragmatist</strong> — Balanced across all dimensions. Adaptable consciousness that can shift modes based on context. The flexible generalist.</p>
+                <p><strong>Chapter 16: The Sensor</strong> — High threshold, low interoception, low somatic bias. Exceptional external awareness, pattern detection, thrives in dynamic environments.</p>
+                <p><strong>Chapter 17: The Intuitive</strong> — Low threshold, high interoception, high somatic bias. Deep mind-body connection, embodied wisdom, strong internal focus.</p>
+                <p><strong>Chapter 18: Beyond Archetypes</strong> — Understanding your unique combination and why no category fully captures individual variation.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Part IV: Practical Applications</h2>
+            <div class="section-content">
+                <p><strong>Chapter 19: Meditation Through the APGI Lens</strong> — Why meditation feels different each session. How to work with your threshold and precision parameters intentionally.</p>
+                <p><strong>Chapter 20: Flow States Explained</strong> — The precise parameter configuration that creates flow: low threshold + high precision + optimal somatic balance.</p>
+                <p><strong>Chapter 21: Decision-Making Architecture</strong> — Understanding when to trust gut feelings (high somatic bias) versus analytical thinking (low somatic bias).</p>
+                <p><strong>Chapter 22: Anxiety and Depression as Parameter States</strong> — Computational psychiatry perspective: these aren't mysterious conditions but predictable parameter configurations.</p>
+                <p><strong>Chapter 23: Attention Regulation Strategies</strong> — Practical protocols for adjusting your threshold based on task requirements. From deep work to creative exploration.</p>
+                <p><strong>Chapter 24: Embodied vs. Abstract Processing</strong> — Learning to modulate somatic bias. When to increase body awareness, when to decrease it.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Part V: Advanced Topics</h2>
+            <div class="section-content">
+                <p><strong>Chapter 25: Altered States of Consciousness</strong> — How psychedelics, meditation, and breathwork alter APGI parameters. The neuroscience of mystical experiences.</p>
+                <p><strong>Chapter 26: Sleep and Consciousness Dynamics</strong> — Why consciousness fragments during sleep deprivation. Understanding the threshold elevation mechanism.</p>
+                <p><strong>Chapter 27: Free Will and Agency</strong> — What APGI reveals about voluntary action, self-control, and the illusion of continuous conscious control.</p>
+                <p><strong>Chapter 28: Self-Awareness and Meta-Consciousness</strong> — The recursive problem: using consciousness to understand consciousness. Where APGI's explanatory power ends.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Part VI: Integration and Implementation</h2>
+            <div class="section-content">
+                <p><strong>Chapter 29: Your Personal Operating Manual</strong> — Creating a practical framework for working with your consciousness signature in daily life.</p>
+                <p><strong>Chapter 30: When to Adjust Parameters</strong> — Strategic recalibration: knowing when to increase threshold (for focus), decrease threshold (for creativity), modulate precision (for different contexts).</p>
+                <p><strong>Chapter 31: The Evolution of Your Signature</strong> — How consciousness patterns change across lifespan, through practice, and in response to life circumstances.</p>
+                <p><strong>Chapter 32: Future Directions</strong> — Testable predictions, clinical applications, and where consciousness research goes from here.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Appendices: Technical Deep Dives</h2>
+            <div class="section-content">
+                <p><strong>Appendix A: Mathematical Formulations</strong> — Complete equations, parameter definitions, and computational implementation details for researchers.</p>
+                <p><strong>Appendix B: Neural Correlates</strong> — Anatomical mapping of APGI components to brain regions. Color-coded diagrams and pathway analysis.</p>
+                <p><strong>Appendix C: Research Citations</strong> — Comprehensive bibliography spanning predictive processing, global workspace theory, interoception, and computational neuroscience.</p>
+                <p><strong>Appendix D: Assessment Scoring Guide</strong> — Detailed instructions for interpreting your APGI Self-Assessment results and creating your personalized consciousness map.</p>
+                <p><strong>Appendix E: Practical Protocols</strong> — Step-by-step exercises for parameter adjustment, including meditation techniques, attention training, and somatic awareness practices.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What Readers Are Saying</h2>
+            <div class="section-content">
+                <div class="testimonial">
+                    "Finally, a framework that doesn't just describe consciousness but gives you levers to work with. The APGI assessment alone explained more about my processing style than years of self-reflection."
+                    <div class="testimonial-author">— Dr. Sarah Chen, Neuroscientist</div>
+                </div>
+                <div class="testimonial">
+                    "I've read dozens of books on consciousness. This is the first one that made me feel like I understood my own mind. The three-dimensional model is elegant and immediately applicable."
+                    <div class="testimonial-author">— Marcus T., Software Engineer</div>
+                </div>
+                <div class="testimonial">
+                    "The quiz results were eerily accurate. Seeing my threshold/interoception/somatic scores explained SO much about how I process stress and make decisions. Changed my entire therapeutic approach."
+                    <div class="testimonial-author">— Jennifer K., Clinical Therapist</div>
+                </div>
+                <div class="testimonial">
+                    "Provocative, rigorous, and deeply practical. This book does what consciousness research desperately needs—bridges phenomenology and neurobiology with actionable insights."
+                    <div class="testimonial-author">— Dr. Alex Rivera, Cognitive Psychology Professor</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>About the Author</h2>
+            <div class="section-content">
+                <p><strong>Dimitry Pesochin</strong> is a consciousness researcher specializing in predictive processing and computational models of awareness.</p>
+                <p>With over a decade of research at the intersection of Bayesian brain theory and phenomenology, Pesochin developed the APGI Framework to answer a personal question: Why did his meditation practice feel so inconsistent? This curiosity led to a comprehensive investigation into the architecture of conscious experience.</p>
+                <p>Pesochin's work synthesizes neuroscience, philosophy, and contemplative practice to create actionable models of awareness. His research has been featured in consciousness studies conferences and he maintains an active dialogue with both academic researchers and contemplative practitioners.</p>
+                <p>When not researching consciousness, Pesochin practices meditation (which still has foggy days—now he knows why) and explores the practical applications of APGI in clinical and educational settings.</p>
+            </div>
+        </div>
+
+        <div class="cta-box" id="buy">
+            <h3>Ready to Explore the Full Framework?</h3>
+            <p>32 chapters • Research-backed • Practical protocols • Complete with self-assessment tools</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                <a href="#buy" class="button">Get the Book</a>
+                <a href="#buy" class="button">Book + App Bundle (Save 30%)</a>
+            </div>
+        </div>
+
+        <div class="subscription-form" id="read">
+            <div style="width: 100%;">
+                <h3>Start With a Free Chapter</h3>
+                <p>Get Chapter 6: "Your Consciousness Signature" plus the complete APGI Self-Assessment delivered instantly.</p>
+                <div class="form-group">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button>Send Me the Chapter</button>
+                </div>
+                <p style="font-size: 13px; margin-top: 15px; margin-bottom: 0; opacity: 0.85;">We respect your inbox. One email per week, unsubscribe anytime. <span style="color: white; text-decoration: underline; cursor: pointer;" onclick="alert('Privacy: Your email is only used for chapter delivery and weekly updates. You can unsubscribe anytime.')">Privacy Policy</span></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            sections.forEach(section => {
+                const heading = section.querySelector('h2');
+                const content = section.querySelector('.section-content');
+                
+                heading.addEventListener('click', () => {
+                    const isActive = section.classList.contains('active');
+                    
+                    // Close all other sections
+                    sections.forEach(otherSection => {
+                        if (otherSection !== section) {
+                            otherSection.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current section
+                    if (!isActive) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            });
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

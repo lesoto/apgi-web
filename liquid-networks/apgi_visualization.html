@@ -1,0 +1,2393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allostatic Precision-Gated Ignition (APGI) Framework</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chart.js/4.4.0/chart.umd.js"></script>
+    <script>
+        // Verify Chart.js loaded
+        window.addEventListener('load', function() {
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js failed to load');
+            } else {
+                console.log('Chart.js loaded successfully');
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #a0a0a0;
+            font-style: italic;
+        }
+        
+        .main-diagram {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .component-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .component-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+        }
+        
+        .component-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #00ffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .component-number {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+        
+        .neuron {
+            fill: #00ffff;
+            stroke: #fff;
+            stroke-width: 1;
+            opacity: 0.8;
+        }
+        
+        .neuron.spiking {
+            fill: #ff00ff;
+            animation: pulse 0.5s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0% { r: 3; opacity: 1; }
+            50% { r: 8; opacity: 0.5; }
+            100% { r: 3; opacity: 0.8; }
+        }
+        
+        .connection {
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 0.5;
+            fill: none;
+        }
+        
+        .connection.strong {
+            stroke: rgba(0, 255, 255, 0.6);
+            stroke-width: 1.5;
+        }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .control-group label {
+            min-width: 150px;
+            color: #a0a0a0;
+        }
+        
+        .slider {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 5px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            cursor: pointer;
+            border: none;
+        }
+        
+        .slider-value {
+            min-width: 50px;
+            text-align: right;
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 300px;
+            position: relative;
+        }
+        
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+        
+        .validation-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .phenomena-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .phenomenon-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .phenomenon-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00ffff;
+        }
+        
+        .phenomenon-card.active {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: #00ffff;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Allostatic Precision-Gated Ignition (APGI) Framework</h1>
+            <div class="subtitle">Biologically Plausible Implementation in Spiking Neural Networks</div>
+        </header>
+
+        <div class="controls">
+            <h3 style="margin-bottom: 20px; color: #00ffff;">Simulation Parameters</h3>
+            <div class="control-group" style="justify-content: center;">
+                <button id="start-btn" style="
+                    background: linear-gradient(45deg, #00ffff, #ff00ff);
+                    color: #000;
+                    border: none;
+                    padding: 10px 18px;
+                    border-radius: 10px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    min-width: 160px;
+                    margin-right: 10px;
+                ">Start Visualization</button>
+                <button id="init-charts-btn" style="
+                    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                    color: #fff;
+                    border: none;
+                    padding: 10px 18px;
+                    border-radius: 10px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    min-width: 120px;
+                ">Init Charts</button>
+            </div>
+            <div class="control-group">
+                <label>Precision (Π):</label>
+                <input type="range" class="slider" id="precision" min="0.1" max="2.0" step="0.1" value="1.0">
+                <span class="slider-value" id="precision-value">1.0</span>
+            </div>
+            <div class="control-group">
+                <label>Ignition Threshold (θₜ):</label>
+                <input type="range" class="slider" id="threshold" min="0.5" max="3.0" step="0.1" value="1.5">
+                <span class="slider-value" id="threshold-value">1.5</span>
+            </div>
+            <div class="control-group">
+                <label>Network Size:</label>
+                <input type="range" class="slider" id="network-size" min="50" max="500" step="50" value="200">
+                <span class="slider-value" id="network-size-value">200</span>
+            </div>
+            <div class="control-group">
+                <label>Input Strength:</label>
+                <input type="range" class="slider" id="input-strength" min="0.1" max="2.0" step="0.1" value="1.0">
+                <span class="slider-value" id="input-strength-value">1.0</span>
+            </div>
+            <div class="control-group">
+                <label>Top-down Prediction:</label>
+                <input type="range" class="slider" id="topdown" min="0.0" max="2.0" step="0.1" value="1.0">
+                <span class="slider-value" id="topdown-value">1.0</span>
+            </div>
+            <div class="control-group">
+                <label>Arousal:</label>
+                <input type="range" class="slider" id="arousal" min="0.0" max="2.0" step="0.1" value="0.5">
+                <span class="slider-value" id="arousal-value">0.5</span>
+            </div>
+            <div class="control-group">
+                <label>Metabolic Load:</label>
+                <input type="range" class="slider" id="metabolic" min="0.0" max="2.0" step="0.1" value="0.5">
+                <span class="slider-value" id="metabolic-value">0.5</span>
+            </div>
+            <div class="control-group">
+                <label>Interoceptive Bias (β):</label>
+                <input type="range" class="slider" id="interoceptive" min="0.0" max="2.0" step="0.1" value="0.5">
+                <span class="slider-value" id="interoceptive-value">0.5</span>
+            </div>
+        </div>
+
+        <div class="main-diagram">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #00ffff;">APGI Framework Architecture</h2>
+            <svg id="main-svg" width="1200" height="600"></svg>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="activity-chart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="ignition-chart"></canvas>
+        </div>
+
+        <div class="components-grid">
+            <div class="component-card">
+                <div class="component-title">
+                    <span class="component-number">1</span>
+                    Spiking Liquid Reservoir
+                </div>
+                <div id="reservoir-viz"></div>
+                <p style="margin-top: 15px; color: #a0a0a0; font-size: 0.9em;">
+                    High-dimensional recurrent spiking network with heterogeneous neurons, sparse connectivity (~1-10%), 
+                    and NMDA/AMPA/GABA receptor kinetics. Implements fading memory through synaptic decay.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <div class="component-title">
+                    <span class="component-number">2</span>
+                    Precision-Weighted Prediction Error
+                </div>
+                <div id="prediction-viz"></div>
+                <p style="margin-top: 15px; color: #a0a0a0; font-size: 0.9em;">
+                    Input encoding: u(t) = Π(t) × ε(t) where precision modulates synaptic efficacy. 
+                    Feedforward vs top-down mismatch drives burst firing.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <div class="component-title">
+                    <span class="component-number">3</span>
+                    Reservoir Dynamics
+                </div>
+                <div id="dynamics-viz"></div>
+                <p style="margin-top: 15px; color: #a0a0a0; font-size: 0.9em;">
+                    Accumulation via fading memory: dx/dt = -αx + f(W_res x + W_in u(t)). 
+                    Signal S(t) = ||x(t)||² serves as ignition metric.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <div class="component-title">
+                    <span class="component-number">4</span>
+                    Adaptive Ignition Threshold
+                </div>
+                <div id="threshold-viz"></div>
+                <p style="margin-top: 15px; color: #a0a0a0; font-size: 0.9em;">
+                    Dynamic θₜ regulated by arousal, metabolic state, and interoceptive bias. 
+                    Implemented via inhibitory stabilization and divisive normalization.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <div class="component-title">
+                    <span class="component-number">5</span>
+                    Ignition Dynamics
+                </div>
+                <div id="ignition-viz"></div>
+                <p style="margin-top: 15px; color: #a0a0a0; font-size: 0.9em;">
+                    Phase transition: dx/dt ← dx/dt + A·x·[S-θₜ]⁺. 
+                    Recurrent amplification creates persistent attractor via NMDA currents.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <div class="component-title">
+                    <span class="component-number">7</span>
+                    Metabolic Cost Modeling
+                </div>
+                <div id="metabolic-viz"></div>
+                <p style="margin-top: 15px; color: #a0a0a0; font-size: 0.9em;">
+                    Thermodynamic costs of cognitive operations. Free energy F = Cost - Benefit determines ignition viability.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <div class="component-title">
+                    <span class="component-number">8</span>
+                    Neuromodulation System
+                </div>
+                <div id="neuro-viz"></div>
+                <p style="margin-top: 15px; color: #a0a0a0; font-size: 0.9em;">
+                    NE (arousal), ACh (attention), DA (reward), 5-HT (mood) dynamically modulate network parameters.
+                </p>
+            </div>
+        </div>
+
+        <div class="validation-section">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #00ffff;">Validation Phenomena</h2>
+            <div class="phenomena-grid">
+                <div class="phenomenon-card" data-phenomenon="bistable">
+                    <h4 style="color: #ff00ff; margin-bottom: 10px;">Bistable Perception</h4>
+                    <p style="color: #a0a0a0; font-size: 0.9em;">
+                        Identical inputs → all-or-none ignition. Demonstrates threshold-based decision making.
+                    </p>
+                </div>
+                <div class="phenomenon-card" data-phenomenon="attentional-blink">
+                    <h4 style="color: #ff00ff; margin-bottom: 10px;">Attentional Blink</h4>
+                    <p style="color: #a0a0a0; font-size: 0.9em;">
+                        Second target fails to ignite within ~500ms of first due to refractory period.
+                    </p>
+                </div>
+                <div class="phenomenon-card" data-phenomenon="masking">
+                    <h4 style="color: #ff00ff; margin-bottom: 10px;">Masking</h4>
+                    <p style="color: #a0a0a0; font-size: 0.9em;">
+                        Mask disrupts accumulation before θₜ is crossed, preventing ignition.
+                    </p>
+                </div>
+                <div class="phenomenon-card" data-phenomenon="state-dependent">
+                    <h4 style="color: #ff00ff; margin-bottom: 10px;">State-Dependent Access</h4>
+                    <p style="color: #a0a0a0; font-size: 0.9em;">
+                        Higher Π or lower θₜ (via norepinephrine) increases detection rate.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #00ffff;"></div>
+                <span>Resting Neuron</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff00ff;"></div>
+                <span>Spiking Neuron</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffff00;"></div>
+                <span>Ignited State</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #00ff00;"></div>
+                <span>Precision Signal</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global simulation state
+        let simulation = {
+            neurons: [],
+            connections: [],
+            activity: [],
+            ignitionSignal: 0,
+            time: 0,
+            ignited: false,
+            running: false,
+            rafId: null,
+            parameters: {
+                precision: 1.0,
+                threshold: 1.5,
+                networkSize: 200,
+                inputStrength: 1.0,
+                topdown: 1.0,
+                arousal: 0.5,
+                metabolic: 0.5,
+                interoceptive: 0.5
+            }
+        };
+
+        function clamp01(x) {
+            return Math.max(0, Math.min(1, x));
+        }
+
+        function getThetaEff() {
+            const base = simulation.parameters.threshold;
+            const arousal = simulation.parameters.arousal;
+            const metabolic = simulation.parameters.metabolic;
+            const intero = simulation.parameters.interoceptive;
+
+            const down = 1 + 0.6 * arousal + 0.6 * intero;
+            const up = 1 + 0.8 * metabolic;
+            return base * (up / down);
+        }
+
+        function scheduleDefaultStimulus() {
+            simulation.stim = {
+                mode: 'default',
+                pulseUntil: simulation.time,
+                pulseStrength: 1.0,
+                maskUntil: simulation.time,
+                maskStrength: 1.0,
+                schedule: []
+            };
+        }
+
+        function triggerPulse(durationMs, strength = 1.0) {
+            simulation.stim.pulseUntil = simulation.time + durationMs;
+            simulation.stim.pulseStrength = strength;
+        }
+
+        function triggerMask(durationMs, strength = 1.0) {
+            simulation.stim.maskUntil = simulation.time + durationMs;
+            simulation.stim.maskStrength = strength;
+        }
+
+        function stepStimulus() {
+            if (!simulation.stim) scheduleDefaultStimulus();
+            let ff = 0;
+
+            if (simulation.stim.schedule && simulation.stim.schedule.length > 0) {
+                while (simulation.stim.schedule.length > 0 && simulation.time >= simulation.stim.schedule[0].t) {
+                    const ev = simulation.stim.schedule.shift();
+                    if (ev.type === 'pulse') triggerPulse(ev.d, ev.s);
+                    if (ev.type === 'mask') triggerMask(ev.d, ev.s);
+                }
+            } else {
+                if (simulation.time % 800 === 50) triggerPulse(120, 1.0);
+                if (simulation.time % 800 === 200) triggerMask(60, 1.0);
+            }
+
+            if (simulation.time < simulation.stim.pulseUntil) ff += (simulation.stim.pulseStrength || 1.0);
+            if (simulation.time < simulation.stim.maskUntil) ff -= 0.9 * (simulation.stim.maskStrength || 1.0);
+            return ff;
+        }
+
+        // Liquid Time-Constant (LTC) Neurons with corrected ODE
+        class LTCNeuron {
+            constructor(size, tau = 25.0) {
+                this.size = size;
+                this.tau = tau; // Time constant
+                this.state = new Float32Array(size);
+                this.input = new Float32Array(size);
+                this.weights = this.randomWeights(size, size);
+                this.bias = new Float32Array(size);
+                this.spikes = new Uint8Array(size);
+                this.rate = new Float32Array(size);
+                
+                // Initialize
+                for (let i = 0; i < size; i++) {
+                    this.state[i] = Math.random() * 0.1;
+                    this.bias[i] = (Math.random() - 0.5) * 0.2;
+                }
+            }
+            
+            randomWeights(rows, cols, sparsity = 0.1) {
+                const W = new Float32Array(rows * cols);
+                for (let i = 0; i < rows; i++) {
+                    for (let j = 0; j < cols; j++) {
+                        if (Math.random() < sparsity) {
+                            W[i * cols + j] = (Math.random() - 0.5) * 0.3;
+                        }
+                    }
+                }
+                return W;
+            }
+            
+            activation(x) {
+                // Sigmoid activation for LTC
+                return 1 / (1 + Math.exp(-x));
+            }
+            
+            step(input, dt = 1.0) {
+                // Corrected LTC ODE: dx/dt = (1/τ) * (-x + σ(W·input + b))
+                for (let i = 0; i < this.size; i++) {
+                    let sum = this.bias[i];
+                    for (let j = 0; j < input.length; j++) {
+                        sum += this.weights[i * this.size + j] * input[j];
+                    }
+                    const activation = this.activation(sum);
+                    const dx = (-this.state[i] + activation) / this.tau;
+                    this.state[i] += dx * dt;
+                    
+                    // Generate spikes based on membrane potential
+                    this.spikes[i] = this.state[i] > 0.5 ? 1 : 0;
+                    this.rate[i] = this.rate[i] * 0.95 + this.spikes[i] * 0.05;
+                }
+                return this.state;
+            }
+        }
+        
+        // Hierarchical Predictive Coding System
+        class HierarchicalPredictiveCoding {
+            constructor(levels = 3, levelSize = 50) {
+                this.levels = levels;
+                this.levelSize = levelSize;
+                
+                // Create hierarchical levels for interoceptive and exteroceptive
+                this.interoceptive = [];
+                this.exteroceptive = [];
+                
+                for (let l = 0; l < levels; l++) {
+                    this.interoceptive.push(new LTCNeuron(levelSize, 20 + l * 10));
+                    this.exteroceptive.push(new LTCNeuron(levelSize, 20 + l * 10));
+                }
+                
+                // Prediction error at each level
+                this.interoceptiveError = new Float32Array(levels);
+                this.exteroceptiveError = new Float32Array(levels);
+            }
+            
+            process(interoceptiveInput, exteroceptiveInput, precision) {
+                const results = {
+                    predictions: { interoceptive: [], exteroceptive: [] },
+                    errors: { interoceptive: [], exteroceptive: [] }
+                };
+                
+                // Bottom-up processing with top-down predictions
+                let interoPred = interoceptiveInput;
+                let exteroPred = exteroceptiveInput;
+                
+                for (let l = 0; l < this.levels; l++) {
+                    // Process interoceptive pathway
+                    const interoState = this.interoceptive[l].step(interoPred);
+                    results.predictions.interoceptive.push(interoState);
+                    
+                    // Process exteroceptive pathway
+                    const exteroState = this.exteroceptive[l].step(exteroPred);
+                    results.predictions.exteroceptive.push(exteroState);
+                    
+                    // Compute prediction errors
+                    if (l > 0) {
+                        const interoError = this.computeError(interoPred, interoState);
+                        const exteroError = this.computeError(exteroPred, exteroState);
+                        
+                        results.errors.interoceptive.push(interoError * precision.interoceptive);
+                        results.errors.exteroceptive.push(exteroError * precision.exteroceptive);
+                    }
+                    
+                    interoPred = interoState;
+                    exteroPred = exteroState;
+                }
+                
+                return results;
+            }
+            
+            computeError(prediction, actual) {
+                let error = 0;
+                for (let i = 0; i < Math.min(prediction.length, actual.length); i++) {
+                    error += Math.abs(prediction[i] - actual[i]);
+                }
+                return error / prediction.length;
+            }
+        }
+        
+        // Precision Estimation Module
+        class PrecisionEstimation {
+            constructor() {
+                this.metabolicState = 0.5;
+                this.cognitiveContext = 1.0;
+                this.affectiveState = 0.5;
+                this.volatility = 0.1;
+                
+                // Precision networks
+                this.interoceptiveNetwork = new LTCNeuron(20, 30);
+                this.exteroceptiveNetwork = new LTCNeuron(20, 30);
+            }
+            
+            update(metabolic, cognitive, affective) {
+                this.metabolicState = metabolic;
+                this.cognitiveContext = cognitive;
+                this.affectiveState = affective;
+            }
+            
+            estimatePrecision(context) {
+                // Context-dependent precision: Π^i(M,c,a)
+                const input = [
+                    this.metabolicState,
+                    this.cognitiveContext,
+                    this.affectiveState,
+                    this.volatility,
+                    context.reliability || 0.5,
+                    context.saliency || 0.5
+                ];
+                
+                const interoceptiveState = this.interoceptiveNetwork.step(input);
+                const exteroceptiveState = this.exteroceptiveNetwork.step(input);
+                
+                // Extract precision values
+                const interoceptivePrecision = Math.max(0.1, Math.min(2.0, 
+                    interoceptiveState.reduce((a, b) => a + b, 0) / interoceptiveState.length
+                ));
+                
+                const exteroceptivePrecision = Math.max(0.1, Math.min(2.0,
+                    exteroceptiveState.reduce((a, b) => a + b, 0) / exteroceptiveState.length
+                ));
+                
+                return {
+                    interoceptive: interoceptivePrecision,
+                    exteroceptive: exteroceptivePrecision,
+                    combined: (interoceptivePrecision + exteroceptivePrecision) / 2
+                };
+            }
+        }
+        
+        // Metabolic Cost Modeling
+        class MetabolicModel {
+            constructor() {
+                this.energyReserves = 1.0;
+                this.allostaticLoad = 0.0;
+                this.broadcastCost = 0.0;
+                this.maintenanceCost = 0.0;
+                this.predictionBenefit = 0.0;
+            }
+            
+            computeCosts(ignitionSignal, isIgnited, precision) {
+                // Broadcast cost (global ignition energy)
+                this.broadcastCost = isIgnited ? 
+                    0.3 * Math.pow(ignitionSignal, 1.5) * precision.combined : 0;
+                
+                // Maintenance cost (sustaining consciousness)
+                this.maintenanceCost = isIgnited ? 0.05 * precision.combined : 0.01;
+                
+                // Prediction benefit (expected error reduction)
+                this.predictionBenefit = 0.2 * ignitionSignal * Math.log(1 + precision.combined);
+                
+                // Free energy: F = Cost - Benefit
+                const totalCost = this.broadcastCost + this.maintenanceCost;
+                const freeEnergy = totalCost - this.predictionBenefit;
+                
+                // Update energy and allostatic state
+                this.energyReserves = Math.max(0, Math.min(1, 
+                    this.energyReserves - totalCost * 0.01 + 0.002));
+                this.allostaticLoad = Math.max(0, Math.min(1, 
+                    this.allostaticLoad + totalCost * 0.005 - 0.001));
+                
+                return {
+                    broadcastCost: this.broadcastCost,
+                    maintenanceCost: this.maintenanceCost,
+                    predictionBenefit: this.predictionBenefit,
+                    freeEnergy: freeEnergy,
+                    energyReserves: this.energyReserves,
+                    allostaticLoad: this.allostaticLoad
+                };
+            }
+        }
+        
+        // Neuromodulation System
+        class NeuromodulationSystem {
+            constructor() {
+                this.norepinephrine = 0.5;  // Tracks volatility
+                this.acetylcholine = 0.5;   // Modulates precision
+                this.dopamine = 0.5;        // Reward prediction
+                this.serotonin = 0.5;       // Mood state
+            }
+            
+            update(volatility, precision, reward) {
+                // Norepinephrine: increases with uncertainty
+                const neTarget = Math.min(1.0, 0.3 + 0.7 * volatility);
+                this.norepinephrine += 0.1 * (neTarget - this.norepinephrine);
+                
+                // Acetylcholine: increases with attention/precision
+                const achTarget = Math.min(1.0, 0.2 + 0.8 * precision);
+                this.acetylcholine += 0.1 * (achTarget - this.acetylcholine);
+                
+                // Dopamine: reward-based modulation
+                this.dopamine += 0.05 * (reward - this.dopamine);
+                
+                // Serotonin: slow mood modulation
+                this.serotonin += 0.02 * (0.5 - this.serotonin);
+            }
+            
+            getModulation() {
+                return {
+                    arousal: this.norepinephrine,
+                    attention: this.acetylcholine,
+                    reward: this.dopamine,
+                    mood: this.serotonin
+                };
+            }
+        }
+        
+        // Adaptive Threshold Dynamics
+        class AdaptiveThreshold {
+            constructor(baseThreshold = 1.5) {
+                this.theta = baseThreshold;
+                this.theta0 = baseThreshold;
+                this.gamma = 0.1;  // Homeostatic pull rate
+                this.delta = 0.2;  // Refractory suppression
+                this.lambda = 0.05; // Urgency response
+                this.prevIgnition = 0;
+                this.prevSurprise = 0;
+            }
+            
+            update(surprise, isIgnited, metabolicState) {
+                // dθ/dt = γ(θ₀ - θ) - δB_{t-1} - λ(dS/dt)
+                const homeostatic = this.gamma * (this.theta0 - this.theta);
+                const refractory = this.delta * this.prevIgnition;
+                const urgency = this.lambda * (surprise - this.prevSurprise);
+                const metabolicModulation = 1 + 0.3 * metabolicState.allostaticLoad;
+                
+                const dtheta = (homeostatic - refractory + urgency) / metabolicModulation;
+                this.theta += dtheta;
+                this.theta = Math.max(0.5, Math.min(3.0, this.theta));
+                
+                this.prevIgnition = isIgnited ? 1 : 0;
+                this.prevSurprise = surprise;
+                
+                return this.theta;
+            }
+        }
+        
+        function modelStep() {
+            if (!simulation.model) initializeModel();
+            
+            const dt = 1.0;
+            const m = simulation.model;
+            
+            // Get parameters
+            const precisionParam = simulation.parameters.precision;
+            const inputStrength = simulation.parameters.inputStrength;
+            const topdown = simulation.parameters.topdown;
+            const arousal = simulation.parameters.arousal;
+            const metabolic = simulation.parameters.metabolic;
+            const interoceptive = simulation.parameters.interoceptive;
+            
+            // Step 1: Get stimulus input
+            const ff = stepStimulus() * inputStrength;
+            
+            // Step 2: Estimate precision
+            const context = {
+                reliability: precisionParam,
+                saliency: Math.abs(ff)
+            };
+            
+            m.precisionEstimation.update(metabolic, arousal, interoceptive);
+            const precision = m.precisionEstimation.estimatePrecision(context);
+            
+            // Step 3: Hierarchical predictive coding
+            const interoceptiveInput = new Float32Array(m.hpc.levelSize).fill(ff * interoceptive);
+            const exteroceptiveInput = new Float32Array(m.hpc.levelSize).fill(ff * (1 - interoceptive));
+            
+            const predictions = m.hpc.process(interoceptiveInput, exteroceptiveInput, precision);
+            
+            // Step 4: Compute precision-weighted prediction errors
+            // S = Π^e · |ε^e| + Π^i(M,c,a) · |ε^i|
+            let totalError = 0;
+            predictions.errors.interoceptive.forEach(err => totalError += err);
+            predictions.errors.exteroceptive.forEach(err => totalError += err);
+            
+            const surprise = totalError / (m.hpc.levels * 2);
+            m.S = surprise;
+            simulation.ignitionSignal = surprise;
+            
+            // Step 5: Update adaptive threshold
+            const thetaEff = m.adaptiveThreshold.update(surprise, simulation.ignited, m.metabolicModel);
+            m.thetaEff = thetaEff;
+            
+            // Step 6: Compute metabolic costs
+            const metabolicCosts = m.metabolicModel.computeCosts(surprise, simulation.ignited, precision);
+            
+            // Step 7: Update neuromodulation
+            m.neuromodulation.update(m.volatility, precision.combined, metabolicCosts.predictionBenefit);
+            const modulation = m.neuromodulation.getModulation();
+            
+            // Step 8: Ignition dynamics with hysteresis
+            const refractoryPeriod = simulation.time < m.refractoryUntil;
+            
+            if (!simulation.ignited && !refractoryPeriod && surprise > thetaEff) {
+                // Check metabolic constraints
+                if (metabolicCosts.freeEnergy < 0 || m.metabolicModel.energyReserves > 0.2) {
+                    simulation.ignited = true;
+                    m.ignitedUntil = simulation.time + 450;
+                    m.refractoryUntil = simulation.time + 500;
+                }
+            }
+            
+            if (simulation.ignited) {
+                if (simulation.time > m.ignitedUntil && surprise < thetaEff * 0.85) {
+                    simulation.ignited = false;
+                }
+            }
+            
+            // Update volatility estimation
+            m.volatility = 0.9 * m.volatility + 0.1 * Math.abs(surprise - m.prevSurprise || 0);
+            m.prevSurprise = surprise;
+            
+            // Store for visualization
+            m.ff = ff;
+            m.epsilon = surprise;
+            m.u = precision.combined * surprise;
+            m.metabolicCosts = metabolicCosts;
+            m.modulation = modulation;
+        }
+
+        // Initialize main SVG diagram
+        function initializeMainDiagram() {
+            if (!window.d3) return;
+            const svg = d3.select("#main-svg");
+            const width = 1200;
+            const height = 600;
+
+            // Clear existing content
+            svg.selectAll("*").remove();
+
+            // Define gradients
+            const defs = svg.append("defs");
+            
+            const gradient1 = defs.append("linearGradient")
+                .attr("id", "gradient1")
+                .attr("x1", "0%").attr("y1", "0%")
+                .attr("x2", "100%").attr("y2", "100%");
+            gradient1.append("stop").attr("offset", "0%").style("stop-color", "#00ffff");
+            gradient1.append("stop").attr("offset", "100%").style("stop-color", "#ff00ff");
+
+            // Main components
+            const components = [
+                { id: "input", x: 100, y: 300, radius: 40, label: "Input\nΠ × ε", color: "#00ff00" },
+                { id: "reservoir", x: 400, y: 300, radius: 80, label: "Liquid\nReservoir", color: "#00ffff" },
+                { id: "threshold", x: 700, y: 200, radius: 35, label: "Threshold\nθₜ", color: "#ff00ff" },
+                { id: "ignition", x: 700, y: 400, radius: 50, label: "Ignition\nDynamics", color: "#ffff00" },
+                { id: "output", x: 1000, y: 300, radius: 45, label: "Global\nBroadcast", color: "#00ffff" }
+            ];
+
+            // Draw connections
+            const connections = [
+                { from: "input", to: "reservoir", label: "Precision-weighted" },
+                { from: "reservoir", to: "threshold", label: "S(t) = ||x(t)||²" },
+                { from: "threshold", to: "ignition", label: "Compare" },
+                { from: "ignition", to: "reservoir", label: "Feedback", curved: true },
+                { from: "reservoir", to: "output", label: "Readout" },
+                { from: "ignition", to: "output", label: "Broadcast" }
+            ];
+
+            connections.forEach(conn => {
+                const from = components.find(c => c.id === conn.from);
+                const to = components.find(c => c.id === conn.to);
+
+                if (conn.curved) {
+                    const path = svg.append("path")
+                        .attr("d", `M ${from.x + from.radius} ${from.y} 
+                                  Q ${from.x + 150} ${from.y + 100} ${to.x - to.radius} ${to.y}`)
+                        .attr("stroke", "rgba(255, 255, 255, 0.5)")
+                        .attr("stroke-width", 2)
+                        .attr("fill", "none")
+                        .attr("stroke-dasharray", "5,5");
+                } else {
+                    svg.append("line")
+                        .attr("x1", from.x + from.radius)
+                        .attr("y1", from.y)
+                        .attr("x2", to.x - to.radius)
+                        .attr("y2", to.y)
+                        .attr("stroke", "rgba(255, 255, 255, 0.5)")
+                        .attr("stroke-width", 2);
+                }
+
+                // Add labels
+                const midX = (from.x + to.x) / 2;
+                const midY = (from.y + to.y) / 2;
+                svg.append("text")
+                    .attr("x", midX)
+                    .attr("y", midY - 10)
+                    .attr("text-anchor", "middle")
+                    .attr("fill", "#a0a0a0")
+                    .attr("font-size", "12px")
+                    .text(conn.label);
+            });
+
+            // Draw components
+            components.forEach(comp => {
+                const g = svg.append("g")
+                    .attr("transform", `translate(${comp.x}, ${comp.y})`);
+
+                // Outer glow
+                g.append("circle")
+                    .attr("r", comp.radius + 5)
+                    .attr("fill", "none")
+                    .attr("stroke", comp.color)
+                    .attr("stroke-width", 1)
+                    .attr("opacity", 0.3);
+
+                // Main circle
+                g.append("circle")
+                    .attr("r", comp.radius)
+                    .attr("fill", comp.color)
+                    .attr("opacity", 0.2)
+                    .attr("stroke", comp.color)
+                    .attr("stroke-width", 2);
+
+                // Label
+                g.append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("dy", "0.3em")
+                    .attr("fill", "#fff")
+                    .attr("font-size", "14px")
+                    .attr("font-weight", "bold")
+                    .text(comp.label);
+            });
+
+            // Add title
+            svg.append("text")
+                .attr("x", width / 2)
+                .attr("y", 50)
+                .attr("text-anchor", "middle")
+                .attr("fill", "#00ffff")
+                .attr("font-size", "24px")
+                .attr("font-weight", "bold")
+                .text("APGI Information Flow");
+        }
+
+        // Initialize reservoir visualization
+        function initializeReservoir() {
+            if (!window.d3) return;
+            const container = d3.select("#reservoir-viz");
+            container.selectAll("*").remove();
+
+            const width = 350;
+            const height = 250;
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const numNeurons = Math.max(30, Math.min(120, Math.floor(simulation.parameters.networkSize / 2)));
+            const neurons = [];
+            for (let i = 0; i < numNeurons; i++) {
+                neurons.push({
+                    id: i,
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    spiking: false,
+                    lastSpike: 0
+                });
+            }
+
+            // Create connections (sparse)
+            const connections = [];
+            for (let i = 0; i < numNeurons; i++) {
+                const numConnections = Math.floor(Math.random() * 5) + 1;
+                for (let j = 0; j < numConnections; j++) {
+                    const target = Math.floor(Math.random() * numNeurons);
+                    if (target !== i) {
+                        connections.push({ from: i, to: target });
+                    }
+                }
+            }
+
+            // Draw connections
+            svg.selectAll(".connection")
+                .data(connections)
+                .enter()
+                .append("line")
+                .attr("class", "connection")
+                .attr("x1", d => neurons[d.from].x)
+                .attr("y1", d => neurons[d.from].y)
+                .attr("x2", d => neurons[d.to].x)
+                .attr("y2", d => neurons[d.to].y);
+
+            // Draw neurons
+            const neuronGroups = svg.selectAll(".neuron-group")
+                .data(neurons)
+                .enter()
+                .append("g")
+                .attr("class", "neuron-group");
+
+            neuronGroups.append("circle")
+                .attr("class", "neuron")
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("r", 4);
+
+            simulation.reservoirNeurons = neurons;
+            simulation.reservoirConnections = connections;
+            simulation.displayNeuronCount = numNeurons;
+        }
+
+        function initializeModel() {
+            const N = simulation.parameters.networkSize;
+            
+            simulation.model = {
+                // Core APGI components
+                hpc: new HierarchicalPredictiveCoding(3, Math.floor(N/3)),
+                precisionEstimation: new PrecisionEstimation(),
+                metabolicModel: new MetabolicModel(),
+                neuromodulation: new NeuromodulationSystem(),
+                adaptiveThreshold: new AdaptiveThreshold(simulation.parameters.threshold),
+                
+                // Legacy compatibility
+                N,
+                v: new Float32Array(N),
+                thr: new Float32Array(N),
+                adap: new Float32Array(N),
+                rate: new Float32Array(N),
+                I: new Float32Array(N),
+                spikes: new Uint8Array(N),
+                pred: 0,
+                ff: 0,
+                epsilon: 0,
+                u: 0,
+                S: 0,
+                thetaEff: simulation.parameters.threshold,
+                ignitedUntil: 0,
+                refractoryUntil: 0,
+                ignitionMask: new Uint8Array(N),
+                volatility: 0.1,
+                prevSurprise: 0,
+                metabolicCosts: null,
+                modulation: null
+            };
+
+            // Initialize legacy neuron arrays for visualization
+            for (let i = 0; i < N; i++) {
+                simulation.model.v[i] = Math.random() * 0.5;
+                simulation.model.thr[i] = 1.0 + Math.random() * 0.2;
+                simulation.model.adap[i] = 0;
+                simulation.model.rate[i] = 0;
+                simulation.model.I[i] = 0;
+                simulation.model.ignitionMask[i] = (Math.random() < 0.15) ? 1 : 0;
+            }
+
+            simulation.raster = [];
+            simulation.stim = {
+                mode: 'default',
+                pulseUntil: 0,
+                maskUntil: 0,
+                schedule: []
+            };
+        }
+
+        // Initialize metabolic visualization
+        function initializeMetabolic() {
+            if (!window.d3) return;
+            const container = d3.select("#metabolic-viz");
+            if (container.empty()) return;
+            container.selectAll("*").remove();
+
+            const width = 350;
+            const height = 250;
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Energy meter
+            const energyGroup = svg.append("g").attr("transform", "translate(50, 50)");
+            energyGroup.append("text")
+                .attr("x", 0)
+                .attr("y", -10)
+                .attr("fill", "#00ffff")
+                .attr("font-size", "14px")
+                .text("Energy Reserves");
+            
+            const energyBar = energyGroup.append("rect")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 200)
+                .attr("height", 20)
+                .attr("fill", "rgba(255, 255, 255, 0.1)")
+                .attr("stroke", "#00ffff")
+                .attr("stroke-width", 1);
+            
+            const energyFill = energyGroup.append("rect")
+                .attr("x", 1)
+                .attr("y", 1)
+                .attr("width", 0)
+                .attr("height", 18)
+                .attr("fill", "#00ffff")
+                .attr("opacity", 0.7);
+            
+            // Allostatic load meter
+            const loadGroup = svg.append("g").attr("transform", "translate(50, 100)");
+            loadGroup.append("text")
+                .attr("x", 0)
+                .attr("y", -10)
+                .attr("fill", "#ff00ff")
+                .attr("font-size", "14px")
+                .text("Allostatic Load");
+            
+            const loadBar = loadGroup.append("rect")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 200)
+                .attr("height", 20)
+                .attr("fill", "rgba(255, 255, 255, 0.1)")
+                .attr("stroke", "#ff00ff")
+                .attr("stroke-width", 1);
+            
+            const loadFill = loadGroup.append("rect")
+                .attr("x", 1)
+                .attr("y", 1)
+                .attr("width", 0)
+                .attr("height", 18)
+                .attr("fill", "#ff00ff")
+                .attr("opacity", 0.7);
+            
+            // Cost/Benefit display
+            const costGroup = svg.append("g").attr("transform", "translate(50, 150)");
+            costGroup.append("text")
+                .attr("x", 0)
+                .attr("y", -10)
+                .attr("fill", "#ffff00")
+                .attr("font-size", "14px")
+                .text("Free Energy (Cost - Benefit)");
+            
+            const costText = costGroup.append("text")
+                .attr("x", 0)
+                .attr("y", 15)
+                .attr("fill", "#a0a0a0")
+                .attr("font-size", "12px")
+                .text("F: 0.000");
+            
+            // Readout elements
+            const readout = svg.append("g").attr("transform", "translate(20, 210)");
+            const energyText = readout.append("text")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("fill", "#00ffff")
+                .attr("font-size", "11px")
+                .text("Energy: 100%");
+            const costText2 = readout.append("text")
+                .attr("x", 0)
+                .attr("y", 16)
+                .attr("fill", "#ffff00")
+                .attr("font-size", "11px")
+                .text("Cost: 0.000");
+            const loadText = readout.append("text")
+                .attr("x", 0)
+                .attr("y", 32)
+                .attr("fill", "#ff00ff")
+                .attr("font-size", "11px")
+                .text("Load: 0%");
+            
+            simulation.metabolicViz = {
+                energyFill,
+                loadFill,
+                costText,
+                energyText,
+                costText2,
+                loadText
+            };
+        }
+        
+        // Initialize neuromodulation visualization
+        function initializeNeuromodulation() {
+            if (!window.d3) return;
+            const container = d3.select("#neuro-viz");
+            if (container.empty()) return;
+            container.selectAll("*").remove();
+
+            const width = 350;
+            const height = 250;
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Neurotransmitter levels
+            const neurotransmitters = [
+                { name: "NE", label: "Norepinephrine", color: "#ff6b6b", x: 50, y: 50 },
+                { name: "ACh", label: "Acetylcholine", color: "#4ecdc4", x: 150, y: 50 },
+                { name: "DA", label: "Dopamine", color: "#45b7d1", x: 250, y: 50 },
+                { name: "5-HT", label: "Serotonin", color: "#f9ca24", x: 150, y: 120 }
+            ];
+            
+            neurotransmitters.forEach(nt => {
+                const group = svg.append("g").attr("transform", `translate(${nt.x}, ${nt.y})`);
+                
+                // Background circle
+                group.append("circle")
+                    .attr("r", 25)
+                    .attr("fill", "rgba(255, 255, 255, 0.1)")
+                    .attr("stroke", nt.color)
+                    .attr("stroke-width", 2);
+                
+                // Fill circle
+                const fillCircle = group.append("circle")
+                    .attr("r", 23)
+                    .attr("fill", nt.color)
+                    .attr("opacity", 0.5);
+                
+                // Label
+                group.append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("dy", "0.3em")
+                    .attr("fill", "#fff")
+                    .attr("font-size", "12px")
+                    .attr("font-weight", "bold")
+                    .text(nt.name);
+                
+                group.append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("y", 40)
+                    .attr("fill", nt.color)
+                    .attr("font-size", "10px")
+                    .text(nt.label);
+                
+                // Store reference
+                simulation[`${nt.name.toLowerCase()}Circle`] = fillCircle;
+            });
+            
+            // Readout
+            const readout = svg.append("g").attr("transform", "translate(20, 210)");
+            const neText = readout.append("text")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("fill", "#ff6b6b")
+                .attr("font-size", "11px")
+                .text("NE: 0.00");
+            const achText = readout.append("text")
+                .attr("x", 70)
+                .attr("y", 0)
+                .attr("fill", "#4ecdc4")
+                .attr("font-size", "11px")
+                .text("ACh: 0.00");
+            const daText = readout.append("text")
+                .attr("x", 140)
+                .attr("y", 0)
+                .attr("fill", "#45b7d1")
+                .attr("font-size", "11px")
+                .text("DA: 0.00");
+            const fivehtText = readout.append("text")
+                .attr("x", 210)
+                .attr("y", 0)
+                .attr("fill", "#f9ca24")
+                .attr("font-size", "11px")
+                .text("5-HT: 0.00");
+            
+            simulation.neuroReadout = {
+                neText,
+                achText,
+                daText,
+                fivehtText
+            };
+        }
+        function initializePredictionError() {
+            if (!window.d3) return;
+            const container = d3.select("#prediction-viz");
+            container.selectAll("*").remove();
+
+            const width = 350;
+            const height = 250;
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create two input streams
+            const feedforward = svg.append("g")
+                .attr("transform", `translate(50, ${height/2})`);
+
+            const feedback = svg.append("g")
+                .attr("transform", `translate(300, ${height/2})`);
+
+            // Feedforward arrow
+            feedforward.append("line")
+                .attr("x1", 0)
+                .attr("y1", 0)
+                .attr("x2", 80)
+                .attr("y2", 0)
+                .attr("stroke", "#00ff00")
+                .attr("stroke-width", 3)
+                .attr("marker-end", "url(#arrow-green)");
+
+            // Feedback arrow
+            feedback.append("line")
+                .attr("x1", -80)
+                .attr("y1", 0)
+                .attr("x2", 0)
+                .attr("y2", 0)
+                .attr("stroke", "#ff00ff")
+                .attr("stroke-width", 3)
+                .attr("marker-end", "url(#arrow-magenta)");
+
+            // Labels
+            feedforward.append("text")
+                .attr("x", -10)
+                .attr("y", -20)
+                .attr("fill", "#00ff00")
+                .attr("font-size", "12px")
+                .text("Feedforward");
+
+            feedback.append("text")
+                .attr("x", -70)
+                .attr("y", -20)
+                .attr("fill", "#ff00ff")
+                .attr("font-size", "12px")
+                .text("Top-down");
+
+            // Error signal
+            const errorGroup = svg.append("g")
+                .attr("transform", `translate(${width/2}, ${height/2})`);
+
+            errorGroup.append("circle")
+                .attr("r", 20)
+                .attr("fill", "none")
+                .attr("stroke", "#ffff00")
+                .attr("stroke-width", 2);
+
+            errorGroup.append("text")
+                .attr("text-anchor", "middle")
+                .attr("dy", "0.3em")
+                .attr("fill", "#ffff00")
+                .attr("font-size", "16px")
+                .attr("font-weight", "bold")
+                .text("ε");
+
+            // Precision multiplier
+            const precisionGroup = svg.append("g")
+                .attr("transform", `translate(${width/2}, 50)`);
+
+            precisionGroup.append("rect")
+                .attr("x", -30)
+                .attr("y", -15)
+                .attr("width", 60)
+                .attr("height", 30)
+                .attr("fill", "rgba(0, 255, 0, 0.2)")
+                .attr("stroke", "#00ff00")
+                .attr("stroke-width", 2);
+
+            precisionGroup.append("text")
+                .attr("text-anchor", "middle")
+                .attr("dy", "0.3em")
+                .attr("fill", "#00ff00")
+                .attr("font-size", "14px")
+                .text("Π × ε");
+
+            const readout = svg.append("g").attr("transform", `translate(20, ${height - 55})`);
+            const ffText = readout.append("text")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("fill", "#a0a0a0")
+                .attr("font-size", "11px")
+                .text("ff: 0.00");
+            const predText = readout.append("text")
+                .attr("x", 0)
+                .attr("y", 16)
+                .attr("fill", "#a0a0a0")
+                .attr("font-size", "11px")
+                .text("pred: 0.00");
+            const epsText = readout.append("text")
+                .attr("x", 0)
+                .attr("y", 32)
+                .attr("fill", "#ffff00")
+                .attr("font-size", "11px")
+                .text("ε: 0.00");
+            const uText = readout.append("text")
+                .attr("x", 0)
+                .attr("y", 48)
+                .attr("fill", "#00ff00")
+                .attr("font-size", "11px")
+                .text("u=Π·ε: 0.00");
+
+            // Add arrow markers
+            const defs = svg.append("defs");
+            
+            defs.append("marker")
+                .attr("id", "arrow-green")
+                .attr("viewBox", "0 0 10 10")
+                .attr("refX", 10)
+                .attr("refY", 5)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M 0 0 L 10 5 L 0 10 z")
+                .attr("fill", "#00ff00");
+
+            defs.append("marker")
+                .attr("id", "arrow-magenta")
+                .attr("viewBox", "0 0 10 10")
+                .attr("refX", 10)
+                .attr("refY", 5)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M 0 0 L 10 5 L 0 10 z")
+                .attr("fill", "#ff00ff");
+
+            simulation.predictionReadout = { ffText, predText, epsText, uText };
+        }
+
+        // Initialize dynamics visualization
+        function initializeDynamics() {
+            if (!window.d3) return;
+            const container = d3.select("#dynamics-viz");
+            container.selectAll("*").remove();
+
+            const width = 350;
+            const height = 250;
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create activity plot
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const plot = svg.append("g")
+                .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+            // Axes
+            plot.append("line")
+                .attr("x1", 0)
+                .attr("y1", plotHeight)
+                .attr("x2", plotWidth)
+                .attr("y2", plotHeight)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 1);
+
+            plot.append("line")
+                .attr("x1", 0)
+                .attr("y1", 0)
+                .attr("x2", 0)
+                .attr("y2", plotHeight)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 1);
+
+            // Labels
+            svg.append("text")
+                .attr("x", width / 2)
+                .attr("y", height - 5)
+                .attr("text-anchor", "middle")
+                .attr("fill", "#a0a0a0")
+                .attr("font-size", "12px")
+                .text("Time (ms)");
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -height / 2)
+                .attr("y", 15)
+                .attr("text-anchor", "middle")
+                .attr("fill", "#a0a0a0")
+                .attr("font-size", "12px")
+                .text("Activity ||x(t)||²");
+
+            // Initialize activity line
+            const activityLine = plot.append("path")
+                .attr("fill", "none")
+                .attr("stroke", "#00ffff")
+                .attr("stroke-width", 2);
+
+            const thresholdLine = plot.append("path")
+                .attr("fill", "none")
+                .attr("stroke", "#ff00ff")
+                .attr("stroke-width", 1.5)
+                .attr("stroke-dasharray", "4,4");
+
+            simulation.dynamicsLine = activityLine;
+            simulation.dynamicsThresholdLine = thresholdLine;
+            simulation.dynamicsData = [];
+        }
+
+        // Initialize threshold visualization
+        function initializeThreshold() {
+            if (!window.d3) return;
+            const container = d3.select("#threshold-viz");
+            container.selectAll("*").remove();
+
+            const width = 350;
+            const height = 250;
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create threshold indicator
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            // Background circle
+            svg.append("circle")
+                .attr("cx", centerX)
+                .attr("cy", centerY)
+                .attr("r", 60)
+                .attr("fill", "none")
+                .attr("stroke", "rgba(255, 255, 255, 0.2)")
+                .attr("stroke-width", 2);
+
+            // Threshold arc (will be updated dynamically)
+            const thresholdArc = svg.append("path")
+                .attr("d", d3.arc()
+                    .innerRadius(50)
+                    .outerRadius(70)
+                    .startAngle(0)
+                    .endAngle(Math.PI * 2 * 0.6)
+                )
+                .attr("fill", "rgba(255, 0, 255, 0.3)")
+                .attr("stroke", "#ff00ff")
+                .attr("stroke-width", 2)
+                .attr("transform", `translate(${centerX}, ${centerY})`);
+
+            // Center text
+            const centerText = svg.append("text")
+                .attr("x", centerX)
+                .attr("y", centerY)
+                .attr("text-anchor", "middle")
+                .attr("dy", "0.3em")
+                .attr("fill", "#fff")
+                .attr("font-size", "18px")
+                .attr("font-weight", "bold")
+                .text("θₜ");
+
+            // Value display
+            const valueText = svg.append("text")
+                .attr("x", centerX)
+                .attr("y", centerY + 25)
+                .attr("text-anchor", "middle")
+                .attr("fill", "#ff00ff")
+                .attr("font-size", "14px")
+                .text("1.5");
+
+            simulation.thresholdArc = thresholdArc;
+            simulation.thresholdValue = valueText;
+        }
+
+        // Initialize ignition visualization
+        function initializeIgnition() {
+            if (!window.d3) return;
+            const container = d3.select("#ignition-viz");
+            container.selectAll("*").remove();
+
+            const width = 350;
+            const height = 250;
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create state diagram
+            const states = [
+                { id: "subthreshold", x: 80, y: height/2, label: "Subthreshold", color: "#00ffff" },
+                { id: "ignition", x: width/2, y: height/2, label: "Ignition", color: "#ffff00" },
+                { id: "sustained", x: width - 80, y: height/2, label: "Sustained", color: "#ff00ff" }
+            ];
+
+            // Draw states
+            const stateCircles = {};
+            states.forEach(state => {
+                const g = svg.append("g")
+                    .attr("transform", `translate(${state.x}, ${state.y})`);
+
+                const c = g.append("circle")
+                    .attr("r", 30)
+                    .attr("fill", state.color)
+                    .attr("opacity", 0.2)
+                    .attr("stroke", state.color)
+                    .attr("stroke-width", 2);
+
+                stateCircles[state.id] = c;
+
+                g.append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("dy", "0.3em")
+                    .attr("fill", state.color)
+                    .attr("font-size", "12px")
+                    .attr("font-weight", "bold")
+                    .text(state.label);
+            });
+
+            // Draw transitions
+            svg.append("path")
+                .attr("d", `M ${states[0].x + 30} ${states[0].y} L ${states[1].x - 30} ${states[1].y}`)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 2)
+                .attr("marker-end", "url(#arrow-white)");
+
+            svg.append("path")
+                .attr("d", `M ${states[1].x + 30} ${states[1].y} L ${states[2].x - 30} ${states[2].y}`)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 2)
+                .attr("marker-end", "url(#arrow-white)");
+
+            // Add arrow marker
+            const defs = svg.append("defs");
+            defs.append("marker")
+                .attr("id", "arrow-white")
+                .attr("viewBox", "0 0 10 10")
+                .attr("refX", 10)
+                .attr("refY", 5)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M 0 0 L 10 5 L 0 10 z")
+                .attr("fill", "#fff");
+
+            // Transition labels
+            svg.append("text")
+                .attr("x", (states[0].x + states[1].x) / 2)
+                .attr("y", states[0].y - 20)
+                .attr("text-anchor", "middle")
+                .attr("fill", "#a0a0a0")
+                .attr("font-size", "10px")
+                .text("S > θₜ");
+
+            svg.append("text")
+                .attr("x", (states[1].x + states[2].x) / 2)
+                .attr("y", states[1].y - 20)
+                .attr("text-anchor", "middle")
+                .attr("fill", "#a0a0a0")
+                .attr("font-size", "10px")
+                .text("A·x·[S-θₜ]⁺");
+
+            simulation.ignitionStateCircles = stateCircles;
+        }
+
+        // Initialize output visualization
+        function initializeOutput() {
+            if (!window.d3) return;
+            const container = d3.select("#output-viz");
+            container.selectAll("*").remove();
+
+            const width = 350;
+            const height = 250;
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create broadcast visualization
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            // Central hub
+            svg.append("circle")
+                .attr("cx", centerX)
+                .attr("cy", centerY)
+                .attr("r", 25)
+                .attr("fill", "#00ffff")
+                .attr("opacity", 0.3)
+                .attr("stroke", "#00ffff")
+                .attr("stroke-width", 2);
+
+            svg.append("text")
+                .attr("x", centerX)
+                .attr("y", centerY)
+                .attr("text-anchor", "middle")
+                .attr("dy", "0.3em")
+                .attr("fill", "#fff")
+                .attr("font-size", "12px")
+                .attr("font-weight", "bold")
+                .text("Broadcast");
+
+            // Target regions
+            const targets = [
+                { x: centerX - 80, y: centerY - 60, label: "Motor" },
+                { x: centerX + 80, y: centerY - 60, label: "Memory" },
+                { x: centerX - 80, y: centerY + 60, label: "Language" },
+                { x: centerX + 80, y: centerY + 60, label: "Action" }
+            ];
+
+            targets.forEach((target, i) => {
+                const angle = (i * Math.PI / 2) - Math.PI / 4;
+                const endX = target.x;
+                const endY = target.y;
+
+                // Connection line
+                svg.append("line")
+                    .attr("x1", centerX)
+                    .attr("y1", centerY)
+                    .attr("x2", endX)
+                    .attr("y2", endY)
+                    .attr("stroke", "rgba(0, 255, 255, 0.5)")
+                    .attr("stroke-width", 2)
+                    .attr("stroke-dasharray", "5,5");
+
+                // Target node
+                svg.append("circle")
+                    .attr("cx", endX)
+                    .attr("cy", endY)
+                    .attr("r", 20)
+                    .attr("fill", "rgba(255, 255, 255, 0.1)")
+                    .attr("stroke", "#00ffff")
+                    .attr("stroke-width", 1);
+
+                svg.append("text")
+                    .attr("x", endX)
+                    .attr("y", endY)
+                    .attr("text-anchor", "middle")
+                    .attr("dy", "0.3em")
+                    .attr("fill", "#a0a0a0")
+                    .attr("font-size", "10px")
+                    .text(target.label);
+            });
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            // Wait for Chart.js to load
+            if (typeof Chart === 'undefined') {
+                console.log('Chart.js not loaded yet, retrying...');
+                setTimeout(initializeCharts, 100);
+                return;
+            }
+            
+            console.log('Initializing charts...');
+            
+            // Activity chart
+            const activityCanvas = document.getElementById('activity-chart');
+            if (!activityCanvas) {
+                console.error('Activity chart canvas element not found');
+                return;
+            }
+            
+            // Check canvas dimensions
+            const activityRect = activityCanvas.getBoundingClientRect();
+            console.log('Activity canvas dimensions:', activityRect.width, 'x', activityRect.height);
+            
+            const activityCtx = activityCanvas.getContext('2d');
+            if (!activityCtx) {
+                console.error('Could not get 2D context for activity chart');
+                return;
+            }
+            
+            try {
+                simulation.activityChart = new Chart(activityCtx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Network Activity',
+                            data: [],
+                            borderColor: '#00ffff',
+                            backgroundColor: 'rgba(0, 255, 255, 0.1)',
+                            tension: 0.4,
+                            borderWidth: 2
+                        }, {
+                            label: 'Ignition Threshold',
+                            data: [],
+                            borderColor: '#ff00ff',
+                            backgroundColor: 'rgba(255, 0, 255, 0.1)',
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 0
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Network Activity vs Ignition Threshold',
+                                color: '#fff',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            legend: {
+                                labels: { 
+                                    color: '#fff',
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time (ms)',
+                                    color: '#fff'
+                                },
+                                ticks: { 
+                                    color: '#fff',
+                                    font: {
+                                        size: 10
+                                    }
+                                },
+                                grid: { 
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawBorder: false
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Activity Level',
+                                    color: '#fff'
+                                },
+                                ticks: { 
+                                    color: '#fff',
+                                    font: {
+                                        size: 10
+                                    }
+                                },
+                                grid: { 
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawBorder: false
+                                },
+                                min: 0,
+                                suggestedMax: 3
+                            }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error('Error initializing activity chart:', e);
+            }
+
+            // Ignition probability chart
+            const ignitionCanvas = document.getElementById('ignition-chart');
+            if (!ignitionCanvas) {
+                console.error('Ignition chart canvas element not found');
+                return;
+            }
+            
+            // Check canvas dimensions
+            const ignitionRect = ignitionCanvas.getBoundingClientRect();
+            console.log('Ignition canvas dimensions:', ignitionRect.width, 'x', ignitionRect.height);
+            
+            const ignitionCtx = ignitionCanvas.getContext('2d');
+            if (!ignitionCtx) {
+                console.error('Could not get 2D context for ignition chart');
+                return;
+            }
+            
+            try {
+                simulation.ignitionChart = new Chart(ignitionCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Low Precision', 'Medium Precision', 'High Precision', 'Very High Precision'],
+                        datasets: [{
+                            label: 'Ignition Probability',
+                            data: [0.1, 0.4, 0.7, 0.95],
+                            backgroundColor: [
+                                'rgba(255, 0, 0, 0.5)',
+                                'rgba(255, 165, 0, 0.5)',
+                                'rgba(255, 255, 0, 0.5)',
+                                'rgba(0, 255, 0, 0.5)'
+                            ],
+                            borderColor: [
+                                '#ff0000',
+                                '#ffa500',
+                                '#ffff00',
+                                '#00ff00'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 0
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Ignition Probability vs Precision',
+                                color: '#fff',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            legend: {
+                                labels: { 
+                                    color: '#fff',
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { 
+                                    color: '#fff',
+                                    font: {
+                                        size: 10
+                                    }
+                                },
+                                grid: { 
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawBorder: false
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Probability',
+                                    color: '#fff'
+                                },
+                                ticks: { 
+                                    color: '#fff',
+                                    font: {
+                                        size: 10
+                                    }
+                                },
+                                grid: { 
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    drawBorder: false
+                                },
+                                min: 0,
+                                max: 1
+                            }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error('Error initializing ignition chart:', e);
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            if (!simulation.running) {
+                simulation.rafId = null;
+                return;
+            }
+            simulation.time += 1;
+
+            modelStep();
+
+            if (window.d3 && simulation.reservoirNeurons && simulation.model) {
+                const displayN = simulation.displayNeuronCount || 50;
+                const m = simulation.model;
+                for (let i = 0; i < displayN; i++) {
+                    const neuron = simulation.reservoirNeurons[i];
+                    neuron.spiking = m.spikes[i] === 1;
+                    if (neuron.spiking) neuron.lastSpike = simulation.time;
+                }
+
+                const container = d3.select("#reservoir-viz");
+                container.selectAll(".neuron")
+                    .data(simulation.reservoirNeurons)
+                    .attr("class", d => d.spiking ? "neuron spiking" : "neuron");
+            }
+
+            const currentActivity = simulation.model ? simulation.model.S : 0;
+            const thetaEff = simulation.model ? simulation.model.thetaEff : simulation.parameters.threshold;
+
+            if (simulation.predictionReadout && simulation.model) {
+                simulation.predictionReadout.ffText.text(`ff: ${simulation.model.ff.toFixed(2)}`);
+                simulation.predictionReadout.predText.text(`pred: ${(simulation.model.hpc?.predictions?.interoceptive?.[0]?.[0] || 0).toFixed(2)}`);
+                simulation.predictionReadout.epsText.text(`ε: ${simulation.model.epsilon.toFixed(2)}`);
+                simulation.predictionReadout.uText.text(`u=Π·ε: ${simulation.model.u.toFixed(2)}`);
+            }
+            
+            // Update metabolic readout if exists
+            if (simulation.metabolicReadout && simulation.model?.metabolicCosts) {
+                const mc = simulation.model.metabolicCosts;
+                simulation.metabolicReadout.energyText.text(`Energy: ${(mc.energyReserves * 100).toFixed(1)}%`);
+                simulation.metabolicReadout.costText.text(`Cost: ${mc.freeEnergy.toFixed(3)}`);
+                simulation.metabolicReadout.loadText.text(`Load: ${(mc.allostaticLoad * 100).toFixed(1)}%`);
+            }
+            
+            // Update metabolic visualization
+            if (simulation.metabolicViz && simulation.model?.metabolicCosts) {
+                const mc = simulation.model.metabolicCosts;
+                simulation.metabolicViz.energyFill.attr("width", mc.energyReserves * 198);
+                simulation.metabolicViz.loadFill.attr("width", mc.allostaticLoad * 198);
+                simulation.metabolicViz.costText.text(`F: ${mc.freeEnergy.toFixed(3)}`);
+                simulation.metabolicViz.energyText.text(`Energy: ${(mc.energyReserves * 100).toFixed(1)}%`);
+                simulation.metabolicViz.costText2.text(`Cost: ${mc.freeEnergy.toFixed(3)}`);
+                simulation.metabolicViz.loadText.text(`Load: ${(mc.allostaticLoad * 100).toFixed(1)}%`);
+            }
+            
+            // Update neuromodulation visualization
+            if (simulation.neuroReadout && simulation.model?.modulation) {
+                const mod = simulation.model.modulation;
+                simulation.neuroReadout.neText.text(`NE: ${mod.arousal.toFixed(2)}`);
+                simulation.neuroReadout.achText.text(`ACh: ${mod.attention.toFixed(2)}`);
+                simulation.neuroReadout.daText.text(`DA: ${mod.reward.toFixed(2)}`);
+                simulation.neuroReadout.fivehtText.text(`5-HT: ${mod.mood.toFixed(2)}`);
+                
+                // Update circle fills
+                if (simulation.neCircle) simulation.neCircle.attr("opacity", mod.arousal * 0.8);
+                if (simulation.achCircle) simulation.achCircle.attr("opacity", mod.attention * 0.8);
+                if (simulation.daCircle) simulation.daCircle.attr("opacity", mod.reward * 0.8);
+                if (simulation["5-htCircle"]) simulation["5-htCircle"].attr("opacity", mod.mood * 0.8);
+            }
+
+            if (window.d3 && simulation.dynamicsLine) {
+                simulation.dynamicsData.push({ t: simulation.time, y: currentActivity, th: thetaEff });
+                if (simulation.dynamicsData.length > 120) simulation.dynamicsData.shift();
+
+                const w = 350 - 50 - 30;
+                const h = 250 - 20 - 40;
+                const t0 = simulation.dynamicsData[0].t;
+                const t1 = simulation.dynamicsData[simulation.dynamicsData.length - 1].t;
+                const x = d3.scaleLinear().domain([t0, t1]).range([0, w]);
+
+                let maxY = 0;
+                for (let i = 0; i < simulation.dynamicsData.length; i++) {
+                    maxY = Math.max(maxY, simulation.dynamicsData[i].y, simulation.dynamicsData[i].th);
+                }
+                const y = d3.scaleLinear().domain([0, Math.max(0.1, maxY * 1.1)]).range([h, 0]);
+
+                const line = d3.line().x(d => x(d.t)).y(d => y(d.y));
+                const thLine = d3.line().x(d => x(d.t)).y(d => y(d.th));
+                simulation.dynamicsLine.attr("d", line(simulation.dynamicsData));
+                if (simulation.dynamicsThresholdLine) simulation.dynamicsThresholdLine.attr("d", thLine(simulation.dynamicsData));
+            }
+
+            if (simulation.ignitionStateCircles) {
+                const m = simulation.model;
+                const refractory = m ? (simulation.time < m.refractoryUntil) : false;
+                const ignited = simulation.ignited;
+                const sub = (!ignited && !refractory);
+                const ig = (!ignited && refractory);
+                const sus = ignited;
+
+                simulation.ignitionStateCircles.subthreshold.attr("opacity", sub ? 0.55 : 0.15);
+                simulation.ignitionStateCircles.ignition.attr("opacity", ig ? 0.55 : 0.15);
+                simulation.ignitionStateCircles.sustained.attr("opacity", sus ? 0.55 : 0.15);
+            }
+
+            // Update charts
+            if (simulation.activityChart && simulation.time % 5 === 0) {
+                const chart = simulation.activityChart;
+                if (chart && chart.data) {
+                    chart.data.labels.push(simulation.time);
+                    chart.data.datasets[0].data.push(currentActivity);
+                    chart.data.datasets[1].data.push(thetaEff);
+
+                    // Keep only last 50 points
+                    if (chart.data.labels.length > 50) {
+                        chart.data.labels.shift();
+                        chart.data.datasets[0].data.shift();
+                        chart.data.datasets[1].data.shift();
+                    }
+
+                    chart.update('none');
+                }
+            }
+
+            // Update ignition probability based on precision
+            if (simulation.ignitionChart && simulation.time % 20 === 0) {
+                const chart = simulation.ignitionChart;
+                if (chart && chart.data) {
+                    const precision = simulation.parameters.precision;
+                    const probs = [
+                        Math.max(0, Math.min(1, 0.1 * precision)),
+                        Math.max(0, Math.min(1, 0.4 * precision)),
+                        Math.max(0, Math.min(1, 0.7 * precision)),
+                        Math.max(0, Math.min(1, 0.95 * precision))
+                    ];
+                    chart.data.datasets[0].data = probs;
+                    chart.update('none');
+                }
+            }
+
+            // Update threshold visualization
+            if (simulation.thresholdArc) {
+                const thresholdRatio = thetaEff / 3.0;
+                simulation.thresholdArc
+                    .attr("d", d3.arc()
+                        .innerRadius(50)
+                        .outerRadius(70)
+                        .startAngle(0)
+                        .endAngle(Math.PI * 2 * thresholdRatio));
+                simulation.thresholdValue.text(thetaEff.toFixed(2));
+            }
+
+            simulation.rafId = requestAnimationFrame(animate);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const startBtn = document.getElementById('start-btn');
+            startBtn.addEventListener('click', () => {
+                simulation.running = !simulation.running;
+                startBtn.textContent = simulation.running ? 'Pause Visualization' : 'Start Visualization';
+                if (simulation.running && simulation.rafId === null) {
+                    simulation.rafId = requestAnimationFrame(animate);
+                }
+            });
+
+            // Initialize charts button
+            const initChartsBtn = document.getElementById('init-charts-btn');
+            initChartsBtn.addEventListener('click', () => {
+                console.log('Manual chart initialization triggered');
+                initializeCharts();
+            });
+
+            // Precision slider
+            const precisionSlider = document.getElementById('precision');
+            const precisionValue = document.getElementById('precision-value');
+            precisionSlider.addEventListener('input', (e) => {
+                simulation.parameters.precision = parseFloat(e.target.value);
+                precisionValue.textContent = e.target.value;
+            });
+
+            // Threshold slider
+            const thresholdSlider = document.getElementById('threshold');
+            const thresholdValue = document.getElementById('threshold-value');
+            thresholdSlider.addEventListener('input', (e) => {
+                simulation.parameters.threshold = parseFloat(e.target.value);
+                thresholdValue.textContent = e.target.value;
+            });
+
+            // Network size slider
+            const networkSizeSlider = document.getElementById('network-size');
+            const networkSizeValue = document.getElementById('network-size-value');
+            networkSizeSlider.addEventListener('input', (e) => {
+                simulation.parameters.networkSize = parseInt(e.target.value);
+                networkSizeValue.textContent = e.target.value;
+                initializeReservoir(); // Reinitialize with new size
+                initializeModel();
+            });
+
+            // Input strength slider
+            const inputStrengthSlider = document.getElementById('input-strength');
+            const inputStrengthValue = document.getElementById('input-strength-value');
+            inputStrengthSlider.addEventListener('input', (e) => {
+                simulation.parameters.inputStrength = parseFloat(e.target.value);
+                inputStrengthValue.textContent = e.target.value;
+            });
+
+            const topdownSlider = document.getElementById('topdown');
+            const topdownValue = document.getElementById('topdown-value');
+            topdownSlider.addEventListener('input', (e) => {
+                simulation.parameters.topdown = parseFloat(e.target.value);
+                topdownValue.textContent = e.target.value;
+            });
+
+            const arousalSlider = document.getElementById('arousal');
+            const arousalValue = document.getElementById('arousal-value');
+            arousalSlider.addEventListener('input', (e) => {
+                simulation.parameters.arousal = parseFloat(e.target.value);
+                arousalValue.textContent = e.target.value;
+            });
+
+            const metabolicSlider = document.getElementById('metabolic');
+            const metabolicValue = document.getElementById('metabolic-value');
+            metabolicSlider.addEventListener('input', (e) => {
+                simulation.parameters.metabolic = parseFloat(e.target.value);
+                metabolicValue.textContent = e.target.value;
+            });
+
+            const interoSlider = document.getElementById('interoceptive');
+            const interoValue = document.getElementById('interoceptive-value');
+            interoSlider.addEventListener('input', (e) => {
+                simulation.parameters.interoceptive = parseFloat(e.target.value);
+                interoValue.textContent = e.target.value;
+            });
+
+            // Phenomena cards
+            const phenomenaCards = document.querySelectorAll('.phenomenon-card');
+            phenomenaCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    phenomenaCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    
+                    const phenomenon = card.dataset.phenomenon;
+                    demonstratePhenomenon(phenomenon);
+                });
+            });
+        }
+
+        // Demonstrate specific phenomena
+        function demonstratePhenomenon(phenomenon) {
+            switch(phenomenon) {
+                case 'bistable':
+                    simulation.parameters.inputStrength = 1.0;
+                    simulation.parameters.precision = 1.0;
+                    simulation.parameters.threshold = 1.5;
+                    simulation.parameters.topdown = 1.0;
+                    simulation.parameters.arousal = 0.5;
+                    simulation.parameters.metabolic = 0.5;
+                    simulation.parameters.interoceptive = 0.5;
+                    simulation.stim.schedule = [
+                        { t: simulation.time + 50, type: 'pulse', d: 140, s: 1.0 },
+                        { t: simulation.time + 650, type: 'pulse', d: 140, s: 1.0 }
+                    ];
+                    updateSliders();
+                    break;
+                case 'attentional-blink':
+                    simulation.parameters.inputStrength = 1.2;
+                    simulation.parameters.precision = 1.2;
+                    simulation.parameters.threshold = 1.6;
+                    simulation.parameters.topdown = 1.0;
+                    simulation.parameters.arousal = 0.4;
+                    simulation.parameters.metabolic = 0.7;
+                    simulation.parameters.interoceptive = 0.4;
+                    simulation.stim.schedule = [
+                        { t: simulation.time + 40, type: 'pulse', d: 120, s: 1.0 },
+                        { t: simulation.time + 260, type: 'pulse', d: 120, s: 1.0 }
+                    ];
+                    updateSliders();
+                    break;
+                case 'masking':
+                    simulation.parameters.inputStrength = 1.1;
+                    simulation.parameters.precision = 0.9;
+                    simulation.parameters.threshold = 1.7;
+                    simulation.parameters.topdown = 1.2;
+                    simulation.parameters.arousal = 0.4;
+                    simulation.parameters.metabolic = 0.6;
+                    simulation.parameters.interoceptive = 0.4;
+                    simulation.stim.schedule = [
+                        { t: simulation.time + 40, type: 'pulse', d: 110, s: 1.0 },
+                        { t: simulation.time + 120, type: 'mask', d: 80, s: 1.0 }
+                    ];
+                    updateSliders();
+                    break;
+                case 'state-dependent':
+                    simulation.parameters.inputStrength = 1.4;
+                    simulation.parameters.precision = 1.8;
+                    simulation.parameters.threshold = 1.4;
+                    simulation.parameters.topdown = 0.8;
+                    simulation.parameters.arousal = 1.6;
+                    simulation.parameters.metabolic = 0.2;
+                    simulation.parameters.interoceptive = 1.2;
+                    simulation.stim.schedule = [
+                        { t: simulation.time + 50, type: 'pulse', d: 120, s: 1.0 }
+                    ];
+                    updateSliders();
+                    break;
+            }
+        }
+
+        // Update slider values
+        function updateSliders() {
+            document.getElementById('precision').value = simulation.parameters.precision;
+            document.getElementById('precision-value').textContent = simulation.parameters.precision.toFixed(1);
+            
+            document.getElementById('threshold').value = simulation.parameters.threshold;
+            document.getElementById('threshold-value').textContent = simulation.parameters.threshold.toFixed(1);
+            
+            document.getElementById('input-strength').value = simulation.parameters.inputStrength;
+            document.getElementById('input-strength-value').textContent = simulation.parameters.inputStrength.toFixed(1);
+
+            document.getElementById('topdown').value = simulation.parameters.topdown;
+            document.getElementById('topdown-value').textContent = simulation.parameters.topdown.toFixed(1);
+
+            document.getElementById('arousal').value = simulation.parameters.arousal;
+            document.getElementById('arousal-value').textContent = simulation.parameters.arousal.toFixed(1);
+
+            document.getElementById('metabolic').value = simulation.parameters.metabolic;
+            document.getElementById('metabolic-value').textContent = simulation.parameters.metabolic.toFixed(1);
+
+            document.getElementById('interoceptive').value = simulation.parameters.interoceptive;
+            document.getElementById('interoceptive-value').textContent = simulation.parameters.interoceptive.toFixed(1);
+        }
+
+        // Initialize everything
+        function initialize() {
+            setupEventListeners();
+            try {
+                initializeMainDiagram();
+                initializeReservoir();
+                initializeModel();
+                initializePredictionError();
+                initializeDynamics();
+                initializeThreshold();
+                initializeIgnition();
+                initializeOutput();
+                initializeMetabolic();
+                initializeNeuromodulation();
+                
+                // Initialize charts with a delay to ensure DOM is ready
+                setTimeout(() => {
+                    console.log('Delayed chart initialization...');
+                    initializeCharts();
+                }, 500);
+            } catch (e) {
+                console.error(e);
+            }
+            simulation.running = false;
+            simulation.rafId = null;
+        }
+
+        // Start when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html>

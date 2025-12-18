@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Understand How Your Consciousness Works—And Learn to Adjust It</title>
+  <style>
+    :root {
+      --bg: #fafbfc;
+      --bg-secondary: #ffffff;
+      --text: #1a1d23;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --accent-hover: #2563eb;
+      --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-width: 1000px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    header, section, footer {
+      padding: 4rem 1rem;
+    }
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    h1, h2, h3 {
+      margin-top: 0;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+    h1 {
+      font-size: 3rem;
+      background: var(--accent-gradient);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+    h2 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin: 0 0 1.5rem;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: var(--radius-lg);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    .btn:hover::before {
+      left: 100%;
+    }
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      backdrop-filter: blur(10px);
+    }
+    .btn-secondary:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .hero {
+      text-align: center;
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(139, 92, 246, 0.1) 100%);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero .container {
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 {
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      color: var(--text-secondary);
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .diagram {
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .diagram img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+    }
+    .diagram img:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-xl);
+    }
+    .testimonials {
+      background: linear-gradient(135deg, var(--border-light) 0%, var(--bg-secondary) 100%);
+      border-radius: var(--radius-lg);
+    }
+    blockquote {
+      margin: 1.5rem 0;
+      padding: 1.5rem 2rem;
+      border-left: 4px solid var(--accent);
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      font-style: italic;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      transition: var(--transition);
+    }
+    blockquote:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md);
+    }
+    blockquote::before {
+      content: '"';
+      position: absolute;
+      top: -0.5rem;
+      left: 1rem;
+      font-size: 3rem;
+      color: var(--accent);
+      opacity: 0.3;
+    }
+    blockquote footer {
+      text-align: right;
+      font-style: normal;
+      font-weight: 600;
+      padding: 0.75rem 0 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 420px;
+      margin: auto;
+    }
+    input[type="text"],
+    input[type="email"] {
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      transition: var(--transition);
+      background: var(--bg-secondary);
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    .privacy {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .privacy a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .privacy a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding: 2rem 1rem;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 3.5rem;
+      }
+      .container {
+        padding: 0 2rem;
+      }
+    }
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.75rem;
+      }
+      h3 {
+        font-size: 1.3rem;
+      }
+      .hero p {
+        font-size: 1.1rem;
+      }
+      header, section, footer {
+        padding: 2.5rem 1rem;
+      }
+      #quiz-container {
+        padding: 1.5rem;
+        margin: 0 1rem;
+      }
+      .question {
+        padding: 1rem;
+      }
+      .radar-chart {
+        width: 280px;
+        height: 280px;
+      }
+      .dimension-labels {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
+      }
+      .diagram {
+        margin: 2rem 0;
+      }
+    }
+    @media (max-width: 480px) {
+      :root {
+        --max-width: 100%;
+      }
+      .container {
+        padding: 0 0.75rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      .hero p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      #quiz-container {
+        padding: 1rem;
+        margin: 0 0.5rem;
+      }
+      .radar-chart {
+        width: 240px;
+        height: 240px;
+      }
+      .options label {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
+      .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+        width: 100%;
+      }
+    }
+
+    /* Quiz styles */
+    #quiz-container {
+      max-width: 700px;
+      margin: auto;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+    }
+    #quiz-container:hover {
+      box-shadow: var(--shadow-xl);
+    }
+    .question {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+    }
+    .question:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-sm);
+    }
+    .question h4 {
+      margin-bottom: 1rem;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .options label {
+      display: block;
+      margin: 0.75rem 0;
+      cursor: pointer;
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 2px solid var(--border-light);
+      background: var(--bg-secondary);
+      transition: var(--transition);
+      position: relative;
+    }
+    .options label:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      transform: translateX(4px);
+    }
+    .options input[type="radio"]:checked + label {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      font-weight: 600;
+    }
+    .options input[type="radio"] {
+      margin-right: 0.75rem;
+      transform: scale(1.2);
+    }
+    #progress-bar {
+      height: 12px;
+      background: var(--border-light);
+      border-radius: 6px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    #progress-fill {
+      height: 100%;
+      background: var(--accent-gradient);
+      width: 0%;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+    #progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    #result {
+      display: none;
+      text-align: left;
+      animation: fadeIn 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #result h3 {
+      margin-top: 1.5rem;
+    }
+    /* Visualization styles */
+    .visualization-container {
+      margin: 2.5rem 0;
+      text-align: center;
+      padding: 2rem;
+      background: var(--bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+    .radar-chart {
+      width: 350px;
+      height: 350px;
+      margin: 0 auto;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    }
+    .radar-svg {
+      width: 100%;
+      height: 100%;
+    }
+    .dimension-labels {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      gap: 1rem;
+    }
+    .dimension-label {
+      text-align: center;
+      padding: 0.75rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+    }
+    .dimension-label:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .dimension-value {
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+  </style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <h1>Understand How Your Consciousness Works—And Learn to Adjust It</h1>
+    <p>The APGI Framework maps your unique consciousness signature across three dimensions: threshold sensitivity, interoceptive accuracy, and somatic bias. Discover yours in 3 minutes.</p>
+    <a href="#quiz" class="btn">Take the Free Assessment</a>
+  </div>
+</header>
+
+<!-- THE PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <h2>Why Do You Think the Way You Do?</h2>
+    <p>You've probably wondered:</p>
+    <ul>
+      <li>Why meditation feels different every time</li>
+      <li>Why some decisions feel "right" in your gut while others require endless analysis</li>
+      <li>Why you're easily distracted in some contexts but deeply focused in others</li>
+      <li>Why certain emotions feel overwhelming while others barely register</li>
+    </ul>
+    <p>Most consciousness research offers descriptions, not explanations. APGI gives you both.</p>
+  </div>
+</section>
+
+<!-- THE FRAMEWORK -->
+<section id="framework">
+  <div class="container">
+    <h2>The Three Dimensions of Consciousness</h2>
+
+    <p>What if consciousness isn't a thing you <em>have</em>, but a process your brain <em>runs</em>?</p>
+
+    <p>The APGI Framework (Active Predictive Global Integration) is a new model of consciousness based on a simple but powerful idea: <strong>Your brain is constantly predicting what comes next, and consciousness emerges when those predictions meet surprising new information.</strong></p>
+
+    <p>You don't passively experience reality. Your brain generates a model of the world, compares it to incoming sensory data, and updates only when there's a mismatch—a prediction error. What crosses from unconscious processing into conscious awareness depends on three key dimensions:</p>
+
+    <p><strong>1. Threshold Sensitivity</strong> — How easily information breaks into your awareness. Some people have a wide-open aperture (noticing everything); others have a narrow focus (deep concentration, fewer distractions).</p>
+
+    <p><strong>2. Interoceptive Accuracy</strong> — How precisely you perceive your internal bodily states. Are you in tune with hunger, heartbeat, tension? Or do you override these signals until they're extreme?</p>
+
+    <p><strong>3. Somatic Bias</strong> — How much your bodily sensations dominate your conscious experience. Do you make decisions based on "gut feelings," or through logical analysis? Do physical discomforts derail your focus, or barely register?</p>
+
+    <p>These three dimensions define your <strong>consciousness signature</strong>—your unique way of weighting sensory information, setting thresholds for awareness, and integrating bodily signals into thought.</p>
+
+    <p>The book explores the science behind APGI, walks through 24 chapters of applications (from meditation to decision-making to free will), and gives you practical protocols for adjusting each dimension based on what you need in any given moment.</p>
+
+    <p><strong>The result?</strong> You stop wondering why you think the way you do—and start working <em>with</em> your consciousness architecture instead of against it.</p>
+
+    <div class="diagram">
+      <img src="images/APGI-Framework-Diagram.png" alt="APGI-Framework-Diagram.png">
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="container">
+    <div id="quiz-container">
+      <h2>What's Your Consciousness Signature?</h2>
+      <p>Discover how your brain processes reality through the APGI Framework</p>
+      <p><strong>Estimated Time:</strong> 3-4 minutes | <strong>Questions:</strong> 12 questions</p>
+      <p>Your consciousness has a unique architecture—a specific way of weighting sensory information, setting thresholds for awareness, and processing prediction errors. This assessment maps your consciousness signature across the three core APGI dimensions: <strong>Threshold Sensitivity</strong>, <strong>Interoceptive Accuracy</strong>, and <strong>Somatic Bias</strong>. Answer honestly for the most accurate results.</p>
+
+      <div id="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+
+      <form id="quiz-form">
+        <!-- Questions will be injected here -->
+        <div id="questions-container"></div>
+        <button type="submit" class="btn" id="submit-quiz">Show Me My Results</button>
+      </form>
+
+      <div id="result">
+        <h3>Your Consciousness Signature</h3>
+        <div class="visualization-container">
+          <div class="radar-chart">
+            <svg class="radar-svg" id="radar-chart" viewBox="0 0 300 300">
+              <!-- Grid circles -->
+              <circle cx="150" cy="150" r="30" fill="none" stroke="#ddd" stroke-width="1"/>
+              <circle cx="150" cy="150" r="60" fill="none" stroke="#ddd" stroke-width="1"/>
+              <circle cx="150" cy="150" r="90" fill="none" stroke="#ddd" stroke-width="1"/>
+              <circle cx="150" cy="150" r="120" fill="none" stroke="#ddd" stroke-width="1"/>
+              
+              <!-- Axes -->
+              <line x1="150" y1="150" x2="150" y2="30" stroke="#ddd" stroke-width="1"/>
+              <line x1="150" y1="150" x2="259.8" y2="195" stroke="#ddd" stroke-width="1"/>
+              <line x1="150" y1="150" x2="40.2" y2="195" stroke="#ddd" stroke-width="1"/>
+              
+              <!-- Data polygon -->
+              <polygon id="data-polygon" points="" fill="rgba(0, 102, 255, 0.3)" stroke="#0066ff" stroke-width="2"/>
+              
+              <!-- Data points -->
+              <circle id="point-threshold" cx="" cy="" r="4" fill="#0066ff"/>
+              <circle id="point-interoception" cx="" cy="" r="4" fill="#0066ff"/>
+              <circle id="point-somatic" cx="" cy="" r="4" fill="#0066ff"/>
+              
+              <!-- Labels -->
+              <text x="150" y="20" text-anchor="middle" font-size="12" fill="#333">Threshold</text>
+              <text x="150" y="10" text-anchor="middle" font-size="10" fill="#666">Sensitivity</text>
+              <text x="270" y="200" text-anchor="start" font-size="12" fill="#333">Interoceptive</text>
+              <text x="270" y="212" text-anchor="start" font-size="10" fill="#666">Accuracy</text>
+              <text x="30" y="200" text-anchor="end" font-size="12" fill="#333">Somatic</text>
+              <text x="30" y="212" text-anchor="end" font-size="10" fill="#666">Bias</text>
+            </svg>
+          </div>
+          <div class="dimension-labels">
+            <div class="dimension-label">
+              <span class="dimension-value" id="threshold-value">-</span>
+              <span>Threshold</span>
+            </div>
+            <div class="dimension-label">
+              <span class="dimension-value" id="interoception-value">-</span>
+              <span>Interoception</span>
+            </div>
+            <div class="dimension-label">
+              <span class="dimension-value" id="somatic-value">-</span>
+              <span>Somatic</span>
+            </div>
+          </div>
+        </div>
+        <div id="result-scores"></div>
+        <div id="result-archetype"></div>
+        <div id="result-tips"></div>
+        <hr style="margin: 2rem 0;">
+        <h4>Get Your Full Report</h4>
+        <form id="email-form">
+          <input type="text" name="fname" placeholder="What should I call you? (optional)">
+          <input type="email" name="email" placeholder="Your email" required>
+          <button type="submit" class="btn">Send Me Chapter 11</button>
+        </form>
+        <p class="privacy">We respect your inbox. One email per week, unsubscribe anytime. <a href="#">Privacy Policy</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="testimonials">
+  <div class="container">
+    <h2>What Readers Are Saying</h2>
+
+    <blockquote>
+      “Finally, a model that explains why my meditation practice varies so much day to day. The APGI assessment was eye-opening.”
+      <footer>— Sarah K., mindfulness coach</footer>
+    </blockquote>
+
+    <blockquote>
+      “As a neuroscientist, I appreciate how APGI bridges rigorous theory with lived experience. Highly recommended.”
+      <footer>— Dr. Alan Perez, post-doc researcher</footer>
+    </blockquote>
+
+    <blockquote>
+      “I used the framework to tweak my morning routine—small shifts in attention and interoception have made a huge difference.”
+      <footer>— Jordan M., product manager</footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- AUTHOR -->
+<section id="author">
+  <div class="container">
+    <h2>About the Author</h2>
+    <p><strong>Dr. Michael Rivers</strong> is a cognitive neuroscientist specializing in predictive processing and consciousness research.</p>
+
+    <p>With 12 years of research at the intersection of Bayesian brain theory and phenomenology, Dr. Rivers developed the APGI Framework to answer a personal question: Why did his meditation practice feel so inconsistent? This curiosity led to a decade-long investigation into the architecture of conscious awareness.</p>
+
+    <p>Dr. Rivers holds a PhD in Cognitive Neuroscience from MIT and has published research on prediction error processing in <em>Nature Neuroscience</em> and <em>Consciousness and Cognition</em>. His work has been featured in <em>Scientific American</em>, <em>Quanta Magazine</em>, and <em>The Neuroscience Podcast</em>.</p>
+
+    <p>When not researching consciousness, Dr. Rivers teaches mindfulness-based cognitive therapy and maintains a daily meditation practice (which still has foggy days—now he knows why).</p>
+
+    <p><strong>Connect:</strong> <a href="mailto:michael@apgiframework.com">michael@apgiframework.com</a> | <a href="#">@DrMichaelRivers</a></p>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="cta" style="text-align:center;">
+  <div class="container">
+    <h2>Ready to Explore the Full Framework?</h2>
+    <p>24 chapters | Research-backed | Practical applications</p>
+    <a href="#" class="btn">Get the Book</a>
+    <a href="#" class="btn btn-secondary" style="margin-left:0.5rem;">Get Book + App Bundle</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="#">Contact</a><br>
+    © 2025 APGI Framework. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  // Quiz data
+  const questions = [
+    {
+      text: "When you're in a busy environment (café, party, office), how aware are you of individual conversations around you?",
+      options: [
+        "I barely notice them unless someone says my name",
+        "I catch fragments but can tune them out if focused",
+        "I'm constantly distracted by overlapping conversations",
+        "I can hear everything clearly and switch attention easily"
+      ]
+    },
+    {
+      text: "How often do you notice subtle changes in your environment (lighting shifts, temperature changes, background sounds)?",
+      options: [
+        "Rarely, unless they're significant",
+        "Occasionally, when I'm not focused on something",
+        "Frequently, even when concentrating",
+        "Constantly, it's hard to ignore small changes"
+      ]
+    },
+    {
+      text: "When reading or watching TV, how easily are you pulled out by external stimuli?",
+      options: [
+        "I get completely absorbed; barely notice interruptions",
+        "Loud or sudden stimuli break my focus",
+        "I'm easily distracted by movements or sounds",
+        "Almost anything can pull my attention away"
+      ]
+    },
+    {
+      text: "How quickly do you realize when something feels \"off\" in a situation, even if you can't explain why?",
+      options: [
+        "It takes me a while to realize something's wrong",
+        "I usually notice within a few minutes",
+        "I pick up on it almost immediately",
+        "I sense it before it's consciously obvious"
+      ]
+    },
+    {
+      text: "Can you feel your heartbeat without taking your pulse?",
+      options: [
+        "No, I can't sense it at all",
+        "Only when it's racing or after exercise",
+        "Yes, when I focus on it",
+        "Yes, I'm always aware of it"
+      ]
+    },
+    {
+      text: "How accurately can you tell when you're hungry vs. thirsty vs. tired?",
+      options: [
+        "I often confuse them or ignore signals until extreme",
+        "I can usually tell, but sometimes mix them up",
+        "I can differentiate them clearly most of the time",
+        "I know exactly what my body needs at any moment"
+      ]
+    },
+    {
+      text: "When you experience an emotion, how aware are you of its physical sensations (chest tightness, stomach flutter, muscle tension)?",
+      options: [
+        "I rarely notice physical sensations with emotions",
+        "I notice strong emotions physically (anger, fear)",
+        "I can identify physical components of most emotions",
+        "Every emotion has a distinct physical signature I recognize"
+      ]
+    },
+    {
+      text: "How often do you realize you're stressed only after someone points it out or you notice physical symptoms?",
+      options: [
+        "Very often—I'm the last to know",
+        "Sometimes—I miss early signs",
+        "Rarely—I usually catch it early",
+        "Never—I'm always aware of my stress levels"
+      ]
+    },
+    {
+      text: "When making a decision, what influences you most?",
+      options: [
+        "Logical analysis and reasoning",
+        "A mix of logic and intuition",
+        "\"Gut feelings\" and bodily sensations",
+        "Almost entirely physical reactions—if it doesn't feel right, I can't do it"
+      ]
+    },
+    {
+      text: "How much do physical discomforts (tight shoes, uncomfortable chair, room temperature) affect your mood and concentration?",
+      options: [
+        "I barely notice them unless extreme",
+        "They're mildly annoying but I can work through them",
+        "They significantly affect my focus and mood",
+        "I can't function properly until they're resolved"
+      ]
+    },
+    {
+      text: "When anxious, how much do you focus on physical sensations (rapid heart, shallow breathing, tension)?",
+      options: [
+        "I experience anxiety mostly as worried thoughts",
+        "I notice physical symptoms but they're secondary to thoughts",
+        "Physical sensations are equally prominent as thoughts",
+        "Anxiety is overwhelmingly a physical experience for me"
+      ]
+    },
+    {
+      text: "How much do you \"feel\" abstract concepts in your body? (e.g., feeling \"lightness\" when happy, \"heaviness\" when sad)",
+      options: [
+        "Rarely or never—concepts are mental, not physical",
+        "Occasionally for strong emotions",
+        "Often—many concepts have physical correlates",
+        "Always—every thought has a bodily signature"
+      ]
+    }
+  ];
+
+  // Archetype data
+  const archetypes = {
+    "ANALYST": {
+      name: "The Analyst",
+      description: "You process the world through logic and focused attention. Your consciousness has a narrow aperture—you're excellent at deep work because external noise doesn't easily penetrate awareness. You're reasonably in tune with your body but don't let physical sensations dominate decision-making. This signature is common among researchers, programmers, and strategic thinkers.",
+      strengths: ["Deep focus and sustained concentration", "Analytical decision-making", "Emotional regulation through reasoning", "Thrives in low-distraction environments"],
+      challenges: ["May miss subtle social cues", "Can override important bodily signals (fatigue, hunger)", "Risk of burnout from ignoring stress signals", "May appear detached or \"in your head\""],
+      tips: ["Schedule regular body-scan breaks to compensate for low somatic awareness", "Use external reminders for self-care (hydration, movement)", "Practice mindfulness to increase sensory threshold temporarily when needed", "Leverage your strength: Excel in work requiring sustained analysis"]
+    },
+    "EMPATH": {
+      name: "The Empath",
+      description: "Your consciousness is wide open—absorbing every sensory detail, acutely aware of bodily states, and deeply connected to physical intuition. You're highly empathetic, sensing others' emotions through your own somatic responses. This signature is common among therapists, artists, and healers.",
+      strengths: ["Rich sensory and emotional experiences", "Strong intuition and \"gut feelings\"", "Excellent at reading people and environments", "Creative and holistic thinking"],
+      challenges: ["Easily overwhelmed in stimulating environments", "Difficulty filtering irrelevant information", "Physical discomfort strongly affects mood", "Risk of taking on others' emotions"],
+      tips: ["Create low-stimulation environments for work/rest", "Practice \"sensory gating\" techniques to lower threshold when needed", "Use somatic awareness for early stress detection (your strength!)", "Schedule regular sensory resets (quiet, nature, solitude)"]
+    },
+    "PRAGMATIST": {
+      name: "The Pragmatist",
+      description: "You have a balanced consciousness signature—neither overwhelmed by stimuli nor oblivious to your environment. You're reasonably in tune with your body and use both logic and intuition flexibly. This adaptable signature works well across diverse contexts.",
+      strengths: ["Flexible attention—can focus or scan as needed", "Balanced decision-making (head + heart)", "Adapts well to various environments", "Stable emotional baseline"],
+      challenges: ["May lack the intensity of specialists in any dimension", "Can be pulled in multiple directions", "Risk of being \"good at everything, great at nothing\"", "May struggle to develop unique processing style"],
+      tips: ["Experiment with temporarily increasing/decreasing each dimension", "Notice which contexts benefit from which settings", "Develop meta-awareness: Know when to shift modes", "Your superpower is adaptability—use it strategically"]
+    },
+    "SENSOR": {
+      name: "The Sensor",
+      description: "You're acutely aware of the external world but less connected to internal signals. Your consciousness is externally focused—noticing everything around you while being somewhat disconnected from bodily needs. This signature is common among journalists, detectives, and environmental scanners.",
+      strengths: ["Exceptional situational awareness", "Quick to spot patterns and anomalies", "Excellent multitasking ability", "Thrives in dynamic, stimulating environments"],
+      challenges: ["May ignore hunger, fatigue, or stress until extreme", "Difficulty \"turning off\" awareness to rest", "Risk of neglecting self-care", "Can be scattered or overstimulated"],
+      tips: ["Set external reminders for bodily needs", "Practice interoceptive exercises (heartbeat detection, body scans)", "Create evening routines to \"close the aperture\" for sleep", "Use your external awareness strength in appropriate contexts"]
+    },
+    "INTUITIVE": {
+      name: "The Intuitive",
+      description: "You have a narrow but deep consciousness—highly focused internally. You're deeply connected to bodily wisdom and physical intuition, but less distracted by external noise. This signature is common among yogis, body workers, and contemplatives.",
+      strengths: ["Strong mind-body connection", "Excellent self-regulation", "Deep introspection and self-knowledge", "Embodied decision-making"],
+      challenges: ["May miss important external information", "Risk of being too \"in your body\" to analyze abstractly", "Can appear withdrawn or self-absorbed", "May struggle in chaotic environments"],
+      tips: ["Practice expanding sensory threshold in safe contexts", "Balance internal focus with external awareness exercises", "Your strength is somatic intelligence—trust it", "Schedule focused internal time daily (meditation, yoga)"]
+    }
+  };
+
+  // DOM elements
+  const questionsContainer = document.getElementById('questions-container');
+  const quizForm = document.getElementById('quiz-form');
+  const resultDiv = document.getElementById('result');
+  const progressFill = document.getElementById('progress-fill');
+  const emailForm = document.getElementById('email-form');
+
+  // Render questions
+  questions.forEach((q, index) => {
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question';
+    questionDiv.innerHTML = `
+      <h4>Question ${index + 1}: ${q.text}</h4>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <label>
+            <input type="radio" name="q${index}" value="${i + 1}" required>
+            ${opt}
+          </label>
+        `).join('')}
+      </div>
+    `;
+    questionsContainer.appendChild(questionDiv);
+  });
+
+  // Update progress bar
+  function updateProgress() {
+    const total = questions.length;
+    const answered = Array.from(questionsContainer.querySelectorAll('input[type="radio"]:checked')).length;
+    progressFill.style.width = `${(answered / total) * 100}%`;
+  }
+
+  questionsContainer.addEventListener('change', updateProgress);
+
+  // Handle quiz submission
+  quizForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(quizForm);
+    const answers = [];
+    for (let i = 0; i < questions.length; i++) {
+      answers.push(parseInt(data.get(`q${i}`)));
+    }
+
+    // Calculate scores
+    const threshold = answers.slice(0, 4).reduce((a, b) => a + b, 0);
+    const interoception = answers.slice(4, 8).reduce((a, b) => a + b, 0);
+    const somatic = answers.slice(8, 12).reduce((a, b) => a + b, 0);
+
+    // Determine archetype
+    let archetypeKey = "PRAGMATIST";
+    if (threshold <= 8 && interoception >= 12 && somatic >= 12) archetypeKey = "INTUITIVE";
+    else if (threshold >= 12 && interoception <= 8 && somatic <= 8) archetypeKey = "SENSOR";
+    else if (threshold >= 12 && interoception >= 12 && somatic >= 12) archetypeKey = "EMPATH";
+    else if (threshold <= 8 && interoception >= 8 && somatic <= 8) archetypeKey = "ANALYST";
+
+    const archetype = archetypes[archetypeKey];
+
+    // Display results
+    document.getElementById('result-scores').innerHTML = `
+      <p><strong>Threshold Sensitivity:</strong> ${threshold}/16 (${threshold <= 7 ? 'LOW' : threshold <= 11 ? 'MODERATE' : threshold <= 14 ? 'HIGH' : 'VERY HIGH'})</p>
+      <p><strong>Interoceptive Accuracy:</strong> ${interoception}/16 (${interoception <= 7 ? 'LOW' : interoception <= 11 ? 'MODERATE' : interoception <= 14 ? 'HIGH' : 'VERY HIGH'})</p>
+      <p><strong>Somatic Bias:</strong> ${somatic}/16 (${somatic <= 7 ? 'LOW' : somatic <= 11 ? 'MODERATE' : somatic <= 14 ? 'HIGH' : 'VERY HIGH'})</p>
+    `;
+
+    // Update visualization
+    updateRadarChart(threshold, interoception, somatic);
+
+    document.getElementById('result-archetype').innerHTML = `
+      <h3>Your Primary Archetype: ${archetype.name}</h3>
+      <p>${archetype.description}</p>
+      <h4>Strengths:</h4>
+      <ul>${archetype.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+      <h4>Challenges:</h4>
+      <ul>${archetype.challenges.map(c => `<li>${c}</li>`).join('')}</ul>
+    `;
+
+    document.getElementById('result-tips').innerHTML = `
+      <h4>APGI Optimization Tips:</h4>
+      <ul>${archetype.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+    `;
+
+    quizForm.style.display = 'none';
+    resultDiv.style.display = 'block';
+    resultDiv.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Handle email form
+  emailForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert("Thank you! Your full report and Chapter 11 are on their way.");
+    // In real implementation, send data to server
+  });
+
+  // Update radar chart
+  function updateRadarChart(threshold, interoception, somatic) {
+    // Convert scores to percentages (0-100)
+    const thresholdPercent = (threshold / 16) * 100;
+    const interoceptionPercent = (interoception / 16) * 100;
+    const somaticPercent = (somatic / 16) * 100;
+    
+    // Calculate positions (120 degrees apart)
+    // Threshold at top (90 degrees)
+    const thresholdX = 150 + (thresholdPercent / 100) * 120 * Math.cos(Math.PI / 2);
+    const thresholdY = 150 - (thresholdPercent / 100) * 120 * Math.sin(Math.PI / 2);
+    
+    // Interoception at bottom right (210 degrees)
+    const interoceptionX = 150 + (interoceptionPercent / 100) * 120 * Math.cos(7 * Math.PI / 6);
+    const interoceptionY = 150 - (interoceptionPercent / 100) * 120 * Math.sin(7 * Math.PI / 6);
+    
+    // Somatic at bottom left (330 degrees)
+    const somaticX = 150 + (somaticPercent / 100) * 120 * Math.cos(11 * Math.PI / 6);
+    const somaticY = 150 - (somaticPercent / 100) * 120 * Math.sin(11 * Math.PI / 6);
+    
+    // Update polygon
+    const polygon = document.getElementById('data-polygon');
+    polygon.setAttribute('points', `${thresholdX},${thresholdY} ${interoceptionX},${interoceptionY} ${somaticX},${somaticY}`);
+    
+    // Update points
+    document.getElementById('point-threshold').setAttribute('cx', thresholdX);
+    document.getElementById('point-threshold').setAttribute('cy', thresholdY);
+    document.getElementById('point-interoception').setAttribute('cx', interoceptionX);
+    document.getElementById('point-interoception').setAttribute('cy', interoceptionY);
+    document.getElementById('point-somatic').setAttribute('cx', somaticX);
+    document.getElementById('point-somatic').setAttribute('cy', somaticY);
+    
+    // Update labels
+    document.getElementById('threshold-value').textContent = `${thresholdPercent.toFixed(0)}%`;
+    document.getElementById('interoception-value').textContent = `${interoceptionPercent.toFixed(0)}%`;
+    document.getElementById('somatic-value').textContent = `${somaticPercent.toFixed(0)}%`;
+  }
+</script>
+
+</body>
+</html>

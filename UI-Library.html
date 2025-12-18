@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Library - APGI Framework</title>
+    <meta name="description" content="UI Component Library for the APGI Framework - A comprehensive collection of reusable components for building consciousness exploration interfaces.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #6b9ac4;
+            --light: #f0f4f8;
+            --dark: #2d3748;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s ease;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        [data-theme="dark"] {
+            --primary: #6b9ac4;
+            --secondary: #4a6fa5;
+            --accent: #8bb4d8;
+            --light: #2d3748;
+            --dark: #f0f4f8;
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --border-color: #4a5568;
+            --card-bg: #2d3748;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding-bottom: 60px;
+            transition: var(--transition);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: slideInDown 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto 25px;
+            animation: slideInUp 0.8s ease-out 0.2s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 0.95;
+                transform: translateY(0);
+            }
+        }
+        
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 30px;
+            text-align: left;
+            font-size: 0.95rem;
+            animation: slideInUp 0.8s ease-out 0.4s both;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .theme-toggle:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .theme-toggle i {
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        [data-theme="dark"] .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .card:hover::before {
+            left: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+            margin: 0.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .button:hover::before {
+            left: 100%;
+        }
+        
+        .button.primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .button.primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .button.secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .button.secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button.tertiary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid transparent;
+        }
+        
+        .button.tertiary:hover {
+            background: rgba(79, 70, 229, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .component-preview {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px dashed var(--border-color);
+        }
+        
+        .color-swatch {
+            height: 100px;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+            color: white;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .color-swatch::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: scale(0.8) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+        }
+        
+        .color-swatch:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .spacer {
+            height: 1.5rem;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Alert Styles */
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .alert:hover::before {
+            left: 100%;
+        }
+        
+        .alert-success {
+            background-color: #ecfdf5;
+            border-left: 4px solid var(--success);
+            color: #065f46;
+        }
+        
+        .alert-error {
+            background-color: #fef2f2;
+            border-left: 4px solid var(--danger);
+            color: #991b1b;
+        }
+        
+        .alert-warning {
+            background-color: #fffbeb;
+            border-left: 4px solid var(--warning);
+            color: #92400e;
+        }
+        
+        .alert-info {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            color: #1e40af;
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 0 10px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        input:checked + .slider {
+            background: var(--gradient-primary);
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Stepper */
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .stepper-step {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stepper-step:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stepper-step.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .stepper-connector {
+            width: 60px;
+            height: 2px;
+            background-color: var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stepper-connector::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            animation: flow 2s ease-in-out infinite;
+        }
+        
+        @keyframes flow {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+        
+        /* Toast */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background: var(--gradient-primary);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            right: 30px;
+            top: 30px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(-10px);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: var(--shadow-hover);
+            animation: slideInUp 0.3s ease-out;
+        }
+        
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        
+        .close:hover {
+            color: var(--danger);
+            transform: scale(1.1);
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .data-table th {
+            font-weight: 600;
+            background: var(--gradient-primary);
+            color: white;
+            position: relative;
+        }
+        
+        .data-table th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .data-table.striped tbody tr:nth-child(odd) {
+            background-color: var(--bg-secondary);
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+            transform: scale(1.01);
+            transition: var(--transition);
+        }
+        
+        /* Chips */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .chip:hover::before {
+            left: 100%;
+        }
+        
+        .chip:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chip.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .chip.success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .chip.warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .chip.error {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        /* Avatar */
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+            animation: rotate 4s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .avatar.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .avatar.success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        /* Progress */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6));
+            border-radius: 0 4px 4px 0;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { opacity: 0.6; }
+            to { opacity: 1; }
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 0.5rem 0;
+            list-style: none;
+        }
+        
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+            transform: translateY(-1px);
+        }
+        
+        .breadcrumb-separator {
+            margin: 0 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .status-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .status-badge:hover::before {
+            left: 100%;
+        }
+        
+        .status-badge.active {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-badge.active:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .status-badge.inactive {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-badge.inactive:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        /* Text Utilities */
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-uppercase {
+            text-transform: uppercase;
+        }
+        
+        .text-truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .text-light {
+            color: var(--text-secondary);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 40px;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            header {
+                padding: 40px 0;
+                margin-bottom: 30px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+                margin-bottom: 12px;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }
+            
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+            }
+            
+            .card {
+                padding: 1.2rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+                padding: 0.75rem 0;
+            }
+            
+            .button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            header {
+                padding: 30px 0;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            
+            .theme-toggle {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1>APGI UI Library</h1>
+                <p class="subtitle">A comprehensive collection of reusable components for building consciousness exploration interfaces.</p>
+                <button id="theme-toggle" class="button icon-button" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+            
+            <nav class="nav">
+                <a href="#colors" class="nav-link">Colors</a>
+                <a href="#typography" class="nav-link">Typography</a>
+                <a href="#buttons" class="nav-link">Buttons</a>
+                <a href="#forms" class="nav-link">Forms</a>
+                <a href="#cards" class="nav-link">Cards</a>
+                <a href="#alerts" class="nav-link">Alerts</a>
+            </nav>
+        </header>
+        
+        <!-- Colors Section -->
+        <section id="colors">
+            <h2>Colors</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="color-swatch" style="background: var(--primary);">Primary</div>
+                    <p><strong>Primary</strong><br>#4f46e5<br>Used for primary actions and important elements.</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: var(--secondary);">Secondary</div>
+                    <p><strong>Secondary</strong><br>#9966FF<br>Used for secondary actions and accents.</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: var(--dark);">Dark</div>
+                    <p><strong>Dark</strong><br>#2C3E50<br>Used for text and dark UI elements.</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: var(--success);">Success</div>
+                    <p><strong>Success</strong><br>#10b981<br>Used for success states and positive actions.</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: var(--error);">Error</div>
+                    <p><strong>Error</strong><br>#ef4444<br>Used for error states and destructive actions.</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: var(--warning);">Warning</div>
+                    <p><strong>Warning</strong><br>#f59e0b<br>Used for warning states and cautionary messages.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Typography Section -->
+        <section id="typography">
+            <h2>Typography</h2>
+            <div class="card">
+                <h1>Heading 1</h1>
+                <p class="text-light">Semi-bold 2.5rem (40px), Line height 1.3</p>
+                
+                <h2>Heading 2</h2>
+                <p class="text-light">Semi-bold 1.8rem (28.8px), Line height 1.3</p>
+                
+                <h3>Heading 3</h3>
+                <p class="text-light">Semi-bold 1.4rem (22.4px), Line height 1.3</p>
+                
+                <p>Body text - The quick brown fox jumps over the lazy dog. This is the default paragraph style with a line height of 1.6 for optimal readability.</p>
+                
+                <p class="text-light">Small text - Used for captions, helper text, and secondary information. (0.875rem/14px)</p>
+            </div>
+        </section>
+        
+        <!-- Buttons Section -->
+        <section id="buttons">
+            <h2>Buttons</h2>
+            <div class="card">
+                <h3>Button Types</h3>
+                <div class="component-preview">
+                    <button class="button primary">Primary Button</button>
+                    <button class="button secondary">Secondary Button</button>
+                    <button class="button tertiary">Tertiary Button</button>
+                </div>
+                
+                <h3>Button States</h3>
+                <div class="component-preview">
+                    <div>
+                        <h4>Default</h4>
+                        <button class="button primary">Primary</button>
+                        <button class="button secondary">Secondary</button>
+                        <button class="button tertiary">Tertiary</button>
+                    </div>
+                    <div>
+                        <h4>Hover</h4>
+                        <button class="button primary" style="opacity: 0.9; transform: translateY(-1px);">Primary</button>
+                        <button class="button secondary" style="background: #f3f4f6;">Secondary</button>
+                        <button class="button tertiary" style="background: rgba(79, 70, 229, 0.1);">Tertiary</button>
+                    </div>
+                    <div>
+                        <h4>Active</h4>
+                        <button class="button primary" style="opacity: 0.95; transform: scale(0.98);">Primary</button>
+                        <button class="button secondary" style="background: #e5e7eb;">Secondary</button>
+                        <button class="button tertiary" style="background: rgba(79, 70, 229, 0.15);">Tertiary</button>
+                    </div>
+                    <div>
+                        <h4>Disabled</h4>
+                        <button class="button primary" disabled>Primary</button>
+                        <button class="button secondary" disabled>Secondary</button>
+                        <button class="button tertiary" disabled>Tertiary</button>
+                    </div>
+                </div>
+                
+                <h3>Button Sizes</h3>
+                <div class="component-preview">
+                    <button class="button primary" style="padding: 0.4rem 0.8rem; font-size: 0.875rem;">Small</button>
+                    <button class="button primary">Medium (Default)</button>
+                    <button class="button primary" style="padding: 0.8rem 1.6rem; font-size: 1.1rem;">Large</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Forms Section -->
+        <section id="forms">
+            <h2>Form Elements</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Text Inputs</h3>
+                    <div class="form-group">
+                        <label for="text-input">Text Input</label>
+                        <input type="text" id="text-input" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email-input">Email Input</label>
+                        <input type="email" id="email-input" placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="password-input">Password</label>
+                        <input type="password" id="password-input" placeholder="••••••••">
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Checkboxes & Radios</h3>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox"> Checkbox option
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" checked> Checked option
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="radio">
+                            <input type="radio" name="radio-group" checked> Option 1
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="radio-group"> Option 2
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="select-input">Select Dropdown</label>
+                        <select id="select-input">
+                            <option value="">Select an option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Textarea</h3>
+                    <div class="form-group">
+                        <label for="textarea-input">Message</label>
+                        <textarea id="textarea-input" rows="4" placeholder="Enter your message..."></textarea>
+                    </div>
+                    
+                    <h3>File Input</h3>
+                    <div class="form-group">
+                        <label for="file-input">Upload File</label>
+                        <input type="file" id="file-input">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cards Section -->
+        <section id="cards">
+            <h2>Cards</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Basic Card</h3>
+                    <p>This is a basic card component with a title and description. Cards are used to group related content.</p>
+                </div>
+                
+                <div class="card">
+                    <div style="height: 120px; background: #e5e7eb; border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: #6b7280;">
+                        Image Placeholder
+                    </div>
+                    <h3>Card with Image</h3>
+                    <p>Cards can contain various types of content including images, text, and action buttons.</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="button primary">Action</button>
+                        <button class="button tertiary">Cancel</button>
+                    </div>
+                </div>
+                
+                <div class="card" style="text-align: center; padding: 2rem;">
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: #e0e7ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary);">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3>User Profile</h3>
+                    <p class="text-light">UX Designer</p>
+                    <p>Creating beautiful and intuitive user experiences.</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="button secondary" style="margin: 0.25rem;">View Profile</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Alerts Section -->
+        <section id="alerts">
+            <h2>Alerts & Notifications</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Alert Variants</h3>
+                    <div class="alert alert-success">
+                        <div>
+                            <strong>Success!</strong> Your changes have been saved successfully.
+                        </div>
+                    </div>
+                    <div class="alert alert-error">
+                        <div>
+                            <strong>Error!</strong> There was an error processing your request.
+                        </div>
+                    </div>
+                    <div class="alert alert-warning">
+                        <div>
+                            <strong>Warning!</strong> This action cannot be undone.
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <div>
+                            <strong>Info:</strong> Your profile has been updated.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>With Icons</h3>
+                    <div class="alert alert-success" style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <div>
+                            <strong>Success!</strong> Your account has been created successfully.
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-error" style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <div>
+                            <strong>Error!</strong> Please check your connection and try again.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </section>
+
+        <!-- Toggle Switch Section -->
+        <section id="toggle-switch">
+            <h2>Toggle Switch</h2>
+            <div class="card">
+                <div class="component-preview">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stepper Section -->
+        <section id="stepper">
+            <h2>Stepper</h2>
+            <div class="card">
+                <div class="stepper">
+                    <div class="stepper-step active">1</div>
+                    <div class="stepper-connector"></div>
+                    <div class="stepper-step">2</div>
+                    <div class="stepper-connector"></div>
+                    <div class="stepper-step">3</div>
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: space-between;">
+                    <button class="button secondary">Previous</button>
+                    <button class="button primary">Next</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feedback Section -->
+        <section id="feedback">
+            <h2>Feedback Components</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Toast Notification</h3>
+                    <div class="component-preview">
+                        <button class="button primary" onclick="showToast()">Show Toast</button>
+                        <div id="toast" class="toast">This is a toast message!</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Modal Dialog</h3>
+                    <div class="component-preview">
+                        <button class="button primary" onclick="openModal()">Open Dialog</button>
+                        <div id="modal" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeModal()">&times;</span>
+                                <h3>Modal Title</h3>
+                                <p>This is a modal dialog. You can put any content here.</p>
+                                <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                                    <button class="button secondary" onclick="closeModal()">Cancel</button>
+                                    <button class="button primary">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layout Section -->
+        <section id="layout">
+            <h2>Layout</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Grid System</h3>
+                    <div class="grid" style="grid-template-columns: repeat(3, 1fr); margin: 1rem 0;">
+                        <div style="background: var(--primary-light); padding: 1rem; border-radius: 6px; color: white; text-align: center;">Item 1</div>
+                        <div style="background: var(--primary); padding: 1rem; border-radius: 6px; color: white; text-align: center;">Item 2</div>
+                        <div style="background: var(--secondary); padding: 1rem; border-radius: 6px; color: white; text-align: center;">Item 3</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Flexbox</h3>
+                    <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                        <div style="flex: 1; background: var(--light); padding: 1rem; border-radius: 6px; text-align: center;">Flex 1</div>
+                        <div style="flex: 2; background: var(--light); padding: 1rem; border-radius: 6px; text-align: center;">Flex 2</div>
+                        <div style="flex: 1; background: var(--light); padding: 1rem; border-radius: 6px; text-align: center;">Flex 1</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tables Section -->
+        <section id="tables">
+            <h2>Tables</h2>
+            <div class="card">
+                <h3>Basic Table</h3>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Header 1</th>
+                                <th>Header 2</th>
+                                <th>Header 3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Row 1 Col 1</td>
+                                <td>Row 1 Col 2</td>
+                                <td>Row 1 Col 3</td>
+                            </tr>
+                            <tr>
+                                <td>Row 2 Col 1</td>
+                                <td>Row 2 Col 2</td>
+                                <td>Row 2 Col 3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">Striped Table</h3>
+                <div style="overflow-x: auto;">
+                    <table class="data-table striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>john@example.com</td>
+                                <td><span class="status-badge active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>Jane Smith</td>
+                                <td>jane@example.com</td>
+                                <td><span class="status-badge inactive">Inactive</span></td>
+                            </tr>
+                            <tr>
+                                <td>Bob Johnson</td>
+                                <td>bob@example.com</td>
+                                <td><span class="status-badge active">Active</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Additional Components Section -->
+        <section id="additional-components">
+            <h2>Additional Components</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Chips</h3>
+                    <div class="component-preview" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        <span class="chip">Default</span>
+                        <span class="chip primary">Primary</span>
+                        <span class="chip success">Success</span>
+                        <span class="chip warning">Warning</span>
+                        <span class="chip error">Error</span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Avatar</h3>
+                    <div class="component-preview" style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="avatar">JD</div>
+                        <div class="avatar primary">JS</div>
+                        <div class="avatar success">BJ</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Progress</h3>
+                    <div class="component-preview">
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 75%;"></div>
+                        </div>
+                        <p style="text-align: right; margin-top: 0.5rem; color: var(--text-light);">75% Complete</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Breadcrumbs</h3>
+                    <nav class="breadcrumb">
+                        <a href="#">Home</a>
+                        <span class="breadcrumb-separator">/</span>
+                        <a href="#">Category</a>
+                        <span class="breadcrumb-separator">/</span>
+                        <span>Current Page</span>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accessibility Section -->
+        <section id="accessibility">
+            <h2>Accessibility</h2>
+            <div class="card">
+                <h3>Skip to Main Content</h3>
+                <p>Include a skip link at the beginning of your page to allow keyboard users to skip navigation.</p>
+                <pre><code>&lt;a href="#main-content" class="skip-link"&gt;Skip to main content&lt;/a&gt;</code></pre>
+                
+                <h3>Focus Management</h3>
+                <p>Ensure all interactive elements are focusable and have visible focus states.</p>
+                <div class="component-preview">
+                    <button class="button primary">Focusable Button</button>
+                    <a href="#" class="button secondary" style="margin-left: 0.5rem;">Focusable Link</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Utility Classes Section -->
+        <section id="utility-classes">
+            <h2>Utility Classes</h2>
+            <div class="card">
+                <h3>Spacing</h3>
+                <div class="component-preview">
+                    <div style="background: var(--light); padding: 1rem; margin-bottom: 1rem;">Margin Bottom (mb-1)</div>
+                    <div style="background: var(--light); padding: 1rem; margin: 2rem 0;">Margin Vertical (my-2)</div>
+                    <div style="background: var(--light); padding: 1rem;">No Margin</div>
+                </div>
+                
+                <h3>Text Utilities</h3>
+                <div class="component-preview">
+                    <p class="text-center">Centered Text</p>
+                    <p class="text-uppercase">uppercase text</p>
+                    <p class="text-truncate" style="max-width: 200px;">This is a very long text that will be truncated with an ellipsis when it exceeds its container width.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer style="margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-light);">
+            <p>APGI UI Library &copy; 2023 | Version 1.0.0</p>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem;">Built with ❤️ for consciousness exploration interfaces</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        
+        // Check for saved theme preference or use preferred color scheme
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.textContent = '☀️';
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            themeIcon.textContent = '🌙';
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '☀️';
+            }
+        });
+        
+        // Simple script to handle navigation highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // Update active link on scroll
+            function updateActiveLink() {
+                const scrollPosition = window.scrollY + 100;
+                
+                document.querySelectorAll('section').forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${sectionId}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // Smooth scrolling for anchor links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Update active link on scroll
+            window.addEventListener('scroll', updateActiveLink);
+            
+            // Set initial active link
+            updateActiveLink();
+        });
+    </script>
+    <script>
+        // Simple script to handle interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effect to all buttons
+            const buttons = document.querySelectorAll('.button');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                });
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Initialize components
+            initToast();
+            initModal();
+        });
+
+        // Toast Notification
+        function initToast() {
+            window.showToast = function() {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                
+                // Hide toast after 3 seconds
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                }, 3000);
+            };
+        }
+
+        // Modal Dialog
+        function initModal() {
+            const modal = document.getElementById('modal');
+            
+            window.openModal = function() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+            };
+            
+            window.closeModal = function() {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Re-enable scrolling
+            };
+            
+            // Close modal when clicking outside the modal content
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            };
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+        }
+
+        // Stepper functionality
+        const stepperSteps = document.querySelectorAll('.stepper-step');
+        stepperSteps.forEach((step, index) => {
+            step.addEventListener('click', () => {
+                // Update active step
+                stepperSteps.forEach((s, i) => {
+                    if (i <= index) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+  

@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Library - APGI Framework</title>
+    <meta name="description" content="UI Component Library for the APGI Framework - A comprehensive collection of reusable components for building consciousness exploration interfaces.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --secondary: #9966FF;
+            --dark: #2C3E50;
+            --light: #f9fafb;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --card-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text);
+            margin-top: 0;
+            line-height: 1.3;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+        
+        h4 {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.75rem;
+            color: var(--dark);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .small {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover);
+        }
+        
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+            margin: 0.25rem;
+        }
+        
+        .button.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .button.secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .button.tertiary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid transparent;
+        }
+        
+        .button.tertiary:hover {
+            background: rgba(79, 70, 229, 0.1);
+        }
+        
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .component-preview {
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px dashed var(--border);
+        }
+        
+        .color-swatch {
+            height: 100px;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+            color: white;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: var(--transition);
+        }
+        
+        .color-swatch:hover {
+            transform: scale(1.02);
+        }
+        
+        .spacer {
+            height: 1.5rem;
+        }
+        
+        .component-section {
+            margin-bottom: 3rem;
+        }
+        
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .component-item {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--light);
+        }
+        
+        .state-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            border-bottom: 1px dashed var(--border);
+        }
+        
+        .state-label {
+            min-width: 120px;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .checkbox-group, .radio-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .checkbox-group input, .radio-group input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        
+        .nav-preview {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .nav-item {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .nav-item:hover {
+            background: rgba(79, 70, 229, 0.1);
+        }
+        
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb-item {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-separator {
+            color: var(--text-light);
+        }
+        
+        .tabs {
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        
+        .tab-list {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .tab:hover {
+            color: var(--primary);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            padding: 1rem 0;
+        }
+        
+        .sidebar {
+            width: 200px;
+            background: var(--light);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .sidebar-item {
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .sidebar-item:hover {
+            background: white;
+        }
+        
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .page-item {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .page-item:hover {
+            background: var(--light);
+        }
+        
+        .page-item.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+        }
+        
+        .alert.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            color: #064e3b;
+        }
+        
+        .alert.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            color: #7f1d1d;
+        }
+        
+        .alert.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: var(--warning);
+            color: #78350f;
+        }
+        
+        .alert.info {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--info);
+            color: #1e3a8a;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+        
+        .badge.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .badge.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error);
+        }
+        
+        .badge.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        .badge.info {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--info);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            width: 65%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+        
+        .rating {
+            display: flex;
+            gap: 0.25rem;
+            margin: 1rem 0;
+        }
+        
+        .star {
+            font-size: 1.5rem;
+            color: var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .star.active {
+            color: #fbbf24;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider-toggle {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider-toggle:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider-toggle {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider-toggle:before {
+            transform: translateX(26px);
+        }
+        
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1rem 0;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+        
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step.active .step-circle {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: var(--border);
+            z-index: -1;
+        }
+        
+        .step.active .step-line {
+            background: var(--primary);
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .table th, .table td {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        
+        .table th {
+            background: var(--light);
+            font-weight: 600;
+        }
+        
+        .table tr:hover {
+            background: rgba(79, 70, 229, 0.05);
+        }
+        
+        .list {
+            list-style: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .list-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .list-item:hover {
+            background: var(--light);
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background: var(--light);
+            border-radius: 999px;
+            font-size: 0.875rem;
+            margin: 0.25rem;
+        }
+        
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+        
+        .tree-view {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .tree-item {
+            margin-left: 1rem;
+            padding: 0.25rem 0;
+        }
+        
+        .tree-toggle {
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .carousel-slide.active {
+            opacity: 1;
+        }
+        
+        .future-section {
+            background: linear-gradient(135deg, var(--light) 0%, #f0f9ff 100%);
+            border: 2px dashed var(--border);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        
+        .utility-classes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .utility-item {
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            z-index: 1000;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
+        
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .future-item {
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .future-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow);
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="container" id="main-content">
+        <header>
+            <h1>APGI UI Library</h1>
+            <p>A comprehensive UI Library system that embodies clarity and knowledge. A collection of reusable components for building consciousness exploration interfaces.</p>
+        </header>
+
+        <section class="component-section">
+            <h2>Colors</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="color-swatch" style="background: #4f46e5;">Primary</div>
+                    <p><strong>Primary</strong><br>#4f46e5</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: #9966FF;">Secondary</div>
+                    <p><strong>Secondary</strong><br>#9966FF</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: #2C3E50;">Dark</div>
+                    <p><strong>Dark</strong><br>#2C3E50</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: #10b981;">Success</div>
+                    <p><strong>Success</strong><br>#10b981</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: #ef4444;">Error</div>
+                    <p><strong>Error</strong><br>#ef4444</p>
+                </div>
+                <div class="card">
+                    <div class="color-swatch" style="background: #f59e0b; color: #000;">Warning</div>
+                    <p><strong>Warning</strong><br>#f59e0b</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Typography</h2>
+            <div class="card">
+                <h1>Heading 1</h1>
+                <h2>Heading 2</h2>
+                <h3>Heading 3</h3>
+                <h4>Heading 4</h4>
+                <p>Body text - The quick brown fox jumps over the lazy dog.</p>
+                <p class="small">Small text - Used for captions and secondary information.</p>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Buttons</h2>
+            <div class="card">
+                <h3>Primary Button</h3>
+                <div class="component-preview">
+                    <div class="state-row">
+                        <span class="state-label">Default</span>
+                        <button class="button primary">Primary Button</button>
+                    </div>
+                    <div class="state-row">
+                        <span class="state-label">Hover</span>
+                        <button class="button primary" style="opacity: 0.9;">Primary Button</button>
+                    </div>
+                    <div class="state-row">
+                        <span class="state-label">Active</span>
+                        <button class="button primary" style="transform: scale(0.98);">Primary Button</button>
+                    </div>
+                    <div class="state-row">
+                        <span class="state-label">Disabled</span>
+                        <button class="button primary" disabled>Primary Button</button>
+                    </div>
+                </div>
+
+                <h3>Secondary Button</h3>
+                <div class="component-preview">
+                    <div class="state-row">
+                        <span class="state-label">Default</span>
+                        <button class="button secondary">Secondary Button</button>
+                    </div>
+                    <div class="state-row">
+                        <span class="state-label">Hover</span>
+                        <button class="button secondary" style="background: rgba(79, 70, 229, 0.1);">Secondary Button</button>
+                    </div>
+                    <div class="state-row">
+                        <span class="state-label">Active</span>
+                        <button class="button secondary" style="transform: scale(0.98);">Secondary Button</button>
+                    </div>
+                    <div class="state-row">
+                        <span class="state-label">Disabled</span>
+                        <button class="button secondary" disabled>Secondary Button</button>
+                    </div>
+                </div>
+
+                <h3>Tertiary Button</h3>
+                <div class="component-preview">
+                    <button class="button tertiary">Tertiary Button</button>
+                </div>
+
+                <h3>Icon Button</h3>
+                <div class="component-preview">
+                    <button class="button primary">⭐ Icon Button</button>
+                </div>
+
+                <h3>Toggle Button</h3>
+                <div class="component-preview">
+                    <div class="state-row">
+                        <span class="state-label">Default</span>
+                        <button class="button secondary">Toggle</button>
+                    </div>
+                    <div class="state-row">
+                        <span class="state-label">Active</span>
+                        <button class="button primary">Toggle</button>
+                    </div>
+                </div>
+
+                <h3>Floating Action Button (FAB)</h3>
+                <div class="component-preview" style="position: relative; height: 80px;">
+                    <button class="fab">+</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Form Fields</h2>
+            <div class="card">
+                <div class="component-preview">
+                    <div class="form-group">
+                        <label for="text-input">Text Input</label>
+                        <div class="state-row">
+                            <span class="state-label">Default</span>
+                            <input type="text" id="text-input" placeholder="Enter text here">
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label">Focus</span>
+                            <input type="text" placeholder="Focused state" style="border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);">
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label">Error</span>
+                            <input type="text" placeholder="Error state" style="border-color: var(--error);">
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label">Disabled</span>
+                            <input type="text" placeholder="Disabled" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Checkbox</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="checkbox1">
+                            <label for="checkbox1" style="display: inline; margin: 0;">Checkbox option</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="checkbox2" checked>
+                            <label for="checkbox2" style="display: inline; margin: 0;">Checked option</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="checkbox3" disabled>
+                            <label for="checkbox3" style="display: inline; margin: 0; opacity: 0.6;">Disabled option</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Radio Button</label>
+                        <div class="radio-group">
+                            <input type="radio" id="radio1" name="radio-group">
+                            <label for="radio1" style="display: inline; margin: 0;">Option 1</label>
+                        </div>
+                        <div class="radio-group">
+                            <input type="radio" id="radio2" name="radio-group" checked>
+                            <label for="radio2" style="display: inline; margin: 0;">Option 2</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="select-menu">Select Menu</label>
+                        <div class="state-row">
+                            <span class="state-label">Default</span>
+                            <select id="select-menu">
+                                <option>Select an option</option>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="textarea">Textarea</label>
+                        <textarea id="textarea" rows="3" placeholder="Enter multiline text"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file-input">File Input</label>
+                        <input type="file" id="file-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="range-input">Range Input</label>
+                        <input type="range" id="range-input" min="0" max="100" value="50" class="slider">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="search-input">Search Input</label>
+                        <input type="search" id="search-input" placeholder="Search...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="color-input">Color Input</label>
+                        <input type="color" id="color-input" value="#4f46e5">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Navigation</h2>
+            <div class="card">
+                <h3>Navigation Bar</h3>
+                <div class="component-preview">
+                    <div class="nav-preview">
+                        <div class="nav-item active">Home</div>
+                        <div class="nav-item">About</div>
+                        <div class="nav-item">Services</div>
+                        <div class="nav-item">Contact</div>
+                    </div>
+                </div>
+
+                <h3>Breadcrumbs</h3>
+                <div class="component-preview">
+                    <div class="breadcrumbs">
+                        <a href="#" class="breadcrumb-item">Home</a>
+                        <span class="breadcrumb-separator">/</span>
+                        <a href="#" class="breadcrumb-item">Category</a>
+                        <span class="breadcrumb-separator">/</span>
+                        <span>Subcategory</span>
+                    </div>
+                </div>
+
+                <h3>Tabs</h3>
+                <div class="component-preview">
+                    <div class="tabs">
+                        <ul class="tab-list">
+                            <li class="tab active">Tab 1</li>
+                            <li class="tab">Tab 2</li>
+                            <li class="tab">Tab 3</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        Content for Tab 1
+                    </div>
+                </div>
+
+                <h3>Sidebar</h3>
+                <div class="component-preview">
+                    <div class="sidebar">
+                        <div class="sidebar-item">Dashboard</div>
+                        <div class="sidebar-item">Settings</div>
+                        <div class="sidebar-item">Profile</div>
+                        <div class="sidebar-item">Logout</div>
+                    </div>
+                </div>
+
+                <h3>Pagination</h3>
+                <div class="component-preview">
+                    <div class="pagination">
+                        <div class="page-item">Previous</div>
+                        <div class="page-item active">1</div>
+                        <div class="page-item">2</div>
+                        <div class="page-item">3</div>
+                        <div class="page-item">Next</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Display Components</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Card</h3>
+                    <p>Card content goes here. This is a basic card component with a title and description.</p>
+                    <div class="spacer"></div>
+                    <button class="button primary">Action</button>
+                </div>
+
+                <div class="card">
+                    <h3>Interactive Card</h3>
+                    <p>Hover over this card to see the elevation effect.</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>Modal</h3>
+                <div class="component-preview">
+                    <button class="button primary">Open Modal</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>Tooltip</h3>
+                <div class="component-preview">
+                    <button class="button secondary" title="Tooltip text">Hover me</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>Alerts</h3>
+                <div class="component-preview">
+                    <div class="alert success">This is a success alert.</div>
+                    <div class="alert error">This is an error alert.</div>
+                    <div class="alert warning">This is a warning alert.</div>
+                    <div class="alert info">This is an info alert.</div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>Badges</h3>
+                <div class="component-preview">
+                    <span class="badge success">Success</span>
+                    <span class="badge error">Error</span>
+                    <span class="badge warning">Warning</span>
+                    <span class="badge info">Info</span>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>Progress Bar</h3>
+                <div class="component-preview">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>Spinner/Loader</h3>
+                <div class="component-preview">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Media</h2>
+            <div class="card">
+                <h3>Placeholder Image</h3>
+                <div class="component-preview">
+                    <div style="height: 150px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                        Image Placeholder
+                    </div>
+                </div>
+
+                <h3>Carousel</h3>
+                <div class="component-preview">
+                    <div class="carousel">
+                        <div class="carousel-slide active" style="background: var(--primary);">Slide 1</div>
+                        <div class="carousel-slide" style="background: var(--secondary);">Slide 2</div>
+                        <div class="carousel-slide" style="background: var(--success);">Slide 3</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Interactive Components</h2>
+            <div class="card">
+                <h3>Slider</h3>
+                <div class="component-preview">
+                    <input type="range" min="0" max="100" value="50" class="slider">
+                </div>
+
+                <h3>Rating</h3>
+                <div class="component-preview">
+                    <div class="rating">
+                        <span class="star active">★</span>
+                        <span class="star active">★</span>
+                        <span class="star active">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                </div>
+
+                <h3>Switch</h3>
+                <div class="component-preview">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider-toggle"></span>
+                    </label>
+                </div>
+
+                <h3>Stepper</h3>
+                <div class="component-preview">
+                    <div class="stepper">
+                        <div class="step active">
+                            <div class="step-circle">1</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">2</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">3</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+                        <button class="button secondary">Previous</button>
+                        <button class="button primary">Next</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Feedback Components</h2>
+            <div class="card">
+                <div class="component-preview">
+                    <button class="button primary">Show Toast</button>
+                    <button class="button secondary">Show Snackbar</button>
+                    <button class="button tertiary">Open Dialog</button>
+                    <button class="button secondary">Open Confirmation Dialog</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Layout</h2>
+            <div class="card">
+                <h3>Grid System</h3>
+                <div class="component-preview">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                        <div style="padding: 1rem; background: var(--light); border-radius: 6px; text-align: center;">Grid Item 1</div>
+                        <div style="padding: 1rem; background: var(--light); border-radius: 6px; text-align: center;">Grid Item 2</div>
+                        <div style="padding: 1rem; background: var(--light); border-radius: 6px; text-align: center;">Grid Item 3</div>
+                    </div>
+                </div>
+
+                <h3>Flexbox</h3>
+                <div class="component-preview">
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="padding: 1rem; background: var(--light); border-radius: 6px; text-align: center; flex: 1;">Flex Item 1</div>
+                        <div style="padding: 1rem; background: var(--light); border-radius: 6px; text-align: center; flex: 1;">Flex Item 2</div>
+                        <div style="padding: 1rem; background: var(--light); border-radius: 6px; text-align: center; flex: 1;">Flex Item 3</div>
+                    </div>
+                </div>
+
+                <h3>Container</h3>
+                <div class="component-preview">
+                    <div style="padding: 2rem; background: var(--light); border-radius: 8px;">
+                        Container Content
+                    </div>
+                </div>
+
+                <h3>Drawer</h3>
+                <div class="component-preview">
+                    <button class="button primary">Open Drawer</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Lists and Tables</h2>
+            <div class="card">
+                <h3>Lists</h3>
+                <div class="component-preview">
+                    <div class="list">
+                        <div class="list-item">Item 1</div>
+                        <div class="list-item">Item 2</div>
+                        <div class="list-item">Item 3</div>
+                    </div>
+                </div>
+
+                <h3>Tables</h3>
+                <div class="component-preview">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Header 1</th>
+                                <th>Header 2</th>
+                                <th>Header 3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Row 1 Col 1</td>
+                                <td>Row 1 Col 2</td>
+                                <td>Row 1 Col 3</td>
+                            </tr>
+                            <tr>
+                                <td>Row 2 Col 1</td>
+                                <td>Row 2 Col 2</td>
+                                <td>Row 2 Col 3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Tree View</h3>
+                <div class="component-preview">
+                    <div class="tree-view">
+                        <div>Item 1</div>
+                        <div class="tree-item">Subitem 1.1</div>
+                        <div class="tree-item">Subitem 1.2</div>
+                        <div>Item 2</div>
+                    </div>
+                </div>
+
+                <h3>Avatar</h3>
+                <div class="component-preview">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="avatar">A</div>
+                        <span class="chip">Chip Label</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="future-section">
+            <h2>Future Components</h2>
+            <p>Planned components for future releases of the APGI UI Library.</p>
+            
+            <div class="future-grid">
+                <div class="future-item">
+                    <h4>Tertiary Button</h4>
+                    <p class="small">More button variants</p>
+                </div>
+                <div class="future-item">
+                    <h4>Dropdown Button</h4>
+                    <p class="small">Split ▼</p>
+                </div>
+                <div class="future-item">
+                    <h4>Ghost Button</h4>
+                    <p class="small">Minimal style</p>
+                </div>
+                <div class="future-item">
+                    <h4>Autocomplete</h4>
+                    <p class="small">Smart input</p>
+                </div>
+                <div class="future-item">
+                    <h4>Rich Text Editor</h4>
+                    <p class="small">WYSIWYG</p>
+                </div>
+                <div class="future-item">
+                    <h4>Captcha Input</h4>
+                    <p class="small">Security</p>
+                </div>
+                <div class="future-item">
+                    <h4>Currency Input</h4>
+                    <p class="small">$ Format</p>
+                </div>
+                <div class="future-item">
+                    <h4>URL Input</h4>
+                    <p class="small">Web addresses</p>
+                </div>
+                <div class="future-item">
+                    <h4>Tel Input</h4>
+                    <p class="small">Phone numbers</p>
+                </div>
+                <div class="future-item">
+                    <h4>Accordion Menu</h4>
+                    <p class="small">Expandable</p>
+                </div>
+                <div class="future-item">
+                    <h4>Mega Menu</h4>
+                    <p class="small">Large dropdowns</p>
+                </div>
+                <div class="future-item">
+                    <h4>Dropdown Menu</h4>
+                    <p class="small">☰ Navigation</p>
+                </div>
+                <div class="future-item">
+                    <h4>Popover</h4>
+                    <p class="small">Contextual info</p>
+                </div>
+                <div class="future-item">
+                    <h4>Lightbox</h4>
+                    <p class="small">Image viewer</p>
+                </div>
+                <div class="future-item">
+                    <h4>Drag & Drop</h4>
+                    <p class="small">Interactive</p>
+                </div>
+                <div class="future-item">
+                    <h4>Resizable</h4>
+                    <p class="small">Dynamic sizing</p>
+                </div>
+                <div class="future-item">
+                    <h4>Draggable</h4>
+                    <p class="small">Move elements</p>
+                </div>
+                <div class="future-item">
+                    <h4>Notifications</h4>
+                    <p class="small">System alerts</p>
+                </div>
+                <div class="future-item">
+                    <h4>Banner</h4>
+                    <p class="small">Persistent messages</p>
+                </div>
+                <div class="future-item">
+                    <h4>Confirmation Dialog</h4>
+                    <p class="small">Yes/No prompts</p>
+                </div>
+                <div class="future-item">
+                    <h4>Masonry Grid</h4>
+                    <p class="small">Pinterest style</p>
+                </div>
+                <div class="future-item">
+                    <h4>Sticky Header</h4>
+                    <p class="small">Fixed navigation</p>
+                </div>
+                <div class="future-item">
+                    <h4>Parallax</h4>
+                    <p class="small">Scrolling effects</p>
+                </div>
+                <div class="future-item">
+                    <h4>Data Table</h4>
+                    <p class="small">Advanced tables</p>
+                </div>
+                <div class="future-item">
+                    <h4>Tree Table</h4>
+                    <p class="small">Hierarchical data</p>
+                </div>
+                <div class="future-item">
+                    <h4>Pagination Table</h4>
+                    <p class="small">Page navigation</p>
+                </div>
+                <div class="future-item">
+                    <h4>Timeline</h4>
+                    <p class="small">Chronological view</p>
+                </div>
+                <div class="future-item">
+                    <h4>Wizard/Stepper</h4>
+                    <p class="small">Multi-step forms</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Additional Components</h2>
+            <div class="card">
+                <h3>Chip Groups</h3>
+                <div class="component-preview">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <div class="chip">Avatar 1</div>
+                        <div class="chip">Avatar 2</div>
+                        <div class="chip">Avatar 3</div>
+                    </div>
+                </div>
+
+                <h3>Timeline Preview</h3>
+                <div class="component-preview">
+                    <div style="padding-left: 1rem; border-left: 2px solid var(--primary);">
+                        <div style="margin-bottom: 1rem; position: relative;">
+                            <div style="position: absolute; left: -1.5rem; top: 0; width: 1rem; height: 1rem; background: var(--primary); border-radius: 50%;"></div>
+                            <strong>Event 1</strong>
+                            <p class="small">Description of event 1</p>
+                        </div>
+                        <div style="margin-bottom: 1rem; position: relative;">
+                            <div style="position: absolute; left: -1.5rem; top: 0; width: 1rem; height: 1rem; background: var(--primary); border-radius: 50%;"></div>
+                            <strong>Event 2</strong>
+                            <p class="small">Description of event 2</p>
+                        </div>
+                        <div style="position: relative;">
+                            <div style="position: absolute; left: -1.5rem; top: 0; width: 1rem; height: 1rem; background: var(--primary); border-radius: 50%;"></div>
+                            <strong>Event 3</strong>
+                            <p class="small">Description of event 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Accessibility</h2>
+            <div class="card">
+                <h3>Screen Reader Text</h3>
+                <div class="component-preview">
+                    <span class="sr-only">This text is only visible to screen readers</span>
+                    <p>Screen reader text is hidden visually but available to assistive technologies.</p>
+                </div>
+
+                <h3>Focus Trap</h3>
+                <div class="component-preview">
+                    <p>Ensures keyboard navigation stays within modal dialogs.</p>
+                </div>
+
+                <h3>Skip to Main Content</h3>
+                <div class="component-preview">
+                    <p>A skip link is provided at the top of the page (visible on focus).</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="component-section">
+            <h2>Utility Classes</h2>
+            <div class="utility-classes">
+                <div class="utility-item">
+                    <strong>.text-primary</strong>
+                    <p class="small">Primary color text</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.text-center</strong>
+                    <p class="small">Center align text</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.mt-1</strong>
+                    <p class="small">Margin top 0.25rem</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.p-2</strong>
+                    <p class="small">Padding 0.5rem</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.bg-light</strong>
+                    <p class="small">Light background</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.border</strong>
+                    <p class="small">Add border</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.rounded</strong>
+                    <p class="small">Rounded corners</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.shadow</strong>
+                    <p class="small">Box shadow</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.flex</strong>
+                    <p class="small">Display flex</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.grid</strong>
+                    <p class="small">Display grid</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.hidden</strong>
+                    <p class="small">Display none</p>
+                </div>
+                <div class="utility-item">
+                    <strong>.transition</strong>
+                    <p class="small">Smooth transitions</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Button hover effects
+            const buttons = document.querySelectorAll('.button');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                });
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Navigation item functionality
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Rating stars
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = this.dataset.rating || 3;
+                    stars.forEach((s, index) => {
+                        if (index < rating) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // Carousel simulation
+            const carouselSlides = document.querySelectorAll('.carousel-slide');
+            if (carouselSlides.length > 0) {
+                let currentSlide = 0;
+                setInterval(() => {
+                    carouselSlides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % carouselSlides.length;
+                    carouselSlides[currentSlide].classList.add('active');
+                }, 3000);
+            }
+
+            // Skip link focus
+            const skipLink = document.querySelector('.skip-link');
+            skipLink.addEventListener('focus', function() {
+                this.style.top = '0';
+            });
+            skipLink.addEventListener('blur', function() {
+                this.style.top = '-40px';
+            });
+        });
+    </script>
+</body>
+</html>

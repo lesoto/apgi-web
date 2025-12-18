@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Consciousness Parameter Assessment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #6b9ac4;
+            --light: #f0f4f8;
+            --dark: #2d3748;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s ease;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        [data-theme="dark"] {
+            --primary: #6b9ac4;
+            --secondary: #4a6fa5;
+            --accent: #8bb4d8;
+            --light: #2d3748;
+            --dark: #f0f4f8;
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --border-color: #4a5568;
+            --card-bg: #2d3748;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding-bottom: 60px;
+            transition: var(--transition);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: slideInDown 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto 25px;
+            animation: slideInUp 0.8s ease-out 0.2s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 0.95;
+                transform: translateY(0);
+            }
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .theme-toggle:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .theme-toggle i {
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        [data-theme="dark"] .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .warning-box {
+            background: rgba(255, 193, 7, 0.2);
+            border: 2px solid rgba(255, 193, 7, 0.4);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 900px;
+            text-align: left;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideInUp 0.8s ease-out 0.3s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .warning-box strong {
+            color: #f57c00;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 30px;
+            text-align: left;
+            font-size: 0.95rem;
+            animation: slideInUp 0.8s ease-out 0.4s both;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+        
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--border-color);
+        }
+        
+        .section-icon {
+            background: var(--gradient-primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-right: 20px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .question {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition-fast);
+        }
+        
+        .question:hover {
+            background: var(--bg-primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .question-context {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .slider-container {
+            margin: 25px 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #e53e3e, #d69e2e, #38a169);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-fast);
+        }
+        
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-fast);
+        }
+        
+        .slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .slider-value {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+        
+        .state-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .state-option {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            text-align: center;
+        }
+        
+        .state-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .state-option.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(74, 111, 165, 0.4);
+        }
+        
+        .state-option i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .state-option .state-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .state-option .state-desc {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .btn i {
+            font-size: 1.2rem;
+        }
+        
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 12px 30px rgba(240, 147, 251, 0.4);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .progress-container {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            transition: var(--transition);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .results-summary {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .results-summary::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .results-summary h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .results-summary p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .metric-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .metric-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+        
+        .chart-container h3 {
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+        }
+        
+        .recommendation-card {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: var(--transition-fast);
+        }
+        
+        .recommendation-card:hover {
+            background: var(--card-bg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .recommendation-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .recommendation-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        th {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        td {
+            padding: 18px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-card {
+                padding: 25px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+                <span>Dark Mode</span>
+            </div>
+            <h1>APGI Parameter Assessment</h1>
+            <p class="subtitle">Empirical Measurement of Consciousness Architecture Parameters</p>
+            
+            <div class="warning-box">
+                <strong><i class="fas fa-exclamation-triangle"></i> Research & Clinical Context:</strong>
+                <p>This assessment measures parameters within the APGI (Allostatic Precision-Gated Ignition) theoretical framework. Results should be interpreted within appropriate research or clinical contexts. This is not a diagnostic tool.</p>
+            </div>
+            
+            <div class="info-box">
+                <strong><i class="fas fa-info-circle"></i> What This Measures:</strong>
+                <p><strong>Prediction Error (ε):</strong> Mismatch between expected and actual sensory/interoceptive input<br>
+                <strong>Precision Weighting (π):</strong> Confidence/reliability assigned to prediction errors<br>
+                <strong>Ignition Threshold (θ):</strong> Critical threshold for conscious access via global broadcasting<br>
+                <strong>Somatic Bias (β):</strong> Relative weighting of interoceptive vs. exteroceptive signals</p>
+            </div>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0% Complete</div>
+        </div>
+
+        <!-- SECTION 1: Baseline State Parameters -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div>
+                    <div class="section-title">Baseline State Assessment</div>
+                    <div class="section-subtitle">Resting-state consciousness parameters</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">1. Internal Experience Variability</div>
+                <div class="question-context">How much does your moment-to-moment internal experience typically vary when you're at rest?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q1" oninput="updateSliderValue('q1')">
+                    <div class="slider-labels">
+                        <span>Very Stable</span>
+                        <span>Moderately Variable</span>
+                        <span>Highly Variable</span>
+                    </div>
+                    <div class="slider-value" id="q1-value">50</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">2. Body Signal Reliability</div>
+                <div class="question-context">When you notice a bodily sensation (hunger, tension, fatigue), how confident are you that it reliably indicates what you think it does?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q2" oninput="updateSliderValue('q2')">
+                    <div class="slider-labels">
+                        <span>Very Uncertain</span>
+                        <span>Moderately Confident</span>
+                        <span>Highly Confident</span>
+                    </div>
+                    <div class="slider-value" id="q2-value">50</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">3. Conscious Access Breadth</div>
+                <div class="question-context">In a typical moment, how much of your sensory/mental environment enters your conscious awareness?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q3" oninput="updateSliderValue('q3')">
+                    <div class="slider-labels">
+                        <span>Very Narrow Focus</span>
+                        <span>Moderate Awareness</span>
+                        <span>Very Broad Awareness</span>
+                    </div>
+                    <div class="slider-value" id="q3-value">50</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">4. Intero-Extero Balance</div>
+                <div class="question-context">When conscious attention is spontaneous (not directed), where does it typically land?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q4" oninput="updateSliderValue('q4')">
+                    <div class="slider-labels">
+                        <span>Strongly External</span>
+                        <span>Balanced</span>
+                        <span>Strongly Internal/Body</span>
+                    </div>
+                    <div class="slider-value" id="q4-value">50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: State-Dependent Parameters -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-sliders-h"></i>
+                </div>
+                <div>
+                    <div class="section-title">State-Dependent Parameters</div>
+                    <div class="section-subtitle">How parameters shift across mental states</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">5. Stress Response - Prediction Error</div>
+                <div class="question-context">During stress, how much does your subjective sense of unpredictability/surprise increase?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q5" oninput="updateSliderValue('q5')">
+                    <div class="slider-labels">
+                        <span>Minimal Increase</span>
+                        <span>Moderate Increase</span>
+                        <span>Dramatic Increase</span>
+                    </div>
+                    <div class="slider-value" id="q5-value">50</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">6. Focused Work - Threshold</div>
+                <div class="question-context">During deep focus/flow, how narrow does your conscious attention become?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q6" oninput="updateSliderValue('q6')">
+                    <div class="slider-labels">
+                        <span>Broad Awareness</span>
+                        <span>Moderately Narrow</span>
+                        <span>Tunnel Vision</span>
+                    </div>
+                    <div class="slider-value" id="q6-value">50</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">7. State Flexibility</div>
+                <div class="question-context">How easily can you intentionally shift between focused and open-monitoring modes of consciousness?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q7" oninput="updateSliderValue('q7')">
+                    <div class="slider-labels">
+                        <span>Very Difficult</span>
+                        <span>Moderate Control</span>
+                        <span>Effortless Shifting</span>
+                    </div>
+                    <div class="slider-value" id="q7-value">50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Behavioral Correlates -->
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div>
+                    <div class="section-title">Behavioral Manifestations</div>
+                    <div class="section-subtitle">Observable correlates of parameter settings</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">8. Response to Novelty</div>
+                <div class="question-context">When encountering unexpected situations, how do you typically respond?</div>
+                <div class="state-selector">
+                    <div class="state-option" onclick="selectOption('q8', 'freeze')">
+                        <i class="fas fa-pause-circle"></i>
+                        <div class="state-name">Freeze/Analyze</div>
+                        <div class="state-desc">High error, high precision</div>
+                    </div>
+                    <div class="state-option" onclick="selectOption('q8', 'explore')">
+                        <i class="fas fa-search"></i>
+                        <div class="state-name">Explore/Update</div>
+                        <div class="state-desc">High error, low threshold</div>
+                    </div>
+                    <div class="state-option" onclick="selectOption('q8', 'dismiss')">
+                        <i class="fas fa-times-circle"></i>
+                        <div class="state-name">Dismiss/Continue</div>
+                        <div class="state-desc">Low precision, high threshold</div>
+                    </div>
+                </div>
+                <input type="hidden" id="q8-value">
+            </div>
+
+            <div class="question">
+                <div class="question-text">9. Somatic Decision Influence</div>
+                <div class="question-context">When making decisions, how much do bodily feelings (gut sense, tension, energy) influence your choices?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q9" oninput="updateSliderValue('q9')">
+                    <div class="slider-labels">
+                        <span>Pure Cognition</span>
+                        <span>Balanced</span>
+                        <span>Body-Dominated</span>
+                    </div>
+                    <div class="slider-value" id="q9-value">50</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-text">10. Multitasking Capacity</div>
+                <div class="question-context">How many streams of information can you maintain in conscious awareness simultaneously?</div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="q10" oninput="updateSliderValue('q10')">
+                    <div class="slider-labels">
+                        <span>Single-Thread</span>
+                        <span>Few Threads</span>
+                        <span>Many Parallel Threads</span>
+                    </div>
+                    <div class="slider-value" id="q10-value">50</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn" onclick="calculateResults()">
+                <i class="fas fa-calculator"></i>
+                Calculate Parameters
+            </button>
+        </div>
+
+        <!-- RESULTS SECTION (Initially Hidden) -->
+        <div id="results" style="display: none;">
+            <div class="results-summary">
+                <h2><i class="fas fa-chart-line"></i> Your APGI Parameter Profile</h2>
+                <p>Empirical estimates of your consciousness architecture based on self-report and behavioral correlates.</p>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Prediction Error (ε)</div>
+                    <div class="metric-value" id="result-error">--</div>
+                    <div class="metric-description">Current baseline mismatch between predictions and sensory input</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Precision (π)</div>
+                    <div class="metric-value" id="result-precision">--</div>
+                    <div class="metric-description">Confidence weighting applied to prediction errors</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Threshold (θ)</div>
+                    <div class="metric-value" id="result-threshold">--</div>
+                    <div class="metric-description">Critical value for conscious ignition via global broadcast</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Somatic Bias (β)</div>
+                    <div class="metric-value" id="result-somatic">--</div>
+                    <div class="metric-description">Relative weighting of interoceptive signals in consciousness</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3><i class="fas fa-chart-area"></i> Parameter Profile Visualization</h3>
+                <canvas id="profileChart" height="100"></canvas>
+            </div>
+
+            <div class="section-card">
+                <h3 style="margin-bottom: 20px; color: var(--primary);"><i class="fas fa-exchange-alt"></i> State-Dependent Parameter Shifts</h3>
+                <div id="state-table"></div>
+            </div>
+
+            <div class="chart-container">
+                <h3><i class="fas fa-project-diagram"></i> Ignition Function</h3>
+                <div id="ignitionPlot" style="height: 400px;"></div>
+            </div>
+
+            <div class="section-card">
+                <h3 style="margin-bottom: 20px; color: var(--primary);"><i class="fas fa-brain"></i> APGI Profile Interpretation</h3>
+                <div id="interpretation" style="line-height: 1.8;"></div>
+            </div>
+
+            <div class="section-card">
+                <h3 style="margin-bottom: 20px; color: var(--primary);"><i class="fas fa-network-wired"></i> Parameter Interactions</h3>
+                <div id="interactions-analysis"></div>
+            </div>
+
+            <div class="section-card">
+                <h3 style="margin-bottom: 20px; color: var(--primary);"><i class="fas fa-lightbulb"></i> Practical Recommendations</h3>
+                <div id="recommendations-grid"></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" onclick="exportResults()">
+                    <i class="fas fa-download"></i>
+                    Export Results (JSON)
+                </button>
+                <button class="btn btn-secondary" onclick="retakeAssessment()">
+                    <i class="fas fa-redo"></i>
+                    Retake Assessment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        
+        let responses = {};
+        let parameters = {
+            predictionError: 0,
+            precision: 0,
+            threshold: 0,
+            somaticBias: 0,
+            stateFlexibility: 0
+        };
+        
+        let stateProfiles = {
+            resting: {},
+            stressed: {},
+            focused: {}
+        };
+        
+        let behavioralData = {
+            noveltyResponse: null,
+            multitaskingCapacity: 0
+        };
+
+        // ==================== THEME TOGGLE ====================
+        
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            
+            const toggle = document.querySelector('.theme-toggle');
+            const icon = toggle.querySelector('i');
+            const text = toggle.querySelector('span');
+            
+            if (newTheme === 'dark') {
+                icon.className = 'fas fa-sun';
+                text.textContent = 'Light Mode';
+            } else {
+                icon.className = 'fas fa-moon';
+                text.textContent = 'Dark Mode';
+            }
+        }
+
+        // ==================== UI HELPERS ====================
+        
+        function updateSliderValue(id) {
+            const slider = document.getElementById(id);
+            const value = slider.value;
+            const display = document.getElementById(`${id}-value`);
+            display.textContent = value;
+            responses[id] = parseInt(value);
+            updateProgress();
+        }
+        
+        function selectOption(questionId, value) {
+            // Remove selection from all options in this question
+            const question = document.getElementById(questionId + '-value').closest('.question');
+            question.querySelectorAll('.state-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.currentTarget.classList.add('selected');
+            
+            // Store value
+            document.getElementById(questionId + '-value').value = value;
+            responses[questionId] = value;
+            updateProgress();
+        }
+        
+        function updateProgress() {
+            const totalQuestions = 10;
+            const answeredQuestions = Object.keys(responses).length;
+            const percentage = (answeredQuestions / totalQuestions) * 100;
+            
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = Math.round(percentage) + '% Complete';
+        }
+
+        // ==================== PARAMETER CALCULATION ====================
+        
+        function calculateResults() {
+            // Validate all questions answered
+            if (Object.keys(responses).length < 10) {
+                alert('Please answer all questions before calculating results.');
+                return;
+            }
+            
+            // Calculate base parameters from responses
+            parameters.predictionError = responses.q1 || 50;
+            parameters.precision = responses.q2 || 50;
+            parameters.threshold = 100 - (responses.q3 || 50); // Inverse: low awareness = high threshold
+            parameters.somaticBias = responses.q4 || 50;
+            parameters.stateFlexibility = responses.q7 || 50;
+            
+            // Calculate state-dependent profiles
+            stateProfiles.resting = {
+                predictionError: parameters.predictionError,
+                precision: parameters.precision,
+                threshold: parameters.threshold,
+                somaticBias: parameters.somaticBias
+            };
+            
+            stateProfiles.stressed = {
+                predictionError: Math.min(100, parameters.predictionError + (responses.q5 || 50) * 0.5),
+                precision: Math.min(100, parameters.precision + 20),
+                threshold: Math.max(0, parameters.threshold - 15),
+                somaticBias: Math.min(100, parameters.somaticBias + 15)
+            };
+            
+            stateProfiles.focused = {
+                predictionError: Math.max(0, parameters.predictionError - 20),
+                precision: Math.min(100, parameters.precision + 10),
+                threshold: Math.min(100, parameters.threshold + (responses.q6 || 50) * 0.3),
+                somaticBias: Math.max(0, parameters.somaticBias - 10)
+            };
+            
+            // Store behavioral data
+            behavioralData.noveltyResponse = responses.q8;
+            behavioralData.somaticDecisionWeight = responses.q9 || 50;
+            behavioralData.multitaskingCapacity = responses.q10 || 50;
+            
+            // Display results
+            displayResults();
+        }
+
+        function displayResults() {
+            // Show results section
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').classList.add('fade-in');
+            
+            // Populate metric cards
+            document.getElementById('result-error').textContent = parameters.predictionError.toFixed(1);
+            document.getElementById('result-precision').textContent = parameters.precision.toFixed(1);
+            document.getElementById('result-threshold').textContent = parameters.threshold.toFixed(1);
+            document.getElementById('result-somatic').textContent = parameters.somaticBias.toFixed(1);
+            
+            // Generate visualizations
+            generateProfileChart();
+            generateStateTable();
+            generateIgnitionPlot();
+            generateInterpretation();
+            generateInteractionsAnalysis();
+            generateRecommendations();
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ==================== VISUALIZATIONS ====================
+        
+        function generateProfileChart() {
+            const ctx = document.getElementById('profileChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Prediction Error', 'Precision', 'Threshold', 'Somatic Bias', 'State Flexibility'],
+                    datasets: [{
+                        label: 'Your Parameters',
+                        data: [
+                            parameters.predictionError,
+                            parameters.precision,
+                            parameters.threshold,
+                            parameters.somaticBias,
+                            parameters.stateFlexibility
+                        ],
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(102, 126, 234, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateStateTable() {
+            const container = document.getElementById('state-table');
+            
+            const table = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>State</th>
+                            <th>ε (Error)</th>
+                            <th>π (Precision)</th>
+                            <th>θ (Threshold)</th>
+                            <th>β (Somatic)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Resting</strong></td>
+                            <td>${stateProfiles.resting.predictionError.toFixed(1)}</td>
+                            <td>${stateProfiles.resting.precision.toFixed(1)}</td>
+                            <td>${stateProfiles.resting.threshold.toFixed(1)}</td>
+                            <td>${stateProfiles.resting.somaticBias.toFixed(1)}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stressed</strong></td>
+                            <td>${stateProfiles.stressed.predictionError.toFixed(1)}</td>
+                            <td>${stateProfiles.stressed.precision.toFixed(1)}</td>
+                            <td>${stateProfiles.stressed.threshold.toFixed(1)}</td>
+                            <td>${stateProfiles.stressed.somaticBias.toFixed(1)}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Focused</strong></td>
+                            <td>${stateProfiles.focused.predictionError.toFixed(1)}</td>
+                            <td>${stateProfiles.focused.precision.toFixed(1)}</td>
+                            <td>${stateProfiles.focused.threshold.toFixed(1)}</td>
+                            <td>${stateProfiles.focused.somaticBias.toFixed(1)}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = table;
+        }
+
+        function generateIgnitionPlot() {
+            const { predictionError, precision, threshold } = parameters;
+            
+            // Generate data points for ignition function
+            const errors = [];
+            const probabilities = [];
+            
+            for (let e = 0; e <= 100; e += 1) {
+                errors.push(e);
+                const weightedError = (precision / 100) * e;
+                const prob = sigmoid((weightedError - threshold/100));
+                probabilities.push(prob * 100); // Convert to percentage
+            }
+            
+            // Current state point
+            const currentWeightedError = (precision / 100) * predictionError;
+            const currentProb = sigmoid((currentWeightedError - threshold/100)) * 100;
+            
+            const trace1 = {
+                x: errors,
+                y: probabilities,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Ignition Function',
+                line: {
+                    color: 'rgb(102, 126, 234)',
+                    width: 3
+                }
+            };
+            
+            const trace2 = {
+                x: [predictionError],
+                y: [currentProb],
+                type: 'scatter',
+                mode: 'markers',
+                name: 'Your Current State',
+                marker: {
+                    color: 'rgb(229, 62, 62)',
+                    size: 15,
+                    symbol: 'diamond'
+                }
+            };
+            
+            const layout = {
+                xaxis: {
+                    title: 'Prediction Error (ε)',
+                    range: [0, 100]
+                },
+                yaxis: {
+                    title: 'Ignition Probability (%)',
+                    range: [0, 100]
+                },
+                hovermode: 'closest',
+                showlegend: true,
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)'
+            };
+            
+            Plotly.newPlot('ignitionPlot', [trace1, trace2], layout);
+        }
+
+        function generateInterpretation() {
+            const container = document.getElementById('interpretation');
+            
+            container.innerHTML = `
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    <strong>Your APGI Profile:</strong> Your consciousness architecture shows the following characteristics:
+                </p>
+                
+                <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="color: var(--secondary); margin-bottom: 10px;">Ignition Dynamics:</h4>
+                    <p>With a precision-weighted prediction error of ${((parameters.precision/100) * parameters.predictionError).toFixed(1)} and threshold of ${parameters.threshold.toFixed(1)}, your ignition probability is approximately ${(sigmoid((parameters.precision/100) * parameters.predictionError - parameters.threshold/100) * 100).toFixed(1)}%. This indicates ${parameters.threshold < 40 ? 'broad conscious access (low threshold)' : parameters.threshold > 70 ? 'narrow conscious access (high threshold)' : 'moderate conscious selectivity'}.</p>
+                </div>
+                
+                <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="color: var(--secondary); margin-bottom: 10px;">Embodiment Profile:</h4>
+                    <p>Your somatic bias of ${parameters.somaticBias.toFixed(1)} suggests ${parameters.somaticBias < 30 ? 'strongly externally-focused consciousness with limited interoceptive influence' : parameters.somaticBias > 70 ? 'deeply embodied consciousness dominated by interoceptive signals' : 'balanced integration of interoceptive and exteroceptive information'}.</p>
+                </div>
+                
+                <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; margin-top: 20px;">
+                    <h4 style="color: var(--secondary); margin-bottom: 10px;">Processing Style:</h4>
+                    <p>${interpretProcessingStyle()}</p>
+                </div>
+            `;
+        }
+
+        function sigmoid(x) {
+            return 1 / (1 + Math.exp(-x * 5)); // Scaled for 0-1 range input
+        }
+
+        function interpretProcessingStyle() {
+            const { predictionError, precision, threshold, somaticBias } = parameters;
+            
+            let style = [];
+            
+            // Prediction error interpretation
+            if (predictionError < 30) {
+                style.push("highly predictive environment/processing");
+            } else if (predictionError > 70) {
+                style.push("high-surprise, unpredictable processing");
+            } else {
+                style.push("moderate prediction error levels");
+            }
+            
+            // Precision interpretation
+            if (precision < 30) {
+                style.push("low confidence in error signals");
+            } else if (precision > 70) {
+                style.push("high confidence/precision weighting");
+            } else {
+                style.push("moderate precision weighting");
+            }
+            
+            // Threshold interpretation
+            if (threshold < 30) {
+                style.push("low ignition threshold (broad conscious access)");
+            } else if (threshold > 70) {
+                style.push("high ignition threshold (narrow conscious access)");
+            } else {
+                style.push("moderate ignition threshold");
+            }
+            
+            // Somatic bias interpretation
+            if (somaticBias < 30) {
+                style.push("strongly world-centered consciousness");
+            } else if (somaticBias > 70) {
+                style.push("strongly body-centered consciousness");
+            } else {
+                style.push("balanced intero-exteroceptive awareness");
+            }
+            
+            return "Your processing architecture is characterized by: " + style.join(", ") + ".";
+        }
+
+        function generateInteractionsAnalysis() {
+            const container = document.getElementById('interactions-analysis');
+            
+            const { predictionError, precision, threshold, somaticBias } = parameters;
+            
+            let interactions = [];
+            
+            // Key interaction patterns
+            if (precision > 70 && predictionError > 70) {
+                interactions.push({
+                    title: 'High-Precision High-Error Amplification',
+                    description: 'Your high precision amplifies prediction errors into strong conscious signals. This creates intense, attention-capturing conscious experience when predictions fail. Risk of anxiety/hypervigilance if errors are threat-related.'
+                });
+            }
+            
+            if (threshold < 30 && precision > 70) {
+                interactions.push({
+                    title: 'Low-Threshold High-Precision Flooding',
+                    description: 'Low ignition threshold + high precision = many signals cross into awareness. This creates rich but potentially overwhelming conscious experience. Excellent for creativity; challenging for sustained focus.'
+                });
+            }
+            
+            if (threshold > 70 && precision < 30) {
+                interactions.push({
+                    title: 'High-Threshold Low-Precision Gating',
+                    description: 'High threshold filters out weakly-weighted signals. This creates narrow, focused consciousness but risks missing important information. Good for deep work; may miss bodily/emotional signals.'
+                });
+            }
+            
+            if (somaticBias > 70 && precision > 70) {
+                interactions.push({
+                    title: 'Embodied High-Precision Processing',
+                    description: 'Strong somatic anchoring + high precision = bodily signals dominate consciousness with high confidence. Excellent embodied intuition; vulnerable to somatic anxiety/amplification.'
+                });
+            }
+            
+            if (somaticBias < 30 && threshold > 70) {
+                interactions.push({
+                    title: 'Disembodied Focused Processing',
+                    description: 'External focus + high threshold = analytical, disembodied consciousness. Excellent for abstract reasoning; risk of ignoring homeostatic needs and emotional information.'
+                });
+            }
+            
+            if (interactions.length === 0) {
+                interactions.push({
+                    title: 'Balanced Parameter Interactions',
+                    description: 'Your parameters show balanced interactions without extreme amplification or gating patterns. This creates flexible, adaptive processing across contexts.'
+                });
+            }
+            
+            container.innerHTML = interactions.map(int => `
+                <div class="recommendation-card" style="margin-bottom: 20px;">
+                    <h4>${int.title}</h4>
+                    <p>${int.description}</p>
+                </div>
+            `).join('');
+        }
+
+        function generateRecommendations() {
+            const container = document.getElementById('recommendations-grid');
+            
+            const recommendations = [];
+            
+            // State-specific optimization strategies
+            recommendations.push({
+                title: 'Resting State Optimization',
+                content: `Based on your resting parameters (ε=${stateProfiles.resting.predictionError.toFixed(1)}, π=${stateProfiles.resting.precision.toFixed(1)}, θ=${stateProfiles.resting.threshold.toFixed(1)}), consider: ${getStateRecommendation('resting')}`
+            });
+            
+            recommendations.push({
+                title: 'Stress State Management',
+                content: `Your stress profile shows: ${getStateRecommendation('stressed')}. Practice threshold elevation (meditation) and precision modulation (cognitive reappraisal) during high-stress periods.`
+            });
+            
+            recommendations.push({
+                title: 'Focus State Enhancement',
+                content: `For optimal focus (θ=${stateProfiles.focused.threshold.toFixed(1)}), ${getStateRecommendation('focused')}. Use environmental controls to reduce external prediction errors.`
+            });
+            
+            recommendations.push({
+                title: 'Parameter Flexibility Training',
+                content: `Your state flexibility is ${parameters.stateFlexibility.toFixed(1)}/100. ${parameters.stateFlexibility < 40 ? 'Consider attention training (meditation, biofeedback) to increase volitional control over parameters.' : 'Your good flexibility allows adaptive parameter tuning. Leverage this for context-appropriate processing modes.'}`
+            });
+            
+            container.innerHTML = recommendations.map(rec => `
+                <div class="recommendation-card">
+                    <h4>${rec.title}</h4>
+                    <p>${rec.content}</p>
+                </div>
+            `).join('');
+        }
+
+        function getStateRecommendation(state) {
+            const profile = stateProfiles[state];
+            
+            const recommendations = [];
+            
+            if (profile.threshold < 40) {
+                recommendations.push("practice selective attention to raise threshold");
+            }
+            if (profile.threshold > 70) {
+                recommendations.push("use open monitoring to lower threshold");
+            }
+            if (profile.precision > 70 && profile.predictionError > 70) {
+                recommendations.push("use precision modulation (questioning confidence) to reduce amplification");
+            }
+            if (profile.somaticBias > 70) {
+                recommendations.push("balance with external focus exercises");
+            }
+            if (profile.somaticBias < 30) {
+                recommendations.push("integrate body awareness practices");
+            }
+            
+            return recommendations.length > 0 ? recommendations.join("; ") : "parameters are well-balanced for this state";
+        }
+
+        // ==================== EXPORT ====================
+        
+        function exportResults() {
+            const results = {
+                timestamp: new Date().toISOString(),
+                parameters: parameters,
+                stateProfiles: stateProfiles,
+                responses: responses,
+                behavioralData: behavioralData,
+                derivedMetrics: {
+                    weightedPredictionError: (parameters.precision / 100) * parameters.predictionError,
+                    ignitionProbability: sigmoid((parameters.precision / 100) * parameters.predictionError - parameters.threshold/100),
+                    experienceAnchoring: parameters.somaticBias / 100
+                }
+            };
+            
+            const dataStr = JSON.stringify(results, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `APGI_Assessment_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        function retakeAssessment() {
+            if (confirm('This will clear all your responses and restart the assessment. Continue?')) {
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

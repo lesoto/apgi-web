@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consciousness Ignition Visualization</title>
+    <style>
+        :root {
+            --gradient-dark: linear-gradient(135deg, #0f172a, #1e293b);
+            --gradient-light: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            --text-dark: #1e293b;
+            --text-light: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --panel-bg: rgba(15, 23, 42, 0.8);
+            --panel-bg-light: rgba(255, 255, 255, 0.95);
+            --panel-border: rgba(96, 165, 250, 0.3);
+            --panel-border-light: rgba(96, 165, 250, 0.4);
+            --timeline-bg: rgba(30, 41, 59, 0.8);
+            --timeline-bg-light: rgba(203, 213, 225, 0.8);
+            --control-bg: rgba(15, 23, 42, 0.8);
+            --control-bg-light: rgba(255, 255, 255, 0.95);
+            --marker-label: #94a3b8;
+            --marker-label-light: #475569;
+            --button-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --button-gradient-hover: linear-gradient(135deg, #2563eb, #7c3aed);
+            --button-gradient-active: linear-gradient(135deg, #1d4ed8, #6d28d9);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            background: var(--gradient-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        body.light-theme {
+            background: var(--gradient-light);
+            color: var(--text-dark);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .light-theme h1 {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        section {
+            border-radius: var(--radius-lg);
+        }
+
+        .timeline-section {
+            background: rgba(15, 23, 42, 0.4);
+            padding: 0;
+            border-radius: var(--radius-lg);
+        }
+
+        .timeline-container {
+            background: var(--panel-bg);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 0;
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--panel-border);
+            transition: var(--transition);
+        }
+        .timeline-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 15px 15px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        .light-theme .timeline-container {
+            background: var(--panel-bg-light);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--panel-border-light);
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+        
+        .timeline-label {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #94a3b8;
+        }
+        
+        .light-theme .timeline-label {
+            color: #475569;
+        }
+        
+        .timeline {
+            height: 30px;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .light-theme .timeline {
+            background: rgba(203, 213, 225, 0.7);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #60a5fa, #c084fc);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+        }
+        
+        .timeline-markers {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            position: relative;
+            height: 40px;
+        }
+        
+        .marker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            top: -50px;
+            transform: translateX(-50%);
+        }
+        
+        .marker-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #60a5fa;
+            margin-bottom: 8px;
+            z-index: 2;
+        }
+        
+        .marker-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .light-theme .marker-label {
+            color: #475569;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .panel {
+            background: var(--panel-bg);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--panel-border);
+            transition: var(--transition);
+        }
+        .panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 15px 15px -5px rgba(0, 0, 0, 0.08);
+        }
+        
+        .light-theme .panel {
+            background: var(--panel-bg-light);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--panel-border-light);
+        }
+        
+        .panel-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .light-theme .panel-title {
+            color: #2563eb;
+        }
+        
+        .phase-time {
+            background: rgba(96, 165, 250, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .phase-description {
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+        }
+        
+        .keypoint {
+            display: flex;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: var(--radius);
+            border-left: 3px solid #60a5fa;
+            transition: var(--transition);
+        }
+        .keypoint:hover {
+            background: rgba(30, 41, 59, 0.8);
+            transform: translateX(4px);
+        }
+        
+        .light-theme .keypoint {
+            background: rgba(241, 245, 249, 0.9);
+            border-left: 3px solid #2563eb;
+        }
+        .light-theme .keypoint:hover {
+            background: rgba(241, 245, 249, 1);
+        }
+        
+        .keypoint-icon {
+            font-size: 1.25rem;
+            margin-right: 1rem;
+            color: #c084fc;
+            flex-shrink: 0;
+        }
+        
+        .keypoint-text {
+            flex: 1;
+        }
+        
+        .visualization-container {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: rgba(7, 19, 38, 0.9);
+            min-height: 300px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        .visualization-container:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .light-theme .visualization-container {
+            background: rgba(241, 245, 249, 0.95);
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            background: transparent;
+        }
+        
+        .controls {
+            background: var(--control-bg);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--panel-border);
+            transition: var(--transition);
+        }
+        .controls:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 15px 15px -5px rgba(0, 0, 0, 0.08);
+        }
+        
+        .light-theme .controls {
+            background: var(--control-bg-light);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--panel-border-light);
+        }
+        
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .light-theme .control-label {
+            color: var(--text-muted);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: var(--button-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        button:hover::before {
+            left: 100%;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: var(--button-gradient-hover);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        button.active {
+            background: var(--button-gradient-active);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+            transform: scale(1.05);
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            height: 8px;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 5px;
+            outline: none;
+            transition: var(--transition);
+        }
+        input[type="range"]:hover {
+            background: rgba(30, 41, 59, 0.9);
+        }
+        
+        .light-theme input[type="range"] {
+            background: rgba(203, 213, 225, 0.7);
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--button-gradient);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--button-gradient);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .speed-display {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(96, 165, 250, 0.1);
+            border-radius: var(--radius);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        
+        .grid-section,
+        .controls-section {
+            padding: 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1100px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            .controls {
+                padding: 1.5rem;
+            }
+            .panel {
+                padding: 1.5rem;
+            }
+            .timeline-container {
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.75rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .controls {
+                padding: 1rem;
+            }
+            .panel {
+                padding: 1rem;
+            }
+            .timeline-container {
+                padding: 1rem;
+            }
+            .button-group {
+                gap: 0.5rem;
+            }
+            button {
+                padding: 0.625rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Consciousness Ignition - Neural Processing Phases</h1>
+            <p class="subtitle">Comprehensive visualization of the journey from unconscious prediction to conscious awareness through six distinct neural processing stages</p>
+        </header>
+                <div class="controls">
+            <div class="control-group">
+                <div class="control-label">Navigation</div>
+                <div class="button-group">
+                    <button id="prevBtn">◀ Previous</button>
+                    <button id="playBtn">▶ Play</button>
+                    <button id="nextBtn">Next ▶</button>
+                    <button id="resetBtn">↻ Reset</button>
+                    <button id="loopBtn">Loop Mode</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">Playback Speed</div>
+                <div class="button-group">
+                    <button id="slow" class="speed-btn">0.5×</button>
+                    <button id="normal" class="speed-btn active">1×</button>
+                    <button id="fast" class="speed-btn">2×</button>
+                </div>
+                <div class="slider-container">
+                    <span class="control-label">Fine-tune:</span>
+                    <input type="range" id="speedSlider" min="0.1" max="3" step="0.1" value="1" aria-label="Playback speed fine-tune" title="Fine-tune playback speed">
+                    <span class="speed-display" id="speedDisplay">1.0×</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-label">Export & Display</div>
+                <div class="button-group">
+                    <button id="pngBtn">💾 Export PNG</button>
+                    <button id="svgBtn">💾 Export SVG</button>
+                    <button id="csvBtn">📊 Download EEG CSV</button>
+                    <button id="themeBtn">🌓 Toggle Theme</button>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <div class="timeline-label">Time Progression</div>
+                <div class="timeline-label">Current: <span id="current-phase">Phase 1: Preparation</span></div>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-progress" id="timeline-progress"></div>
+            </div>
+            
+            <div class="timeline-markers" id="timeline-markers"></div>
+        </div>
+        
+        <div class="content-grid">
+            <div class="panel">
+                <h2 class="panel-title">
+                    <span id="phase-title">Phase 1: Preparation</span>
+                    <span class="phase-time" id="phase-time">(-200 to 0 ms)</span>
+                </h2>
+                <p class="phase-description" id="phase-description"></p>
+                
+                <div id="phase-keypoints"></div>
+            </div>
+            
+            <div class="panel">
+                <h3 class="panel-title">Neural Activity Pattern</h3>
+                <div class="visualization-container">
+                    <canvas id="neuralCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-grid">
+            <div class="panel">
+                <h3 class="panel-title">Brain Network Activity</h3>
+                <div class="visualization-container">
+                    <canvas id="brainCanvas"></canvas>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3 class="panel-title">EEG Signal (P3b Wave)</h3>
+                <div class="visualization-container">
+                    <canvas id="eegCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        // =============================================
+        // Phase Data
+        // =============================================
+        const phases = [
+            {
+                id: 1,
+                title: "Phase 1: Preparation",
+                time: "(-200 to 0 ms)",
+                description: "Your sensory areas are detecting prediction errors. Neuromodulators are adjusting accuracy and threshold settings. The system is ready, tense, but you haven't yet realized. It's like the moment before an explosion—energy builds up, but there are no visible changes.",
+                keyPoints: [
+                    { icon: "🔬", title: "Prediction Error Detection", text: "Sensory cortices identify discrepancies between expected and actual inputs" },
+                    { icon: "⚙️", title: "Neuromodulator Adjustment", text: "Acetylcholine and noradrenaline fine-tune neural thresholds for signal detection" },
+                    { icon: "⚡", title: "Subthreshold Activity", text: "Neurons depolarize toward firing threshold but remain below conscious detection" },
+                    { icon: "🧠", title: "Global Readiness", text: "Preparatory activity in frontoparietal networks establishes a state of potential ignition" }
+                ],
+                color: "#60a5fa",
+                timelinePos: 0,
+                activity: 0.15
+            },
+            {
+                id: 2,
+                title: "Phase 2: Point of No Return",
+                time: "(0 ms)",
+                description: "The accumulated surprise exceeds the threshold. This is critical mass. Now combustion is inevitable. Although the exact time may vary by a few milliseconds due to neural noise - even the brain does not work with absolute precision.",
+                keyPoints: [
+                    { icon: "🎯", title: "Threshold Crossing", text: "Accumulated prediction errors exceed the neural detection threshold" },
+                    { icon: "💥", title: "Ignition Point", text: "The system reaches a critical point where ignition becomes inevitable" },
+                    { icon: "🎲", title: "Neural Noise Variability", text: "Exact timing varies slightly due to inherent neural stochasticity" },
+                    { icon: "🔒", title: "Commitment to Processing", text: "The brain commits significant resources to this stimulus" }
+                ],
+                color: "#c084fc",
+                timelinePos: 20,
+                activity: 0.25
+            },
+            {
+                id: 3,
+                title: "Phase 3: Amplification",
+                time: "(0–100 ms)",
+                description: "The thalamus begins to powerfully control the activity of the cortex. Certain neurons in cortical layer 5 generate 'calcium spikes' - powerful bursts of activity. The signal stops being a local whisper and begins to turn into a global announcement.",
+                keyPoints: [
+                    { icon: "📡", title: "Thalamocortical Engagement", text: "Thalamus powerfully modulates cortical activity" },
+                    { icon: "⚡", title: "Calcium Spikes", text: "Layer 5 pyramidal neurons generate high-amplitude bursts" },
+                    { icon: "🌐", title: "Local-to-Global Transition", text: "Signal amplifies from local processing to global availability" },
+                    { icon: "🌊", title: "Neuronal Avalanche", text: "Activity spreads rapidly through interconnected networks" }
+                ],
+                color: "#f87171",
+                timelinePos: 40,
+                activity: 0.55
+            },
+            {
+                id: 4,
+                title: "Phase 4: Stabilization",
+                time: "(100–300 ms)",
+                description: "The frontoparietal network 'ignites'. Long-range synchronization occurs between distant areas of the brain. A self-sustaining pattern of activity emerges—like a fire that no longer needs an arsonist, it burns on its own.",
+                keyPoints: [
+                    { icon: "🔥", title: "Frontoparietal Ignition", text: "Long-range networks become highly active" },
+                    { icon: "🔄", title: "Synchronization", text: "Distant brain regions synchronize through gamma-band oscillations" },
+                    { icon: "♾️", title: "Self-Sustaining Activity", text: "Pattern becomes stable and self-maintaining" },
+                    { icon: "📻", title: "Neural Resonance", text: "Feedback loops amplify and stabilize the representation" }
+                ],
+                color: "#34d399",
+                timelinePos: 60,
+                activity: 0.85
+            },
+            {
+                id: 5,
+                title: "Phase 5: Global Broadcast",
+                time: "(300–500 ms)",
+                description: "The information is now consciously accessible. You can communicate it, reflect on it and remember it. A characteristic P3b wave appears on the EEG—reliable electrical imprint of conscious access. This is the moment of awareness. Half a second ago, you didn't know. Now, you do.",
+                keyPoints: [
+                    { icon: "💡", title: "Conscious Access", text: "Information becomes available for report and manipulation" },
+                    { icon: "📈", title: "P3b Wave", text: "Characteristic EEG signature appears (positive peak ~300-500ms)" },
+                    { icon: "📢", title: "Global Availability", text: "Information is broadcast to multiple brain systems" },
+                    { icon: "💾", title: "Working Memory Encoding", text: "Content is encoded into short-term memory" }
+                ],
+                color: "#fbbf24",
+                timelinePos: 80,
+                activity: 1.0
+            },
+            {
+                id: 6,
+                title: "Phase 6: Fading",
+                time: "(500–700 ms)",
+                description: "After 500–700 milliseconds, activity begins to decline unless actively maintained. The threshold temporarily rises—a refractory period, like after a camera flash when the eyes need time to recover. The system reboots for the next potential ignition.",
+                keyPoints: [
+                    { icon: "📉", title: "Activity Decay", text: "Neural firing rates gradually decrease without maintenance" },
+                    { icon: "⏸️", title: "Refractory Period", text: "Detection threshold temporarily increases" },
+                    { icon: "♻️", title: "Resource Reallocation", text: "Neural resources prepare for new processing cycles" },
+                    { icon: "🗄️", title: "Memory Consolidation", text: "Information may transfer to longer-term storage" }
+                ],
+                color: "#a78bfa",
+                timelinePos: 100,
+                activity: 0.30
+            }
+        ];
+        
+        // =============================================
+        // State Management
+        // =============================================
+        let currentPhase = 0;
+        let isPlaying = false;
+        let loopMode = false;
+        let speedMultiplier = 1.0;
+        let playInterval = null;
+
+        // Canvas and context references
+        const neuralCanvas = document.getElementById('neuralCanvas');
+        const brainCanvas = document.getElementById('brainCanvas');
+        const eegCanvas = document.getElementById('eegCanvas');
+        const neuralCtx = neuralCanvas.getContext('2d');
+        const brainCtx = brainCanvas.getContext('2d');
+        const eegCtx = eegCanvas.getContext('2d');
+
+        // Timeline and phase display elements
+        const timelineMarkers = document.getElementById('timeline-markers');
+        const timelineProgress = document.getElementById('timeline-progress');
+        const currentPhaseEl = document.getElementById('current-phase');
+        const phaseTitle = document.getElementById('phase-title');
+        const phaseTime = document.getElementById('phase-time');
+        const phaseDescription = document.getElementById('phase-description');
+        const phaseKeypoints = document.getElementById('phase-keypoints');
+
+        // EEG data container
+        let eegData = [];
+        function generateEEG() {
+            eegData = [];
+            for (let i = 0; i < 600; i++) {
+                const t = i / 600;
+                const noise = (Math.random() - 0.5) * 0.25;
+                const p3b = Math.exp(-((t - 0.50) ** 2) / 0.002) * 2.5;
+                eegData.push(noise + p3b);
+            }
+        }
+        generateEEG();
+        
+        // =============================================
+        // Canvas Initialization
+        // =============================================
+        function initCanvases() {
+            neuralCanvas.width = neuralCanvas.offsetWidth;
+            neuralCanvas.height = 300;
+            
+            brainCanvas.width = brainCanvas.offsetWidth;
+            brainCanvas.height = 300;
+            
+            eegCanvas.width = eegCanvas.offsetWidth;
+            eegCanvas.height = 200;
+            
+            drawAll();
+        }
+        
+        // =============================================
+        // Timeline Markers
+        // =============================================
+        function createTimelineMarkers() {
+            timelineMarkers.innerHTML = '';
+            phases.forEach((phase) => {
+                const marker = document.createElement('div');
+                marker.className = 'marker';
+                marker.style.left = `${phase.timelinePos}%`;
+                
+                const dot = document.createElement('div');
+                dot.className = 'marker-dot';
+                dot.style.backgroundColor = phase.color;
+                
+                const label = document.createElement('div');
+                label.className = 'marker-label';
+                label.textContent = `Phase ${phase.id}`;
+                
+                marker.appendChild(dot);
+                marker.appendChild(label);
+                timelineMarkers.appendChild(marker);
+            });
+        }
+        
+        // =============================================
+        // Phase Display Update
+        // =============================================
+        function updatePhaseDisplay(phaseIndex) {
+            const phase = phases[phaseIndex];
+            
+            currentPhaseEl.textContent = phase.title;
+            phaseTitle.textContent = phase.title;
+            phaseTime.textContent = phase.time;
+            phaseDescription.textContent = phase.description;
+            
+            timelineProgress.style.width = `${phase.timelinePos}%`;
+            
+            phaseKeypoints.innerHTML = phase.keyPoints.map(point => `
+                <div class="keypoint">
+                    <div class="keypoint-icon">${point.icon}</div>
+                    <div class="keypoint-text">
+                        <strong>${point.title}:</strong> ${point.text}
+                    </div>
+                </div>
+            `).join('');
+            
+            drawAll();
+        }
+        
+        // =============================================
+        // Drawing Functions
+        // =============================================
+        function drawAll() {
+            const phase = phases[currentPhase];
+            drawNeuralActivity(currentPhase);
+            drawBrainNetwork(phase.activity);
+            drawEEG(currentPhase);
+        }
+        
+        function drawNeuralActivity(phaseIndex) {
+            const width = neuralCanvas.width;
+            const height = neuralCanvas.height;
+            const phase = phases[phaseIndex];
+            const isLight = document.body.classList.contains('light-theme');
+            
+            neuralCtx.clearRect(0, 0, width, height);
+            
+            const bgGradient = neuralCtx.createLinearGradient(0, 0, 0, height);
+            if (isLight) {
+                bgGradient.addColorStop(0, 'rgba(241, 245, 249, 0.3)');
+                bgGradient.addColorStop(1, 'rgba(226, 232, 240, 0.5)');
+            } else {
+                bgGradient.addColorStop(0, 'rgba(7, 19, 38, 0.3)');
+                bgGradient.addColorStop(1, 'rgba(15, 23, 42, 0.5)');
+            }
+            neuralCtx.fillStyle = bgGradient;
+            neuralCtx.fillRect(0, 0, width, height);
+            
+            if (phaseIndex === 0) drawSubtleActivity(phase.color, width, height);
+            else if (phaseIndex === 1) drawThresholdCrossing(phase.color, width, height);
+            else if (phaseIndex === 2) drawAmplification(phase.color, width, height);
+            else if (phaseIndex === 3) drawStabilization(phase.color, width, height);
+            else if (phaseIndex === 4) drawGlobalBroadcast(phase.color, width, height);
+            else if (phaseIndex === 5) drawFading(phase.color, width, height);
+        }
+        
+        function drawSubtleActivity(color, width, height) {
+            neuralCtx.strokeStyle = color + '80';
+            neuralCtx.lineWidth = 1.5;
+            
+            for (let i = 0; i < 8; i++) {
+                neuralCtx.beginPath();
+                const amplitude = 10 + Math.random() * 15;
+                const frequency = 0.02 + Math.random() * 0.03;
+                const phase = Math.random() * Math.PI * 2;
+                const yOffset = height * 0.2 + i * (height * 0.1);
+                
+                neuralCtx.moveTo(0, yOffset);
+                for (let x = 0; x < width; x++) {
+                    const y = yOffset + Math.sin(x * frequency + phase) * amplitude;
+                    neuralCtx.lineTo(x, y);
+                }
+                neuralCtx.stroke();
+            }
+            
+            neuralCtx.fillStyle = color + '40';
+            for (let i = 0; i < 30; i++) {
+                neuralCtx.beginPath();
+                neuralCtx.arc(
+                    Math.random() * width,
+                    Math.random() * height,
+                    2 + Math.random() * 4,
+                    0, Math.PI * 2
+                );
+                neuralCtx.fill();
+            }
+        }
+        
+        function drawThresholdCrossing(color, width, height) {
+            const isLight = document.body.classList.contains('light-theme');
+            
+            neuralCtx.strokeStyle = isLight ? '#94a3b8' : '#334155';
+            neuralCtx.setLineDash([5, 3]);
+            neuralCtx.lineWidth = 2;
+            neuralCtx.beginPath();
+            neuralCtx.moveTo(0, height * 0.5);
+            neuralCtx.lineTo(width, height * 0.5);
+            neuralCtx.stroke();
+            neuralCtx.setLineDash([]);
+            
+            neuralCtx.strokeStyle = color;
+            neuralCtx.lineWidth = 3;
+            neuralCtx.beginPath();
+            neuralCtx.moveTo(0, height * 0.7);
+            for (let x = 0; x < width; x++) {
+                const progress = x / width;
+                let y;
+                if (progress < 0.4) {
+                    y = height * 0.7 - Math.sin(progress * 10) * 20;
+                } else {
+                    const rise = (progress - 0.4) * 5;
+                    y = height * 0.5 - rise * 100;
+                    if (y < 50) y = 50;
+                }
+                neuralCtx.lineTo(x, y);
+            }
+            neuralCtx.stroke();
+            
+            neuralCtx.fillStyle = color;
+            neuralCtx.font = 'bold 14px Arial';
+            neuralCtx.textAlign = 'center';
+            neuralCtx.fillText('THRESHOLD CROSSING', width * 0.5, height * 0.4);
+        }
+        
+        function drawAmplification(color, width, height) {
+            neuralCtx.fillStyle = color + 'cc';
+            for (let i = 0; i < 5; i++) {
+                const x = width * 0.2 + i * (width * 0.15);
+                const y = height * 0.5;
+                
+                neuralCtx.beginPath();
+                neuralCtx.arc(x, y, 25, 0, Math.PI * 2);
+                neuralCtx.fill();
+                
+                neuralCtx.strokeStyle = color;
+                neuralCtx.lineWidth = 2;
+                for (let a = 0; a < Math.PI * 2; a += Math.PI / 6) {
+                    neuralCtx.beginPath();
+                    neuralCtx.moveTo(x + Math.cos(a) * 25, y + Math.sin(a) * 25);
+                    neuralCtx.lineTo(x + Math.cos(a) * 40, y + Math.sin(a) * 40);
+                    neuralCtx.stroke();
+                }
+            }
+            
+            neuralCtx.strokeStyle = color;
+            neuralCtx.lineWidth = 3;
+            neuralCtx.beginPath();
+            for (let x = 0; x < width; x++) {
+                const y = height * 0.7 - Math.sin(x * 0.05) * Math.sin(x * 0.01) * 80;
+                if (x === 0) neuralCtx.moveTo(x, y);
+                else neuralCtx.lineTo(x, y);
+            }
+            neuralCtx.stroke();
+            
+            neuralCtx.fillStyle = color;
+            neuralCtx.font = 'bold 14px Arial';
+            neuralCtx.textAlign = 'center';
+            neuralCtx.fillText('AMPLIFICATION', width * 0.5, 30);
+        }
+        
+        function drawStabilization(color, width, height) {
+            const isLight = document.body.classList.contains('light-theme');
+            const nodes = [
+                {x: width * 0.2, y: height * 0.3, label: 'Frontal'},
+                {x: width * 0.8, y: height * 0.3, label: 'Parietal'},
+                {x: width * 0.35, y: height * 0.65, label: 'Sensory'},
+                {x: width * 0.65, y: height * 0.65, label: 'Motor'},
+                {x: width * 0.5, y: height * 0.5, label: 'Thalamus'}
+            ];
+            
+            neuralCtx.strokeStyle = color + '60';
+            neuralCtx.lineWidth = 2;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    neuralCtx.beginPath();
+                    neuralCtx.moveTo(nodes[i].x, nodes[i].y);
+                    neuralCtx.lineTo(nodes[j].x, nodes[j].y);
+                    neuralCtx.stroke();
+                }
+            }
+            
+            nodes.forEach(node => {
+                neuralCtx.fillStyle = color;
+                neuralCtx.beginPath();
+                neuralCtx.arc(node.x, node.y, 12, 0, Math.PI * 2);
+                neuralCtx.fill();
+                
+                neuralCtx.fillStyle = isLight ? '#1e293b' : '#e2e8f0';
+                neuralCtx.font = '11px Arial';
+                neuralCtx.textAlign = 'center';
+                neuralCtx.fillText(node.label, node.x, node.y + 25);
+            });
+            
+            neuralCtx.strokeStyle = color + 'cc';
+            neuralCtx.lineWidth = 1;
+            for (let i = 0; i < 3; i++) {
+                neuralCtx.beginPath();
+                neuralCtx.arc(width * 0.5, height * 0.5, 40 + i * 25, 0, Math.PI * 2);
+                neuralCtx.stroke();
+            }
+            
+            neuralCtx.fillStyle = color;
+            neuralCtx.font = 'bold 14px Arial';
+            neuralCtx.textAlign = 'center';
+            neuralCtx.fillText('STABILIZATION', width * 0.5, 30);
+        }
+        
+        function drawGlobalBroadcast(color, width, height) {
+            neuralCtx.fillStyle = color + '20';
+            neuralCtx.strokeStyle = color + '80';
+            neuralCtx.lineWidth = 2;
+            
+            for (let i = 0; i < 16; i++) {
+                const angle = (i / 16) * Math.PI * 2;
+                const x = width * 0.5 + Math.cos(angle) * (width * 0.35);
+                const y = height * 0.5 + Math.sin(angle) * (height * 0.35);
+                
+                neuralCtx.beginPath();
+                neuralCtx.moveTo(width * 0.5, height * 0.5);
+                neuralCtx.lineTo(x, y);
+                neuralCtx.stroke();
+                
+                neuralCtx.beginPath();
+                neuralCtx.arc(x, y, 6, 0, Math.PI * 2);
+                neuralCtx.fill();
+            }
+            
+            neuralCtx.fillStyle = color;
+            neuralCtx.beginPath();
+            neuralCtx.arc(width * 0.5, height * 0.5, 20, 0, Math.PI * 2);
+            neuralCtx.fill();
+            
+            const isLight = document.body.classList.contains('light-theme');
+            neuralCtx.strokeStyle = isLight ? '#1e293b' : '#ffffff';
+            neuralCtx.lineWidth = 2.5;
+            neuralCtx.beginPath();
+            for (let x = width * 0.3; x < width * 0.7; x++) {
+                const progress = (x - width * 0.3) / (width * 0.4);
+                const y = height * 0.5 - Math.sin(progress * Math.PI) * 35;
+                if (x === width * 0.3) neuralCtx.moveTo(x, y);
+                else neuralCtx.lineTo(x, y);
+            }
+            neuralCtx.stroke();
+            
+            neuralCtx.fillStyle = isLight ? '#1e293b' : '#ffffff';
+            neuralCtx.font = 'bold 12px Arial';
+            neuralCtx.textAlign = 'center';
+            neuralCtx.fillText('P3b WAVE', width * 0.5, height * 0.5 - 50);
+            
+            neuralCtx.fillStyle = color;
+            neuralCtx.font = 'bold 14px Arial';
+            neuralCtx.fillText('GLOBAL BROADCAST', width * 0.5, 30);
+        }
+        
+        function drawFading(color, width, height) {
+            const gradient = neuralCtx.createRadialGradient(
+                width * 0.5, height * 0.5, 0,
+                width * 0.5, height * 0.5, width * 0.5
+            );
+            gradient.addColorStop(0, color + '80');
+            gradient.addColorStop(1, color + '00');
+            
+            neuralCtx.fillStyle = gradient;
+            neuralCtx.beginPath();
+            neuralCtx.arc(width * 0.5, height * 0.5, width * 0.5, 0, Math.PI * 2);
+            neuralCtx.fill();
+            
+            neuralCtx.strokeStyle = color + 'cc';
+            neuralCtx.lineWidth = 2;
+            neuralCtx.beginPath();
+            for (let x = 0; x < width; x++) {
+                const progress = x / width;
+                const amplitude = (1 - progress) * 40;
+                const y = height * 0.7 - Math.sin(x * 0.05) * amplitude;
+                if (x === 0) neuralCtx.moveTo(x, y);
+                else neuralCtx.lineTo(x, y);
+            }
+            neuralCtx.stroke();
+            
+            neuralCtx.fillStyle = color;
+            neuralCtx.font = 'bold 14px Arial';
+            neuralCtx.textAlign = 'center';
+            neuralCtx.fillText('REFRACTORY PERIOD', width * 0.5, 30);
+            
+            neuralCtx.fillStyle = '#34d399';
+            neuralCtx.beginPath();
+            neuralCtx.arc(width * 0.85, height * 0.85, 15, 0, Math.PI * 2);
+            neuralCtx.fill();
+            
+            const isLight = document.body.classList.contains('light-theme');
+            neuralCtx.strokeStyle = isLight ? '#1e293b' : '#0f172a';
+            neuralCtx.lineWidth = 2;
+            neuralCtx.beginPath();
+            neuralCtx.moveTo(width * 0.85 - 8, height * 0.85);
+            neuralCtx.lineTo(width * 0.85 + 8, height * 0.85);
+            neuralCtx.lineTo(width * 0.85, height * 0.85 + 8);
+            neuralCtx.closePath();
+            neuralCtx.stroke();
+        }
+        
+        function drawBrainNetwork(activity) {
+            const width = brainCanvas.width;
+            const height = brainCanvas.height;
+            const isLight = document.body.classList.contains('light-theme');
+            
+            brainCtx.clearRect(0, 0, width, height);
+            
+            const bgGradient = brainCtx.createLinearGradient(0, 0, 0, height);
+            if (isLight) {
+                bgGradient.addColorStop(0, 'rgba(241, 245, 249, 0.3)');
+                bgGradient.addColorStop(1, 'rgba(226, 232, 240, 0.5)');
+            } else {
+                bgGradient.addColorStop(0, 'rgba(7, 19, 38, 0.3)');
+                bgGradient.addColorStop(1, 'rgba(15, 23, 42, 0.5)');
+            }
+            brainCtx.fillStyle = bgGradient;
+            brainCtx.fillRect(0, 0, width, height);
+            
+            const nodes = [
+                { x: width * 0.25, y: height * 0.35, label: "Visual" },
+                { x: width * 0.3, y: height * 0.6, label: "Auditory" },
+                { x: width * 0.45, y: height * 0.4, label: "Sensory" },
+                { x: width * 0.5, y: height * 0.6, label: "Thalamus" },
+                { x: width * 0.7, y: height * 0.3, label: "Prefrontal" },
+                { x: width * 0.75, y: height * 0.65, label: "Parietal" }
+            ];
+            
+            brainCtx.strokeStyle = isLight ? 'rgba(30, 41, 59, 0.3)' : 'rgba(148, 163, 184, 0.3)';
+            brainCtx.lineWidth = 1;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    brainCtx.globalAlpha = activity * 0.7;
+                    brainCtx.beginPath();
+                    brainCtx.moveTo(nodes[i].x, nodes[i].y);
+                    brainCtx.lineTo(nodes[j].x, nodes[j].y);
+                    brainCtx.stroke();
+                }
+            }
+            brainCtx.globalAlpha = 1;
+            
+            nodes.forEach(node => {
+                const intensity = activity * 255;
+                const color = `rgb(${intensity}, ${50 + activity * 100}, ${255 - intensity * 0.5})`;
+                brainCtx.fillStyle = color;
+                brainCtx.beginPath();
+                brainCtx.arc(node.x, node.y, 18 + activity * 12, 0, Math.PI * 2);
+                brainCtx.fill();
+                
+                brainCtx.fillStyle = isLight ? '#1e293b' : '#e2e8f0';
+                brainCtx.font = '11px Arial';
+                brainCtx.textAlign = 'center';
+                brainCtx.fillText(node.label, node.x, node.y + 35);
+            });
+        }
+        
+        function drawEEG(phaseIndex) {
+            const width = eegCanvas.width;
+            const height = eegCanvas.height;
+            const isLight = document.body.classList.contains('light-theme');
+            
+            eegCtx.clearRect(0, 0, width, height);
+            
+            const bgGradient = eegCtx.createLinearGradient(0, 0, 0, height);
+            if (isLight) {
+                bgGradient.addColorStop(0, 'rgba(241, 245, 249, 0.3)');
+                bgGradient.addColorStop(1, 'rgba(226, 232, 240, 0.5)');
+            } else {
+                bgGradient.addColorStop(0, 'rgba(7, 19, 38, 0.3)');
+                bgGradient.addColorStop(1, 'rgba(15, 23, 42, 0.5)');
+            }
+            eegCtx.fillStyle = bgGradient;
+            eegCtx.fillRect(0, 0, width, height);
+            
+            eegCtx.strokeStyle = isLight ? 'rgba(30, 41, 59, 0.3)' : 'rgba(148, 163, 184, 0.2)';
+            eegCtx.lineWidth = 1;
+            eegCtx.beginPath();
+            eegCtx.moveTo(0, height * 0.5);
+            eegCtx.lineTo(width, height * 0.5);
+            eegCtx.stroke();
+            
+            eegCtx.strokeStyle = isLight ? '#2563eb' : '#34d399';
+            eegCtx.lineWidth = 2;
+            eegCtx.beginPath();
+            
+            const phase = phases[phaseIndex];
+            const scaleX = width / eegData.length;
+            
+            for (let i = 0; i < eegData.length; i++) {
+                const x = i * scaleX;
+                const amplitude = phaseIndex === 4 ? 1 : phase.activity * 0.7;
+                const y = height * 0.5 - eegData[i] * 25 * amplitude;
+                if (i === 0) eegCtx.moveTo(x, y);
+                else eegCtx.lineTo(x, y);
+            }
+            eegCtx.stroke();
+            
+            if (phaseIndex === 4) {
+                const p3bX = width * 0.5;
+                eegCtx.fillStyle = isLight ? '#dc2626' : '#fbbf24';
+                eegCtx.beginPath();
+                eegCtx.arc(p3bX, height * 0.5 - 50, 6, 0, Math.PI * 2);
+                eegCtx.fill();
+                
+                eegCtx.font = '12px Arial';
+                eegCtx.textAlign = 'center';
+                eegCtx.fillText('P3b (300-500ms)', p3bX, height * 0.5 - 65);
+            }
+            
+            eegCtx.fillStyle = isLight ? '#475569' : '#94a3b8';
+            eegCtx.font = '11px Arial';
+            eegCtx.textAlign = 'left';
+            eegCtx.fillText('-200ms', 5, height - 10);
+            eegCtx.textAlign = 'right';
+            eegCtx.fillText('700ms', width - 5, height - 10);
+            eegCtx.textAlign = 'center';
+            eegCtx.fillText('0ms', width * 0.22, height - 10);
+        }
+        
+        // =============================================
+        // Navigation Functions
+        // =============================================
+        function goToPhase(index) {
+            if (index >= 0 && index < phases.length) {
+                currentPhase = index;
+                updatePhaseDisplay(currentPhase);
+                updateNavigationButtons();
+            }
+        }
+
+        function nextPhase() {
+            if (currentPhase < phases.length - 1) {
+                goToPhase(currentPhase + 1);
+            } else if (loopMode) {
+                goToPhase(0);
+            }
+        }
+
+        function prevPhase() {
+            if (currentPhase > 0) {
+                goToPhase(currentPhase - 1);
+            }
+        }
+
+        function playAnimation() {
+            if (isPlaying) {
+                stopAnimation();
+                return;
+            }
+
+            setPlayState(true);
+            
+            function animate() {
+                if (currentPhase < phases.length - 1) {
+                    goToPhase(currentPhase + 1);
+                    playInterval = setTimeout(animate, 2000 / speedMultiplier);
+                } else if (loopMode) {
+                    goToPhase(0);
+                    playInterval = setTimeout(animate, 2000 / speedMultiplier);
+                } else {
+                    stopAnimation();
+                }
+            }
+
+            animate();
+        }
+
+        function stopAnimation() {
+            if (!isPlaying) return;
+            isPlaying = false;
+            setPlayState(false);
+            clearTimeout(playInterval);
+        }
+
+        function reset() {
+            stopAnimation();
+            goToPhase(0);
+        }
+
+        // =============================================
+        // Export Functions
+        // =============================================
+        function exportPNG() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = Math.max(neuralCanvas.width, brainCanvas.width);
+            tempCanvas.height = neuralCanvas.height + brainCanvas.height + eegCanvas.height + 40;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            const isLight = document.body.classList.contains('light-theme');
+            tempCtx.fillStyle = isLight ? '#f8fafc' : '#0f172a';
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            
+            tempCtx.drawImage(neuralCanvas, 0, 0);
+            tempCtx.drawImage(brainCanvas, 0, neuralCanvas.height + 20);
+            tempCtx.drawImage(eegCanvas, 0, neuralCanvas.height + brainCanvas.height + 40);
+            
+            const link = document.createElement('a');
+            link.download = `consciousness_phase_${currentPhase + 1}.png`;
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function exportSVG() {
+            const svg = `
+                <svg width="${neuralCanvas.width}" height="${neuralCanvas.height + brainCanvas.height + eegCanvas.height + 40}" xmlns="http://www.w3.org/2000/svg">
+                    <image href="${neuralCanvas.toDataURL()}" x="0" y="0" width="${neuralCanvas.width}" height="${neuralCanvas.height}"/>
+                    <image href="${brainCanvas.toDataURL()}" x="0" y="${neuralCanvas.height + 20}" width="${brainCanvas.width}" height="${brainCanvas.height}"/>
+                    <image href="${eegCanvas.toDataURL()}" x="0" y="${neuralCanvas.height + brainCanvas.height + 40}" width="${eegCanvas.width}" height="${eegCanvas.height}"/>
+                </svg>
+            `;
+            
+            const blob = new Blob([svg], { type: 'image/svg+xml' });
+            const link = document.createElement('a');
+            link.download = `consciousness_phase_${currentPhase + 1}.svg`;
+            link.href = URL.createObjectURL(blob);
+            link.click();
+        }
+
+        function exportCSV() {
+            const csv = 'Time (ms),Amplitude (µV)\n' + 
+                        eegData.map((v, i) => `${(i / eegData.length * 900) - 200},${v.toFixed(4)}`).join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.download = 'eeg_data_consciousness.csv';
+            link.href = URL.createObjectURL(blob);
+            link.click();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            drawAll();
+        }
+
+        // =============================================
+        // Event Listeners
+        // =============================================
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const loopBtn = document.getElementById('loopBtn');
+        const pngBtn = document.getElementById('pngBtn');
+        const svgBtn = document.getElementById('svgBtn');
+        const csvBtn = document.getElementById('csvBtn');
+        const themeBtn = document.getElementById('themeBtn');
+        const speedButtons = document.querySelectorAll('.speed-btn');
+        const speedSlider = document.getElementById('speedSlider');
+
+        prevBtn.addEventListener('click', prevPhase);
+        nextBtn.addEventListener('click', nextPhase);
+        playBtn.addEventListener('click', playAnimation);
+        resetBtn.addEventListener('click', reset);
+        loopBtn.addEventListener('click', () => {
+            loopMode = !loopMode;
+            updateLoopState();
+            updateNavigationButtons();
+        });
+
+        pngBtn.addEventListener('click', exportPNG);
+        svgBtn.addEventListener('click', exportSVG);
+        csvBtn.addEventListener('click', exportCSV);
+        themeBtn.addEventListener('click', toggleTheme);
+
+        speedButtons.forEach(button => {
+            button.addEventListener('click', () => applySpeedPreset(button.id));
+        });
+
+        speedSlider.addEventListener('input', () => {
+            const value = parseFloat(speedSlider.value);
+            setSpeed(value);
+            highlightSpeedButtonsByValue(value);
+        });
+
+        window.addEventListener('resize', () => {
+            initCanvases();
+        });
+
+        // =============================================
+        // Initialize
+        // =============================================
+        window.addEventListener('load', () => {
+            createTimelineMarkers();
+            initCanvases();
+            updatePhaseDisplay(0);
+            updateNavigationButtons();
+        });
+
+        function updateNavigationButtons() {
+            prevBtn.disabled = currentPhase === 0;
+            nextBtn.disabled = currentPhase === phases.length - 1;
+        }
+
+        function updateLoopState() {
+            loopBtn.classList.toggle('active', loopMode);
+        }
+
+        function setPlayState(isPlaying) {
+            playBtn.textContent = isPlaying ? '❚❚ Pause' : '▶ Play';
+        }
+
+        function applySpeedPreset(preset) {
+            speedButtons.forEach(b => b.classList.remove('active'));
+            document.getElementById(preset).classList.add('active');
+            
+            if (preset === 'slow') speedMultiplier = 0.5;
+            else if (preset === 'normal') speedMultiplier = 1.0;
+            else if (preset === 'fast') speedMultiplier = 2.0;
+            
+            speedSlider.value = speedMultiplier;
+            document.getElementById('speedDisplay').textContent = speedMultiplier.toFixed(1) + '×';
+        }
+
+        function setSpeed(value) {
+            speedMultiplier = value;
+            document.getElementById('speedDisplay').textContent = speedMultiplier.toFixed(1) + '×';
+        }
+
+        function highlightSpeedButtonsByValue(value) {
+            speedButtons.forEach(b => b.classList.remove('active'));
+            if (Math.abs(value - 0.5) < 0.05) document.getElementById('slow').classList.add('active');
+            else if (Math.abs(value - 1) < 0.05) document.getElementById('normal').classList.add('active');
+            else if (Math.abs(value - 2) < 0.05) document.getElementById('fast').classList.add('active');
+        }
+    </script>
+</body>
+</html>

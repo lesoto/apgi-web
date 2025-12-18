@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When Consciousness Turns On - Available Now</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f97316 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                        0 0 0 1px rgba(255, 255, 255, 0.05);
+            transform: translateY(0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .main-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 15px 15px -5px rgba(0, 0, 0, 0.08),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .title {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.02em;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.2); }
+        }
+        
+        .format-card {
+            background: white;
+            border: 2px solid #f3f4f6;
+            border-radius: 20px;
+            padding: 32px 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .format-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.03) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .format-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f97316, #fb923c);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .format-card:hover {
+            border-color: #fed7aa;
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .format-card:hover::after {
+            opacity: 1;
+        }
+        
+        .format-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .format-title {
+            color: #f97316;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+        }
+        
+        .platform-btn {
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.025em;
+        }
+        
+        .platform-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .platform-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .platform-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 12px -2px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .platform-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+        
+        .btn-secondary {
+            background: #f8fafc;
+            color: #1e293b;
+            border-color: #e2e8f0;
+        }
+        
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #475569;
+            border: 2px solid #e2e8f0;
+            font-weight: 700;
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .download-btn:hover::before {
+            left: 100%;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border-color: #f97316;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 12px -2px rgba(249, 115, 22, 0.2);
+        }
+        
+        .description-text {
+            color: #64748b;
+            line-height: 1.7;
+            font-size: 15px;
+            text-align: center;
+        }
+        
+        .highlight-link {
+            color: #f97316;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .highlight-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #f97316;
+            transition: width 0.3s ease;
+        }
+        
+        .highlight-link:hover::after {
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-container {
+                padding: 24px 16px;
+                margin: 8px;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .format-card {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen p-4">
+    <div class="main-container rounded-xl p-8 max-w-4xl w-full">
+        <div class="text-center mb-10">
+            <h1 class="title text-4xl md:text-5xl mb-4">WHEN CONSCIOUSNESS TURNS ON</h1>
+            <p class="text-xl text-gray-600 font-light mb-8">A Journey Through the Mind's Awakening</p>
+        </div>
+        
+        <div class="flex justify-center mb-10">
+            <div class="book-cover-container">
+                <div class="book-cover-placeholder bg-gradient-to-br from-purple-600 via-blue-600 to-orange-500 rounded-lg shadow-2xl w-48 h-72 flex items-center justify-center transform hover:scale-105 transition-transform duration-300">
+                    <div class="text-white text-center p-4">
+                        <div class="text-3xl mb-2">🧠</div>
+                        <div class="text-sm font-bold">WHEN<br/>CONSCIOUSNESS<br/>TURNS ON</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="title text-3xl md:text-4xl text-center mb-8">AVAILABLE NOW</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="format-card">
+                <h2 class="format-title text-2xl text-center mb-6">EBOOK</h2>
+                <div class="platform-grid grid grid-cols-2 gap-3 mb-6">
+                    <button class="platform-btn btn-primary flex items-center justify-center">
+                        <span class="mr-2">📚</span> APPLE
+                    </button>
+                    <button class="platform-btn btn-secondary flex items-center justify-center">
+                        <span class="mr-2">📱</span> KINDLE
+                    </button>
+                    <button class="platform-btn btn-secondary flex items-center justify-center">
+                        <span class="mr-2">🎭</span> GOOGLE
+                    </button>
+                    <button class="platform-btn btn-secondary flex items-center justify-center">
+                        <span class="mr-2">📚</span> KOBO
+                    </button>
+                </div>
+                <button class="download-btn w-full rounded-xl py-3 px-4 mb-6">
+                    EPUB DIRECT DOWNLOAD
+                </button>
+                <p class="description-text">
+                    Works great as an e-book, especially on color e-readers and tablets (the book has 300+ color drawings). The best ebook experience we've seen is Apple Books > iPad > sepia > vertical scroll.
+                </p>
+            </div>
+            <div class="format-card">
+                <h2 class="format-title text-2xl text-center mb-6">AUDIOBOOK</h2>
+                <div class="platform-grid grid grid-cols-2 gap-3 mb-6">
+                    <button class="platform-btn btn-primary flex items-center justify-center">
+                        <span class="mr-2">📚</span> APPLE
+                    </button>
+                    <button class="platform-btn btn-secondary flex items-center justify-center">
+                        <span class="mr-2">🎧</span> AUDIBLE
+                    </button>
+                    <button class="platform-btn btn-secondary flex items-center justify-center">
+                        <span class="mr-2">🎵</span> SPOTIFY
+                    </button>
+                    <button class="platform-btn btn-secondary flex items-center justify-center">
+                        <span class="mr-2">📚</span> KOBO
+                    </button>
+                </div>
+                <button class="download-btn w-full rounded-xl py-3 px-4 mb-6">
+                    MP3 DIRECT DOWNLOAD
+                </button>
+                <p class="description-text">
+                    Comes along with a <a href="#" class="highlight-link">website</a> with the book's most important drawings, labeled (I tell you throughout the book which drawing to go to look at). Also, I read the book myself, it was arduous.
+                </p>
+            </div>
+        </div>
+        
+        <div class="mt-12 p-8 bg-gradient-to-r from-purple-50 via-blue-50 to-orange-50 rounded-2xl border border-purple-100">
+            <h3 class="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-orange-600 bg-clip-text text-transparent">
+                About This Book
+            </h3>
+            <p class="description-text text-lg leading-relaxed max-w-3xl mx-auto">
+                "When Consciousness Turns On" explores the fascinating journey of how consciousness emerges and develops in the human mind. With over 300 color illustrations, this groundbreaking work takes readers through the intricate processes that awaken our awareness and shape our perception of reality.
+            </p>
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-500 italic">
+                    A comprehensive guide to understanding the nature of consciousness and the mind's remarkable capacity for self-awareness.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

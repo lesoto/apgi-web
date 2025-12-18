@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Liquid Neural Networks Visualization</title>
+    <style>
+        :root {
+            --white: #ffffff;
+            --black: #0f172a;
+            
+            /* Light Theme (default) */
+            --bg-primary: var(--white);
+            --bg-secondary: #f8fafc;
+            --text-primary: var(--black);
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --card-border: rgba(203, 213, 225, 0.4);
+            --nav-bg: rgba(255, 255, 255, 0.98);
+            --code-bg: #f1f5f9;
+            --code-text: var(--black);
+            
+            /* Accent Colors */
+            --gradient-start: #2563eb;
+            --gradient-mid: #7c3aed;
+            --gradient-end: #c026d3;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            
+            /* Panel */
+            --panel-bg: rgba(241, 245, 249, 0.9);
+            --panel-border: rgba(148, 163, 184, 0.4);
+            
+            /* Transitions */
+            --transition-theme: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Dark Theme */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --border-color: #334155;
+                --card-bg: rgba(30, 41, 59, 0.95);
+                --card-border: rgba(51, 65, 85, 0.5);
+                --nav-bg: rgba(15, 23, 42, 0.98);
+                --code-bg: #1e293b;
+                --code-text: #e2e8f0;
+                --panel-bg: rgba(30, 41, 59, 0.9);
+                --panel-border: rgba(51, 65, 85, 0.5);
+            }
+        }
+        
+        /* Force dark/light theme */
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --card-bg: rgba(30, 41, 59, 0.95);
+            --card-border: rgba(51, 65, 85, 0.5);
+            --nav-bg: rgba(15, 23, 42, 0.98);
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+            --panel-bg: rgba(30, 41, 59, 0.9);
+            --panel-border: rgba(51, 65, 85, 0.5);
+        }
+        
+        /* Light theme panel variables (when not dark) */
+        html:not(.dark) {
+            --panel-bg: rgba(241, 245, 249, 0.9);
+            --panel-border: rgba(148, 163, 184, 0.4);
+        }
+
+        /* Base Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            /* Font smoothing for better readability */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Smooth scrolling for modern browsers */
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition-theme);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: var(--gradient-start); /* Fallback for non-WebKit browsers */
+            font-weight: 800;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+        .node-pulse {
+            animation: pulse-ring 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+        .ignition-card {
+            transition: all 0.3s ease;
+            background: var(--card-bg) !important;
+            border: 1px solid var(--border-color) !important;
+        }
+        .ignition-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .liquid-panel {
+                padding: 1rem !important;
+            }
+            
+            .panel {
+                padding: 1rem !important;
+            }
+        }
+        
+        /* Hide content until theme is loaded */
+        body:not(.theme-loaded) {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s 0.1s, opacity 0.1s ease-out;
+        }
+        
+        body.theme-loaded {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0s, opacity 0.2s ease-in;
+        }
+        
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        
+        /* Panel styles */
+        .panel {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .phase-description {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        
+        /* Button styles */
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background: var(--accent-hover);
+        }
+        
+        /* Input styles */
+        input[type="range"] {
+            width: 120px;
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+    .liquid-networks-section {
+        margin-top: 30px;
+    }
+    
+    .liquid-panel {
+        background: var(--panel-bg);
+        border-radius: 20px;
+        padding: 25px;
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--panel-border);
+        margin-bottom: 30px;
+    }
+    
+    .light-theme .liquid-panel {
+        background: var(--panel-bg-light);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--panel-border-light);
+    }
+    
+    .liquid-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .liquid-title {
+        font-size: 2rem;
+        background: linear-gradient(90deg, #34d399, #60a5fa);
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+    }
+    
+    .light-theme .liquid-title {
+        background: linear-gradient(90deg, #059669, #2563eb);
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .liquid-subtitle {
+        color: #94a3b8;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .light-theme .liquid-subtitle {
+        color: #475569;
+    }
+    
+    .liquid-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .liquid-viz-container {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        background: rgba(7, 19, 38, 0.8);
+        min-height: 400px;
+    }
+    
+    .light-theme .liquid-viz-container {
+        background: rgba(241, 245, 249, 0.8);
+    }
+    
+    .liquid-canvas {
+        display: block;
+        width: 100%;
+        background: transparent;
+    }
+    
+    .liquid-legend {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 0.85rem;
+        border: 1px solid rgba(96, 165, 250, 0.3);
+    }
+    
+    .light-theme .liquid-legend {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(96, 165, 250, 0.5);
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+    
+    .legend-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .legend-color {
+        width: 20px;
+        height: 12px;
+        border-radius: 3px;
+    }
+    
+    .legend-fast {
+        background: #34d399;
+    }
+    
+    .legend-medium {
+        background: #60a5fa;
+    }
+    
+    .legend-slow {
+        background: #c084fc;
+    }
+    
+    .legend-ignition {
+        background: #fbbf24;
+    }
+    
+    .liquid-viz-small {
+        min-height: 250px;
+    }
+    
+    .phase-description-margin {
+        margin-top: 20px;
+    }
+    
+    .liquid-info-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    .info-card {
+        background: rgba(30, 41, 59, 0.5);
+        border-radius: 12px;
+        padding: 15px;
+        border-left: 3px solid #34d399;
+    }
+    
+    .light-theme .info-card {
+        background: rgba(241, 245, 249, 0.8);
+        border-left: 3px solid #059669;
+    }
+    
+    .info-card.precision {
+        border-left-color: #60a5fa;
+    }
+    
+    .light-theme .info-card.precision {
+        border-left-color: #2563eb;
+    }
+    
+    .info-card.ignition {
+        border-left-color: #f87171;
+    }
+    
+    .light-theme .info-card.ignition {
+        border-left-color: #dc2626;
+    }
+    
+    .info-card.adaptive {
+        border-left-color: #c084fc;
+    }
+    
+    .light-theme .info-card.adaptive {
+        border-left-color: #7c3aed;
+    }
+    
+    .info-card-title {
+        font-weight: bold;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        color: #60a5fa;
+    }
+    
+    .light-theme .info-card-title {
+        color: #2563eb;
+    }
+    
+    .info-card-content {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        opacity: 0.9;
+    }
+    
+    .liquid-controls {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(96, 165, 250, 0.2);
+    }
+    
+    .liquid-control-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .liquid-control-label {
+        font-size: 0.9rem;
+        color: #94a3b8;
+        font-weight: 600;
+    }
+    
+    .light-theme .liquid-control-label {
+        color: #475569;
+    }
+    
+    .precision-indicator {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        background: rgba(96, 165, 250, 0.2);
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #60a5fa;
+    }
+    
+    .light-theme .precision-indicator {
+        background: rgba(37, 99, 235, 0.15);
+        color: #2563eb;
+    }
+    
+    @media (max-width: 1100px) {
+        .liquid-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .liquid-info-panel {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .liquid-panel {
+            padding: 15px;
+            margin: 20px 10px;
+        }
+        
+        .liquid-grid {
+            gap: 20px;
+        }
+        
+        .liquid-controls {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+        
+        .liquid-control-group {
+            justify-content: space-between;
+        }
+        
+        .precision-indicator {
+            min-width: 50px;
+            text-align: center;
+        }
+    }
+    
+    /* Ensure proper spacing for main content */
+    main {
+        padding-top: 80px;
+        min-height: 100vh;
+    }
+    
+    /* Container styles */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+</style>
+
+</head>
+
+<body>
+      
+    <main>
+        <div class="container">
+            <section class="liquid-networks-section">
+    <div class="liquid-panel">
+        <div class="liquid-header">
+            <h2 class="liquid-title">Liquid Neural Networks: Computational Substrate of APGI</h2>
+            <p class="liquid-subtitle">
+                Time-continuous reservoir computing with adaptive temporal dynamics. Each node's response speed 
+                dynamically adjusts based on precision weighting—implementing APGI's core mechanism where 
+                high-precision interoceptive signals accelerate processing toward conscious ignition.
+            </p>
+        </div>
+        
+        <div class="liquid-grid">
+            <div class="panel">
+                <h3 class="panel-title">Reservoir Dynamics</h3>
+                <div class="liquid-viz-container">
+                    <canvas id="liquidReservoirCanvas" class="liquid-canvas"></canvas>
+                    <div class="liquid-legend">
+                        <div class="legend-item">
+                            <div class="legend-color legend-fast"></div>
+                            <span>Fast nodes (τ < 50ms)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-medium"></div>
+                            <span>Medium nodes (τ ≈ 100ms)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-slow"></div>
+                            <span>Slow nodes (τ > 150ms)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color legend-ignition"></div>
+                            <span>Ignition pulse</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="liquid-controls">
+                    <button id="triggerIgnition">⚡ Trigger Ignition</button>
+                    <button id="resetLiquid">↻ Reset</button>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3 class="panel-title">Time Constant Adaptation</h3>
+                <div class="liquid-viz-container">
+                    <canvas id="timeConstantCanvas" class="liquid-canvas"></canvas>
+                </div>
+                
+
+
+                <div class="liquid-controls">
+                    <div class="liquid-control-group">
+                        <span class="liquid-control-label">Interoceptive Precision:</span>
+                        <input type="range" id="precisionSlider" min="0" max="100" value="50" 
+                               aria-label="Interoceptive precision level" 
+                               title="Higher precision accelerates time constants">
+                        <span class="precision-indicator" id="precisionDisplay">0.50</span>
+                    </div>
+                </div>
+
+                
+                <div class="liquid-info-panel">
+                    <div class="info-card">
+                        <div class="info-card-title">⏱️ Adaptive Time Constants</div>
+                        <div class="info-card-content">
+                            Nodes adjust response speeds (τ) from 20ms to 200ms based on precision signals. 
+                            Higher precision → faster integration → rapid ignition.
+                        </div>
+                    </div>
+                    
+                    <div class="info-card precision">
+                        <div class="info-card-title">🎯 Precision Weighting</div>
+                        <div class="info-card-content">
+                            Interoceptive confidence directly modulates temporal dynamics. 
+                            Maps to APGI's precision-gated mechanism.
+                        </div>
+                    </div>
+                    
+                    <div class="info-card ignition">
+                        <div class="info-card-title">🔥 Phase Transition</div>
+                        <div class="info-card-content">
+                            When sufficient nodes synchronize within fast time constants, 
+                            ignition emerges as a phase transition in ODE systems.
+                        </div>
+                    </div>
+                    
+                    <div class="info-card adaptive">
+                        <div class="info-card-title">🧬 Biological Fidelity</div>
+                        <div class="info-card-content">
+                            Inspired by C. elegans (302 neurons). Decentralized computation 
+                            without centralized control—allostatic self-organization.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h3 class="panel-title">Signal Propagation Timeline</h3>
+            <div class="liquid-viz-container liquid-viz-small">
+                <canvas id="propagationCanvas" class="liquid-canvas"></canvas>
+            </div>
+            
+            <div class="phase-description phase-description-margin">
+                <strong>Watch how precision modulates propagation speed:</strong> Low precision (blue) shows sluggish, 
+                diffuse spreading typical of subliminal processing. High precision (green/yellow) demonstrates rapid, 
+                coherent propagation that reaches ignition threshold within 100-300ms—matching the temporal profile 
+                of conscious access. This is the computational implementation of APGI's core claim: consciousness 
+                is thermodynamically expensive because it requires high-precision, fast-timescale integration 
+                across distributed networks.
+            </div>
+        </div>
+    </div>
+</section>
+        </div>
+    </main>
+
+<script>
+// DOM Elements
+const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+// Initialize theme
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('theme-toggle');
+            
+    if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
+        html.setAttribute('data-theme', 'dark');
+        if (themeToggle) themeToggle.checked = true;
+    } else {
+        html.setAttribute('data-theme', 'light');
+        if (themeToggle) themeToggle.checked = false;
+    }
+            
+    // Mark theme as loaded
+    document.body.classList.add('theme-loaded');
+}
+
+// Toggle theme
+function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+            
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+            
+    // Dispatch event for any components that need to react to theme changes
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
+}  
+// Event listeners
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+});
+        
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+        if (e.matches) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }
+});
+</script>
+
+<script>
+// =============================================
+// Liquid Neural Networks Visualization
+// =============================================
+
+(function() {
+    'use strict';
+    
+    // Canvas references
+    const reservoirCanvas = document.getElementById('liquidReservoirCanvas');
+    const timeConstantCanvas = document.getElementById('timeConstantCanvas');
+    const propagationCanvas = document.getElementById('propagationCanvas');
+    
+    if (!reservoirCanvas || !timeConstantCanvas || !propagationCanvas) return;
+    
+    const reservoirCtx = reservoirCanvas.getContext('2d');
+    const timeConstantCtx = timeConstantCanvas.getContext('2d');
+    const propagationCtx = propagationCanvas.getContext('2d');
+    
+    // Control elements
+    const precisionSlider = document.getElementById('precisionSlider');
+    const precisionDisplay = document.getElementById('precisionDisplay');
+    const triggerButton = document.getElementById('triggerIgnition');
+    const resetButton = document.getElementById('resetLiquid');
+    
+    // State variables
+    let precision = 0.5;
+    let nodes = [];
+    let ignitionActive = false;
+    let ignitionTime = 0;
+    let animationFrame = null;
+    let propagationWave = [];
+    
+    // Constants
+    const NODE_COUNT = 80;
+    const BASE_TIME_CONSTANT_MIN = 20;  // ms
+    const BASE_TIME_CONSTANT_MAX = 200; // ms
+    const IGNITION_THRESHOLD = 0.75;
+    const PROPAGATION_SPEED = 2.5;
+    
+    // Node class
+    class LiquidNode {
+        constructor(x, y, baseTimeConstant) {
+            this.x = x;
+            this.y = y;
+            this.baseTimeConstant = baseTimeConstant;
+            this.timeConstant = baseTimeConstant;
+            this.activation = Math.random() * 0.2;
+            this.targetActivation = this.activation;
+            this.connections = [];
+        }
+        
+        updateTimeConstant(precision) {
+            // Higher precision = faster time constant (smaller τ)
+            const precisionFactor = 1 - (precision * 0.7);
+            this.timeConstant = this.baseTimeConstant * precisionFactor;
+        }
+        
+        update(dt) {
+            // Liquid state machine update with adaptive time constant
+            const tau = this.timeConstant / 1000; // Convert to seconds
+            const alpha = dt / tau;
+            
+            this.activation += alpha * (this.targetActivation - this.activation);
+            
+            // Add small noise
+            this.activation += (Math.random() - 0.5) * 0.02;
+            this.activation = Math.max(0, Math.min(1, this.activation));
+        }
+        
+        receiveInput(strength) {
+            this.targetActivation = Math.min(1, this.targetActivation + strength);
+        }
+        
+        getColor() {
+            const isLight = document.body.classList.contains('light-theme');
+            
+            if (this.timeConstant < 70) {
+                // Fast nodes - green
+                const intensity = Math.floor(this.activation * 255);
+                return isLight 
+                    ? `rgba(5, 150, 105, ${this.activation})` 
+                    : `rgba(52, 211, 153, ${this.activation})`;
+            } else if (this.timeConstant < 130) {
+                // Medium nodes - blue
+                const intensity = Math.floor(this.activation * 255);
+                return isLight 
+                    ? `rgba(37, 99, 235, ${this.activation})` 
+                    : `rgba(96, 165, 250, ${this.activation})`;
+            } else {
+                // Slow nodes - purple
+                const intensity = Math.floor(this.activation * 255);
+                return isLight 
+                    ? `rgba(124, 58, 237, ${this.activation})` 
+                    : `rgba(192, 132, 252, ${this.activation})`;
+            }
+        }
+    }
+    
+    // Initialize network
+    function initializeNetwork() {
+        nodes = [];
+        const width = reservoirCanvas.width;
+        const height = reservoirCanvas.height;
+        
+        for (let i = 0; i < NODE_COUNT; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const baseTC = BASE_TIME_CONSTANT_MIN + 
+                          Math.random() * (BASE_TIME_CONSTANT_MAX - BASE_TIME_CONSTANT_MIN);
+            nodes.push(new LiquidNode(x, y, baseTC));
+        }
+        
+        // Create sparse connections
+        nodes.forEach(node => {
+            const connectionCount = 5 + Math.floor(Math.random() * 8);
+            for (let i = 0; i < connectionCount; i++) {
+                const target = nodes[Math.floor(Math.random() * nodes.length)];
+                if (target !== node) {
+                    node.connections.push(target);
+                }
+            }
+        });
+    }
+    
+    // Trigger ignition event
+    function triggerIgnition() {
+        if (ignitionActive) return;
+        
+        ignitionActive = true;
+        ignitionTime = 0;
+        propagationWave = [];
+        
+        // Start with a few highly activated nodes
+        for (let i = 0; i < 5; i++) {
+            const node = nodes[Math.floor(Math.random() * nodes.length)];
+            node.receiveInput(0.8);
+            propagationWave.push({
+                x: node.x,
+                y: node.y,
+                radius: 0,
+                alpha: 1
+            });
+        }
+    }
+    
+    // Update simulation
+    function updateSimulation(dt) {
+        // Update all nodes
+        nodes.forEach(node => {
+            node.updateTimeConstant(precision);
+            node.update(dt);
+            
+            // Propagate activation if above threshold
+            if (node.activation > 0.5) {
+                node.connections.forEach(target => {
+                    const strength = 0.1 * node.activation;
+                    target.receiveInput(strength);
+                });
+            }
+        });
+        
+        // Update ignition timer and waves
+        if (ignitionActive) {
+            ignitionTime += dt;
+            
+            // Add new wave centers from highly active nodes
+            if (Math.random() < 0.1 * precision) {
+                const activeNodes = nodes.filter(n => n.activation > 0.7);
+                if (activeNodes.length > 0) {
+                    const node = activeNodes[Math.floor(Math.random() * activeNodes.length)];
+                    propagationWave.push({
+                        x: node.x,
+                        y: node.y,
+                        radius: 0,
+                        alpha: 1
+                    });
+                }
+            }
+            
+            // Update propagation waves
+            propagationWave = propagationWave.filter(wave => {
+                wave.radius += PROPAGATION_SPEED * (1 + precision);
+                wave.alpha -= 0.01;
+                return wave.alpha > 0;
+            });
+            
+            if (ignitionTime > 2000) {
+                ignitionActive = false;
+            }
+        }
+        
+        // Decay activations slowly
+        nodes.forEach(node => {
+            node.targetActivation *= 0.98;
+        });
+    }
+    
+    // Draw reservoir visualization
+    function drawReservoir() {
+        const width = reservoirCanvas.width;
+        const height = reservoirCanvas.height;
+        const isLight = document.body.classList.contains('light-theme');
+        
+        reservoirCtx.clearRect(0, 0, width, height);
+        
+        // Background
+        const bgGradient = reservoirCtx.createLinearGradient(0, 0, 0, height);
+        if (isLight) {
+            bgGradient.addColorStop(0, 'rgba(241, 245, 249, 0.3)');
+            bgGradient.addColorStop(1, 'rgba(226, 232, 240, 0.5)');
+        } else {
+            bgGradient.addColorStop(0, 'rgba(7, 19, 38, 0.3)');
+            bgGradient.addColorStop(1, 'rgba(15, 23, 42, 0.5)');
+        }
+        reservoirCtx.fillStyle = bgGradient;
+        reservoirCtx.fillRect(0, 0, width, height);
+        
+        // Draw connections
+        reservoirCtx.globalAlpha = 0.1;
+        nodes.forEach(node => {
+            node.connections.forEach(target => {
+                reservoirCtx.strokeStyle = isLight ? '#475569' : '#94a3b8';
+                reservoirCtx.lineWidth = 0.5;
+                reservoirCtx.beginPath();
+                reservoirCtx.moveTo(node.x, node.y);
+                reservoirCtx.lineTo(target.x, target.y);
+                reservoirCtx.stroke();
+            });
+        });
+        reservoirCtx.globalAlpha = 1;
+        
+        // Draw propagation waves
+        if (ignitionActive) {
+            propagationWave.forEach(wave => {
+                const gradient = reservoirCtx.createRadialGradient(
+                    wave.x, wave.y, 0,
+                    wave.x, wave.y, wave.radius
+                );
+                gradient.addColorStop(0, `rgba(251, 191, 36, ${wave.alpha * 0.4})`);
+                gradient.addColorStop(1, `rgba(251, 191, 36, 0)`);
+                
+                reservoirCtx.fillStyle = gradient;
+                reservoirCtx.beginPath();
+                reservoirCtx.arc(wave.x, wave.y, wave.radius, 0, Math.PI * 2);
+                reservoirCtx.fill();
+            });
+        }
+        
+        // Draw nodes
+        nodes.forEach(node => {
+            const size = 4 + node.activation * 6;
+            
+            // Glow effect for highly active nodes
+            if (node.activation > 0.6) {
+                const glowGradient = reservoirCtx.createRadialGradient(
+                    node.x, node.y, 0,
+                    node.x, node.y, size * 2
+                );
+                glowGradient.addColorStop(0, node.getColor());
+                glowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                
+                reservoirCtx.fillStyle = glowGradient;
+                reservoirCtx.beginPath();
+                reservoirCtx.arc(node.x, node.y, size * 2, 0, Math.PI * 2);
+                reservoirCtx.fill();
+            }
+            
+            reservoirCtx.fillStyle = node.getColor();
+            reservoirCtx.beginPath();
+            reservoirCtx.arc(node.x, node.y, size, 0, Math.PI * 2);
+            reservoirCtx.fill();
+            
+            // Draw ring for active nodes
+            if (node.activation > 0.7) {
+                reservoirCtx.strokeStyle = '#fbbf24';
+                reservoirCtx.lineWidth = 2;
+                reservoirCtx.beginPath();
+                reservoirCtx.arc(node.x, node.y, size + 3, 0, Math.PI * 2);
+                reservoirCtx.stroke();
+            }
+        });
+    }
+    
+    // Draw time constant distribution
+    function drawTimeConstants() {
+        const width = timeConstantCanvas.width;
+        const height = timeConstantCanvas.height;
+        const isLight = document.body.classList.contains('light-theme');
+        
+        timeConstantCtx.clearRect(0, 0, width, height);
+        
+        // Background
+        const bgGradient = timeConstantCtx.createLinearGradient(0, 0, 0, height);
+        if (isLight) {
+            bgGradient.addColorStop(0, 'rgba(241, 245, 249, 0.3)');
+            bgGradient.addColorStop(1, 'rgba(226, 232, 240, 0.5)');
+        } else {
+            bgGradient.addColorStop(0, 'rgba(7, 19, 38, 0.3)');
+            bgGradient.addColorStop(1, 'rgba(15, 23, 42, 0.5)');
+        }
+        timeConstantCtx.fillStyle = bgGradient;
+        timeConstantCtx.fillRect(0, 0, width, height);
+        
+        // Create histogram
+        const bins = 20;
+        const binSize = (BASE_TIME_CONSTANT_MAX - BASE_TIME_CONSTANT_MIN) / bins;
+        const histogram = new Array(bins).fill(0);
+        
+        nodes.forEach(node => {
+            const binIndex = Math.floor((node.timeConstant - BASE_TIME_CONSTANT_MIN) / binSize);
+            if (binIndex >= 0 && binIndex < bins) {
+                histogram[binIndex]++;
+            }
+        });
+        
+        const maxCount = Math.max(...histogram);
+        const barWidth = width / bins;
+        const heightScale = (height - 60) / maxCount;
+        
+        // Draw bars
+        histogram.forEach((count, i) => {
+            const x = i * barWidth;
+            const barHeight = count * heightScale;
+            const y = height - 40 - barHeight;
+            
+            const tc = BASE_TIME_CONSTANT_MIN + i * binSize + binSize / 2;
+            let color;
+            if (tc < 70) {
+                color = isLight ? 'rgba(5, 150, 105, 0.7)' : 'rgba(52, 211, 153, 0.7)';
+            } else if (tc < 130) {
+                color = isLight ? 'rgba(37, 99, 235, 0.7)' : 'rgba(96, 165, 250, 0.7)';
+            } else {
+                color = isLight ? 'rgba(124, 58, 237, 0.7)' : 'rgba(192, 132, 252, 0.7)';
+            }
+            
+            timeConstantCtx.fillStyle = color;
+            timeConstantCtx.fillRect(x + 1, y, barWidth - 2, barHeight);
+        });
+        
+        // Draw axes
+        timeConstantCtx.strokeStyle = isLight ? '#475569' : '#94a3b8';
+        timeConstantCtx.lineWidth = 2;
+        timeConstantCtx.beginPath();
+        timeConstantCtx.moveTo(30, height - 40);
+        timeConstantCtx.lineTo(width - 10, height - 40);
+        timeConstantCtx.stroke();
+        
+        // Labels
+        timeConstantCtx.fillStyle = isLight ? '#475569' : '#94a3b8';
+        timeConstantCtx.font = '11px Arial';
+        timeConstantCtx.textAlign = 'center';
+        
+        timeConstantCtx.fillText('20ms', 30, height - 20);
+        timeConstantCtx.fillText('110ms', width / 2, height - 20);
+        timeConstantCtx.fillText('200ms', width - 30, height - 20);
+        
+        timeConstantCtx.textAlign = 'left';
+        timeConstantCtx.fillText('Time Constant Distribution', 10, 20);
+        
+        // Precision effect indicator
+        timeConstantCtx.fillStyle = '#60a5fa';
+        timeConstantCtx.font = 'bold 12px Arial';
+        timeConstantCtx.textAlign = 'center';
+        timeConstantCtx.fillText(
+            `Precision: ${precision.toFixed(2)} → Mean τ: ${calculateMeanTimeConstant().toFixed(0)}ms`,
+            width / 2,
+            40
+        );
+    }
+    
+    // Draw propagation timeline
+    function drawPropagation() {
+        const width = propagationCanvas.width;
+        const height = propagationCanvas.height;
+        const isLight = document.body.classList.contains('light-theme');
+        
+        propagationCtx.clearRect(0, 0, width, height);
+        
+        // Background
+        const bgGradient = propagationCtx.createLinearGradient(0, 0, 0, height);
+        if (isLight) {
+            bgGradient.addColorStop(0, 'rgba(241, 245, 249, 0.3)');
+            bgGradient.addColorStop(1, 'rgba(226, 232, 240, 0.5)');
+        } else {
+            bgGradient.addColorStop(0, 'rgba(7, 19, 38, 0.3)');
+            bgGradient.addColorStop(1, 'rgba(15, 23, 42, 0.5)');
+        }
+        propagationCtx.fillStyle = bgGradient;
+        propagationCtx.fillRect(0, 0, width, height);
+        
+        // Draw timeline axis
+        propagationCtx.strokeStyle = isLight ? '#475569' : '#94a3b8';
+        propagationCtx.lineWidth = 2;
+        propagationCtx.beginPath();
+        propagationCtx.moveTo(50, height - 30);
+        propagationCtx.lineTo(width - 50, height - 30);
+        propagationCtx.stroke();
+        
+        // Time markers
+        const timePoints = [0, 100, 200, 300, 400, 500];
+        propagationCtx.font = '11px Arial';
+        propagationCtx.textAlign = 'center';
+        propagationCtx.fillStyle = isLight ? '#475569' : '#94a3b8';
+        
+        timePoints.forEach(t => {
+            const x = 50 + (t / 500) * (width - 100);
+            propagationCtx.beginPath();
+            propagationCtx.moveTo(x, height - 30);
+            propagationCtx.lineTo(x, height - 25);
+            propagationCtx.stroke();
+            propagationCtx.fillText(`${t}ms`, x, height - 10);
+        });
+        
+        // Calculate and draw propagation curve
+        const curve = [];
+        for (let t = 0; t <= 500; t += 5) {
+            const x = 50 + (t / 500) * (width - 100);
+            
+            // Activation grows with precision-modulated time constant
+            const effectiveTC = 150 * (1 - precision * 0.7);
+            const activation = 1 - Math.exp(-t / effectiveTC);
+            
+            const y = height - 30 - (activation * (height - 60));
+            curve.push({ x, y, activation });
+        }
+        
+        // Draw curve
+        propagationCtx.strokeStyle = precision < 0.3 ? '#60a5fa' : 
+                                     precision < 0.7 ? '#34d399' : '#fbbf24';
+        propagationCtx.lineWidth = 3;
+        propagationCtx.beginPath();
+        curve.forEach((point, i) => {
+            if (i === 0) propagationCtx.moveTo(point.x, point.y);
+            else propagationCtx.lineTo(point.x, point.y);
+        });
+        propagationCtx.stroke();
+        
+        // Draw ignition threshold line
+        const thresholdY = height - 30 - (IGNITION_THRESHOLD * (height - 60));
+        propagationCtx.strokeStyle = '#f87171';
+        propagationCtx.setLineDash([5, 5]);
+        propagationCtx.lineWidth = 2;
+        propagationCtx.beginPath();
+        propagationCtx.moveTo(50, thresholdY);
+        propagationCtx.lineTo(width - 50, thresholdY);
+        propagationCtx.stroke();
+        propagationCtx.setLineDash([]);
+        
+        // Label
+        propagationCtx.fillStyle = '#f87171';
+        propagationCtx.font = 'bold 11px Arial';
+        propagationCtx.textAlign = 'right';
+        propagationCtx.fillText('Ignition Threshold', width - 55, thresholdY - 5);
+        
+        // Title
+        propagationCtx.fillStyle = isLight ? '#1e293b' : '#e2e8f0';
+        propagationCtx.font = 'bold 14px Arial';
+        propagationCtx.textAlign = 'center';
+        propagationCtx.fillText('Network Activation Over Time', width / 2, 25);
+    }
+    
+    // Helper function
+    function calculateMeanTimeConstant() {
+        const sum = nodes.reduce((acc, node) => acc + node.timeConstant, 0);
+        return sum / nodes.length;
+    }
+    
+    // Animation loop
+    let lastTime = performance.now();
+    function animate(currentTime) {
+        const dt = (currentTime - lastTime) / 1000; // Convert to seconds
+        lastTime = currentTime;
+        
+        updateSimulation(dt);
+        drawReservoir();
+        drawTimeConstants();
+        drawPropagation();
+        
+        animationFrame = requestAnimationFrame(animate);
+    }
+    
+    // Event handlers
+    precisionSlider.addEventListener('input', () => {
+        precision = parseFloat(precisionSlider.value) / 100;
+        precisionDisplay.textContent = precision.toFixed(2);
+    });
+    
+    triggerButton.addEventListener('click', triggerIgnition);
+    
+    resetButton.addEventListener('click', () => {
+        ignitionActive = false;
+        nodes.forEach(node => {
+            node.activation = Math.random() * 0.2;
+            node.targetActivation = node.activation;
+        });
+    });
+    
+    // Initialization
+    function initCanvases() {
+        reservoirCanvas.width = reservoirCanvas.offsetWidth;
+        reservoirCanvas.height = 400;
+        
+        timeConstantCanvas.width = timeConstantCanvas.offsetWidth;
+        timeConstantCanvas.height = 400;
+        
+        propagationCanvas.width = propagationCanvas.offsetWidth;
+        propagationCanvas.height = 250;
+        
+        if (nodes.length === 0) {
+            initializeNetwork();
+        }
+    }
+    
+    window.addEventListener('resize', initCanvases);
+    window.addEventListener('load', () => {
+        initCanvases();
+        animate(performance.now());
+    });
+    
+    // Start immediately if page already loaded
+    if (document.readyState === 'complete') {
+        initCanvases();
+        animate(performance.now());
+    }
+})();
+</script>
+
+</body>
+</html>
