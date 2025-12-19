@@ -13,7 +13,6 @@
 - [Python Implementations](#python-implementations)
 - [Assets](#assets)
 - [Getting Started](#getting-started)
-- [Technologies Used](#technologies-used)
 
 ---
 
@@ -28,22 +27,6 @@ The APGI Framework website presents a novel theoretical framework for understand
 - Python implementation of APGI networks using Liquid Time-Constant Networks
 - Dashboard system for personalized consciousness profiles
 - Book promotion and educational content
-
----
-
-## Project Structure
-
-```
-apgi-web/
-├── *.html                          # Main HTML pages (root level)
-├── images/                         # Visual assets and diagrams
-├── liquid-networks/                # Python implementations and visualizations
-│   ├── APGI-Implementation.py
-│   ├── APGI_Liquid_Network.py
-│   └── *.html                      # Network visualizations
-├── .gitignore                      # Git ignore configuration
-└── README.md                       # This file
-```
 
 ---
 
@@ -530,12 +513,6 @@ Placeholder image for development.
 
 ## Getting Started
 
-### Prerequisites
-
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- For Python implementations: Python 3.8+, PyTorch, NumPy
-- Local web server (optional, for development)
-
 ### Running the Website Locally
 
 #### Option 1: Direct File Opening
@@ -565,8 +542,6 @@ Using Node.js http-server:
 ```bash
 npx http-server -p 8000
 ```
-
-### Running Python Implementations
 
 #### Setup
 ```bash
@@ -598,76 +573,6 @@ python APGI-Implementation.py
   - Precision-surprise formula correctness
   - Phase transition smoothness
   - Metabolic cost scaling
-
----
-
-## Technologies Used
-
-### Frontend
-- **HTML5** - Semantic markup
-- **CSS3** - Modern styling with CSS Grid, Flexbox, animations
-- **JavaScript (ES6+)** - Interactive functionality
-- **SVG** - Vector graphics and visualizations
-- **Canvas API** - Particle animations and dynamic graphics
-
-### Libraries & Frameworks
-- **Chart.js** - Data visualization (radar charts, line charts, bar charts)
-- **Gauge Chart** - Gauge visualizations for ignition indicators
-- **TailwindCSS** - Utility-first CSS framework (APGI-Paper.html)
-- **Lucide Icons** - Icon system
-- **Font Awesome** - Additional icon set
-
-### Python Stack
-- **PyTorch** - Deep learning framework for neural networks
-- **NumPy** - Numerical computing
-- **Python 3.8+** - Core language
-
-### Design Patterns
-- **Responsive Design** - Mobile-first approach
-- **Progressive Enhancement** - Graceful degradation
-- **Component-Based Architecture** - Reusable UI components
-- **Dark/Light Theme Support** - User preference adaptation
-- **Accessibility (a11y)** - ARIA labels, keyboard navigation, skip links
-
-### Mathematical Foundations
-- **Ordinary Differential Equations (ODEs)** - Neural dynamics modeling
-- **Bayesian Inference** - Predictive processing
-- **Free Energy Principle** - Thermodynamic constraints
-- **Phase Transition Dynamics** - Ignition mechanisms
-- **Hierarchical Predictive Coding** - Multi-level inference
-
----
-
-## File Summary Table
-
-| File | Type | Lines | Purpose |
-|------|------|-------|---------|
-| **Home.html** | HTML/JS | 995 | Landing page with quiz |
-| **APGI-Paper.html** | HTML/JS | 1,280 | Academic framework presentation |
-| **Dashboard.html** | HTML/JS | 1,045 | Interactive user dashboard |
-| **Dashboard-Acad.html** | HTML | 1,045 | Dashboard design specification |
-| **Assessment.html** | HTML | ~800 | Full consciousness assessment |
-| **Assessment-OnePage.html** | HTML | ~600 | Single-page quiz version |
-| **Quiz.html** | HTML/JS | 100+ | Standalone quiz component |
-| **Book-Outline.html** | HTML | 100+ | Book table of contents |
-| **Book-Available-Now.html** | HTML | 100+ | Book landing page |
-| **Profile.html** | HTML | ~400 | User profile management |
-| **Consciousness-Visualization.html** | HTML/JS | ~600 | Interactive consciousness viz |
-| **Neuromoduratory-Cascade.html** | HTML/JS | ~500 | Neuromodulator visualization |
-| **UI-Library.html** | HTML | ~800 | Component library |
-| **UI-Library-Short.html** | HTML | ~400 | Condensed component library |
-| **UI-Library-Complete.html** | HTML | ~1,200 | Full component documentation |
-| **Styleguide.html** | HTML | ~500 | Design system guide |
-| **Leftovers.html** | HTML | ~300 | Deprecated features archive |
-| **APGI-Implementation.py** | Python | 1,620 | PyTorch APGI network |
-| **APGI_Liquid_Network.py** | Python | 25,000+ | Extended implementation |
-| **Liquid-Paper.html** | HTML | ~1,500 | LTC network paper |
-| **Liquid-Presentation.html** | HTML | ~800 | LTC presentation v1 |
-| **Liquid-Presentation-2.html** | HTML | ~900 | LTC presentation v2 |
-| **Liquid-Networks-Visualization.html** | HTML/JS | ~700 | Interactive LTC viz |
-| **apgi_visualization.html** | HTML/JS | ~800 | APGI network visualization |
-
-**Total:** 24 HTML files, 2 Python files, 5 images, 1 README
 
 ---
 
@@ -707,79 +612,3 @@ Based on quiz results, users are classified into five archetypes:
 5. **The Intuitive** - Low threshold, high interoception, high somatic bias (body-aware, introspective)
 
 ---
-
-## Development Notes
-
-### Code Organization
-- Self-contained HTML files with embedded CSS and JavaScript
-- Minimal external dependencies
-- Progressive enhancement approach
-- Mobile-first responsive design
-
-### Browser Compatibility
-- Modern browsers (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
-- CSS Grid and Flexbox support required
-- JavaScript ES6+ features used
-- SVG and Canvas API support needed
-
-### Performance Considerations
-- Particle animations optimized with requestAnimationFrame
-- Lazy loading for images
-- Debounced scroll listeners
-- Optimized Chart.js rendering
-
-### Future Enhancements
-- Backend API integration for data persistence
-- User authentication and profiles
-- Real-time collaborative features
-- Mobile app versions
-- Advanced analytics and tracking
-- A/B testing framework
-- Internationalization (i18n)
-
----
-
-## Research Context
-
-The APGI Framework integrates multiple streams of neuroscience research:
-
-- **Predictive Processing** (Friston, Clark, Hohwy)
-- **Global Workspace Theory** (Dehaene, Changeux, Baars)
-- **Interoceptive Inference** (Seth, Barrett, Craig)
-- **Free Energy Principle** (Friston)
-- **Thermodynamic Brain Theory** (Sengupta, Stemmler, Friston)
-- **Liquid Time-Constant Networks** (Hasani et al., 2021)
-
-### Key Publications Referenced
-- Hasani, R., et al. (2021). Liquid Time-Constant Networks. AAAI.
-- Friston, K. (2010). The free-energy principle: a unified brain theory? Nature Reviews Neuroscience.
-- Dehaene, S., & Changeux, J. P. (2011). Experimental and theoretical approaches to conscious processing. Neuron.
-
----
-
-## License
-
-All content © 2025 APGI Framework Research Consortium.
-
-Academic use permitted under CC BY-NC-SA 4.0 license.
-
----
-
-## Contact & Collaboration
-
-For research collaboration inquiries:
-- Email: apgi.framework@institution.edu
-- GitHub: (Repository link)
-- Website: (Main site URL)
-
----
-
-## Acknowledgments
-
-This project integrates theoretical work from multiple research domains including computational neuroscience, predictive processing, thermodynamics, and machine learning. We acknowledge the foundational contributions of Karl Friston, Stanislas Dehaene, Anil Seth, and numerous other researchers in consciousness science.
-
----
-
-**Last Updated:** 2025-12-18
-**Version:** 1.0.0
-**Status:** Active Development
