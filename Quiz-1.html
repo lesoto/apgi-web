@@ -1,0 +1,3702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Consciousness Architecture Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js radar chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- For gauges -->
+    <script src="https://cdn.jsdelivr.net/npm/gauge-chart@0.6.0/dist/bundle.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #6b9ac4;
+            --light: #f0f4f8;
+            --dark: #2d3748;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s ease;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        [data-theme="dark"] {
+            --primary: #6b9ac4;
+            --secondary: #4a6fa5;
+            --accent: #8bb4d8;
+            --light: #2d3748;
+            --dark: #f0f4f8;
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --border-color: #4a5568;
+            --card-bg: #2d3748;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding-bottom: 60px;
+            transition: var(--transition);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: slideInDown 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto 25px;
+            animation: slideInUp 0.8s ease-out 0.2s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 0.95;
+                transform: translateY(0);
+            }
+        }
+        
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 30px;
+            text-align: left;
+            font-size: 0.95rem;
+            animation: slideInUp 0.8s ease-out 0.4s both;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .theme-toggle:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .theme-toggle i {
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        [data-theme="dark"] .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .quiz-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .quiz-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .quiz-section:hover::before {
+            left: 100%;
+        }
+        
+        .quiz-section:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--border-color);
+            position: relative;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .section-icon {
+            background: var(--gradient-primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-right: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        .section-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .question {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .question:last-of-type {
+            border-bottom: none;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--dark);
+            line-height: 1.6;
+            position: relative;
+            padding-left: 35px;
+        }
+        
+        .question-text::before {
+            content: attr(data-question-number);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--gradient-primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            background: var(--card-bg);
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option:hover {
+            border-color: var(--accent);
+            background: var(--bg-secondary);
+            transform: translateX(8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+        
+        .option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--gradient-primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            animation: checkmark 0.3s ease-out;
+        }
+        
+        @keyframes checkmark {
+            from {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        .option-letter {
+            background: linear-gradient(135deg, var(--border-color), var(--text-secondary));
+            color: var(--dark);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 18px;
+            flex-shrink: 0;
+            transition: var(--transition);
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option.selected .option-letter {
+            background: var(--gradient-primary);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .option-content {
+            flex-grow: 1;
+        }
+        
+        .option-text {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .option-note {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(-1px) scale(1.01);
+        }
+        
+        button:disabled {
+            background: linear-gradient(135deg, #a0aec0, #cbd5e0);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0.6;
+        }
+        
+        button:disabled:hover {
+            transform: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        button.secondary {
+            background: linear-gradient(135deg, var(--border-color), var(--text-secondary));
+            color: var(--dark);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button.secondary:hover {
+            background: linear-gradient(135deg, #cbd5e0, var(--text-secondary));
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: linear-gradient(90deg, var(--border-color), var(--text-secondary));
+            border-radius: 8px;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6));
+            border-radius: 0 8px 8px 0;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { opacity: 0.6; }
+            to { opacity: 1; }
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .results-container {
+            display: none;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 50px;
+            margin-top: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideInUp 0.8s ease-out;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .results-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .results-title {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-name {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Visualization Tabs */
+        .tabs-container {
+            margin-top: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--border-color);
+            padding-bottom: 20px;
+            position: relative;
+        }
+        
+        .tabs::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .tab {
+            padding: 14px 28px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .tab:hover::before {
+            left: 100%;
+        }
+        
+        .tab:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            min-height: 450px;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            text-align: center;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .chart-description {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .multi-chart-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .mini-chart {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .mini-chart-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .gauge-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+        
+        .heatmap-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .heatmap-cell {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .heatmap-label {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-table th {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .data-table tr:hover {
+            background-color: var(--bg-secondary);
+        }
+        
+        .profile-details {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .profile-section {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .profile-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .profile-section-title {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+        
+        .profile-section-title i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .profile-subsection {
+            margin-bottom: 25px;
+        }
+
+        .profile-subsection:last-child {
+            margin-bottom: 0;
+        }
+
+        .profile-subsection-title {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .profile-section ul {
+            margin: 12px 0 0 22px;
+        }
+        
+        .strengths-list, .vulnerabilities-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .strengths-list li, .vulnerabilities-list li {
+            padding: 12px 0;
+            padding-left: 40px;
+            position: relative;
+            margin-bottom: 8px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding-right: 15px;
+            transition: var(--transition);
+        }
+        
+        .strengths-list li:hover, .vulnerabilities-list li:hover {
+            transform: translateX(5px);
+            background: var(--border-color);
+        }
+        
+        .strengths-list li:before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(56, 161, 105, 0.3);
+        }
+        
+        .vulnerabilities-list li:before {
+            content: '⚠';
+            color: var(--warning);
+            font-weight: bold;
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(214, 158, 46, 0.3);
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 40px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+                margin-bottom: 12px;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }
+            
+            .info-box {
+                padding: 20px;
+                margin-top: 20px;
+            }
+            
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            
+            .quiz-section {
+                padding: 25px;
+                margin-bottom: 25px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+            
+            .section-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .section-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .question-text {
+                font-size: 1.1rem;
+                padding-left: 30px;
+                margin-bottom: 20px;
+            }
+            
+            .question-text::before {
+                width: 24px;
+                height: 24px;
+                font-size: 0.8rem;
+            }
+            
+            .option {
+                padding: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .option:hover {
+                transform: translateX(5px);
+            }
+            
+            .option-letter {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+                margin-right: 15px;
+            }
+            
+            .option.selected::after {
+                width: 20px;
+                height: 20px;
+                top: 12px;
+                right: 12px;
+                font-size: 12px;
+            }
+            
+            .quiz-navigation {
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 30px;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 24px;
+                font-size: 0.95rem;
+            }
+            
+            .progress-bar {
+                height: 10px;
+                margin: 25px 0;
+            }
+            
+            .progress-text {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+            
+            .results-container {
+                padding: 30px 20px;
+                margin-top: 25px;
+            }
+            
+            .results-title {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+            
+            .profile-name {
+                font-size: 1.1rem;
+                padding: 10px 25px;
+                margin-bottom: 25px;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 15px;
+                gap: 8px;
+                margin-bottom: 30px;
+            }
+            
+            .tab {
+                white-space: nowrap;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                min-width: fit-content;
+            }
+            
+            .tab-content {
+                padding: 20px;
+                min-height: 350px;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            .multi-chart-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .heatmap-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .profile-details {
+                padding: 25px;
+            }
+            
+            .profile-section {
+                padding: 20px;
+                margin-bottom: 25px;
+            }
+            
+            .profile-section-title {
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+            
+            .strengths-list li, .vulnerabilities-list li {
+                padding: 10px 0;
+                padding-left: 35px;
+                font-size: 0.95rem;
+            }
+            
+            .strengths-list li:before, .vulnerabilities-list li:before {
+                left: 12px;
+                top: 10px;
+                font-size: 1.1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 35px;
+            }
+            
+            .actions button {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .quiz-section {
+                padding: 20px;
+            }
+            
+            .question-text {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+            
+            .option {
+                padding: 14px;
+            }
+            
+            .option-text {
+                font-size: 0.95rem;
+            }
+            
+            .option-note {
+                font-size: 0.8rem;
+            }
+            
+            .results-title {
+                font-size: 1.8rem;
+            }
+            
+            .profile-name {
+                font-size: 1rem;
+                padding: 8px 20px;
+            }
+            
+            .tab {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon" id="theme-icon"></i>
+            <span id="theme-text">Dark</span>
+        </button>
+        <div class="container">
+            <h1>What's Your Consciousness Architecture?</h1>
+                 <p class="subtitle">Map your brain's precision-weighting, ignition thresholds, and interoceptive integration through the APGI Framework</p>
+            <div class="quiz-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>
+                        <h2 class="section-title">Your APGI Signature</h2>
+                        <p class="section-subtitle">Understanding your consciousness architecture</p>
+                    </div>
+                </div>
+                
+                <div class="profile-section">
+                    <h3 class="profile-section-title">
+                        <i class="fas fa-info-circle"></i>
+                        What This Profile Shows
+                    </h3>
+                    <p>This profile shows how your mind currently works — how it notices problems, decides what matters, and brings things into awareness.</p>
+                    <p><strong>This is not a diagnosis and not a fixed label.</strong> It reflects your current operating mode.</p>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="profile-section-title">
+                        <i class="fas fa-shapes"></i>
+                        Your Mental Shape
+                    </h3>
+                    <p>This diagram shows the balance between four core settings that shape your experience.</p>
+                    <ul>
+                        <li>A balanced shape feels stable</li>
+                        <li>Sharp peaks or dips explain stress, overload, or emotional intensity</li>
+                    </ul>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="profile-section-title">
+                        <i class="fas fa-chart-line"></i>
+                        What Your Scores Mean
+                    </h3>
+                    
+                    <div class="profile-subsection">
+                        <h4 class="profile-subsection-title">Prediction Sensitivity</h4>
+                        <p>How quickly your mind notices that something is off.</p>
+                        <ul>
+                            <li>Higher scores mean you detect problems fast</li>
+                            <li>Lower scores mean you stay calm under uncertainty</li>
+                        </ul>
+                    </div>
+
+                    <div class="profile-subsection">
+                        <h4 class="profile-subsection-title">Signal Confidence</h4>
+                        <p>How much your mind trusts what it notices.</p>
+                        <ul>
+                            <li>Higher scores mean signals feel urgent and important</li>
+                            <li>Lower scores mean you stay flexible, but may doubt yourself</li>
+                        </ul>
+                    </div>
+
+                    <div class="profile-subsection">
+                        <h4 class="profile-subsection-title">Awareness Gate</h4>
+                        <p>How easily thoughts and feelings enter awareness.</p>
+                        <ul>
+                            <li>Lower scores mean awareness fills quickly</li>
+                            <li>Higher scores mean your mind filters more before noticing things</li>
+                        </ul>
+                    </div>
+
+                    <div class="profile-subsection">
+                        <h4 class="profile-subsection-title">Body vs World Focus</h4>
+                        <p>Where your experience is anchored.</p>
+                        <ul>
+                            <li>Higher scores mean feelings are physical and emotional</li>
+                            <li>Lower scores mean experience is more mental and detached</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3 class="profile-section-title">
+                        <i class="fas fa-heart-pulse"></i>
+                        Why You Feel the Way You Do Right Now
+                    </h3>
+                    <p>This indicator shows how close your current mental load is to your awareness limit.</p>
+                    <ul>
+                        <li><strong>Calm:</strong> signals stay manageable</li>
+                        <li><strong>Engaged:</strong> attention is active and focused</li>
+                        <li><strong>Overloaded:</strong> too much enters awareness at once</li>
+                        <li><strong>Numb:</strong> awareness is shut down to protect capacity</li>
+                    </ul>
+                </div>
+
+                <div class="profile-section">
+                    <p>Your APGI signature changes with context.</p>
+                    <p>Sleep, stress, focus, safety, and environment all shift these settings.</p>
+                    <p><strong>Nothing here defines who you are — it shows how your system is operating right now.</strong></p>
+                </div>
+            </div>
+                
+            <div class="info-box">
+                <p><strong>Estimated Time:</strong> 4-5 minutes | <strong>Questions:</strong> 15 (12 primary + 3 validity checks)</p>
+                <p><strong>Scientific Basis:</strong> Based on predictive processing, interoceptive inference, and global workspace theories</p>
+                <p><strong>⚠️ Disclaimer:</strong> This is an educational tool based on theoretical neuroscience, not a clinical diagnostic. Results should not be used for medical decisions.</p>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="progress">
+            <div class="progress-text">Question <span id="current-question">1</span> of 15</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        
+        <!-- Introduction Screen -->
+        <div class="quiz-section" id="introduction-section">
+            <h2>Discover Your Consciousness Architecture</h2>
+            <p>Your conscious experience emerges from a sophisticated prediction machine that constantly balances precision-weighted sensory signals against metabolic costs. This assessment maps your consciousness architecture across three core APGI parameters:</p>
+            
+            <ul style="margin: 20px 0 20px 30px;">
+                <li><strong>Ignition Threshold:</strong> How much precision-weighted prediction error is needed to trigger conscious awareness</li>
+                <li><strong>Interoceptive Precision:</strong> How much you trust (weight) signals from your body vs. external world</li>
+                <li><strong>Somatic Integration:</strong> How strongly bodily predictions shape your conscious experience</li>
+            </ul>
+            
+            <p>These aren't personality traits—they're computational parameters that can shift based on context, training, and metabolic state. Answer based on your typical resting state when calm and alert.</p>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="start-quiz-btn">
+                    <i class="fas fa-brain"></i> Begin Assessment
+                </button>
+            </div>
+        </div>
+        
+        <!-- Quiz Questions -->
+        <div class="quiz-section" id="quiz-section" style="display: none;">
+            <div class="section-header">
+                <div class="section-icon" id="section-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div>
+                    <div class="section-title" id="section-title">Ignition Threshold</div>
+                    <div class="section-subtitle" id="section-subtitle">Precision-weighted prediction error needed for conscious access</div>
+                </div>
+            </div>
+            
+            <div id="question-container">
+                <!-- Questions will be inserted here by JavaScript -->
+            </div>
+            
+            <div class="quiz-navigation">
+                <button class="secondary" id="prev-btn" disabled>
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button id="next-btn">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="results-container" id="results-container">
+            <div class="results-header">
+                <h2 class="results-title">Your APGI Consciousness Architecture</h2>
+                <div class="profile-name" id="profile-name">THE FOCUSED ANALYST</div>
+                <p>Scan Complete: Neural Parameter Mapping</p>
+            </div>
+            
+            <!-- Visualization Tabs -->
+            <div class="tabs-container">
+                <div class="tabs">
+                    <button class="tab active" data-tab="radar">
+                        <i class="fas fa-chart-radar"></i> Radar Chart
+                    </button>
+                    <button class="tab" data-tab="bar">
+                        <i class="fas fa-chart-bar"></i> Bar Chart
+                    </button>
+                    <button class="tab" data-tab="line">
+                        <i class="fas fa-chart-line"></i> Line Chart
+                    </button>
+                    <button class="tab" data-tab="gauge">
+                        <i class="fas fa-tachometer-alt"></i> Gauges
+                    </button>
+                    <button class="tab" data-tab="heatmap">
+                        <i class="fas fa-th"></i> Heatmap
+                    </button>
+                    <button class="tab" data-tab="scatter">
+                        <i class="fas fa-braille"></i> Scatter Plot
+                    </button>
+                    <button class="tab" data-tab="pie">
+                        <i class="fas fa-chart-pie"></i> Pie Chart
+                    </button>
+                    <button class="tab" data-tab="table">
+                        <i class="fas fa-table"></i> Data Table
+                    </button>
+                </div>
+                
+                <!-- Radar Chart Tab -->
+                <div class="tab-content active" id="radar-tab">
+                    <div class="chart-title">APGI Dimension Comparison - Radar Chart</div>
+                    <div class="chart-description">This radar chart shows your scores across all three APGI dimensions compared to population averages.</div>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Bar Chart Tab -->
+                <div class="tab-content" id="bar-tab">
+                    <div class="chart-title">APGI Dimension Scores - Bar Chart</div>
+                    <div class="chart-description">Visual comparison of your scores across the three APGI dimensions with maximum possible scores.</div>
+                    <div class="chart-container">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Line Chart Tab -->
+                <div class="tab-content" id="line-tab">
+                    <div class="chart-title">APGI Dimension Progression - Line Chart</div>
+                    <div class="chart-description">Theoretical progression of APGI dimensions across different consciousness states.</div>
+                    <div class="chart-container">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Gauges Tab -->
+                <div class="tab-content" id="gauge-tab">
+                    <div class="chart-title">APGI Dimension Gauges</div>
+                    <div class="chart-description">Individual gauges showing your score levels for each APGI dimension.</div>
+                    <div class="multi-chart-container">
+                        <div class="mini-chart">
+                            <div class="mini-chart-title">Ignition Threshold</div>
+                            <div class="gauge-container">
+                                <canvas id="gauge1"></canvas>
+                            </div>
+                        </div>
+                        <div class="mini-chart">
+                            <div class="mini-chart-title">Interoceptive Precision</div>
+                            <div class="gauge-container">
+                                <canvas id="gauge2"></canvas>
+                            </div>
+                        </div>
+                        <div class="mini-chart">
+                            <div class="mini-chart-title">Somatic Integration</div>
+                            <div class="gauge-container">
+                                <canvas id="gauge3"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Heatmap Tab -->
+                <div class="tab-content" id="heatmap-tab">
+                    <div class="chart-title">Question-Level Analysis Heatmap</div>
+                    <div class="chart-description">Heatmap showing your response intensity for each quiz question.</div>
+                    <div class="heatmap-container" id="heatmap-container">
+                        <!-- Heatmap cells will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Scatter Plot Tab -->
+                <div class="tab-content" id="scatter-tab">
+                    <div class="chart-title">APGI Dimension Correlation - Scatter Plot</div>
+                    <div class="chart-description">Scatter plot showing the relationship between APGI dimensions with your position highlighted.</div>
+                    <div class="chart-container">
+                        <canvas id="scatterChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Pie Chart Tab -->
+                <div class="tab-content" id="pie-tab">
+                    <div class="chart-title">APGI Dimension Distribution - Pie Chart</div>
+                    <div class="chart-description">Relative distribution of your APGI dimension scores as a percentage of total possible points.</div>
+                    <div class="chart-container">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Data Table Tab -->
+                <div class="tab-content" id="table-tab">
+                    <div class="chart-title">Detailed APGI Results Data</div>
+                    <div class="chart-description">Complete breakdown of your APGI assessment results including scores, ranges, and interpretations.</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Your Score</th>
+                                <th>Range</th>
+                                <th>Level</th>
+                                <th>Interpretation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-table-body">
+                            <!-- Table rows will be generated by JavaScript -->
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 30px;">
+                        <div class="chart-title">Question-Level Results</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Section</th>
+                                    <th>Your Answer</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="questions-table-body">
+                                <!-- Question rows will be generated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Details -->
+            <div class="profile-details">
+                <div class="profile-section">
+                    <div class="profile-section-title">
+                        <i class="fas fa-cogs"></i> APGI Mechanism
+                    </div>
+                    <p id="mechanism-text">Your consciousness operates with high precision weighting on task-relevant prediction errors while aggressively gating interoceptive signals...</p>
+                </div>
+                
+                <div class="profile-section">
+                    <div class="profile-section-title">
+                        <i class="fas fa-check-circle"></i> Strengths
+                    </div>
+                    <ul class="strengths-list" id="strengths-list">
+                        <!-- Will be populated by JS -->
+                    </ul>
+                </div>
+                
+                <div class="profile-section">
+                    <div class="profile-section-title">
+                        <i class="fas fa-exclamation-triangle"></i> Vulnerabilities
+                    </div>
+                    <ul class="vulnerabilities-list" id="vulnerabilities-list">
+                        <!-- Will be populated by JS -->
+                    </ul>
+                </div>
+                
+                <div class="profile-section">
+                    <div class="profile-section-title">
+                        <i class="fas fa-chart-line"></i> Optimization Strategies
+                    </div>
+                    <div id="strategies-text">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button class="secondary" id="retake-btn">
+                    <i class="fas fa-redo"></i> Retake Quiz
+                </button>
+                <button id="download-btn">
+                    <i class="fas fa-download"></i> Download PDF Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme switching functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeButton(currentTheme);
+        
+        // Theme toggle event listener
+        themeToggle.addEventListener('click', () => {
+            const theme = html.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+        });
+        
+        function updateThemeButton(theme) {
+            if (theme === 'dark') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                themeText.textContent = 'Light';
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                themeText.textContent = 'Dark';
+            }
+        }
+        
+        // Quiz data structure
+        const quizData = {
+            introduction: {
+                title: "APGI SELF-ASSESSMENT QUIZ",
+                text: "Discover Your Consciousness Architecture"
+            },
+            sections: [
+                {
+                    id: "ignition",
+                    title: "Ignition Threshold",
+                    subtitle: "Precision-weighted prediction error needed for conscious access",
+                    icon: "fas fa-bullseye",
+                    questions: [
+                        {
+                            id: 1,
+                            text: "When you're focused on a task, how easily do unexpected stimuli (sounds, movements, notifications) break into conscious awareness?",
+                            options: [
+                                {text: "Almost never—I'm deeply absorbed; stimuli need to be intense to interrupt", note: "HIGH threshold", value: 1},
+                                {text: "Only obvious or salient stimuli interrupt me", note: "MODERATE-HIGH threshold", value: 2},
+                                {text: "I notice many background stimuli even when focused", note: "MODERATE-LOW threshold", value: 3},
+                                {text: "Almost everything registers consciously; very hard to filter", note: "LOW threshold", value: 4}
+                            ]
+                        },
+                        {
+                            id: 2,
+                            text: "How quickly do you consciously notice when something subtle changes in your environment (lighting, temperature, background noise level)?",
+                            options: [
+                                {text: "I typically don't notice unless changes are significant", note: "HIGH threshold", value: 1},
+                                {text: "I notice within several minutes if I'm paying attention", note: "MODERATE-HIGH threshold", value: 2},
+                                {text: "I usually notice within seconds to a minute", note: "MODERATE-LOW threshold", value: 3},
+                                {text: "I notice immediately and automatically", note: "LOW threshold", value: 4}
+                            ]
+                        },
+                        {
+                            id: 3,
+                            text: "While reading this question, how aware are you RIGHT NOW of physical sensations (chair pressure, foot position, clothing touch)?",
+                            options: [
+                                {text: "I wasn't aware until you asked; now I notice", note: "HIGH threshold", value: 1},
+                                {text: "Vaguely aware, but it wasn't in consciousness", note: "MODERATE-HIGH threshold", value: 2},
+                                {text: "Somewhat aware even before the question", note: "MODERATE-LOW threshold", value: 3},
+                                {text: "Constantly aware of multiple body sensations", note: "LOW threshold", value: 4}
+                            ]
+                        },
+                        {
+                            id: 4,
+                            text: "In a crowded space with multiple conversations, can you follow one conversation while unconsciously monitoring others (noticing your name or important words in other conversations)?",
+                            options: [
+                                {text: "No—I only process the conversation I'm focused on", note: "HIGH threshold", value: 1},
+                                {text: "Rarely—only very salient words break through", note: "MODERATE-HIGH threshold", value: 2},
+                                {text: "Yes—I often catch my name or interesting topics from other conversations", note: "MODERATE-LOW threshold", value: 3},
+                                {text: "Yes—I'm consciously aware of multiple conversations simultaneously", note: "LOW threshold", value: 4}
+                            ]
+                        },
+                        {
+                            id: 5,
+                            text: "How often can you achieve a 'flow state' where hours pass unnoticed and external stimuli disappear?",
+                            options: [
+                                {text: "Very frequently—several times per week", note: "HIGH threshold—GOOD at filtering", value: 4},
+                                {text: "Regularly—a few times per month", note: "MODERATE-HIGH threshold", value: 3},
+                                {text: "Occasionally—a few times per year", note: "MODERATE-LOW threshold", value: 2},
+                                {text: "Rarely or never—I'm always aware of my surroundings", note: "LOW threshold", value: 1}
+                            ],
+                            reverseScored: true
+                        }
+                    ]
+                },
+                {
+                    id: "precision",
+                    title: "Interoceptive Precision",
+                    subtitle: "Confidence weighting assigned to internal bodily signals",
+                    icon: "fas fa-heartbeat",
+                    questions: [
+                        {
+                            id: 6,
+                            text: "Without taking your pulse, can you accurately count your heartbeats?",
+                            options: [
+                                {text: "No, I cannot sense my heartbeat at rest", note: "LOW precision", value: 1},
+                                {text: "Only when my heart is racing (exercise, anxiety)", note: "MODERATE-LOW precision", value: 2},
+                                {text: "Yes, when I focus attention inward for 10-20 seconds", note: "MODERATE-HIGH precision", value: 3},
+                                {text: "Yes, I'm aware of my heartbeat constantly without effort", note: "HIGH precision", value: 4}
+                            ]
+                        },
+                        {
+                            id: 7,
+                            text: "How accurately can you distinguish between hunger, thirst, and tiredness BEFORE they become intense?",
+                            options: [
+                                {text: "I often confuse them or don't notice until extreme", note: "LOW precision", value: 1},
+                                {text: "I can usually tell, but sometimes need to test (drink water to see if thirsty)", note: "MODERATE-LOW precision", value: 2},
+                                {text: "I can clearly differentiate them most of the time", note: "MODERATE-HIGH precision", value: 3},
+                                {text: "I know exactly what my body needs at subtle signal levels", note: "HIGH precision", value: 4}
+                            ]
+                        },
+                        {
+                            id: 8,
+                            text: "When you experience an emotion, how clearly can you identify its specific physical signature (location, quality, intensity of sensations)?",
+                            options: [
+                                {text: "I experience emotions mostly as thoughts; physical sensations are vague", note: "LOW precision", value: 1},
+                                {text: "I notice strong emotions physically (anger, fear) but not subtle ones", note: "MODERATE-LOW precision", value: 2},
+                                {text: "I can map most emotions to specific body locations and qualities", note: "MODERATE-HIGH precision", value: 3},
+                                {text: "Every emotion has a distinct somatic signature I recognize immediately", note: "HIGH precision", value: 4}
+                            ]
+                        },
+                        {
+                            id: 9,
+                            text: "How early can you detect your own stress responses (before physical symptoms force awareness)?",
+                            options: [
+                                {text: "I realize I'm stressed after someone points it out or symptoms are obvious", note: "LOW precision", value: 1},
+                                {text: "I notice when stress is moderate-to-high intensity", note: "MODERATE-LOW precision", value: 2},
+                                {text: "I catch early signs (muscle tension, breath changes, energy dips)", note: "MODERATE-HIGH precision", value: 3},
+                                {text: "I notice the very first subtle shifts toward stress activation", note: "HIGH precision", value: 4}
+                            ]
+                        },
+                        {
+                            id: 10,
+                            text: "Have you practiced activities that train body awareness (yoga, meditation, biofeedback, body scans)?",
+                            options: [
+                                {text: "No regular practice", note: "Expected: Consistent with lower interoceptive scores", value: 1},
+                                {text: "Occasional or past practice", note: "", value: 2},
+                                {text: "Regular practice (1-2x/week)", note: "", value: 3},
+                                {text: "Intensive practice (3+x/week or professional training)", note: "Expected: Consistent with higher scores", value: 4}
+                            ],
+                            validityCheck: true
+                        }
+                    ]
+                },
+                {
+                    id: "integration",
+                    title: "Somatic Integration",
+                    subtitle: "Degree to which interoceptive predictions shape cognition, decision-making, and conscious content",
+                    icon: "fas fa-mind-share",
+                    questions: [
+                        {
+                            id: 11,
+                            text: "When making an important decision, what role do physical sensations ('gut feelings,' tension, ease) play?",
+                            options: [
+                                {text: "Minimal—I decide based on logical analysis", note: "LOW integration", value: 1},
+                                {text: "I notice gut feelings but use them as one factor among many", note: "MODERATE-LOW integration", value: 2},
+                                {text: "Physical reactions strongly inform my choices", note: "MODERATE-HIGH integration", value: 3},
+                                {text: "I cannot decide if something doesn't 'feel right' physically—body has veto power", note: "HIGH integration", value: 4}
+                            ]
+                        },
+                        {
+                            id: 12,
+                            text: "How much do physical discomforts (uncomfortable chair, tight clothing, room temperature) affect your ability to think clearly?",
+                            options: [
+                                {text: "Barely noticeable—I can think through discomfort", note: "LOW integration", value: 1},
+                                {text: "Mildly distracting but manageable", note: "MODERATE-LOW integration", value: 2},
+                                {text: "Significantly impairs concentration and mood", note: "MODERATE-HIGH integration", value: 3},
+                                {text: "Cannot think properly until physical needs are met", note: "HIGH integration", value: 4}
+                            ]
+                        },
+                        {
+                            id: 13,
+                            text: "When anxious, what dominates your conscious experience?",
+                            options: [
+                                {text: "Worried thoughts and mental analysis of problems", note: "LOW integration", value: 1},
+                                {text: "Mixture of thoughts and physical symptoms, thoughts lead", note: "MODERATE-LOW integration", value: 2},
+                                {text: "Physical sensations and thoughts are equally prominent", note: "MODERATE-HIGH integration", value: 3},
+                                {text: "Overwhelming physical sensations (heart racing, breathing, tension) dominate", note: "HIGH integration", value: 4}
+                            ]
+                        },
+                        {
+                            id: 14,
+                            text: "How much do you experience abstract concepts as bodily sensations? (e.g., 'heaviness' with sadness, 'lightness' with joy, 'opening' with curiosity)",
+                            options: [
+                                {text: "Rarely—concepts are mental, not physical", note: "LOW integration", value: 1},
+                                {text: "Only for strong emotions", note: "MODERATE-LOW integration", value: 2},
+                                {text: "Often—many concepts have physical correlates", note: "MODERATE-HIGH integration", value: 3},
+                                {text: "Always—every thought has a felt bodily quality", note: "HIGH integration", value: 4}
+                            ]
+                        },
+                        {
+                            id: 15,
+                            text: "When you have physical symptoms (headache, fatigue, stomach discomfort), how often do you later realize they were psychosomatic (caused by stress/emotions)?",
+                            options: [
+                                {text: "Rarely—my symptoms are usually physical causes", note: "Consistent with LOW integration", value: 1},
+                                {text: "Sometimes—maybe 25% of symptoms", note: "", value: 2},
+                                {text: "Often—roughly half are stress-related", note: "", value: 3},
+                                {text: "Very often—most symptoms have emotional roots", note: "Consistent with HIGH integration", value: 4}
+                            ],
+                            validityCheck: true
+                        }
+                    ]
+                }
+            ],
+            profiles: {
+                "FOCUSED_ANALYST": {
+                    name: "THE FOCUSED ANALYST",
+                    ignitionRange: [5, 9],
+                    precisionRange: [8, 12],
+                    integrationRange: [4, 8],
+                    mechanism: "Your consciousness operates with high precision weighting on task-relevant prediction errors while aggressively gating interoceptive signals. Your global workspace has a high ignition threshold, meaning only strong, task-relevant prediction errors cross into awareness. This is computationally expensive but enables exceptional sustained attention.",
+                    strengths: [
+                        "Deep focus and flow states",
+                        "Excellent at complex analytical tasks",
+                        "Low distractibility in noisy environments",
+                        "Can work through physical discomfort",
+                        "Efficient cognitive resource allocation"
+                    ],
+                    vulnerabilities: [
+                        "Risk of ignoring important bodily signals (fatigue, hunger, illness)",
+                        "May miss emotional/social cues from others",
+                        "Burnout risk from overriding homeostatic needs",
+                        "Difficulty with tasks requiring embodied intuition",
+                        "May intellectualize emotions rather than feeling them"
+                    ],
+                    strategies: "Increase Interoceptive Precision when needed with heartbeat tracking exercises (5 min daily). Schedule demanding cognitive work during your optimal focus windows. Create routines that automate self-care since you won't reliably detect needs."
+                },
+                "EMBODIED_EMPATH": {
+                    name: "THE EMBODIED EMPATH",
+                    ignitionRange: [16, 20],
+                    precisionRange: [13, 16],
+                    integrationRange: [13, 16],
+                    mechanism: "Your consciousness has minimal gating—most prediction errors cross your ignition threshold, creating a rich, high-dimensional conscious workspace. You assign high precision weights to interoceptive prediction errors, meaning bodily signals dominate your free energy calculations.",
+                    strengths: [
+                        "Rich, vivid conscious experience",
+                        "Exceptional empathy and social sensitivity",
+                        "Strong 'gut instincts' and intuition",
+                        "Early detection of own stress/illness",
+                        "Creativity and holistic thinking"
+                    ],
+                    vulnerabilities: [
+                        "Easily overwhelmed in high-stimulation environments",
+                        "Difficulty filtering irrelevant information",
+                        "Physical discomfort strongly disrupts cognition",
+                        "Risk of absorbing others' emotional states",
+                        "May struggle with sustained analytical focus"
+                    ],
+                    strategies: "Increase Ignition Threshold with selective attention training. Manage Interoceptive Amplification with somatic labeling without amplification. Create low-stimulation sanctuary spaces to minimize chronic sensory load."
+                },
+                "BALANCED_NAVIGATOR": {
+                    name: "THE BALANCED NAVIGATOR",
+                    ignitionRange: [10, 15],
+                    precisionRange: [8, 12],
+                    integrationRange: [8, 12],
+                    mechanism: "Your consciousness architecture is dynamically balanced—you maintain moderate ignition thresholds and precision weighting across interoceptive and exteroceptive channels. This allows flexible allocation of attention and prediction resources based on context.",
+                    strengths: [
+                        "Adaptability across contexts",
+                        "Balanced decision-making (logic + intuition)",
+                        "Can focus when needed, open awareness when beneficial",
+                        "Moderate stress resilience",
+                        "Works well in varied environments"
+                    ],
+                    vulnerabilities: [
+                        "May lack the extremes that create unique strengths",
+                        "Risk of being 'jack of all trades, master of none'",
+                        "Less distinctive processing style",
+                        "May not have clear 'superpower' to leverage"
+                    ],
+                    strategies: "Develop Strategic Flexibility with context-specific protocols. Practice meta-cognitive training to note 'What's my threshold right now?'. Leverage your adaptability—your superpower IS flexibility."
+                },
+                "EXTERNAL_SCANNER": {
+                    name: "THE EXTERNAL SCANNER",
+                    ignitionRange: [16, 20],
+                    precisionRange: [4, 8],
+                    integrationRange: [4, 8],
+                    mechanism: "Your consciousness prioritizes external prediction errors with minimal gating, while strongly downweighting interoceptive signals. Your global workspace ignites easily for exteroceptive inputs but assigns low precision to bodily predictions.",
+                    strengths: [
+                        "Exceptional environmental awareness",
+                        "Quick pattern recognition in external data",
+                        "Excellent multitasking with external inputs",
+                        "Thrives in dynamic, stimulating environments",
+                        "Strong observational and analytical skills"
+                    ],
+                    vulnerabilities: [
+                        "May ignore hunger, fatigue, illness signals until extreme",
+                        "Difficulty 'turning off' awareness for rest",
+                        "Risk of neglecting self-care",
+                        "Can be scattered or overstimulated",
+                        "May struggle with introspection"
+                    ],
+                    strategies: "Increase Interoceptive Precision with external-to-internal attention training. Manage External Capture with deliberate sensory reduction protocols. Use external structure (alarms, schedules) to compensate for weak internal signals."
+                },
+                "CONTEMPLATIVE_INTEGRATOR": {
+                    name: "THE CONTEMPLATIVE INTEGRATOR",
+                    ignitionRange: [5, 9],
+                    precisionRange: [13, 16],
+                    integrationRange: [13, 16],
+                    mechanism: "Your consciousness is internally focused with strong precision weighting on interoceptive prediction errors. High ignition threshold for external stimuli creates a narrow aperture of awareness, but that aperture is filled with richly detailed bodily states.",
+                    strengths: [
+                        "Profound mind-body integration",
+                        "Excellent self-regulation through somatic awareness",
+                        "Deep introspection and self-knowledge",
+                        "Strong embodied intuition and decision-making",
+                        "Skilled at meditation and contemplative practices"
+                    ],
+                    vulnerabilities: [
+                        "May miss important external information",
+                        "Risk of being too 'in your body' for abstract analysis",
+                        "Can appear withdrawn or self-absorbed",
+                        "May struggle in chaotic/demanding external environments",
+                        "Possible difficulty with rapid external multitasking"
+                    ],
+                    strategies: "Balance Internal-External Attention with deliberate external engagement. Leverage your somatic wisdom—trust it for complex decisions. Before external demands, practice brief 'opening the aperture' exercise (5 min of attending to environment)."
+                }
+            
+            },
+    "FOCUSED_ANALYST": {
+        name: "THE FOCUSED ANALYST",
+        ignitionRange: [5, 9],
+        precisionRange: [8, 12],
+        integrationRange: [4, 8],
+        mechanism: "Your consciousness operates with high precision weighting on task-relevant prediction errors while aggressively gating interoceptive signals. Your global workspace has a high ignition threshold, meaning only strong, task-relevant prediction errors cross into awareness. This is computationally expensive but enables exceptional sustained attention.",
+        strengths: [
+            "Deep focus and flow states",
+            "Excellent at complex analytical tasks",
+            "Low distractibility in noisy environments",
+            "Can work through physical discomfort",
+            "Efficient cognitive resource allocation"
+        ],
+        vulnerabilities: [
+            "Risk of ignoring important bodily signals (fatigue, hunger, illness)",
+            "May miss emotional/social cues from others",
+            "Burnout risk from overriding homeostatic needs",
+            "Difficulty with tasks requiring embodied intuition",
+            "May intellectualize emotions rather than feeling them"
+        ],
+        strategies: "Increase Interoceptive Precision when needed with heartbeat tracking exercises (5 min daily). Schedule demanding cognitive work during your optimal focus windows. Create routines that automate self-care since you won't reliably detect needs."
+    },
+
+    "EMBODIED_EMPATH": {
+        name: "THE EMBODIED EMPATH",
+        ignitionRange: [16, 20],
+        precisionRange: [13, 16],
+        integrationRange: [13, 16],
+        mechanism: "Your consciousness has minimal gating—most prediction errors cross your ignition threshold, creating a rich, high-dimensional conscious workspace. You assign high precision weights to interoceptive prediction errors, meaning bodily signals dominate your free energy calculations.",
+        strengths: [
+            "Rich, vivid conscious experience",
+            "Exceptional empathy and social sensitivity",
+            "Strong 'gut instincts' and intuition",
+            "Early detection of own stress/illness",
+            "Creativity and holistic thinking"
+        ],
+        vulnerabilities: [
+            "Easily overwhelmed in high-stimulation environments",
+            "Difficulty filtering irrelevant information",
+            "Physical discomfort strongly disrupts cognition",
+            "Risk of absorbing others' emotional states",
+            "May struggle with sustained analytical focus"
+        ],
+        strategies: "Increase Ignition Threshold with selective attention training. Manage Interoceptive Amplification with somatic labeling without amplification. Create low-stimulation sanctuary spaces to minimize chronic sensory load."
+    },
+
+    "BALANCED_NAVIGATOR": {
+        name: "THE BALANCED NAVIGATOR",
+        ignitionRange: [10, 15],
+        precisionRange: [8, 12],
+        integrationRange: [8, 12],
+        mechanism: "Your consciousness architecture is dynamically balanced—you maintain moderate ignition thresholds and precision weighting across interoceptive and exteroceptive channels. This allows flexible allocation of attention and prediction resources based on context.",
+        strengths: [
+            "Adaptability across contexts",
+            "Balanced decision-making (logic + intuition)",
+            "Can focus when needed, open awareness when beneficial",
+            "Moderate stress resilience",
+            "Works well in varied environments"
+        ],
+        vulnerabilities: [
+            "May lack the extremes that create unique strengths",
+            "Risk of being 'jack of all trades, master of none'",
+            "Less distinctive processing style",
+            "May not have clear 'superpower' to leverage"
+        ],
+        strategies: "Develop Strategic Flexibility with context-specific protocols. Practice meta-cognitive training to note 'What's my threshold right now?'. Leverage your adaptability—your superpower IS flexibility."
+    },
+
+    "EXTERNAL_SCANNER": {
+        name: "THE EXTERNAL SCANNER",
+        ignitionRange: [16, 20],
+        precisionRange: [4, 8],
+        integrationRange: [4, 8],
+        mechanism: "Your consciousness prioritizes external prediction errors with minimal gating, while strongly downweighting interoceptive signals. Your global workspace ignites easily for exteroceptive inputs but assigns low precision to bodily predictions.",
+        strengths: [
+            "Exceptional environmental awareness",
+            "Quick pattern recognition in external data",
+            "Excellent multitasking with external inputs",
+            "Thrives in dynamic, stimulating environments",
+            "Strong observational and analytical skills"
+        ],
+        vulnerabilities: [
+            "May ignore hunger, fatigue, illness signals until extreme",
+            "Difficulty 'turning off' awareness for rest",
+            "Risk of neglecting self-care",
+            "Can be scattered or overstimulated",
+            "May struggle with introspection"
+        ],
+        strategies: "Increase Interoceptive Precision with external-to-internal attention training. Manage External Capture with deliberate sensory reduction protocols. Use external structure (alarms, schedules) to compensate for weak internal signals."
+    },
+
+    "CONTEMPLATIVE_INTEGRATOR": {
+        name: "THE CONTEMPLATIVE INTEGRATOR",
+        ignitionRange: [5, 9],
+        precisionRange: [13, 16],
+        integrationRange: [13, 16],
+        mechanism: "Your consciousness is internally focused with strong precision weighting on interoceptive prediction errors. High ignition threshold for external stimuli creates a narrow aperture of awareness, but that aperture is filled with richly detailed bodily states.",
+        strengths: [
+            "Profound mind-body integration",
+            "Excellent self-regulation through somatic awareness",
+            "Deep introspection and self-knowledge",
+            "Strong embodied intuition and decision-making",
+            "Skilled at meditation and contemplative practices"
+        ],
+        vulnerabilities: [
+            "May miss important external information",
+            "Risk of being too 'in your body' for abstract analysis",
+            "Can appear withdrawn or self-absorbed",
+            "May struggle in chaotic/demanding external environments",
+            "Possible difficulty with rapid external multitasking"
+        ],
+        strategies: "Balance Internal-External Attention with deliberate external engagement. Leverage your somatic wisdom—trust it for complex decisions. Before external demands, practice brief 'opening the aperture' exercise (5 min of attending to environment)."
+    },
+
+    // ===== 22 ADDITIONAL PROFILES =====
+
+    "DETACHED_OBSERVER": {
+        name: "THE DETACHED OBSERVER",
+        ignitionRange: [5, 9],
+        precisionRange: [4, 8],
+        integrationRange: [4, 8],
+        mechanism: "Your consciousness maintains a high ignition threshold across all channels—both external and internal signals require strong evidence to cross into awareness. You operate with low precision weighting on interoceptive signals and minimal somatic influence on cognition, creating a 'pure reasoning' mode largely independent of bodily state.",
+        strengths: [
+            "Exceptional logical reasoning unclouded by emotional bias",
+            "Sustained focus on abstract problems",
+            "High stress tolerance through emotional detachment",
+            "Can make difficult decisions objectively",
+            "Thrives in high-pressure intellectual work"
+        ],
+        vulnerabilities: [
+            "Risk of complete disconnection from bodily needs",
+            "May appear cold or unempathetic to others",
+            "Severe burnout risk from ignoring all warning signals",
+            "Difficulty with emotionally nuanced situations",
+            "May miss creative insights from embodied cognition"
+        ],
+        strategies: "Implement strict external health monitoring systems (scheduled meals, sleep, exercise). Practice basic interoceptive exercises to prevent complete body-blindness. Use your detachment strategically for high-stakes analytical work, but develop compensatory self-care protocols."
+    },
+
+    "DISCIPLINED_STOIC": {
+        name: "THE DISCIPLINED STOIC",
+        ignitionRange: [5, 9],
+        precisionRange: [4, 8],
+        integrationRange: [8, 12],
+        mechanism: "You combine high ignition threshold with low interoceptive precision but moderate somatic integration—an unusual pattern where bodily states influence you despite poor awareness of them. Your decisions are affected by physical states you don't consciously recognize, creating a 'hidden somatic influence' on otherwise analytical processing.",
+        strengths: [
+            "Strong focus and concentration",
+            "Can override discomfort when needed",
+            "Balanced decision-making incorporating subtle body wisdom",
+            "Good stress resilience",
+            "Effective in both analytical and embodied tasks"
+        ],
+        vulnerabilities: [
+            "Body influences decisions without conscious awareness",
+            "May rationalize somatic reactions as logical conclusions",
+            "Risk of misattributing gut feelings to analytical reasoning",
+            "Delayed recognition of illness or stress",
+            "Can be mystified by own decision-making process"
+        ],
+        strategies: "Develop interoceptive precision to make your somatic integration conscious rather than hidden. Practice distinguishing between 'logical conclusions' and 'rationalized gut feelings'. Your body IS informing your decisions—learn to recognize it explicitly."
+    },
+
+    "PARADOXICAL_REASONER": {
+        name: "THE PARADOXICAL REASONER",
+        ignitionRange: [5, 9],
+        precisionRange: [4, 8],
+        integrationRange: [13, 16],
+        mechanism: "Your architecture creates a fascinating paradox: high ignition threshold with low interoceptive precision but strong somatic integration. Body states powerfully shape your consciousness and decisions despite poor awareness of what those states actually are. You feel strongly influenced by your body without knowing what it's telling you.",
+        strengths: [
+            "Strong intuitive decision-making",
+            "Can sense when something is 'off' even without details",
+            "Protected from overthinking by somatic grounding",
+            "Good at holistic pattern recognition",
+            "Authentic responses not contaminated by excessive analysis"
+        ],
+        vulnerabilities: [
+            "Decisions driven by unidentified somatic states",
+            "Difficult to explain your reasoning to others",
+            "Risk of misinterpreting body signals",
+            "May confuse illness symptoms with emotional states",
+            "Vulnerable to somatic anxiety without understanding cause"
+        ],
+        strategies: "Priority: Develop interoceptive precision through heartbeat tracking and body scan training. Learn to identify WHAT your body is signaling, not just that it's signaling. This will transform your strong somatic influence from mysterious to empowering."
+    },
+
+    "FOCUSED_INTUITIVE": {
+        name: "THE FOCUSED INTUITIVE",
+        ignitionRange: [5, 9],
+        precisionRange: [8, 12],
+        integrationRange: [8, 12],
+        mechanism: "You maintain high ignition threshold for external stimuli while balancing moderate interoceptive precision and somatic integration. This creates focused awareness that incorporates both analytical and embodied processing without being overwhelmed by either. Your narrow aperture of consciousness includes both rational and intuitive inputs in balanced proportion.",
+        strengths: [
+            "Deep focus while maintaining body awareness",
+            "Balanced analytical and intuitive decision-making",
+            "Good self-regulation during concentrated work",
+            "Can sustain attention while monitoring internal state",
+            "Effective at complex problems requiring multiple perspectives"
+        ],
+        vulnerabilities: [
+            "May still miss external social/environmental cues",
+            "Risk of internal focus becoming self-absorbed",
+            "Could benefit from stronger interoceptive precision",
+            "May struggle in highly social or chaotic environments",
+            "Requires quiet environments for optimal performance"
+        ],
+        strategies: "Leverage your balanced internal architecture while developing external awareness skills. Practice 'opening the aperture' exercises before social situations. Use your focused-yet-embodied state for complex creative work requiring both logic and intuition."
+    },
+
+    "SOMATIC_ANALYST": {
+        name: "THE SOMATIC ANALYST",
+        ignitionRange: [5, 9],
+        precisionRange: [8, 12],
+        integrationRange: [13, 16],
+        mechanism: "High ignition threshold combined with moderate interoceptive precision and high somatic integration creates an analyst who is deeply influenced by bodily wisdom. You maintain focused attention while allowing body signals to strongly shape cognitive processing—a powerful combination for embodied expertise and professional intuition.",
+        strengths: [
+            "Expert-level intuition in specialized domains",
+            "Deep focus enhanced by somatic intelligence",
+            "Excellent at embodied skills (sports, crafts, performance)",
+            "Strong gut feelings guide analytical conclusions",
+            "Can work at high intensity while respecting body limits"
+        ],
+        vulnerabilities: [
+            "Physical discomfort significantly impairs cognitive performance",
+            "May be limited by somatic states that could be overridden",
+            "Risk of mistaking bodily discomfort for wrongness of decision",
+            "May appear indecisive when body signals conflict",
+            "Requires good physical state for optimal thinking"
+        ],
+        strategies: "Prioritize physical self-care as cognitive enhancement. Recognize your somatic integration as a strength for intuitive expertise. Learn to distinguish between informative gut feelings and mere physical discomfort. Cultivate optimal body states (rest, nutrition, movement) to support your cognitive architecture."
+    },
+
+    "AWARE_RATIONALIST": {
+        name: "THE AWARE RATIONALIST",
+        ignitionRange: [5, 9],
+        precisionRange: [13, 16],
+        integrationRange: [4, 8],
+        mechanism: "You combine high ignition threshold with exceptional interoceptive precision but low somatic integration—a rare pattern where you have rich, detailed awareness of body states but don't let them dominate decision-making. This creates 'aware detachment': knowing what your body signals without being controlled by it.",
+        strengths: [
+            "Exceptional self-knowledge without emotional reactivity",
+            "Can observe internal states with scientific precision",
+            "Early stress detection without anxiety amplification",
+            "Ideal for mindfulness teaching or body-oriented therapy",
+            "Strong metacognitive awareness"
+        ],
+        vulnerabilities: [
+            "May override important bodily wisdom in pursuit of logic",
+            "Risk of treating body signals as mere data rather than guidance",
+            "Could benefit from trusting somatic intuition more",
+            "May appear emotionally distant despite internal awareness",
+            "Risk of privileging cognition over embodied knowing"
+        ],
+        strategies: "Experiment with trusting your body signals more in decision-making—your precision is high enough to warrant confidence. Practice somatic integration exercises to connect your excellent body awareness to action. Your combination is ideal for teaching mindfulness or interoceptive awareness to others."
+    },
+
+    "CONTEMPLATIVE_THINKER": {
+        name: "THE CONTEMPLATIVE THINKER",
+        ignitionRange: [5, 9],
+        precisionRange: [13, 16],
+        integrationRange: [8, 12],
+        mechanism: "High ignition threshold with high interoceptive precision and moderate somatic integration creates a deeply aware but balanced internal focus. You have rich access to body states with measured incorporation into cognition—neither ignored nor overwhelming. This enables sophisticated introspection with maintained analytical capacity.",
+        strengths: [
+            "Deep self-knowledge with analytical capability",
+            "Excellent at contemplative practices",
+            "Can integrate body wisdom with logical analysis",
+            "Strong emotional regulation through awareness",
+            "Ideal for psychotherapy, coaching, or philosophical inquiry"
+        ],
+        vulnerabilities: [
+            "May become overly introspective",
+            "Risk of analysis paralysis from too much internal data",
+            "Could benefit from more decisive somatic integration",
+            "May spend excessive time in self-reflection",
+            "Requires balance between inner and outer world engagement"
+        ],
+        strategies: "Your rich internal awareness is a strength—avoid overthinking it. Practice decisive action based on your excellent body signals. Balance contemplation with engagement. Your architecture is ideal for helping others develop self-awareness while maintaining your own external engagement."
+    },
+
+    "ADAPTIVE_PRAGMATIST": {
+        name: "THE ADAPTIVE PRAGMATIST",
+        ignitionRange: [10, 15],
+        precisionRange: [4, 8],
+        integrationRange: [4, 8],
+        mechanism: "Moderate ignition threshold with low interoceptive precision and integration creates an externally-focused, flexible processor. You balance sensory filtering with openness while maintaining analytical distance from bodily states. This enables effective engagement with the external world without internal distraction.",
+        strengths: [
+            "Excellent situational adaptability",
+            "Good balance of focus and environmental awareness",
+            "Effective in dynamic work environments",
+            "Can shift attention flexibly based on demands",
+            "Strong practical problem-solving"
+        ],
+        vulnerabilities: [
+            "May neglect self-care in service of external demands",
+            "Risk of missing internal warning signals",
+            "Could benefit from stronger interoceptive awareness",
+            "May be overly responsive to external pressures",
+            "Risk of burnout from ignoring body needs"
+        ],
+        strategies: "Implement systematic self-care checks to compensate for low interoceptive awareness. Develop basic body monitoring skills. Leverage your external adaptability while building internal awareness as a protective factor. Use external reminders for basic needs (food, rest, breaks)."
+    },
+
+    "PRACTICAL_OPERATOR": {
+        name: "THE PRACTICAL OPERATOR",
+        ignitionRange: [10, 15],
+        precisionRange: [4, 8],
+        integrationRange: [8, 12],
+        mechanism: "Moderate ignition threshold with low interoceptive precision but moderate somatic integration creates an interesting pattern: you respond to body signals in decision-making despite limited awareness of them. Your practical approach incorporates implicit somatic wisdom without explicit interoceptive monitoring.",
+        strengths: [
+            "Efficient practical decision-making",
+            "Good intuition without overthinking",
+            "Balanced external and internal responsiveness",
+            "Effective in operational and managerial roles",
+            "Can work through challenges with resilience"
+        ],
+        vulnerabilities: [
+            "Body influences you without conscious recognition",
+            "May not understand your own decision patterns",
+            "Risk of misattributing somatic signals",
+            "Could develop psychosomatic symptoms from ignored signals",
+            "May rationalize gut feelings as logic"
+        ],
+        strategies: "Develop interoceptive precision to understand the body signals already influencing you. This will enhance rather than replace your practical intuition. Learn to recognize when 'practical judgments' are actually somatic guidance—trust it, but know what it is."
+    },
+
+    "GROUNDED_RESPONDER": {
+        name: "THE GROUNDED RESPONDER",
+        ignitionRange: [10, 15],
+        precisionRange: [4, 8],
+        integrationRange: [13, 16],
+        mechanism: "Moderate ignition threshold with low interoceptive precision but high somatic integration creates strong body-driven responses without clear understanding of body states. You're heavily influenced by physical sensations you don't clearly perceive, leading to powerful but sometimes mysterious intuitions and reactions.",
+        strengths: [
+            "Strong instinctive responses to situations",
+            "Good at sensing 'rightness' or 'wrongness' of choices",
+            "Protected from overthinking by somatic grounding",
+            "Authentic, embodied presence",
+            "Effective in crisis situations requiring fast intuitive response"
+        ],
+        vulnerabilities: [
+            "Decisions driven by unclear bodily signals",
+            "Difficulty explaining reasoning to others or self",
+            "Risk of confusing different somatic states",
+            "May struggle with situations requiring pure logic",
+            "Vulnerable to somatic states being misinterpreted"
+        ],
+        strategies: "CRITICAL: Develop interoceptive precision to understand what your body is telling you. You're already listening—now learn to translate clearly. Practice body scan meditation and heartbeat tracking to build precision. Your strong somatic integration will become a superpower once you understand the signals."
+    },
+
+    "VERSATILE_COORDINATOR": {
+        name: "THE VERSATILE COORDINATOR",
+        ignitionRange: [10, 15],
+        precisionRange: [8, 12],
+        integrationRange: [4, 8],
+        mechanism: "Moderate ignition threshold with moderate interoceptive precision and low somatic integration creates a flexible processor with good body awareness but analytical independence. You can monitor internal states without letting them dictate cognitive processing—ideal for coordinating multiple demands while maintaining self-awareness.",
+        strengths: [
+            "Excellent at multitasking with self-monitoring",
+            "Can manage stress while maintaining performance",
+            "Good situational awareness both external and internal",
+            "Effective in leadership and coordination roles",
+            "Balanced responsiveness without reactivity"
+        ],
+        vulnerabilities: [
+            "May ignore valuable somatic intuitions",
+            "Could benefit from trusting body wisdom more",
+            "Risk of over-relying on analytical processing",
+            "May miss opportunities for embodied decision-making",
+            "Can be perceived as emotionally controlled or reserved"
+        ],
+        strategies: "Experiment with increasing somatic integration in appropriate contexts. Practice trusting your body signals for intuitive decisions. Your good interoceptive precision provides reliable data—allow it more influence. Balance your analytical strength with embodied wisdom."
+    },
+
+    "INTEGRATED_PRACTITIONER": {
+        name: "THE INTEGRATED PRACTITIONER",
+        ignitionRange: [10, 15],
+        precisionRange: [8, 12],
+        integrationRange: [13, 16],
+        mechanism: "Moderate ignition threshold with moderate interoceptive precision and high somatic integration creates strong body-based decision-making with reasonable awareness and balanced external engagement. You're grounded in embodied experience while maintaining connection to environmental demands—ideal for applied somatic practices.",
+        strengths: [
+            "Strong embodied expertise in specialized domains",
+            "Excellent at somatic therapies or body-based work",
+            "Good intuition informed by body wisdom",
+            "Can maintain focus while attending to somatic signals",
+            "Effective at teaching embodied skills to others"
+        ],
+        vulnerabilities: [
+            "Physical state strongly affects cognitive performance",
+            "May struggle with pure analytical tasks",
+            "Risk of over-weighting bodily comfort in decisions",
+            "Could benefit from stronger interoceptive precision",
+            "May need optimal physical state to perform well"
+        ],
+        strategies: "Leverage your somatic integration for professional expertise in body-based domains. Develop stronger interoceptive precision to refine your already-good body awareness. Prioritize physical self-care as professional development. Your embodied approach is valuable—own it as a strength."
+    },
+
+    "INTUITIVE_OBSERVER": {
+        name: "THE INTUITIVE OBSERVER",
+        ignitionRange: [10, 15],
+        precisionRange: [13, 16],
+        integrationRange: [4, 8],
+        mechanism: "Moderate ignition threshold with high interoceptive precision but low somatic integration creates exceptional body awareness without decision-making dependence. You have rich internal data while maintaining analytical autonomy—can perceive subtle body states without being controlled by them.",
+        strengths: [
+            "Exceptional self-monitoring without reactivity",
+            "Can observe emotions and sensations with equanimity",
+            "Ideal for research on consciousness or interoception",
+            "Strong metacognitive awareness",
+            "Can maintain objectivity despite strong internal experience"
+        ],
+        vulnerabilities: [
+            "May dismiss valuable somatic guidance",
+            "Risk of treating self as research subject",
+            "Could benefit from trusting body wisdom more",
+            "May appear emotionally detached despite rich inner life",
+            "Risk of prioritizing observation over embodied action"
+        ],
+        strategies: "Your interoceptive precision is exceptional—experiment with trusting it more in decisions. Practice increasing somatic integration to balance your observational strength with embodied wisdom. Your combination is ideal for teaching interoceptive awareness or researching consciousness."
+    },
+
+    "MINDFUL_INTEGRATOR": {
+        name: "THE MINDFUL INTEGRATOR",
+        ignitionRange: [10, 15],
+        precisionRange: [13, 16],
+        integrationRange: [8, 12],
+        mechanism: "Moderate ignition threshold with high interoceptive precision and moderate somatic integration creates sophisticated self-awareness with balanced incorporation of body wisdom. You have detailed internal monitoring with measured influence on cognition—neither dominated by nor ignoring somatic intelligence.",
+        strengths: [
+            "Exceptional mind-body awareness",
+            "Balanced decision-making incorporating body wisdom",
+            "Strong emotional regulation",
+            "Ideal for advanced meditation or contemplative practice",
+            "Can teach others sophisticated self-awareness"
+        ],
+        vulnerabilities: [
+            "May spend excessive time in introspection",
+            "Risk of overthinking body signals",
+            "Could benefit from more decisive somatic integration",
+            "May analyze rather than simply experiencing",
+            "Requires balance between awareness and action"
+        ],
+        strategies: "Your sophisticated awareness is a gift—avoid over-complicating it. Practice decisive action based on your excellent body signals without excessive analysis. Share your balanced approach through teaching. Your architecture represents an ideal integration of awareness and embodiment."
+    },
+
+    "HOLISTIC_SYNTHESIZER": {
+        name: "THE HOLISTIC SYNTHESIZER",
+        ignitionRange: [10, 15],
+        precisionRange: [13, 16],
+        integrationRange: [13, 16],
+        mechanism: "Moderate ignition threshold with high interoceptive precision and high somatic integration creates comprehensive body-based consciousness with balanced external awareness. You perceive internal states with exceptional clarity while allowing them strong influence on cognition, all while maintaining connection to environmental demands.",
+        strengths: [
+            "Comprehensive awareness across internal and external",
+            "Deeply embodied decision-making with clear rationale",
+            "Exceptional at somatic therapies, coaching, healing work",
+            "Can explain embodied processes to others clearly",
+            "Strong integration of wisdom traditions with practical life"
+        ],
+        vulnerabilities: [
+            "Physical state profoundly affects all functioning",
+            "May struggle in purely analytical or abstract contexts",
+            "Risk of body-focus becoming limiting",
+            "Requires good physical state for optimal performance",
+            "May need significant time for self-care and integration"
+        ],
+        strategies: "Your holistic integration is a professional asset—build career around it. Prioritize physical self-care as foundation for all performance. Share your integrated approach through healing, teaching, or coaching. Recognize that your need for embodied processing is not weakness but specialized strength."
+    },
+
+    "OPEN_PROCESSOR": {
+        name: "THE OPEN PROCESSOR",
+        ignitionRange: [16, 20],
+        precisionRange: [4, 8],
+        integrationRange: [8, 12],
+        mechanism: "Low ignition threshold with low interoceptive precision and moderate somatic integration creates broad sensory awareness with implicit body influence. You notice everything externally while body states moderately shape cognition despite limited conscious access to those states. Creates high-bandwidth processing with hidden somatic guidance.",
+        strengths: [
+            "Exceptional situational awareness",
+            "Quick pattern recognition across multiple inputs",
+            "Intuitive decision-making informed by body",
+            "Thrives in fast-paced, dynamic environments",
+            "Effective at multitasking and rapid response"
+        ],
+        vulnerabilities: [
+            "Easily overstimulated by sensory inputs",
+            "Body influences decisions without clear awareness",
+            "Difficulty understanding own decision patterns",
+            "Risk of exhaustion from constant processing",
+            "May struggle with sustained focus on single task"
+        ],
+        strategies: "Develop interoceptive precision to understand the body signals already guiding you. Practice selective attention training to raise ignition threshold when needed. Use sensory reduction protocols for rest and recovery. Your broad awareness is valuable—learn to modulate it strategically."
+    },
+
+    "SENSITIVE_RESPONDER": {
+        name: "THE SENSITIVE RESPONDER",
+        ignitionRange: [16, 20],
+        precisionRange: [4, 8],
+        integrationRange: [13, 16],
+        mechanism: "Low ignition threshold with low interoceptive precision but high somatic integration creates a fascinating pattern: you're open to everything externally while strongly influenced by body states you don't clearly perceive. Sensory overwhelm combines with mysterious somatic reactions to create intense, diffuse conscious experience.",
+        strengths: [
+            "Deeply intuitive and empathetic",
+            "Rich, authentic emotional responses",
+            "Strong presence and embodied authenticity",
+            "Excellent at sensing interpersonal dynamics",
+            "Can respond instinctively in complex situations"
+        ],
+        vulnerabilities: [
+            "High risk of sensory and emotional overwhelm",
+            "Difficulty understanding own reactions",
+            "Body and environment both overstimulate",
+            "Struggles to articulate reasoning for decisions",
+            "Vulnerable to absorbing others' states without awareness"
+        ],
+        strategies: "URGENT: Develop interoceptive precision AND ignition threshold management. Start with body awareness training to understand what you're feeling. Then practice sensory gating to reduce overwhelm. Create protected low-stimulation environments. Your sensitivity is valuable but needs support structures."
+    },
+
+    "ENGAGED_INTUITIVE": {
+        name: "THE ENGAGED INTUITIVE",
+        ignitionRange: [16, 20],
+        precisionRange: [8, 12],
+        integrationRange: [4, 8],
+        mechanism: "Low ignition threshold with moderate interoceptive precision and low somatic integration creates broad awareness of both external and internal worlds while maintaining analytical decision-making. You notice everything including body states but don't let bodily sensations dominate cognitive processing—rare combination of openness with analytical autonomy.",
+        strengths: [
+            "Comprehensive situational and self-awareness",
+            "Can process multiple streams of information",
+            "Good self-monitoring without somatic reactivity",
+            "Effective in complex, dynamic environments",
+            "Balanced perception with analytical processing"
+        ],
+        vulnerabilities: [
+            "Risk of information overload",
+            "May ignore valuable somatic intuitions",
+            "Cognitive resource depletion from broad awareness",
+            "Difficulty sustaining deep focus",
+            "May benefit from trusting body guidance more"
+        ],
+        strategies: "Practice selective attention to raise ignition threshold contextually. Experiment with increasing somatic integration for intuitive decisions. Your broad awareness is a strength—learn to focus it strategically. Consider developing meditation practices that enhance conscious filtering."
+    },
+
+    "RESPONSIVE_NAVIGATOR": {
+        name: "THE RESPONSIVE NAVIGATOR",
+        ignitionRange: [16, 20],
+        precisionRange: [8, 12],
+        integrationRange: [8, 12],
+        mechanism: "Low ignition threshold with moderate interoceptive precision and moderate somatic integration creates balanced responsiveness to all channels—external, internal, and the body-cognition interface. You process a high volume of prediction errors from all sources with measured integration, enabling rich awareness without overwhelming paralysis.",
+        strengths: [
+            "Holistic awareness of situation, self, and body",
+            "Flexible, adaptive responses to complex environments",
+            "Can integrate multiple perspectives rapidly",
+            "Good at crisis response and dynamic situations",
+            "Balances intuition with analysis even under pressure"
+        ],
+        vulnerabilities: [
+            "Risk of processing overload",
+            "May struggle with sustained focused work",
+            "Requires significant recovery time",
+            "Can be exhausted by high-stimulation environments",
+            "Difficulty 'turning off' comprehensive awareness"
+        ],
+        strategies: "Develop ignition threshold management as priority skill. Create protected low-stimulation time for recovery. Practice selective attention training. Your comprehensive responsiveness is valuable in crisis/dynamic work—structure life to support this with adequate rest."
+    },
+
+    "EMBODIED_PERCEIVER": {
+        name: "THE EMBODIED PERCEIVER",
+        ignitionRange: [16, 20],
+        precisionRange: [8, 12],
+        integrationRange: [13, 16],
+        mechanism: "Low ignition threshold with moderate interoceptive precision and high somatic integration creates full-spectrum awareness where body strongly guides responses to comprehensive environmental input. You're open to everything externally while deeply influenced by moderately-perceived body states—creates rich, embodied, holistic processing.",
+        strengths: [
+            "Exceptionally rich conscious experience",
+            "Strong embodied intuition across domains",
+            "Excellent empathetic attunement",
+            "Holistic pattern recognition",
+            "Authentic, grounded presence despite high sensitivity"
+        ],
+        vulnerabilities: [
+            "High risk of overwhelm from combined external/somatic input",
+            "Physical discomfort amplified by low ignition threshold",
+            "Difficult to separate self from environment",
+            "Struggles with abstract or disembodied analysis",
+            "Requires extensive self-care and recovery time"
+        ],
+        strategies: "Develop interoceptive precision to better understand the body signals guiding you. Practice ignition threshold elevation for focused work. Create sanctuary spaces with controlled stimulation. Your embodied openness is a strength—learn to focus it strategically."
+    }
+        };  
+
+        // State management
+        let currentSection = 0;
+        let currentQuestion = 0;
+        let answers = {};
+        let scores = {
+            ignition: 0,
+            precision: 0,
+            integration: 0
+        };
+        let chartInstances = {};
+
+        // DOM elements
+        const introductionSection = document.getElementById('introduction-section');
+        const quizSection = document.getElementById('quiz-section');
+        const resultsContainer = document.getElementById('results-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const questionContainer = document.getElementById('question-container');
+        const sectionTitle = document.getElementById('section-title');
+        const sectionSubtitle = document.getElementById('section-subtitle');
+        const sectionIcon = document.getElementById('section-icon');
+        const currentQuestionEl = document.getElementById('current-question');
+        const progressFill = document.getElementById('progress-fill');
+        const retakeBtn = document.getElementById('retake-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Initialize the quiz
+        function initQuiz() {
+            // Set up event listeners
+            startQuizBtn.addEventListener('click', startQuiz);
+            prevBtn.addEventListener('click', showPreviousQuestion);
+            nextBtn.addEventListener('click', showNextQuestion);
+            retakeBtn.addEventListener('click', retakeQuiz);
+            downloadBtn.addEventListener('click', downloadReport);
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    switchTab(tabId);
+                });
+            });
+            
+            // Initialize answers object
+            quizData.sections.forEach(section => {
+                section.questions.forEach(question => {
+                    answers[question.id] = null;
+                });
+            });
+        }
+
+        // Switch between tabs
+        function switchTab(tabId) {
+            // Update active tab
+            tabs.forEach(tab => {
+                if (tab.dataset.tab === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Update active tab content
+            tabContents.forEach(content => {
+                if (content.id === `${tabId}-tab`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+            
+            // Initialize chart if it hasn't been initialized yet
+            if (tabId === 'radar' && !chartInstances.radar) {
+                setTimeout(() => createRadarChart(), 100);
+            } else if (tabId === 'bar' && !chartInstances.bar) {
+                setTimeout(() => createBarChart(), 100);
+            } else if (tabId === 'line' && !chartInstances.line) {
+                setTimeout(() => createLineChart(), 100);
+            } else if (tabId === 'gauge' && !chartInstances.gauge1) {
+                setTimeout(() => createGaugeCharts(), 100);
+            } else if (tabId === 'heatmap' && !chartInstances.heatmap) {
+                setTimeout(() => createHeatmap(), 100);
+            } else if (tabId === 'scatter' && !chartInstances.scatter) {
+                setTimeout(() => createScatterPlot(), 100);
+            } else if (tabId === 'pie' && !chartInstances.pie) {
+                setTimeout(() => createPieChart(), 100);
+            } else if (tabId === 'table' && !chartInstances.table) {
+                setTimeout(() => createDataTable(), 100);
+            }
+        }
+
+        // Start the quiz
+        function startQuiz() {
+            // Add fade out animation
+            introductionSection.style.opacity = '0';
+            introductionSection.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                introductionSection.style.display = 'none';
+                quizSection.style.display = 'block';
+                quizSection.style.opacity = '0';
+                quizSection.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    showQuestion();
+                    quizSection.style.opacity = '1';
+                    quizSection.style.transform = 'translateY(0)';
+                }, 50);
+            }, 300);
+        }
+
+        // Show current question
+        function showQuestion() {
+            const section = quizData.sections[currentSection];
+            const question = section.questions[currentQuestion];
+            
+            // Add fade out animation
+            questionContainer.style.opacity = '0';
+            questionContainer.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                // Update section info
+                sectionTitle.textContent = section.title;
+                sectionSubtitle.textContent = section.subtitle;
+                sectionIcon.innerHTML = `<i class="${section.icon}"></i>`;
+                
+                // Update progress
+                const totalQuestions = getTotalQuestions();
+                const answeredQuestions = getAnsweredCount();
+                const currentQuestionNum = answeredQuestions + 1;
+                currentQuestionEl.textContent = currentQuestionNum;
+                progressFill.style.width = `${(answeredQuestions / totalQuestions) * 100}%`;
+                
+                // Update navigation buttons
+                prevBtn.disabled = (currentSection === 0 && currentQuestion === 0);
+                
+                // Update next button text on last question
+                if (currentSection === quizData.sections.length - 1 && 
+                    currentQuestion === section.questions.length - 1) {
+                    nextBtn.innerHTML = 'View Results <i class="fas fa-chart-bar"></i>';
+                } else {
+                    nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+                }
+                
+                // Clear question container
+                questionContainer.innerHTML = '';
+                
+                // Create question element
+                const questionEl = document.createElement('div');
+                questionEl.className = 'question';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${question.id}. ${question.text}`;
+                questionText.setAttribute('data-question-number', question.id);
+                questionEl.appendChild(questionText);
+                
+                // Create options container
+                const optionsEl = document.createElement('div');
+                optionsEl.className = 'options';
+                
+                // Create option elements
+                const optionLetters = ['A', 'B', 'C', 'D'];
+                question.options.forEach((option, index) => {
+                    const optionEl = document.createElement('div');
+                    optionEl.className = `option ${answers[question.id] === option.value ? 'selected' : ''}`;
+                    optionEl.dataset.value = option.value;
+                    
+                    optionEl.addEventListener('click', () => selectOption(question.id, option.value));
+                    
+                    const optionLetter = document.createElement('div');
+                    optionLetter.className = 'option-letter';
+                    optionLetter.textContent = optionLetters[index];
+                    
+                    const optionContent = document.createElement('div');
+                    optionContent.className = 'option-content';
+                    
+                    const optionText = document.createElement('div');
+                    optionText.className = 'option-text';
+                    optionText.textContent = option.text;
+                    
+                    const optionNote = document.createElement('div');
+                    optionNote.className = 'option-note';
+                    optionNote.textContent = option.note;
+                    
+                    optionContent.appendChild(optionText);
+                    optionContent.appendChild(optionNote);
+                    
+                    optionEl.appendChild(optionLetter);
+                    optionEl.appendChild(optionContent);
+                    
+                    optionsEl.appendChild(optionEl);
+                });
+                
+                questionEl.appendChild(optionsEl);
+                questionContainer.appendChild(questionEl);
+                
+                // Add fade in animation
+                setTimeout(() => {
+                    questionContainer.style.opacity = '1';
+                    questionContainer.style.transform = 'translateY(0)';
+                }, 50);
+            }, 300);
+        }
+
+        // Select an option
+        function selectOption(questionId, value) {
+            answers[questionId] = value;
+            
+            // Update UI to show selected option
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('selected');
+                if (parseInt(option.dataset.value) === value) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Enable next button
+            nextBtn.disabled = false;
+        }
+
+        // Show previous question
+        function showPreviousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+            } else if (currentSection > 0) {
+                currentSection--;
+                currentQuestion = quizData.sections[currentSection].questions.length - 1;
+            }
+            
+            showQuestion();
+        }
+
+        // Show next question
+        function showNextQuestion() {
+            // Check if an answer is selected
+            const currentQuestionId = quizData.sections[currentSection].questions[currentQuestion].id;
+            if (answers[currentQuestionId] === null) {
+                alert('Please select an answer before proceeding.');
+                return;
+            }
+            
+            // Move to next question or section
+            const section = quizData.sections[currentSection];
+            if (currentQuestion < section.questions.length - 1) {
+                currentQuestion++;
+            } else if (currentSection < quizData.sections.length - 1) {
+                currentSection++;
+                currentQuestion = 0;
+            } else {
+                // Last question - show results
+                calculateResults();
+                showResults();
+                return;
+            }
+            
+            showQuestion();
+        }
+
+        // Calculate scores
+        function calculateResults() {
+            // Reset scores
+            scores = { ignition: 0, precision: 0, integration: 0 };
+            
+            // Calculate section scores
+            quizData.sections.forEach(section => {
+                section.questions.forEach(question => {
+                    const answer = answers[question.id];
+                    if (answer !== null) {
+                        if (section.id === 'ignition') {
+                            scores.ignition += answer;
+                        } else if (section.id === 'precision') {
+                            scores.precision += answer;
+                        } else if (section.id === 'integration') {
+                            scores.integration += answer;
+                        }
+                    }
+                });
+            });
+        }
+
+        // Show results
+        function showResults() {
+            // Add fade out animation
+            quizSection.style.opacity = '0';
+            quizSection.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                quizSection.style.display = 'none';
+                resultsContainer.style.display = 'block';
+                resultsContainer.style.opacity = '0';
+                resultsContainer.style.transform = 'translateY(20px)';
+                
+                // Determine profile based on scores
+                const profile = determineProfile(scores);
+                
+                // Update profile info
+                document.getElementById('profile-name').textContent = profile.name;
+                document.getElementById('mechanism-text').textContent = profile.mechanism;
+                
+                // Update strengths list
+                const strengthsList = document.getElementById('strengths-list');
+                strengthsList.innerHTML = '';
+                profile.strengths.forEach(strength => {
+                    const li = document.createElement('li');
+                    li.textContent = strength;
+                    strengthsList.appendChild(li);
+                });
+                
+                // Update vulnerabilities list
+                const vulnerabilitiesList = document.getElementById('vulnerabilities-list');
+                vulnerabilitiesList.innerHTML = '';
+                profile.vulnerabilities.forEach(vulnerability => {
+                    const li = document.createElement('li');
+                    li.textContent = vulnerability;
+                    vulnerabilitiesList.appendChild(li);
+                });
+                
+                // Update strategies
+                document.getElementById('strategies-text').innerHTML = `<p>${profile.strategies}</p>`;
+                
+                setTimeout(() => {
+                    resultsContainer.style.opacity = '1';
+                    resultsContainer.style.transform = 'translateY(0)';
+                }, 50);
+                
+                // Initialize visualizations
+                setTimeout(() => {
+                    createRadarChart();
+                    createBarChart();
+                    createLineChart();
+                    createGaugeCharts();
+                    createHeatmap();
+                    createScatterPlot();
+                    createPieChart();
+                    createDataTable();
+                }, 400);
+            }, 300);
+        }
+
+        // Create Radar Chart
+        function createRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            // Destroy previous instance if exists
+            if (chartInstances.radar) {
+                chartInstances.radar.destroy();
+            }
+            
+            chartInstances.radar = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Ignition Threshold', 'Interoceptive Precision', 'Somatic Integration'],
+                    datasets: [
+                        {
+                            label: 'Your Scores',
+                            data: [scores.ignition, scores.precision, scores.integration],
+                            backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 8,
+                            pointHoverRadius: 10
+                        },
+                        {
+                            label: 'Population Average',
+                            data: [12, 10, 10],
+                            backgroundColor: 'rgba(107, 154, 196, 0.2)',
+                            borderColor: 'rgba(107, 154, 196, 1)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointBackgroundColor: 'rgba(107, 154, 196, 1)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 1,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                                lineWidth: 1
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                                lineWidth: 1
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 14,
+                                    weight: 'bold',
+                                    family: 'Segoe UI'
+                                },
+                                color: '#4a5568'
+                            },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                font: {
+                                    size: 11,
+                                    family: 'Segoe UI'
+                                },
+                                min: 0,
+                                max: 20,
+                                stepSize: 5,
+                                color: '#718096'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 13,
+                                    family: 'Segoe UI'
+                                },
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                family: 'Segoe UI'
+                            },
+                            bodyFont: {
+                                size: 13,
+                                family: 'Segoe UI'
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.raw;
+                                    if (context.dataIndex === 0) {
+                                        label += '/20';
+                                    } else {
+                                        label += '/16';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Create Bar Chart
+        function createBarChart() {
+            const ctx = document.getElementById('barChart').getContext('2d');
+            
+            if (chartInstances.bar) {
+                chartInstances.bar.destroy();
+            }
+            
+            chartInstances.bar = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Ignition Threshold', 'Interoceptive Precision', 'Somatic Integration'],
+                    datasets: [
+                        {
+                            label: 'Your Score',
+                            data: [scores.ignition, scores.precision, scores.integration],
+                            backgroundColor: [
+                                'rgba(102, 126, 234, 0.8)',
+                                'rgba(118, 75, 162, 0.8)',
+                                'rgba(79, 172, 254, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(102, 126, 234, 1)',
+                                'rgba(118, 75, 162, 1)',
+                                'rgba(79, 172, 254, 1)'
+                            ],
+                            borderWidth: 2,
+                            borderRadius: 8,
+                            borderSkipped: false
+                        },
+                        {
+                            label: 'Maximum Score',
+                            data: [20, 16, 16],
+                            backgroundColor: 'rgba(200, 200, 200, 0.3)',
+                            borderColor: 'rgba(150, 150, 150, 1)',
+                            borderWidth: 1,
+                            borderDash: [5, 5],
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart',
+                        delay: (context) => {
+                            return context.dataIndex * 200;
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 20,
+                            title: {
+                                display: true,
+                                text: 'Score',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold',
+                                    family: 'Segoe UI'
+                                },
+                                color: '#4a5568'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Segoe UI'
+                                },
+                                color: '#718096'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Segoe UI',
+                                    size: 12
+                                },
+                                color: '#4a5568'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 13,
+                                    family: 'Segoe UI'
+                                },
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                size: 14,
+                                family: 'Segoe UI'
+                            },
+                            bodyFont: {
+                                size: 13,
+                                family: 'Segoe UI'
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.raw;
+                                    if (context.dataIndex === 0) {
+                                        label += '/20';
+                                    } else {
+                                        label += '/16';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Create Line Chart
+        function createLineChart() {
+            const ctx = document.getElementById('lineChart').getContext('2d');
+            
+            if (chartInstances.line) {
+                chartInstances.line.destroy();
+            }
+            
+            // Generate theoretical data for different consciousness states
+            const states = ['Resting', 'Focused', 'Meditative', 'Stressed', 'Creative'];
+            
+            chartInstances.line = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: states,
+                    datasets: [
+                        {
+                            label: 'Ignition Threshold',
+                            data: [scores.ignition, scores.ignition - 2, scores.ignition + 3, scores.ignition - 4, scores.ignition + 1],
+                            borderColor: 'rgba(74, 111, 165, 1)',
+                            backgroundColor: 'rgba(74, 111, 165, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: 'Interoceptive Precision',
+                            data: [scores.precision, scores.precision - 1, scores.precision + 2, scores.precision - 3, scores.precision + 1],
+                            borderColor: 'rgba(107, 154, 196, 1)',
+                            backgroundColor: 'rgba(107, 154, 196, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: 'Somatic Integration',
+                            data: [scores.integration, scores.integration - 1, scores.integration + 1, scores.integration - 2, scores.integration + 2],
+                            borderColor: 'rgba(22, 96, 136, 1)',
+                            backgroundColor: 'rgba(22, 96, 136, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 0,
+                            max: 20,
+                            title: {
+                                display: true,
+                                text: 'Score',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Consciousness State',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 12
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Create Gauge Charts
+        function createGaugeCharts() {
+            // Create gauge for Ignition Threshold
+            createSingleGauge('gauge1', scores.ignition, 20, 'Ignition Threshold');
+            
+            // Create gauge for Interoceptive Precision
+            createSingleGauge('gauge2', scores.precision, 16, 'Interoceptive Precision');
+            
+            // Create gauge for Somatic Integration
+            createSingleGauge('gauge3', scores.integration, 16, 'Somatic Integration');
+        }
+
+        function createSingleGauge(canvasId, value, max, label) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            
+            // Calculate percentage
+            const percentage = (value / max) * 100;
+            
+            // Determine color based on percentage
+            let color;
+            if (percentage < 33) {
+                color = '#e53e3e'; // Red
+            } else if (percentage < 66) {
+                color = '#d69e2e'; // Yellow
+            } else {
+                color = '#38a169'; // Green
+            }
+            
+            // Create gauge chart
+            if (chartInstances[canvasId]) {
+                chartInstances[canvasId].destroy();
+            }
+            
+            chartInstances[canvasId] = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [value, max - value],
+                        backgroundColor: [color, '#e2e8f0'],
+                        borderWidth: 0,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    cutout: '80%',
+                    circumference: 180,
+                    rotation: 270,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                },
+                plugins: [{
+                    id: 'text',
+                    afterDraw: function(chart) {
+                        const width = chart.width;
+                        const height = chart.height;
+                        const ctx = chart.ctx;
+                        
+                        ctx.restore();
+                        ctx.font = "bold 24px 'Segoe UI'";
+                        ctx.textBaseline = "middle";
+                        ctx.fillStyle = color;
+                        
+                        const text = value.toString();
+                        const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                        const textY = height / 2 + 10;
+                        
+                        ctx.fillText(text, textX, textY);
+                        
+                        ctx.font = "14px 'Segoe UI'";
+                        ctx.fillStyle = '#4a5568';
+                        
+                        const labelText = label;
+                        const labelX = Math.round((width - ctx.measureText(labelText).width) / 2);
+                        const labelY = textY + 30;
+                        
+                        ctx.fillText(labelText, labelX, labelY);
+                        
+                        ctx.save();
+                    }
+                }]
+            });
+        }
+
+        // Create Heatmap
+        function createHeatmap() {
+            const container = document.getElementById('heatmap-container');
+            container.innerHTML = '';
+            
+            // Create heatmap cells for each question
+            quizData.sections.forEach((section, sectionIndex) => {
+                // Add section label
+                const labelCell = document.createElement('div');
+                labelCell.className = 'heatmap-label';
+                labelCell.textContent = section.title;
+                labelCell.style.gridColumn = `${sectionIndex * 1 + 1} / span 1`;
+                container.appendChild(labelCell);
+                
+                // Add question cells
+                section.questions.forEach((question, questionIndex) => {
+                    const answerValue = answers[question.id];
+                    const cell = document.createElement('div');
+                    cell.className = 'heatmap-cell';
+                    cell.textContent = `Q${question.id}: ${answerValue}`;
+                    
+                    // Set color based on answer value
+                    if (answerValue === 1) {
+                        cell.style.backgroundColor = '#feb24c'; // Light orange
+                    } else if (answerValue === 2) {
+                        cell.style.backgroundColor = '#fd8d3c'; // Orange
+                    } else if (answerValue === 3) {
+                        cell.style.backgroundColor = '#fc4e2a'; // Red-orange
+                    } else if (answerValue === 4) {
+                        cell.style.backgroundColor = '#e31a1c'; // Red
+                    }
+                    
+                    // Position in grid
+                    cell.style.gridColumn = `${sectionIndex * 1 + 1}`;
+                    cell.style.gridRow = `${questionIndex + 2}`;
+                    
+                    container.appendChild(cell);
+                });
+            });
+            
+            // Add legend
+            const legend = document.createElement('div');
+            legend.className = 'heatmap-label';
+            legend.textContent = 'Low (1) → High (4)';
+            legend.style.gridColumn = '1 / span 5';
+            legend.style.gridRow = '7';
+            legend.style.marginTop = '20px';
+            container.appendChild(legend);
+        }
+
+        // Create Scatter Plot
+        function createScatterPlot() {
+            const ctx = document.getElementById('scatterChart').getContext('2d');
+            
+            if (chartInstances.scatter) {
+                chartInstances.scatter.destroy();
+            }
+            
+            // Generate sample data for other profiles
+            const sampleData = [
+                {x: 7, y: 10, r: 8, label: 'Focused Analyst'},
+                {x: 18, y: 14, r: 8, label: 'Embodied Empath'},
+                {x: 12, y: 10, r: 8, label: 'Balanced Navigator'},
+                {x: 18, y: 6, r: 8, label: 'External Scanner'},
+                {x: 7, y: 14, r: 8, label: 'Contemplative Integrator'}
+            ];
+            
+            chartInstances.scatter = new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Profile Archetypes',
+                            data: sampleData,
+                            backgroundColor: 'rgba(107, 154, 196, 0.3)',
+                            borderColor: 'rgba(107, 154, 196, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Your Position',
+                            data: [{
+                                x: scores.ignition,
+                                y: scores.precision,
+                                r: 15
+                            }],
+                            backgroundColor: 'rgba(74, 111, 165, 0.8)',
+                            borderColor: 'rgba(74, 111, 165, 1)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Ignition Threshold',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            min: 0,
+                            max: 20,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Interoceptive Precision',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            min: 0,
+                            max: 16,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 12
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.datasetIndex === 0) {
+                                        return `${context.raw.label}: (${context.raw.x}, ${context.raw.y})`;
+                                    } else {
+                                        return `Your Position: (${context.raw.x}, ${context.raw.y})`;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Create Pie Chart
+        function createPieChart() {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            
+            if (chartInstances.pie) {
+                chartInstances.pie.destroy();
+            }
+            
+            // Calculate percentages
+            const totalPossible = 20 + 16 + 16; // 52 total points possible
+            const yourTotal = scores.ignition + scores.precision + scores.integration;
+            
+            chartInstances.pie = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Ignition Threshold', 'Interoceptive Precision', 'Somatic Integration'],
+                    datasets: [{
+                        data: [
+                            (scores.ignition / totalPossible) * 100,
+                            (scores.precision / totalPossible) * 100,
+                            (scores.integration / totalPossible) * 100
+                        ],
+                        backgroundColor: [
+                            'rgba(74, 111, 165, 0.8)',
+                            'rgba(107, 154, 196, 0.8)',
+                            'rgba(22, 96, 136, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(74, 111, 165, 1)',
+                            'rgba(107, 154, 196, 1)',
+                            'rgba(22, 96, 136, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 12
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const actualScore = context.dataIndex === 0 ? scores.ignition : 
+                                                       context.dataIndex === 1 ? scores.precision : 
+                                                       scores.integration;
+                                    const maxScore = context.dataIndex === 0 ? 20 : 16;
+                                    return `${label}: ${actualScore}/${maxScore} (${value.toFixed(1)}% of total)`;
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Create Data Table
+        function createDataTable() {
+            // Main results table
+            const tableBody = document.getElementById('results-table-body');
+            tableBody.innerHTML = '';
+            
+            // Determine ranges and interpretations
+            const ignitionRange = getIgnitionRange(scores.ignition);
+            const precisionRange = getPrecisionRange(scores.precision);
+            const integrationRange = getIntegrationRange(scores.integration);
+            
+            const ignitionInterpretation = getIgnitionInterpretation(scores.ignition);
+            const precisionInterpretation = getPrecisionInterpretation(scores.precision);
+            const integrationInterpretation = getIntegrationInterpretation(scores.integration);
+            
+            // Add rows
+            const rows = [
+                ['Ignition Threshold', scores.ignition, '5-20', ignitionRange, ignitionInterpretation],
+                ['Interoceptive Precision', scores.precision, '4-16', precisionRange, precisionInterpretation],
+                ['Somatic Integration', scores.integration, '4-16', integrationRange, integrationInterpretation]
+            ];
+            
+            rows.forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+            
+            // Questions table
+            const questionsTableBody = document.getElementById('questions-table-body');
+            questionsTableBody.innerHTML = '';
+            
+            // Add all questions
+            quizData.sections.forEach(section => {
+                section.questions.forEach(question => {
+                    const answerValue = answers[question.id];
+                    const answerText = question.options.find(opt => opt.value === answerValue)?.text || 'Not answered';
+                    
+                    const tr = document.createElement('tr');
+                    
+                    const td1 = document.createElement('td');
+                    td1.textContent = `Q${question.id}`;
+                    tr.appendChild(td1);
+                    
+                    const td2 = document.createElement('td');
+                    td2.textContent = section.title;
+                    tr.appendChild(td2);
+                    
+                    const td3 = document.createElement('td');
+                    td3.textContent = answerText.substring(0, 50) + (answerText.length > 50 ? '...' : '');
+                    tr.appendChild(td3);
+                    
+                    const td4 = document.createElement('td');
+                    td4.textContent = answerValue;
+                    tr.appendChild(td4);
+                    
+                    questionsTableBody.appendChild(tr);
+                });
+            });
+        }
+
+        // Helper functions for interpretations
+        function getIgnitionRange(score) {
+            if (score <= 8) return "VERY HIGH";
+            if (score <= 12) return "MODERATE-HIGH";
+            if (score <= 16) return "MODERATE-LOW";
+            return "VERY LOW";
+        }
+
+        function getPrecisionRange(score) {
+            if (score <= 7) return "LOW";
+            if (score <= 10) return "MODERATE-LOW";
+            if (score <= 13) return "MODERATE-HIGH";
+            return "HIGH";
+        }
+
+        function getIntegrationRange(score) {
+            if (score <= 7) return "LOW";
+            if (score <= 10) return "MODERATE-LOW";
+            if (score <= 13) return "MODERATE-HIGH";
+            return "HIGH";
+        }
+
+        function getIgnitionInterpretation(score) {
+            if (score <= 8) return "Deep focus, excellent filtering";
+            if (score <= 12) return "Good selective attention";
+            if (score <= 16) return "Notices many stimuli";
+            return "Minimal filtering, high conscious access";
+        }
+
+        function getPrecisionInterpretation(score) {
+            if (score <= 7) return "Body signals weakly weighted";
+            if (score <= 10) return "Some body awareness";
+            if (score <= 13) return "Good interoceptive accuracy";
+            return "Exceptional body signal precision";
+        }
+
+        function getIntegrationInterpretation(score) {
+            if (score <= 7) return "Cognition operates independently of body";
+            if (score <= 10) return "Body informs but doesn't dominate";
+            if (score <= 13) return "Body strongly shapes experience";
+            return "Body-mind deeply integrated";
+        }
+
+        // Determine profile based on scores
+        function determineProfile(scores) {
+            const { ignition, precision, integration } = scores;
+            
+            // Check each profile
+            for (const [key, profile] of Object.entries(quizData.profiles)) {
+                if (ignition >= profile.ignitionRange[0] && ignition <= profile.ignitionRange[1] &&
+                    precision >= profile.precisionRange[0] && precision <= profile.precisionRange[1] &&
+                    integration >= profile.integrationRange[0] && integration <= profile.integrationRange[1]) {
+                    return profile;
+                }
+            }
+            
+            // Default to Balanced Navigator if no match
+            return quizData.profiles.BALANCED_NAVIGATOR;
+        }
+
+        // Get total number of questions
+        function getTotalQuestions() {
+            let total = 0;
+            quizData.sections.forEach(section => {
+                total += section.questions.length;
+            });
+            return total;
+        }
+
+        // Get count of answered questions
+        function getAnsweredCount() {
+            let count = 0;
+            quizData.sections.forEach(section => {
+                section.questions.forEach(question => {
+                    if (answers[question.id] !== null) {
+                        count++;
+                    }
+                });
+            });
+            return count;
+        }
+
+        // Retake quiz
+        function retakeQuiz() {
+            // Reset state
+            currentSection = 0;
+            currentQuestion = 0;
+            answers = {};
+            scores = { ignition: 0, precision: 0, integration: 0 };
+            
+            // Destroy all chart instances
+            Object.values(chartInstances).forEach(chart => {
+                if (chart && chart.destroy) chart.destroy();
+            });
+            chartInstances = {};
+            
+            // Reset answers object
+            quizData.sections.forEach(section => {
+                section.questions.forEach(question => {
+                    answers[question.id] = null;
+                });
+            });
+            
+            // Show introduction
+            resultsContainer.style.display = 'none';
+            introductionSection.style.display = 'block';
+        }
+
+        // Download report (simulated)
+        function downloadReport() {
+            alert("This would generate and download a PDF report in a full implementation. For now, you can take a screenshot of your results.");
+        }
+
+        // Initialize the quiz when the page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

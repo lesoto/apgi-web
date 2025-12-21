@@ -10,9 +10,8 @@
 - [Project Structure](#project-structure)
 - [Main Pages](#main-pages)
 - [Technical Components](#technical-components)
-- [Python Implementations](#python-implementations)
 - [Assets](#assets)
-- [Getting Started](#getting-started)
+- [Key Concepts & Terminology](#key-concepts--terminology)
 
 ---
 
@@ -24,7 +23,6 @@ The APGI Framework website presents a novel theoretical framework for understand
 - Interactive consciousness assessment quiz
 - Real-time data visualization with radar charts, gauges, and graphs
 - Academic paper presentation with modern UI
-- Python implementation of APGI networks using Liquid Time-Constant Networks
 - Dashboard system for personalized consciousness profiles
 - Book promotion and educational content
 
@@ -170,18 +168,72 @@ Single-page version of the consciousness assessment.
 ---
 
 #### **Quiz.html**
-Standalone quiz page with full functionality.
+Enhanced standalone quiz page with comprehensive functionality.
 
-**Purpose:** Isolated quiz component for embedding or standalone use.
+**Purpose:** Complete consciousness assessment with advanced visualizations and user experience.
 
 **Key Features:**
-- 12-question assessment
-- Real-time validation
-- Chart.js and Gauge visualizations
-- Score calculation algorithms
-- Result archetype matching
-- Dark/light theme support
-- Font Awesome icons
+- 40-question comprehensive assessment across 7 sections
+- Multi-section quiz flow with progress tracking
+- Real-time validation and state management
+- Advanced Chart.js visualizations:
+  - Radar charts for parameter mapping
+  - Interactive network graphs
+  - Gauge charts for individual parameters
+  - Temporal stability charts
+  - Environmental fit polar charts
+- Detailed results with:
+  - Complete APGI signature analysis
+  - Profile determination (12 unique profiles)
+  - Interaction effects mapping
+  - Temporal stability assessment
+  - Environmental fit analysis
+  - Comprehensive data tables
+- Enhanced accessibility with ARIA labels and semantic HTML
+- Responsive design with mobile optimization
+- Dark/light theme support with smooth transitions
+- Performance optimizations (debouncing, lazy loading)
+- Micro-interactions and hover effects
+- Loading states and smooth animations
+
+**Technologies:** Vanilla JavaScript, Chart.js, Chartjs-plugin-datalabels, Font Awesome 6.4.0, CSS3 animations, Intersection Observer API
+
+---
+
+#### **Quiz-2.html**
+Alternative quiz implementation.
+
+**Purpose:** Variant of the consciousness assessment with different question set or scoring approach.
+
+**Key Features:**
+- Alternative assessment methodology
+- Different question formulations
+- Variant scoring algorithms
+- Experimental features
+
+---
+
+#### **Quiz-3.html**
+Third quiz variant.
+
+**Purpose:** Experimental version testing different approaches to consciousness assessment.
+
+**Key Features:**
+- Experimental question types
+- Alternative visualization methods
+- Testing new interaction patterns
+
+---
+
+#### **Quiz-4.html**
+Fourth quiz variant.
+
+**Purpose:** Research-oriented version with specialized assessment focus.
+
+**Key Features:**
+- Research-specific questions
+- Advanced analytics
+- Detailed measurement tools
 
 ---
 
@@ -331,129 +383,6 @@ Archive of deprecated or experimental features.
 
 ## Technical Components
 
-### Liquid Networks Directory
-
-The `liquid-networks/` directory contains Python implementations and visualization tools for the APGI framework using Liquid Time-Constant Networks.
-
-#### **APGI-Implementation.py** (1,620 lines)
-Research-grade PyTorch implementation of the APGI Framework.
-
-**Purpose:** Provide a mathematically rigorous, biologically plausible neural network implementation of consciousness based on APGI theory.
-
-**Key Components:**
-
-1. **Core Neural Components:**
-   - `LTCNeuron` - Liquid Time-Constant neurons with adaptive time constants
-   - `HierarchicalPredictiveLayer` - Bidirectional predictive coding (3 levels)
-   - `PrecisionEstimator` - Context-dependent precision Π^i(M,c,a) and Π^e
-   - `PredictionErrorModule` - Computes S = Π^e·|ε^e| + Π^i·|ε^i|
-   - `MetabolicCostModule` - Free energy minimization and thermodynamic constraints
-   - `AdaptiveThreshold` - Dynamic threshold θ with allostatic regulation
-   - `GlobalWorkspace` - Phase transition dynamics with hysteresis
-   - `NeuromodulationModule` - NE and ACh influences
-   - `RefractoryPeriodModule` - Post-ignition suppression
-   - `TemporalIntegrationModule` - 0-500ms integration windows
-   - `PrecisionLearningModule` - Meta-learning from prediction accuracy
-
-2. **Main Network:**
-   - `APGILiquidNetwork` - Complete integrated system
-   - Hierarchical predictive coding (3 levels)
-   - Context-dependent precision weighting
-   - Phase transition dynamics
-   - Metabolic cost modeling
-
-3. **Data Structures:**
-   - `IgnitionState` - Conscious/Unconscious/Transitioning
-   - `PrecisionOutput` - Precision estimates and time constants
-   - `PredictionOutput` - Prediction errors across hierarchy
-   - `MetabolicOutput` - Costs, benefits, and free energy
-   - `APGIState` - Complete network state representation
-
-4. **Validation Tools:**
-   - `APGIValidator` - Comprehensive testing suite
-   - ODE integration correctness
-   - Precision-surprise relationship validation
-   - Phase transition behavior testing
-   - Metabolic cost scaling verification
-
-**Mathematical Foundation:**
-- Implements dx/dt = (1/τ) * (-x + σ(W·input + b))
-- Free energy: F = Cost - Benefit
-- Ignition: P(ignition) = σ(β * (S - θ))
-- Threshold dynamics: dθ/dt = γ(θ₀ - θ) - δB_{t-1} - λ(dS/dt)
-
-**Technologies:** PyTorch, NumPy, LSTM, ODE solvers
-
-**Based on:**
-- Hasani et al. (2021) - Liquid Time-Constant Networks
-- APGI Framework - Allostatic Precision-Gated Ignition theory
-- Friston (2010) - Free Energy Principle
-- Dehaene & Changeux (2011) - Global Workspace Theory
-
----
-
-#### **APGI_Liquid_Network.py**
-Extended implementation with additional experimental features.
-
-**Purpose:** Larger, more feature-rich version of the APGI network implementation.
-
-**Key Features:**
-- Extended network architectures
-- Additional experimental modules
-- Alternative formulations
-- Research variants
-
-**Note:** File exceeds 25,000 tokens; contains comprehensive implementation details.
-
----
-
-### Liquid Networks HTML Visualizations
-
-#### **Liquid-Paper.html**
-Academic paper about Liquid Time-Constant Networks.
-
-**Purpose:** Present the mathematical foundations of LTC networks used in APGI implementation.
-
-**Key Features:**
-- Mathematical formulations
-- Network architecture diagrams
-- Performance comparisons
-- Implementation details
-
----
-
-#### **Liquid-Presentation.html**
-Slide-based presentation on Liquid Networks.
-
-**Purpose:** Educational presentation format for explaining LTC networks.
-
-**Key Features:**
-- Slide navigation
-- Animated diagrams
-- Code examples
-- Visual explanations
-
----
-
-#### **Liquid-Presentation-2.html**
-Updated version of the Liquid Networks presentation.
-
-**Purpose:** Revised presentation with enhanced visuals and updated content.
-
----
-
-#### **Liquid-Networks-Visualization.html**
-Interactive visualization of Liquid Time-Constant Network dynamics.
-
-**Purpose:** Demonstrate how LTC networks process temporal information.
-
-**Key Features:**
-- Real-time network animation
-- Parameter adjustment controls
-- Temporal dynamics visualization
-- Adaptive time constant display
-
----
 
 #### **apgi_visualization.html**
 Interactive APGI network visualization.
@@ -503,76 +432,6 @@ Logo/icon for the framework.
 Book cover thumbnail.
 
 **Purpose:** Display on book promotion pages.
-
----
-
-#### **200x300.png**
-Placeholder image for development.
-
----
-
-## Getting Started
-
-### Running the Website Locally
-
-#### Option 1: Direct File Opening
-Simply open any `.html` file in your browser:
-```bash
-# On macOS
-open Home.html
-
-# On Linux
-xdg-open Home.html
-
-# On Windows
-start Home.html
-```
-
-#### Option 2: Local Web Server (Recommended)
-Using Python's built-in HTTP server:
-```bash
-# Python 3
-python -m http.server 8000
-
-# Then navigate to:
-# http://localhost:8000/Home.html
-```
-
-Using Node.js http-server:
-```bash
-npx http-server -p 8000
-```
-
-#### Setup
-```bash
-cd liquid-networks/
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install torch numpy
-```
-
-#### Run APGI Implementation
-```bash
-python APGI-Implementation.py
-```
-
-**Expected Output:**
-- Network initialization confirmation
-- 10-step simulation with diagnostics:
-  - Ignition state and probability
-  - Surprise levels and threshold
-  - Precision estimates
-  - Metabolic costs
-  - Neuromodulator levels
-- Validation test results:
-  - ODE integration stability
-  - Precision-surprise formula correctness
-  - Phase transition smoothness
-  - Metabolic cost scaling
 
 ---
 
