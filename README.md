@@ -10,14 +10,21 @@
 - [Project Structure](#project-structure)
 - [Main Pages](#main-pages)
 - [Technical Components](#technical-components)
-- [Assets](#assets)
+- [Design System](#design-system)
 - [Key Concepts & Terminology](#key-concepts--terminology)
+- [Development](#development)
+- [License](#license)
 
 ---
 
 ## Overview
 
-The APGI Framework website presents a novel theoretical framework for understanding consciousness as a metabolically expensive, allostatically gated control mechanism activated when precision-weighted prediction errors exceed dynamic thresholds. This interactive platform combines academic rigor with user-friendly interfaces to help people understand their unique consciousness signature.
+The APGI Framework presents a novel theoretical framework for understanding consciousness as a metabolically expensive, allostatically gated control mechanism. This interactive platform combines academic rigor with user-friendly interfaces to help people understand their unique consciousness signature through:
+
+- **Interactive Assessments**: Comprehensive quizzes to evaluate consciousness parameters
+- **Personalized Dashboards**: Detailed visualizations of individual consciousness profiles
+- **Educational Resources**: Academic papers, book content, and conceptual visualizations
+- **Research Tools**: Advanced visualizations for exploring consciousness states and networks
 
 **Key Features:**
 - Interactive consciousness assessment quiz
@@ -30,12 +37,20 @@ The APGI Framework website presents a novel theoretical framework for understand
 
 ## Main Pages
 
-### Landing & Marketing Pages
+### Core Experience
 
 #### **Home.html**
 The primary landing page for the APGI Framework.
 
 **Purpose:** Convert visitors into engaged users by explaining the framework and offering immediate value through an interactive quiz.
+
+**Key Features:**
+- Interactive consciousness assessment quiz
+- Real-time visualization of results
+- Consciousness archetype identification
+- Responsive design with dark/light theme support
+- Engaging animations and transitions
+- Testimonials and social proof
 
 **Key Features:**
 - Hero section with animated gradient background
@@ -80,12 +95,29 @@ Detailed table of contents and chapter breakdown for the APGI book.
 
 ---
 
-### Academic & Research Pages
+### Research & Theory
 
 #### **APGI-Paper.html**
-Academic presentation of the APGI framework principles.
+Academic presentation of the APGI framework.
 
 **Purpose:** Present the theoretical framework in a scholarly, visually appealing format suitable for researchers and academics.
+
+**Key Features:**
+- Interactive academic paper interface
+- Animated neural network visualization
+- Sticky navigation with smooth scrolling
+- Core framework components:
+  1. Allostatic Regulation
+  2. Precision Weighting
+  3. Global Ignition
+  4. Interoceptive Inference
+  5. Thermodynamic Constraints
+- Clinical applications and research implications
+- Downloadable PDF version
+- Citation management
+- Responsive design with dark/light theme
+
+**Technologies:** HTML5, CSS3, JavaScript, Canvas API
 
 **Key Features:**
 - Modern academic paper UI with dark/light theme
@@ -131,8 +163,9 @@ Academic dashboard concept documentation.
 - Element-by-element specifications
 - Plain language interpretation guidelines
 - Dark/light theme toggle
-- Responsive grid layouts
-- Scroll-triggered animations
+- Responsive design for all devices
+- Export functionality for results
+- Shareable profile links
 
 **Note:** This is a specification document, not a functional dashboard.
 
@@ -167,36 +200,38 @@ Single-page version of the consciousness assessment.
 
 ---
 
-#### **Quiz.html**
-Enhanced standalone quiz page with comprehensive functionality.
+### Assessment & Analysis
 
-**Purpose:** Complete consciousness assessment with advanced visualizations and user experience.
+#### **Quiz.html**
+Comprehensive consciousness assessment with advanced analytics.
+
+**Purpose:** In-depth evaluation of consciousness parameters with detailed visualizations.
 
 **Key Features:**
-- 40-question comprehensive assessment across 7 sections
-- Multi-section quiz flow with progress tracking
-- Real-time validation and state management
-- Advanced Chart.js visualizations:
-  - Radar charts for parameter mapping
-  - Interactive network graphs
-  - Gauge charts for individual parameters
-  - Temporal stability charts
-  - Environmental fit polar charts
-- Detailed results with:
-  - Complete APGI signature analysis
-  - Profile determination (12 unique profiles)
-  - Interaction effects mapping
-  - Temporal stability assessment
-  - Environmental fit analysis
-  - Comprehensive data tables
-- Enhanced accessibility with ARIA labels and semantic HTML
-- Responsive design with mobile optimization
-- Dark/light theme support with smooth transitions
-- Performance optimizations (debouncing, lazy loading)
-- Micro-interactions and hover effects
-- Loading states and smooth animations
+- 7-section assessment covering all APGI parameters
+- Interactive question interface with progress tracking
+- Real-time feedback and validation
+- Comprehensive results dashboard including:
+  - Radar charts for parameter visualization
+  - Interactive network diagrams
+  - Gauge charts for detailed metrics
+  - Temporal stability analysis
+  - Environmental fit assessment
+- 12 unique consciousness profiles with detailed analysis
+- Downloadable PDF report generation
+- Responsive design with dark/light theme support
+- Mobile-optimized interface
 
-**Technologies:** Vanilla JavaScript, Chart.js, Chartjs-plugin-datalabels, Font Awesome 6.4.0, CSS3 animations, Intersection Observer API
+**Sections:**
+1. Prediction Error Sensitivity (ε)
+2. Precision Allocation (π)
+3. Ignition Threshold (θₜ)
+4. Somatic Bias (β)
+5. Parameter Interactions
+6. Temporal Stability
+7. Environmental Fit
+
+**Technologies:** Vanilla JavaScript, Chart.js, HTML5 Canvas, CSS3 Animations
 
 ---
 
@@ -237,12 +272,29 @@ Fourth quiz variant.
 
 ---
 
-### Dashboard & Profile Pages
+### Dashboard & Visualization
 
 #### **Dashboard.html**
-Interactive user dashboard for consciousness profiles.
+Interactive dashboard for exploring consciousness profiles.
 
-**Purpose:** Present personalized APGI assessment results through an interactive, visually rich dashboard.
+**Purpose:** Present personalized APGI assessment results through an interactive, visually rich interface.
+
+**Key Features:**
+- 7-section dashboard layout:
+  1. **Dashboard Summary** - Overview of key metrics
+  2. **Core Profile View** - Radar chart visualization of parameters
+  3. **Numeric Reality Check** - Detailed parameter values and ranges
+  4. **Awareness & Overload** - Ignition threshold visualization
+  5. **Body vs World Focus** - Somatic bias analysis
+  6. **State Comparison** - Parameter variations across states
+  7. **Summary Panel** - Key insights and recommendations
+- Interactive visualizations with tooltips
+- Dark/light theme toggle
+- Responsive design for all devices
+- Export functionality for results
+- Shareable profile links
+
+**Technologies:** Vanilla JavaScript, CSS Grid/Flexbox, Chart.js
 
 **Key Features:**
 - Six-section layout matching Dashboard-Acad.html specification
@@ -278,24 +330,27 @@ User profile management page.
 
 ---
 
-### Visualization Pages
+### Visualization & Tools
 
-#### **Consciousness-Visualization.html**
-Interactive visualization of consciousness processes.
+#### **PsyStates-Visualizer.html**
+Interactive visualization of psychological states.
 
-**Purpose:** Provide dynamic, educational visualizations of how the APGI framework models consciousness.
+**Purpose:** Explore different states of consciousness through interactive models.
 
 **Key Features:**
-- Animated diagrams
-- Real-time parameter adjustments
-- Visual representation of:
-  - Precision weighting
-  - Ignition thresholds
-  - Prediction errors
-  - Phase transitions
+- State space visualization with 3D rendering
+- Dynamic parameter adjustment
+- State comparison tools
+- Export functionality for visualizations
+- Dark/light theme support with smooth transitions
+- Interactive tooltips and annotations
+- Responsive design for all devices
+- Performance-optimized rendering
 
----
+#### **State-Network-3d.html**
+3D network visualization of consciousness states.
 
+**Purpose:** Explore the interconnected nature of consciousness states in three dimensions.
 #### **Neuromoduratory-Cascade.html**
 Visualization of neuromodulatory influences on consciousness.
 
