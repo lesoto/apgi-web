@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Understand How Your Consciousness Works—And Learn to Adjust It</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Performance optimization: Preload critical resources -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Inter:wght@300;400;600;700&display=swap" as="style">
+  <link rel="preload" href="https://unpkg.com/lucide@latest" as="script">
+  
+  <!-- Resource hints -->
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//unpkg.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      /* Modern Color Palette */
+      --primary-blue: #2563eb;
+      --primary-blue-hover: #1d4ed8;
+      --secondary-red: #dc2626;
+      --tertiary-green: #059669;
+      --quaternary-yellow: #d97706;
+      --quinary-purple: #7c3aed;
+      --neutral-dark: #1e293b;
+      --neutral-light: #f8fafc;
+      --caption-gray: #64748b;
+      
+      /* Extended Color Palette */
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --accent: #4f46e5;
+      
+      /* Semantic Colors */
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      
+      /* Extended Neutrals */
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border-color: #e2e8f0;
+      --card-bg: #ffffff;
+      
+      /* Effects */
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --border-radius: 16px;
+      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: all 0.2s ease;
+      
+      /* Gradients */
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      
+      /* Legacy variables for compatibility */
+      --bg: var(--bg-primary);
+      --bg-secondary: var(--bg-secondary);
+      --text: var(--text-primary);
+      --text-secondary: var(--text-secondary);
+      --text-muted: var(--caption-gray);
+      --accent: var(--primary-blue);
+      --accent-light: rgba(0, 180, 255, 0.1);
+      --accent-hover: #0099CC;
+      --accent-gradient: var(--gradient-primary);
+      --border: var(--border-color);
+      --border-light: var(--neutral-light);
+      --shadow-sm: var(--card-shadow);
+      --shadow-md: var(--shadow);
+      --shadow-lg: var(--shadow-hover);
+      --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.2);
+      --radius: 12px;
+      --radius-lg: var(--border-radius);
+      --max-width: 1000px;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 1.1rem;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+      transition: var(--transition);
+      min-height: 100vh;
+      position: relative;
+      padding: 0;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      pointer-events: none;
+      z-index: -1;
+    }
+    header, section {
+      padding: 4rem 1rem;
+    }
+    footer {
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: min(100% - 2rem, 1200px);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+    }
+    
+    @media (min-width: 1536px) {
+      .container {
+        max-width: 1200px;
+      }
+    }
+    /* Enhanced Typography */
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 0;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      scroll-margin-top: 2rem;
+    }
+    
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--quinary-purple) 50%, var(--primary-blue) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0 0 2rem;
+      position: relative;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: var(--accent-gradient);
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    }
+    
+    h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      margin-bottom: 2rem;
+      color: var(--text);
+      position: relative;
+      padding-bottom: 1rem;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--accent-gradient);
+      border-radius: 2px;
+    }
+    
+    h3 {
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      margin-bottom: 1.5rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    h4 {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      margin-bottom: 1rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    /* Enhanced paragraph styling */
+    p {
+      margin: 0 0 1.75rem;
+      color: var(--text-secondary);
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      line-height: 1.7;
+      max-width: none;
+    }
+    
+    .lead {
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      color: var(--text);
+      font-weight: 400;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    /* Enhanced list styling */
+    ul {
+      padding-left: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    li {
+      margin-bottom: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      position: relative;
+    }
+    
+    li::marker {
+      color: var(--accent);
+      font-size: 1.2em;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-blue);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 12px;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+      position: relative;
+      overflow: hidden;
+      line-height: 1.5;
+      min-height: 48px;
+      gap: 0.5rem;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover {
+      background: var(--primary-blue-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35);
+    }
+    
+    .btn:active {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+    
+    .btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary-blue);
+      border: 2px solid var(--primary-blue);
+      backdrop-filter: blur(10px);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--accent-light);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+      border-color: var(--primary-blue-hover);
+    }
+    
+    .btn-secondary:active {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+    .hero {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(124, 58, 237, 0.08) 50%, rgba(139, 92, 246, 0.08) 100%);
+      border-radius: 0 0 3rem 3rem;
+      position: relative;
+      overflow: hidden;
+      padding: clamp(4rem, 10vw, 8rem) 1rem;
+      margin-bottom: 4rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(20px);
+    }
+    
+    .glass-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .glass-panel:hover {
+      background: var(--card-bg);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary-blue);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 40%);
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .hero .container {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h1 {
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .hero p {
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      margin-bottom: 2.5rem;
+      color: var(--text-secondary);
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    
+    .hero .btn {
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+    /* Enhanced animations and transitions */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .animate-slide-in {
+      animation: slideInLeft 0.6s ease-out;
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    /* Enhanced hover effects */
+    .hover-lift {
+      transition: var(--transition);
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    /* Enhanced focus states */
+    .btn:focus-visible,
+    input:focus-visible,
+    .theme-toggle:focus-visible,
+    .options label:focus-within {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    
+    /* Skip to main content link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: var(--primary-blue);
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      border-radius: 4px;
+      z-index: 10000;
+      transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+      top: 6px;
+    }
+    
+    /* Enhanced form accessibility */
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      :root {
+        --border-color: #000000;
+        --text-secondary: #000000;
+        --accent: #0000FF;
+      }
+      
+      .btn {
+        border: 2px solid #000000;
+      }
+    }
+    
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    .diagram {
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .diagram img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+    }
+    .diagram img:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-xl);
+    }
+    .testimonials {
+      background: linear-gradient(135deg, var(--border-light) 0%, var(--bg-secondary) 100%);
+      border-radius: var(--radius-lg);
+    }
+    blockquote {
+      margin: 1.5rem 0;
+      padding: 1.5rem 2rem;
+      border-left: 4px solid var(--accent);
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      font-style: italic;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      transition: var(--transition);
+    }
+    blockquote:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md);
+    }
+    blockquote::before {
+      content: '"';
+      position: absolute;
+      top: -0.5rem;
+      left: 1rem;
+      font-size: 3rem;
+      color: var(--accent);
+      opacity: 0.3;
+    }
+    blockquote footer {
+      text-align: right;
+      font-style: normal;
+      font-weight: 600;
+      padding: 0.75rem 0 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 420px;
+      margin: auto;
+    }
+    input[type="text"],
+    input[type="email"] {
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+      background: var(--card-bg);
+      color: var(--text-primary);
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    .privacy {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .privacy a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .privacy a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding: 2rem 1rem;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    /* Responsive Design */
+    @media (min-width: 768px) {
+      h1 {
+        font-size: clamp(3rem, 5vw, 4rem);
+      }
+      
+      .container {
+        padding: 0 2rem;
+      }
+      
+      .theme-toggle {
+        top: 30px;
+        right: 30px;
+      }
+      
+      .hero {
+        padding: clamp(6rem, 12vw, 10rem) 2rem;
+      }
+    }
+    
+    @media (max-width: 1024px) {
+      h1 {
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+      }
+      
+      h2 {
+        font-size: clamp(1.5rem, 4vw, 2.25rem);
+      }
+      
+      .hero {
+        padding: clamp(4rem, 8vw, 6rem) 1rem;
+        margin-bottom: 3rem;
+      }
+      
+      .section-content {
+        padding: 0 1rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: clamp(2rem, 7vw, 3rem);
+        margin-bottom: 1.5rem;
+      }
+      
+      h1::after {
+        width: 80px;
+        height: 3px;
+        bottom: -8px;
+      }
+      
+      h2 {
+        font-size: clamp(1.4rem, 5vw, 2rem);
+        margin-bottom: 1.5rem;
+      }
+      
+      h3 {
+        font-size: clamp(1.2rem, 4vw, 1.6rem);
+      }
+      
+      .hero {
+        padding: clamp(3rem, 10vw, 5rem) 1rem;
+        margin-bottom: 2rem;
+        border-radius: 0 0 2rem 2rem;
+      }
+      
+      .hero p {
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        margin-bottom: 2rem;
+      }
+      
+      .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 1rem 1.5rem;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+      }
+      
+      .btn + .btn {
+        margin-left: 0;
+      }
+      
+      body {
+        font-size: clamp(0.95rem, 2vw, 1rem);
+      }
+      
+      #quiz-container {
+        padding: 1.5rem;
+        margin: 0 1rem;
+        border-radius: 16px;
+      }
+      
+      .question {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .radar-chart {
+        width: 280px;
+        height: 280px;
+      }
+      
+      .dimension-labels {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .diagram {
+        margin: 2rem 0;
+      }
+      
+      .glass-panel {
+        border-radius: 16px;
+      }
+      
+      .section-content {
+        padding: 0 0.5rem;
+      }
+    }
+    /* Enhanced section spacing */
+    section {
+      margin: 2rem 0;
+    }
+    
+    #problem {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg) 100%);
+      border-radius: var(--radius-lg);
+      margin: 3rem 0;
+    }
+    
+    #framework {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      margin: 3rem 0;
+    }
+    
+    #author {
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
+      border-radius: var(--radius-lg);
+      margin: 3rem 0;
+    }
+    
+    #cta {
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(139, 92, 246, 0.1) 100%);
+      border-radius: var(--radius-lg);
+      margin: 3rem 0;
+      padding: 4rem 1rem;
+    }
+    
+    /* Enhanced visual hierarchy */
+    .section-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .framework-diagram {
+      margin: 3rem auto;
+      text-align: center;
+      max-width: 100%;
+    }
+    
+    .framework-diagram img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+    }
+    
+    .framework-diagram img:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+    
+    /* Enhanced quiz layout */
+    #quiz {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg) 100%);
+      padding: 4rem 1rem;
+      margin: 3rem 0;
+    }
+    
+    /* Enhanced testimonials */
+    .testimonials {
+      background: linear-gradient(135deg, var(--border-light) 0%, var(--bg-secondary) 100%);
+      border-radius: var(--radius-lg);
+      padding: 4rem 1rem;
+      margin: 3rem 0;
+    }
+    
+    .testimonials .container {
+      display: grid;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    /* Enhanced theme toggle positioning */
+    .theme-toggle {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 2px solid var(--border-color);
+      border-radius: 50px;
+      padding: 12px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--primary-blue);
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+      min-width: 120px;
+      justify-content: center;
+    }
+    
+    .theme-toggle:hover {
+      background: var(--bg-secondary);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary-blue);
+    }
+    
+    .theme-toggle:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+    
+    .theme-icon {
+      display: inline-block;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 18px;
+    }
+    
+    /* Dark theme styles */
+    [data-theme="dark"] {
+      --primary-blue: #00D4FF;
+      --secondary-red: #FF4488;
+      --tertiary-green: #00FFAA;
+      --quaternary-yellow: #FFDD33;
+      --quinary-purple: #AA77FF;
+      --neutral-dark: #F0F4F8;
+      --neutral-light: #2C3E50;
+      --caption-gray: #B8C5D6;
+      
+      --primary: #6b9ac4;
+      --primary-light: #8bb4d8;
+      --accent: #8bb4d8;
+      
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      
+      --dark: #f0f4f8;
+      --light: #2d3748;
+      --bg-primary: #1a202c;
+      --bg-secondary: #2d3748;
+      --bg-tertiary: #4a5568;
+      --text-primary: #f7fafc;
+      --text-secondary: #cbd5e0;
+      --text-tertiary: #a0aec0;
+      --border-color: #4a5568;
+      --border-light: #718096;
+      --card-bg: #2d3748;
+      --card-hover: #374151;
+      
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
+      --shadow-active: 0 16px 40px rgba(0, 0, 0, 0.6);
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      --glow: 0 0 20px rgba(0, 212, 255, 0.3);
+      
+      --gradient-primary: linear-gradient(135deg, #00D4FF 0%, #0099CC 100%);
+      --gradient-secondary: linear-gradient(135deg, #FF4488 0%, #CC3366 100%);
+      --gradient-accent: linear-gradient(135deg, #00FFAA 0%, #00CC88 100%);
+      
+      --hover-bg: rgba(0, 212, 255, 0.1);
+      --active-bg: rgba(0, 212, 255, 0.2);
+      --focus-ring: rgba(0, 212, 255, 0.5);
+      --selection-bg: rgba(0, 212, 255, 0.3);
+      
+      /* Update legacy variables */
+      --bg: var(--bg-primary);
+      --bg-secondary: var(--bg-secondary);
+      --text: var(--text-primary);
+      --text-secondary: var(--text-secondary);
+      --text-muted: var(--caption-gray);
+      --accent: var(--primary-blue);
+      --accent-light: var(--hover-bg);
+      --accent-hover: #00CCAA;
+      --accent-gradient: var(--gradient-primary);
+      --border: var(--border-color);
+      --border-light: var(--border-light);
+      --shadow-sm: var(--card-shadow);
+      --shadow-md: var(--shadow);
+      --shadow-lg: var(--shadow-hover);
+      --shadow-xl: var(--shadow-active);
+    }
+    
+    [data-theme="dark"] body::before {
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain-dark" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain-dark)"/></svg>');
+    }
+    
+    [data-theme="dark"] .theme-toggle {
+      color: var(--primary-blue);
+      border-color: var(--primary-blue);
+      box-shadow: var(--glow);
+    }
+    
+    [data-theme="dark"] .theme-toggle:hover {
+      background: var(--bg-secondary);
+      box-shadow: var(--shadow-active), var(--glow);
+    }
+    
+    [data-theme="dark"] #problem,
+    [data-theme="dark"] #framework,
+    [data-theme="dark"] #author,
+    [data-theme="dark"] #cta,
+    [data-theme="dark"] #quiz,
+    [data-theme="dark"] .testimonials {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+    }
+    
+    
+    @media (max-width: 480px) {
+      :root {
+        --max-width: 100%;
+      }
+      .container {
+        padding: 0 0.75rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+      .hero p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      #quiz-container {
+        padding: 1rem;
+        margin: 0 0.5rem;
+      }
+      .radar-chart {
+        width: 240px;
+        height: 240px;
+      }
+      .options label {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
+      .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+        width: 100%;
+      }
+      .theme-toggle {
+        top: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        min-width: 80px;
+        font-size: 11px;
+      }
+    }
+
+    /* Quiz styles */
+    #quiz-container {
+      max-width: 700px;
+      margin: auto;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    #quiz-container:hover {
+      box-shadow: var(--shadow-xl);
+      transform: translateY(-2px);
+    }
+    
+    .question {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--bg);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 2px solid var(--border-light);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .question::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: var(--accent-gradient);
+      transition: left 0.3s ease;
+    }
+    
+    .question:hover::before {
+      left: 0;
+    }
+    
+    .question:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+      transform: translateX(4px);
+    }
+    
+    .question.answered {
+      border-color: var(--success);
+      background: linear-gradient(135deg, var(--bg) 0%, rgba(16, 185, 129, 0.05) 100%);
+    }
+    
+    .question h4 {
+      margin-bottom: 1.5rem;
+      color: var(--text);
+      font-weight: 600;
+      font-size: clamp(1.1rem, 2.5vw, 1.2rem);
+      line-height: 1.4;
+    }
+    
+    .options label {
+      display: block;
+      margin: 1rem 0;
+      cursor: pointer;
+      padding: 1.25rem;
+      border-radius: 12px;
+      border: 2px solid var(--border-light);
+      background: var(--bg-secondary);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .options label::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.1), transparent);
+      transition: left 0.4s ease;
+    }
+    
+    .options label:hover::before {
+      left: 100%;
+    }
+    
+    .options label:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .options input[type="radio"]:checked + label {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(79, 70, 229, 0.15) 100%);
+      font-weight: 600;
+      transform: translateX(8px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    }
+    
+    .options input[type="radio"]:checked + label::after {
+      content: '✓';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    
+    .options input[type="radio"] {
+      margin-right: 0.75rem;
+      transform: scale(1.3);
+      accent-color: var(--accent);
+    }
+    
+    .options input[type="radio"]:focus-visible + label {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    #progress-bar {
+      height: 16px;
+      background: var(--border-light);
+      border-radius: 8px;
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    #progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: progress-shimmer 2s infinite;
+    }
+    
+    @keyframes progress-shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    #progress-fill {
+      height: 100%;
+      background: var(--accent-gradient);
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    }
+    
+    #progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    #result {
+      display: none;
+      text-align: left;
+      animation: fadeIn 0.6s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0);
+      }
+    }
+    
+    #result h3 {
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    /* Visualization styles */
+    .visualization-container {
+      margin: 2.5rem 0;
+      text-align: center;
+      padding: 2.5rem;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
+      border-radius: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-lg);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .visualization-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-gradient);
+    }
+    
+    .visualization-container:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--accent);
+    }
+    
+    .radar-chart {
+      width: 350px;
+      height: 350px;
+      margin: 0 auto;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+      transition: transform 0.3s ease;
+    }
+    
+    .radar-chart:hover {
+      transform: scale(1.02);
+    }
+    
+    .radar-svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .dimension-labels {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .dimension-label {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      min-width: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .dimension-label::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.1), transparent);
+      transition: left 0.4s ease;
+    }
+    
+    .dimension-label:hover::before {
+      left: 100%;
+    }
+    
+    .dimension-label:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+    }
+    
+    .dimension-value {
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      margin-bottom: 0.5rem;
+      text-shadow: 0 1px 2px rgba(79, 70, 229, 0.2);
+    }
+    
+    /* Enhanced result display styles */
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .score-item {
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .score-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+    }
+    
+    .score-label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .score-value {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    
+    .score-level {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .score-level.low {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    
+    .score-level.moderate {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+    
+    .score-level.high {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    
+    .score-level.very-high {
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(79, 70, 229, 0.2);
+    }
+    
+    .archetype-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(124, 58, 237, 0.1) 100%);
+      border-radius: 20px;
+      border: 1px solid var(--accent);
+    }
+    
+    .archetype-header h3 {
+      margin: 0;
+      color: var(--accent);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+    
+    .archetype-description {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .archetype-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .strengths-section,
+    .challenges-section {
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border-light);
+    }
+    
+    .strengths-section h4 {
+      color: var(--success);
+      margin-bottom: 1rem;
+    }
+    
+    .challenges-section h4 {
+      color: var(--warning);
+      margin-bottom: 1rem;
+    }
+    
+    .tips-section {
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
+      border-radius: 20px;
+      border: 1px solid var(--border-light);
+    }
+    
+    .tips-section h4 {
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+  </style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- Skip to main content for accessibility -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- Theme Toggle -->
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+  <span class="theme-icon" id="theme-icon">🌙</span>
+  <span class="theme-text" id="theme-text">Dark</span>
+</button>
+
+<!-- HERO -->
+<header class="hero" role="banner">
+  <div class="container">
+    <h1 class="animate-fade-in">Understand How Your Consciousness Works—And Learn to Adjust It</h1>
+    <p class="lead animate-fade-in">The APGI Framework maps your unique consciousness signature across three dimensions: threshold sensitivity, interoceptive accuracy, and somatic bias. Discover yours in 3 minutes.</p>
+    <div class="animate-fade-in">
+      <a href="#quiz" class="btn hover-lift">Take the Free Assessment</a>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+
+<!-- THE PROBLEM -->
+<section id="problem">
+  <div class="container section-content">
+    <h2 class="animate-slide-in">Why Do You Think the Way You Do?</h2>
+    <p class="lead animate-slide-in">You've probably wondered:</p>
+    <ul class="animate-slide-in">
+      <li>Why meditation feels different every time</li>
+      <li>Why some decisions feel "right" in your gut while others require endless analysis</li>
+      <li>Why you're easily distracted in some contexts but deeply focused in others</li>
+      <li>Why certain emotions feel overwhelming while others barely register</li>
+    </ul>
+    <p class="lead animate-slide-in">Most consciousness research offers descriptions, not explanations. APGI gives you both.</p>
+  </div>
+</section>
+
+<!-- THE FRAMEWORK -->
+<section id="framework">
+  <div class="container section-content">
+    <h2 class="animate-slide-in">The Three Dimensions of Consciousness</h2>
+
+    <p class="lead animate-slide-in">What if consciousness isn't a thing you <em>have</em>, but a process your brain <em>runs</em>?</p>
+
+    <p class="animate-slide-in">The APGI Framework (Active Predictive Global Integration) is a new model of consciousness based on a simple but powerful idea: <strong>Your brain is constantly predicting what comes next, and consciousness emerges when those predictions meet surprising new information.</strong></p>
+
+    <p class="animate-slide-in">You don't passively experience reality. Your brain generates a model of the world, compares it to incoming sensory data, and updates only when there's a mismatch—a prediction error. What crosses from unconscious processing into conscious awareness depends on three key dimensions:</p>
+
+    <p class="lead animate-slide-in"><strong>1. Threshold Sensitivity</strong> — How easily information breaks into your awareness. Some people have a wide-open aperture (noticing everything); others have a narrow focus (deep concentration, fewer distractions).</p>
+
+    <p class="lead animate-slide-in"><strong>2. Interoceptive Accuracy</strong> — How precisely you perceive your internal bodily states. Are you in tune with hunger, heartbeat, tension? Or do you override these signals until they're extreme?</p>
+
+    <p class="lead animate-slide-in"><strong>3. Somatic Bias</strong> — How much your bodily sensations dominate your conscious experience. Do you make decisions based on "gut feelings," or through logical analysis? Do physical discomforts derail your focus, or barely register?</p>
+
+    <p class="animate-slide-in">These three dimensions define your <strong>consciousness signature</strong>—your unique way of weighting sensory information, setting thresholds for awareness, and integrating bodily signals into thought.</p>
+
+    <p class="animate-slide-in">The book explores the science behind APGI, walks through 24 chapters of applications (from meditation to decision-making to free will), and gives you practical protocols for adjusting each dimension based on what you need in any given moment.</p>
+
+    <p class="lead animate-slide-in"><strong>The result?</strong> You stop wondering why you think the way you do—and start working <em>with</em> your consciousness architecture instead of against it.</p>
+
+    <div class="framework-diagram animate-fade-in">
+      <img src="images/APGI-Framework-Diagram.png" alt="APGI Framework Diagram showing the three dimensions of consciousness: Threshold Sensitivity, Interoceptive Accuracy, and Somatic Bias" loading="lazy" width="800" height="600">
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="container">
+    <div id="quiz-container">
+      <h2>What's Your Consciousness Signature?</h2>
+      <p>Discover how your brain processes reality through the APGI Framework</p>
+      <p><strong>Estimated Time:</strong> 3-4 minutes | <strong>Questions:</strong> 12 questions</p>
+      <p>Your consciousness has a unique architecture—a specific way of weighting sensory information, setting thresholds for awareness, and processing prediction errors. This assessment maps your consciousness signature across the three core APGI dimensions: <strong>Threshold Sensitivity</strong>, <strong>Interoceptive Accuracy</strong>, and <strong>Somatic Bias</strong>. Answer honestly for the most accurate results.</p>
+
+      <div id="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+
+      <form id="quiz-form">
+        <!-- Questions will be injected here -->
+        <div id="questions-container"></div>
+        <button type="submit" class="btn" id="submit-quiz">Show Me My Results</button>
+      </form>
+
+      <div id="result">
+        <h3>Your Consciousness Signature</h3>
+        <div class="visualization-container">
+          <div class="radar-chart">
+            <svg class="radar-svg" id="radar-chart" viewBox="0 0 300 300">
+              <!-- Grid circles -->
+              <circle cx="150" cy="150" r="30" fill="none" stroke="#ddd" stroke-width="1"/>
+              <circle cx="150" cy="150" r="60" fill="none" stroke="#ddd" stroke-width="1"/>
+              <circle cx="150" cy="150" r="90" fill="none" stroke="#ddd" stroke-width="1"/>
+              <circle cx="150" cy="150" r="120" fill="none" stroke="#ddd" stroke-width="1"/>
+              
+              <!-- Axes -->
+              <line x1="150" y1="150" x2="150" y2="30" stroke="#ddd" stroke-width="1"/>
+              <line x1="150" y1="150" x2="259.8" y2="195" stroke="#ddd" stroke-width="1"/>
+              <line x1="150" y1="150" x2="40.2" y2="195" stroke="#ddd" stroke-width="1"/>
+              
+              <!-- Data polygon -->
+              <polygon id="data-polygon" points="" fill="rgba(0, 102, 255, 0.3)" stroke="#0066ff" stroke-width="2"/>
+              
+              <!-- Data points -->
+              <circle id="point-threshold" cx="" cy="" r="4" fill="#0066ff"/>
+              <circle id="point-interoception" cx="" cy="" r="4" fill="#0066ff"/>
+              <circle id="point-somatic" cx="" cy="" r="4" fill="#0066ff"/>
+              
+              <!-- Labels -->
+              <text x="150" y="20" text-anchor="middle" font-size="12" fill="#333">Threshold</text>
+              <text x="150" y="10" text-anchor="middle" font-size="10" fill="#666">Sensitivity</text>
+              <text x="270" y="200" text-anchor="start" font-size="12" fill="#333">Interoceptive</text>
+              <text x="270" y="212" text-anchor="start" font-size="10" fill="#666">Accuracy</text>
+              <text x="30" y="200" text-anchor="end" font-size="12" fill="#333">Somatic</text>
+              <text x="30" y="212" text-anchor="end" font-size="10" fill="#666">Bias</text>
+            </svg>
+          </div>
+          <div class="dimension-labels">
+            <div class="dimension-label">
+              <span class="dimension-value" id="threshold-value">-</span>
+              <span>Threshold</span>
+            </div>
+            <div class="dimension-label">
+              <span class="dimension-value" id="interoception-value">-</span>
+              <span>Interoception</span>
+            </div>
+            <div class="dimension-label">
+              <span class="dimension-value" id="somatic-value">-</span>
+              <span>Somatic</span>
+            </div>
+          </div>
+        </div>
+        <div id="result-scores"></div>
+        <div id="result-archetype"></div>
+        <div id="result-tips"></div>
+        <hr style="margin: 2rem 0;">
+        <h4>Get Your Full Report</h4>
+        <form id="email-form">
+          <input type="text" name="fname" placeholder="What should I call you? (optional)">
+          <input type="email" name="email" placeholder="Your email" required>
+          <button type="submit" class="btn">Send Me Chapter 11</button>
+        </form>
+        <p class="privacy">We respect your inbox. One email per week, unsubscribe anytime. <a href="#">Privacy Policy</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="testimonials">
+  <div class="container">
+    <h2 class="section-title">What Readers Are Saying</h2>
+
+    <blockquote>
+      “Finally, a model that explains why my meditation practice varies so much day to day. The APGI assessment was eye-opening.”
+      <footer>— Sarah K., mindfulness coach</footer>
+    </blockquote>
+
+    <blockquote>
+      “As a neuroscientist, I appreciate how APGI bridges rigorous theory with lived experience. Highly recommended.”
+      <footer>— Dr. Alan Perez, post-doc researcher</footer>
+    </blockquote>
+
+    <blockquote>
+      “I used the framework to tweak my morning routine—small shifts in attention and interoception have made a huge difference.”
+      <footer>— Jordan M., product manager</footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- AUTHOR -->
+<section id="author">
+  <div class="container section-content">
+    <h2 class="animate-slide-in">About the Author</h2>
+    <p class="lead animate-slide-in"><strong>Dr. Michael Rivers</strong> is a cognitive neuroscientist specializing in predictive processing and consciousness research.</p>
+
+    <p class="animate-slide-in">With 12 years of research at the intersection of Bayesian brain theory and phenomenology, Dr. Rivers developed the APGI Framework to answer a personal question: Why did his meditation practice feel so inconsistent? This curiosity led to a decade-long investigation into the architecture of conscious awareness.</p>
+
+    <p class="animate-slide-in">Dr. Rivers holds a PhD in Cognitive Neuroscience from MIT and has published research on prediction error processing in <em>Nature Neuroscience</em> and <em>Consciousness and Cognition</em>. His work has been featured in <em>Scientific American</em>, <em>Quanta Magazine</em>, and <em>The Neuroscience Podcast</em>.</p>
+
+    <p class="lead animate-slide-in">When not researching consciousness, Dr. Rivers teaches mindfulness-based cognitive therapy and maintains a daily meditation practice (which still has foggy days—now he knows why).</p>
+
+    <p class="animate-slide-in"><strong>Connect:</strong> <a href="mailto:michael@apgiframework.com">michael@apgiframework.com</a> | <a href="#">@DrMichaelRivers</a></p>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="cta">
+  <div class="container section-content">
+    <h2 class="animate-slide-in">Ready to Explore the Full Framework?</h2>
+    <p class="lead animate-slide-in">24 chapters | Research-backed | Practical applications</p>
+    <div class="animate-fade-in">
+      <a href="#" class="btn hover-lift">Get the Book</a>
+      <a href="#" class="btn btn-secondary hover-lift" style="margin-left:0.5rem;">Get Book + App Bundle</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="container">
+    <nav aria-label="Footer navigation">
+      <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="#">Contact</a>
+    </nav>
+    <p>© 2025 APGI Framework. All rights reserved.</p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+  // Quiz data
+  const questions = [
+    {
+      text: "When you're in a busy environment (café, party, office), how aware are you of individual conversations around you?",
+      options: [
+        "I barely notice them unless someone says my name",
+        "I catch fragments but can tune them out if focused",
+        "I'm constantly distracted by overlapping conversations",
+        "I can hear everything clearly and switch attention easily"
+      ]
+    },
+    {
+      text: "How often do you notice subtle changes in your environment (lighting shifts, temperature changes, background sounds)?",
+      options: [
+        "Rarely, unless they're significant",
+        "Occasionally, when I'm not focused on something",
+        "Frequently, even when concentrating",
+        "Constantly, it's hard to ignore small changes"
+      ]
+    },
+    {
+      text: "When reading or watching TV, how easily are you pulled out by external stimuli?",
+      options: [
+        "I get completely absorbed; barely notice interruptions",
+        "Loud or sudden stimuli break my focus",
+        "I'm easily distracted by movements or sounds",
+        "Almost anything can pull my attention away"
+      ]
+    },
+    {
+      text: "How quickly do you realize when something feels \"off\" in a situation, even if you can't explain why?",
+      options: [
+        "It takes me a while to realize something's wrong",
+        "I usually notice within a few minutes",
+        "I pick up on it almost immediately",
+        "I sense it before it's consciously obvious"
+      ]
+    },
+    {
+      text: "Can you feel your heartbeat without taking your pulse?",
+      options: [
+        "No, I can't sense it at all",
+        "Only when it's racing or after exercise",
+        "Yes, when I focus on it",
+        "Yes, I'm always aware of it"
+      ]
+    },
+    {
+      text: "How accurately can you tell when you're hungry vs. thirsty vs. tired?",
+      options: [
+        "I often confuse them or ignore signals until extreme",
+        "I can usually tell, but sometimes mix them up",
+        "I can differentiate them clearly most of the time",
+        "I know exactly what my body needs at any moment"
+      ]
+    },
+    {
+      text: "When you experience an emotion, how aware are you of its physical sensations (chest tightness, stomach flutter, muscle tension)?",
+      options: [
+        "I rarely notice physical sensations with emotions",
+        "I notice strong emotions physically (anger, fear)",
+        "I can identify physical components of most emotions",
+        "Every emotion has a distinct physical signature I recognize"
+      ]
+    },
+    {
+      text: "How often do you realize you're stressed only after someone points it out or you notice physical symptoms?",
+      options: [
+        "Very often—I'm the last to know",
+        "Sometimes—I miss early signs",
+        "Rarely—I usually catch it early",
+        "Never—I'm always aware of my stress levels"
+      ]
+    },
+    {
+      text: "When making a decision, what influences you most?",
+      options: [
+        "Logical analysis and reasoning",
+        "A mix of logic and intuition",
+        "\"Gut feelings\" and bodily sensations",
+        "Almost entirely physical reactions—if it doesn't feel right, I can't do it"
+      ]
+    },
+    {
+      text: "How much do physical discomforts (tight shoes, uncomfortable chair, room temperature) affect your mood and concentration?",
+      options: [
+        "I barely notice them unless extreme",
+        "They're mildly annoying but I can work through them",
+        "They significantly affect my focus and mood",
+        "I can't function properly until they're resolved"
+      ]
+    },
+    {
+      text: "When anxious, how much do you focus on physical sensations (rapid heart, shallow breathing, tension)?",
+      options: [
+        "I experience anxiety mostly as worried thoughts",
+        "I notice physical symptoms but they're secondary to thoughts",
+        "Physical sensations are equally prominent as thoughts",
+        "Anxiety is overwhelmingly a physical experience for me"
+      ]
+    },
+    {
+      text: "How much do you \"feel\" abstract concepts in your body? (e.g., feeling \"lightness\" when happy, \"heaviness\" when sad)",
+      options: [
+        "Rarely or never—concepts are mental, not physical",
+        "Occasionally for strong emotions",
+        "Often—many concepts have physical correlates",
+        "Always—every thought has a bodily signature"
+      ]
+    }
+  ];
+
+  // Archetype data
+  const archetypes = {
+    "ANALYST": {
+      name: "The Analyst",
+      description: "You process the world through logic and focused attention. Your consciousness has a narrow aperture—you're excellent at deep work because external noise doesn't easily penetrate awareness. You're reasonably in tune with your body but don't let physical sensations dominate decision-making. This signature is common among researchers, programmers, and strategic thinkers.",
+      strengths: ["Deep focus and sustained concentration", "Analytical decision-making", "Emotional regulation through reasoning", "Thrives in low-distraction environments"],
+      challenges: ["May miss subtle social cues", "Can override important bodily signals (fatigue, hunger)", "Risk of burnout from ignoring stress signals", "May appear detached or \"in your head\""],
+      tips: ["Schedule regular body-scan breaks to compensate for low somatic awareness", "Use external reminders for self-care (hydration, movement)", "Practice mindfulness to increase sensory threshold temporarily when needed", "Leverage your strength: Excel in work requiring sustained analysis"]
+    },
+    "EMPATH": {
+      name: "The Empath",
+      description: "Your consciousness is wide open—absorbing every sensory detail, acutely aware of bodily states, and deeply connected to physical intuition. You're highly empathetic, sensing others' emotions through your own somatic responses. This signature is common among therapists, artists, and healers.",
+      strengths: ["Rich sensory and emotional experiences", "Strong intuition and \"gut feelings\"", "Excellent at reading people and environments", "Creative and holistic thinking"],
+      challenges: ["Easily overwhelmed in stimulating environments", "Difficulty filtering irrelevant information", "Physical discomfort strongly affects mood", "Risk of taking on others' emotions"],
+      tips: ["Create low-stimulation environments for work/rest", "Practice \"sensory gating\" techniques to lower threshold when needed", "Use somatic awareness for early stress detection (your strength!)", "Schedule regular sensory resets (quiet, nature, solitude)"]
+    },
+    "PRAGMATIST": {
+      name: "The Pragmatist",
+      description: "You have a balanced consciousness signature—neither overwhelmed by stimuli nor oblivious to your environment. You're reasonably in tune with your body and use both logic and intuition flexibly. This adaptable signature works well across diverse contexts.",
+      strengths: ["Flexible attention—can focus or scan as needed", "Balanced decision-making (head + heart)", "Adapts well to various environments", "Stable emotional baseline"],
+      challenges: ["May lack the intensity of specialists in any dimension", "Can be pulled in multiple directions", "Risk of being \"good at everything, great at nothing\"", "May struggle to develop unique processing style"],
+      tips: ["Experiment with temporarily increasing/decreasing each dimension", "Notice which contexts benefit from which settings", "Develop meta-awareness: Know when to shift modes", "Your superpower is adaptability—use it strategically"]
+    },
+    "SENSOR": {
+      name: "The Sensor",
+      description: "You're acutely aware of the external world but less connected to internal signals. Your consciousness is externally focused—noticing everything around you while being somewhat disconnected from bodily needs. This signature is common among journalists, detectives, and environmental scanners.",
+      strengths: ["Exceptional situational awareness", "Quick to spot patterns and anomalies", "Excellent multitasking ability", "Thrives in dynamic, stimulating environments"],
+      challenges: ["May ignore hunger, fatigue, or stress until extreme", "Difficulty \"turning off\" awareness to rest", "Risk of neglecting self-care", "Can be scattered or overstimulated"],
+      tips: ["Set external reminders for bodily needs", "Practice interoceptive exercises (heartbeat detection, body scans)", "Create evening routines to \"close the aperture\" for sleep", "Use your external awareness strength in appropriate contexts"]
+    },
+    "INTUITIVE": {
+      name: "The Intuitive",
+      description: "You have a narrow but deep consciousness—highly focused internally. You're deeply connected to bodily wisdom and physical intuition, but less distracted by external noise. This signature is common among yogis, body workers, and contemplatives.",
+      strengths: ["Strong mind-body connection", "Excellent self-regulation", "Deep introspection and self-knowledge", "Embodied decision-making"],
+      challenges: ["May miss important external information", "Risk of being too \"in your body\" to analyze abstractly", "Can appear withdrawn or self-absorbed", "May struggle in chaotic environments"],
+      tips: ["Practice expanding sensory threshold in safe contexts", "Balance internal focus with external awareness exercises", "Your strength is somatic intelligence—trust it", "Schedule focused internal time daily (meditation, yoga)"]
+    }
+  };
+
+  // DOM elements
+  const questionsContainer = document.getElementById('questions-container');
+  const quizForm = document.getElementById('quiz-form');
+  const resultDiv = document.getElementById('result');
+  const progressFill = document.getElementById('progress-fill');
+  const emailForm = document.getElementById('email-form');
+
+  // Render questions
+  questions.forEach((q, index) => {
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question';
+    questionDiv.innerHTML = `
+      <h4>Question ${index + 1}: ${q.text}</h4>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <label>
+            <input type="radio" name="q${index}" value="${i + 1}" required>
+            ${opt}
+          </label>
+        `).join('')}
+      </div>
+    `;
+    questionsContainer.appendChild(questionDiv);
+  });
+
+  // Update progress bar with enhanced animation
+  function updateProgress() {
+    const total = questions.length;
+    const answered = Array.from(questionsContainer.querySelectorAll('input[type="radio"]:checked')).length;
+    const percentage = (answered / total) * 100;
+    
+    progressFill.style.width = `${percentage}%`;
+    
+    // Add visual feedback for answered questions
+    document.querySelectorAll('.question').forEach((question, index) => {
+      const isAnswered = question.querySelector('input[type="radio"]:checked');
+      if (isAnswered) {
+        question.classList.add('answered');
+      } else {
+        question.classList.remove('answered');
+      }
+    });
+    
+    // Enable/disable submit button based on completion
+    const submitBtn = document.getElementById('submit-quiz');
+    if (answered === total) {
+      submitBtn.style.background = 'var(--success)';
+      submitBtn.textContent = 'View My Results';
+      submitBtn.classList.add('pulse-animation');
+    } else {
+      submitBtn.style.background = '';
+      submitBtn.textContent = `Answer ${total - answered} more question${total - answered === 1 ? '' : 's'}`;
+      submitBtn.classList.remove('pulse-animation');
+    }
+  }
+  
+  // Add pulse animation class
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+  `;
+  document.head.appendChild(style);
+
+  questionsContainer.addEventListener('change', updateProgress);
+
+  // Handle quiz submission with enhanced animations
+  quizForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // Check if all questions are answered
+    const total = questions.length;
+    const answered = Array.from(questionsContainer.querySelectorAll('input[type="radio"]:checked')).length;
+    
+    if (answered < total) {
+      // Shake animation for incomplete quiz
+      quizForm.style.animation = 'shake 0.5s';
+      setTimeout(() => {
+        quizForm.style.animation = '';
+      }, 500);
+      
+      // Highlight unanswered questions
+      document.querySelectorAll('.question').forEach((question, index) => {
+        const isAnswered = question.querySelector('input[type="radio"]:checked');
+        if (!isAnswered) {
+          question.style.animation = 'pulse 1s 2';
+          setTimeout(() => {
+            question.style.animation = '';
+          }, 2000);
+        }
+      });
+      
+      return;
+    }
+    
+    // Show loading state
+    const submitBtn = document.getElementById('submit-quiz');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Calculating your signature...';
+    submitBtn.disabled = true;
+    
+    // Simulate processing time for better UX
+    setTimeout(() => {
+      const data = new FormData(quizForm);
+      const answers = [];
+      for (let i = 0; i < questions.length; i++) {
+        answers.push(parseInt(data.get(`q${i}`)));
+      }
+
+      // Calculate scores
+      const threshold = answers.slice(0, 4).reduce((a, b) => a + b, 0);
+      const interoception = answers.slice(4, 8).reduce((a, b) => a + b, 0);
+      const somatic = answers.slice(8, 12).reduce((a, b) => a + b, 0);
+
+      // Determine archetype
+      let archetypeKey = "PRAGMATIST";
+      if (threshold <= 8 && interoception >= 12 && somatic >= 12) archetypeKey = "INTUITIVE";
+      else if (threshold >= 12 && interoception <= 8 && somatic <= 8) archetypeKey = "SENSOR";
+      else if (threshold >= 12 && interoception >= 12 && somatic >= 12) archetypeKey = "EMPATH";
+      else if (threshold <= 8 && interoception >= 8 && somatic <= 8) archetypeKey = "ANALYST";
+
+      const archetype = archetypes[archetypeKey];
+
+      // Display results with enhanced styling
+      document.getElementById('result-scores').innerHTML = `
+        <div class="score-grid">
+          <div class="score-item">
+            <span class="score-label">Threshold Sensitivity</span>
+            <span class="score-value">${threshold}/16</span>
+            <span class="score-level ${getScoreLevel(threshold)}">${getScoreText(threshold)}</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Interoceptive Accuracy</span>
+            <span class="score-value">${interoception}/16</span>
+            <span class="score-level ${getScoreLevel(interoception)}">${getScoreText(interoception)}</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Somatic Bias</span>
+            <span class="score-value">${somatic}/16</span>
+            <span class="score-level ${getScoreLevel(somatic)}">${getScoreText(somatic)}</span>
+          </div>
+        </div>
+      `;
+
+      // Update visualization
+      updateRadarChart(threshold, interoception, somatic);
+
+      document.getElementById('result-archetype').innerHTML = `
+        <div class="archetype-header">
+          <h3>Your Primary Archetype: ${archetype.name}</h3>
+        </div>
+        <div class="archetype-description">
+          <p>${archetype.description}</p>
+        </div>
+        <div class="archetype-details">
+          <div class="strengths-section">
+            <h4>💪 Strengths</h4>
+            <ul>${archetype.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+          </div>
+          <div class="challenges-section">
+            <h4>🎯 Growth Areas</h4>
+            <ul>${archetype.challenges.map(c => `<li>${c}</li>`).join('')}</ul>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('result-tips').innerHTML = `
+        <div class="tips-section">
+          <h4>🚀 APGI Optimization Tips</h4>
+          <ul>${archetype.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+        </div>
+      `;
+
+      quizForm.style.display = 'none';
+      resultDiv.style.display = 'block';
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Reset button
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }, 1500);
+  });
+  
+  // Helper functions for score display
+  function getScoreLevel(score) {
+    if (score <= 7) return 'low';
+    if (score <= 11) return 'moderate';
+    if (score <= 14) return 'high';
+    return 'very-high';
+  }
+  
+  function getScoreText(score) {
+    if (score <= 7) return 'LOW';
+    if (score <= 11) return 'MODERATE';
+    if (score <= 14) return 'HIGH';
+    return 'VERY HIGH';
+  }
+
+  // Handle email form
+  emailForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert("Thank you! Your full report and Chapter 11 are on their way.");
+    // In real implementation, send data to server
+  });
+
+  // Update radar chart
+  function updateRadarChart(threshold, interoception, somatic) {
+    // Convert scores to percentages (0-100)
+    const thresholdPercent = (threshold / 16) * 100;
+    const interoceptionPercent = (interoception / 16) * 100;
+    const somaticPercent = (somatic / 16) * 100;
+    
+    // Calculate positions (120 degrees apart)
+    // Threshold at top (90 degrees)
+    const thresholdX = 150 + (thresholdPercent / 100) * 120 * Math.cos(Math.PI / 2);
+    const thresholdY = 150 - (thresholdPercent / 100) * 120 * Math.sin(Math.PI / 2);
+    
+    // Interoception at bottom right (210 degrees)
+    const interoceptionX = 150 + (interoceptionPercent / 100) * 120 * Math.cos(7 * Math.PI / 6);
+    const interoceptionY = 150 - (interoceptionPercent / 100) * 120 * Math.sin(7 * Math.PI / 6);
+    
+    // Somatic at bottom left (330 degrees)
+    const somaticX = 150 + (somaticPercent / 100) * 120 * Math.cos(11 * Math.PI / 6);
+    const somaticY = 150 - (somaticPercent / 100) * 120 * Math.sin(11 * Math.PI / 6);
+    
+    // Update polygon
+    const polygon = document.getElementById('data-polygon');
+    polygon.setAttribute('points', `${thresholdX},${thresholdY} ${interoceptionX},${interoceptionY} ${somaticX},${somaticY}`);
+    
+    // Update points
+    document.getElementById('point-threshold').setAttribute('cx', thresholdX);
+    document.getElementById('point-threshold').setAttribute('cy', thresholdY);
+    document.getElementById('point-interoception').setAttribute('cx', interoceptionX);
+    document.getElementById('point-interoception').setAttribute('cy', interoceptionY);
+    document.getElementById('point-somatic').setAttribute('cx', somaticX);
+    document.getElementById('point-somatic').setAttribute('cy', somaticY);
+    
+    // Update labels
+    document.getElementById('threshold-value').textContent = `${thresholdPercent.toFixed(0)}%`;
+    document.getElementById('interoception-value').textContent = `${interoceptionPercent.toFixed(0)}%`;
+    document.getElementById('somatic-value').textContent = `${somaticPercent.toFixed(0)}%`;
+  }
+  
+  // Theme toggle functionality
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const themeText = document.getElementById('theme-text');
+  const html = document.documentElement;
+  
+  // Initialize theme from localStorage or system preference
+  const initTheme = () => {
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    
+    if (theme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      themeIcon.textContent = '☀️';
+      themeText.textContent = 'Light';
+    } else {
+      html.removeAttribute('data-theme');
+      themeIcon.textContent = '🌙';
+      themeText.textContent = 'Dark';
+    }
+  };
+  
+  // Toggle theme
+  themeToggle.addEventListener('click', () => {
+    const isDark = html.hasAttribute('data-theme');
+    
+    if (isDark) {
+      html.removeAttribute('data-theme');
+      themeIcon.textContent = '🌙';
+      themeText.textContent = 'Dark';
+      localStorage.setItem('theme', 'light');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      themeIcon.textContent = '☀️';
+      themeText.textContent = 'Light';
+      localStorage.setItem('theme', 'dark');
+    }
+    
+    // Add animation class
+    themeToggle.classList.add('switching');
+    setTimeout(() => {
+      themeToggle.classList.remove('switching');
+    }, 600);
+  });
+  
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      initTheme();
+    }
+  });
+  
+  // Initialize on load
+  initTheme();
+</script>
+
+</body>
+</html>

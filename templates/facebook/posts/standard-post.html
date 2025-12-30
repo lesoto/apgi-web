@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Facebook Post Template</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e40af;
+            --secondary: #0d9488;
+            --accent: #7c3aed;
+            --text: #0f172a;
+            --text-secondary: #334155;
+            --bg: #ffffff;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .template-container {
+            width: 1200px;
+            height: 630px;
+            background: var(--bg);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .template-header {
+            background: var(--gradient);
+            padding: 40px;
+            color: white;
+            position: relative;
+        }
+        
+        .template-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+        
+        .template-content {
+            padding: 40px;
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .headline {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subheadline {
+            font-size: 18px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .body-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .stats-container {
+            display: flex;
+            gap: 32px;
+            margin-top: 32px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        .accent-shape {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.1;
+            top: -100px;
+            right: -100px;
+        }
+        
+        .accent-shape-2 {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: var(--secondary);
+            border-radius: 50%;
+            opacity: 0.1;
+            bottom: -75px;
+            left: -75px;
+        }
+    </style>
+</head>
+<body>
+    <div class="template-container">
+        <div class="template-header">
+            <div class="logo">APGI FRAMEWORK</div>
+            <h1 class="headline">Unlock Your Consciousness Potential</h1>
+            <p class="subheadline">Discover the revolutionary science of neural prediction and threshold ignition</p>
+            <div class="accent-shape"></div>
+        </div>
+        
+        <div class="template-content">
+            <div class="body-text">
+                Join thousands of researchers and practitioners exploring the Active Predictive Gamma Ignition (APGI) Framework. 
+                Our evidence-based approach combines cutting-edge neuroscience with practical applications for personal 
+                transformation and enhanced cognitive performance.
+            </div>
+            
+            <a href="#" class="cta-button">Start Your Journey</a>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">87%</div>
+                    <div class="stat-label">Improved Focus</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">92%</div>
+                    <div class="stat-label">Better Decision Making</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">78%</div>
+                    <div class="stat-label">Enhanced Creativity</div>
+                </div>
+            </div>
+            
+            <div class="accent-shape-2"></div>
+        </div>
+    </div>
+</body>
+</html>

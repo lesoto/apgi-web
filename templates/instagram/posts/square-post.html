@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Instagram Post Template</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e40af;
+            --secondary: #0d9488;
+            --accent: #7c3aed;
+            --text: #0f172a;
+            --text-secondary: #334155;
+            --bg: #ffffff;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .template-container {
+            width: 1080px;
+            height: 1080px;
+            background: var(--bg);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .template-header {
+            background: var(--gradient);
+            padding: 60px 80px;
+            color: white;
+            position: relative;
+            flex: 0 0 auto;
+        }
+        
+        .template-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+        
+        .template-content {
+            padding: 60px 80px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .headline {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subheadline {
+            font-size: 20px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.4;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .key-point {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+            border-left: 4px solid var(--primary);
+            padding: 24px 32px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+        }
+        
+        .key-point h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+        
+        .key-point p {
+            font-size: 18px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: var(--bg);
+            border: 1px solid rgba(30, 64, 175, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(30, 64, 175, 0.1);
+        }
+        
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .cta-section {
+            background: var(--gradient);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-section h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255,255,255,0.2);
+        }
+        
+        .accent-shape {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.1;
+            top: -150px;
+            right: -150px;
+        }
+        
+        .accent-shape-2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: var(--secondary);
+            border-radius: 50%;
+            opacity: 0.1;
+            bottom: -100px;
+            left: -100px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 24px 80px;
+            background: rgba(30, 64, 175, 0.05);
+            border-top: 1px solid rgba(30, 64, 175, 0.1);
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .hashtag {
+            color: var(--primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="template-container">
+        <div class="template-header">
+            <div class="logo">APGI FRAMEWORK</div>
+            <h1 class="headline">Consciousness Revolution</h1>
+            <p class="subheadline">Unlock the power of predictive coding and threshold ignition for transformative cognitive enhancement</p>
+            <div class="accent-shape"></div>
+        </div>
+        
+        <div class="template-content">
+            <div class="main-content">
+                <div class="key-point">
+                    <h3>The Science of Transformation</h3>
+                    <p>APGI Framework combines cutting-edge neuroscience with practical applications to help you achieve peak mental performance and heightened consciousness.</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">94%</div>
+                        <div class="stat-label">Cognitive Improvement</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">87%</div>
+                        <div class="stat-label">Focus Enhancement</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">91%</div>
+                        <div class="stat-label">Creativity Boost</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">89%</div>
+                        <div class="stat-label">Stress Reduction</div>
+                    </div>
+                </div>
+                
+                <div class="cta-section">
+                    <h3>Ready to Transform Your Mind?</h3>
+                    <p>Join thousands who have already experienced the APGI revolution</p>
+                    <a href="#" class="cta-button">Start Your Journey</a>
+                </div>
+            </div>
+            
+            <div class="accent-shape-2"></div>
+        </div>
+        
+        <div class="footer">
+            <p class="footer-text">
+                <span class="hashtag">#APGI</span> 
+                <span class="hashtag">#Consciousness</span> 
+                <span class="hashtag">#Neuroscience</span> 
+                <span class="hashtag">#BrainScience</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

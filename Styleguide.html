@@ -1123,6 +1123,71 @@
       .loading {
       animation: spin 1s linear infinite;
       }
+      /* Enhanced section transitions and visual hierarchy */
+      section {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      
+      section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Enhanced navigation active states */
+      .nav-link.active {
+        color: var(--primary) !important;
+        font-weight: 600;
+        position: relative;
+      }
+      
+      .nav-link.active::after {
+        width: 100% !important;
+        background: var(--gradient) !important;
+      }
+      
+      /* Improved section spacing */
+      section {
+        scroll-margin-top: 120px; /* Better clearance for sticky header */
+        position: relative;
+      }
+      
+      /* Section dividers for better visual separation */
+      section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: var(--gradient);
+        border-radius: 2px;
+        opacity: 0.3;
+      }
+      
+      section:first-of-type::before {
+        display: none;
+      }
+      
+      /* Enhanced focus states for accessibility */
+      .nav-link:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+      
+      /* Mobile navigation improvements */
+      @media (max-width: 768px) {
+        section {
+          scroll-margin-top: 100px;
+        }
+        
+        .nav-links.active {
+          box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+        }
+      }
       /* Active navigation state */
       nav a.active {
       color: var(--primary);
@@ -2314,7 +2379,739 @@
       padding: 1.5rem;
       }
       }
-    </style>
+    
+.animation-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 3rem;
+  margin: 3rem 0;
+}
+
+.animation-showcase-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  border-top: 4px solid var(--primary);
+  transition: all 0.3s ease;
+}
+
+.animation-showcase-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.animation-showcase-card h3 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.animation-description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.animation-viewer {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: var(--radius);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animation-viewer svg {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+.animation-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border-left: 3px solid var(--primary);
+}
+
+.timeline-marker {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  padding-left: 1rem;
+  position: relative;
+}
+
+.timeline-marker::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color);
+}
+
+.animation-legend {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.animation-note {
+  background: rgba(124, 58, 237, 0.1);
+  border-left: 3px solid var(--accent);
+  padding: 1rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+.animation-note strong {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .animation-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .animation-showcase-card {
+    padding: 1.5rem;
+  }
+  
+  .animation-viewer {
+    padding: 1rem;
+    min-height: 250px;
+  }
+  
+  .animation-legend {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
+
+.interactive-brain-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin: 3rem 0;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.brain-canvas-wrapper {
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#threejs-brain {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  display: block;
+  cursor: grab;
+}
+
+#threejs-brain:active {
+  cursor: grabbing;
+}
+
+.brain-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #00B4FF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.brain-controls-panel {
+  padding: 2rem;
+  background: var(--bg-secondary);
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.brain-controls-panel h3 {
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.brain-controls-panel h4 {
+  color: var(--text);
+  margin: 1.5rem 0 0.75rem;
+  font-size: 1rem;
+}
+
+.parameter-control {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.param-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.param-header label {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.param-value {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.parameter-control input[type="range"] {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--bg-tertiary);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  margin-bottom: 0.5rem;
+}
+
+.parameter-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.parameter-control input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.parameter-control input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.param-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.param-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.param-info small {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.consciousness-indicator {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  margin: 2rem 0;
+  box-shadow: var(--shadow);
+}
+
+.state-formula {
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text);
+  margin: 1rem 0;
+}
+
+.state-formula span {
+  color: var(--primary);
+}
+
+.state-comparison {
+  margin: 1rem 0;
+}
+
+.state-comparison > span {
+  display: block;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.threshold-line {
+  position: relative;
+  height: 30px;
+  background: linear-gradient(90deg, 
+    #10b981 0%, 
+    #10b981 49%, 
+    #ef4444 51%, 
+    #ef4444 100%);
+  border-radius: 15px;
+  margin: 0.75rem 0;
+}
+
+.threshold-marker,
+.product-marker {
+  position: absolute;
+  top: -5px;
+  width: 3px;
+  height: 40px;
+  transition: left 0.3s ease;
+}
+
+.threshold-marker {
+  background: #00B4FF;
+  box-shadow: 0 0 10px #00B4FF;
+}
+
+.threshold-marker::after {
+  content: 'Bₜ';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #00B4FF;
+  white-space: nowrap;
+}
+
+.product-marker {
+  background: #FF3366;
+  box-shadow: 0 0 10px #FF3366;
+}
+
+.product-marker::after {
+  content: 'Π×|ε|';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FF3366;
+  white-space: nowrap;
+}
+
+.state-result {
+  text-align: center;
+  padding: 1rem;
+  border-radius: var(--radius);
+  background: var(--bg-secondary);
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+}
+
+.state-result.conscious {
+  background: linear-gradient(135deg, rgba(153, 102, 255, 0.2), rgba(124, 58, 237, 0.2));
+  border: 2px solid #9966FF;
+}
+
+.state-icon {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.state-label {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.brain-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.brain-actions .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.view-presets .btn-group-vertical {
+  gap: 0.5rem;
+}
+
+.view-presets .btn {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.brain-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.info-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border-top: 3px solid var(--primary);
+}
+
+.info-card h4 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.info-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-card li {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.info-card li strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .interactive-brain-container {
+    grid-template-columns: 1fr;
+  }
+
+  .brain-controls-panel {
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .brain-canvas-wrapper {
+    min-height: 400px;
+  }
+
+  #threejs-brain {
+    min-height: 400px;
+  }
+
+  .brain-controls-panel {
+    padding: 1.5rem;
+  }
+
+  .brain-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Template Preview Cards */
+.template-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.template-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.template-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.template-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.template-card:hover::before {
+  transform: scaleX(1);
+}
+
+.template-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.platform-icon {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+  border: 2px solid rgba(30, 64, 175, 0.2);
+}
+
+.template-header h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.template-content {
+  margin-bottom: 1.5rem;
+}
+
+.template-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+
+.template-features li {
+  padding: 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.template-features li:last-child {
+  border-bottom: none;
+}
+
+.template-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.template-stats .stat {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border-light);
+}
+
+.template-download-btn {
+  width: 100%;
+  justify-content: center;
+  font-weight: 600;
+}
+
+/* Bundle Offer */
+.bundle-offer {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.bundle-offer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+  opacity: 0.6;
+}
+
+.bundle-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.bundle-description {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.bundle-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.bundle-stat {
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bundle-download-btn {
+  background: white;
+  color: var(--primary);
+  position: relative;
+  z-index: 1;
+}
+
+.bundle-download-btn:hover {
+  background: var(--bg-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(255,255,255,0.3);
+}
+
+.btn-success {
+  background: var(--success) !important;
+  color: white !important;
+  border-color: var(--success) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .template-preview-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .template-card {
+    padding: 1.5rem;
+  }
+  
+  .bundle-stats {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .bundle-offer {
+    padding: 2rem;
+  }
+  
+  .bundle-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .template-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .platform-icon {
+    margin: 0 auto;
+  }
+  
+  .template-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .bundle-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style>
   </head>
   <body>
     <header>
@@ -2322,12 +3119,16 @@
         <div class="logo">APGI</div>
         <nav id="main-nav">
           <ul class="nav-links">
-            <li><a href="#design-system" class="nav-link">Design System</a></li>
-            <li><a href="#typography" class="nav-link">Typography</a></li>
-            <li><a href="#color-palette" class="nav-link">Colors</a></li>
-            <li><a href="#brand-personality" class="nav-link">Brand Personality</a></li>
-            <li><a href="#social-media" class="nav-link">Social Media</a></li>
+            <li><a href="#brand-personality" class="nav-link">Brand Foundation</a></li>
             <li><a href="#guidelines" class="nav-link">Guidelines</a></li>
+            <li><a href="#visual-identity" class="nav-link">Visual Identity</a></li>
+            <li><a href="#color-palette" class="nav-link">Colors</a></li>
+            <li><a href="#typography" class="nav-link">Typography</a></li>
+            <li><a href="#design-system" class="nav-link">Design System</a></li>
+            <li><a href="#social-media" class="nav-link">Content & Social</a></li>
+            <li><a href="#animation-patterns" class="nav-link">Animation Patterns</a></li>
+            <li><a href="#animation-examples" class="nav-link">Animation Examples</a></li>
+            <li><a href="#interactive-brain" class="nav-link">3D Brain Demo</a></li>
             <li><a href="#accessibility" class="nav-link">Resources</a></li>
           </ul>
           <button class="mobile-menu-toggle" aria-label="Toggle menu">
@@ -2349,11 +3150,346 @@
             <span class="highlight">and how to communicate it</span>
           </p>
           <div class="btn-group">
-            <a href="#brand-personality" class="btn btn-primary">Explore the Framework</a>
-            <a href="#design-system" class="btn btn-secondary">View Design System</a>
+            <a href="#brand-personality" class="btn btn-primary">Explore Brand Foundation</a>
+            <a href="#visual-identity" class="btn btn-secondary">View Visual Identity</a>
           </div>
         </div>
       </section>
+
+      <section id="brand-personality" class="container">
+        <div class="content-section">
+          <div class="section-intro">
+            <h2>Brand Personality: The Triad Framework</h2>
+            <p>Your brand operates at the intersection of three essential dimensions that together create a distinctive, powerful presence in the consciousness science space: <strong>"Provocative, Authoritative, Compassionate"</strong>.</p>
+          </div>
+          <div class="triad-container">
+            <div class="triad-card provocative">
+              <div class="triad-icon">⚡</div>
+              <h3>Provocative: The Paradigm Challenger</h3>
+              <p><strong>Core Position:</strong> We reframe consciousness from mystical enigma to solvable engineering problem.</p>
+              <h4>Key Behaviors:</h4>
+              <ul>
+                <li>Question received wisdom</li>
+                <li>Use counterintuitive framings</li>
+                <li>Create cognitive dissonance</li>
+                <li>Deploy unexpected metaphors</li>
+              </ul>
+              <p><strong>Why It Matters:</strong> Provocative framing creates essential pattern interrupt in a saturated content landscape.</p>
+              <div class="example-text">
+                <h4>Example in Action:</h4>
+                <p class="tiktok-example">"Your brain has a bug. Here's the patch."</p>
+                <p class="youtube-example">"For a century, we've studied consciousness backward..."</p>
+              </div>
+            </div>
+            <div class="triad-card authoritative">
+              <div class="triad-icon">📊</div>
+              <h3>Authoritative: The Evidence Architect</h3>
+              <p><strong>Core Position:</strong> Every claim rests on testable predictions, quantifiable parameters, and falsifiable mechanisms.</p>
+              <h4>Key Behaviors:</h4>
+              <ul>
+                <li>Cite precision, not breadth</li>
+                <li>Show your work</li>
+                <li>Acknowledge limitations</li>
+                <li>Build systematic frameworks</li>
+              </ul>
+              <p><strong>Why It Matters:</strong> Authority without provocation becomes ignored academic literature. Together, they create "earned attention".</p>
+              <div class="example-text">
+                <h4>Example in Action:</h4>
+                <p class="tiktok-example">"The math proves consciousness is intermittent."</p>
+                <p class="youtube-example">"Let me show you data that changed everything..."</p>
+              </div>
+            </div>
+            <div class="triad-card compassionate">
+              <div class="triad-icon">💝</div>
+              <h3>Compassionate: The Transformation Guide</h3>
+              <p><strong>Core Position:</strong> Understanding serves liberation. Knowledge translates to practical relief.</p>
+              <h4>Key Behaviors:</h4>
+              <ul>
+                <li>Meet pain points directly</li>
+                <li>Validate subjective experience</li>
+                <li>Offer actionable frameworks</li>
+                <li>Avoid judgment</li>
+              </ul>
+              <p><strong>Why It Matters:</strong> Without compassion, you're just another smart person showing off. Compassion transforms intellectual curiosity into application.</p>
+              <div class="example-text">
+                <h4>Example in Action:</h4>
+                <p class="tiktok-example">"You're not broken, your system is predictable."</p>
+                <p class="youtube-example">"Here's why meditation felt impossible when anxious..."</p>
+              </div>
+            </div>
+          </div>
+          <div class="content-section mt-3">
+            <h3>The Triad in Action: Synergistic Effects</h3>
+            <div class="triad-container">
+              <div class="triad-card">
+                <h4>Provocative + Authoritative = Credible Disruption</h4>
+                <p>You can make bold claims because you have receipts. "Consciousness is overrated" lands because you can prove it mathematically.</p>
+              </div>
+              <div class="triad-card">
+                <h4>Authoritative + Compassionate = Trusted Guidance</h4>
+                <p>Technical precision serves human needs, not academic gatekeeping. People believe your solutions because you understand their problems systematically.</p>
+              </div>
+              <div class="triad-card">
+                <h4>Compassionate + Provocative = Empowering Reframes</h4>
+                <p>Radical reconceptualizations feel liberating, not threatening. "You're not broken, your system is in a predictable state" combines both.</p>
+              </div>
+            </div>
+          </div>
+          <div class="content-section mt-3">
+            <h3>The Same Concept, Five Different Platforms</h3>
+            <p class="mb-3">How we communicate "prediction errors drive consciousness" across contexts:</p>
+            <div class="platform-comparison">
+              <div class="tone-card">
+                <div class="platform-badge" style="background: #000;">TikTok</div>
+                <div class="triad-weights">
+                  <span class="provocative">60%</span>
+                  <span class="authoritative">20%</span>
+                  <span class="compassionate">20%</span>
+                </div>
+                <div class="example-content">
+                  <p class="hook">"Your brain predicts reality BEFORE you see it."</p>
+                  <p class="body">When predictions fail → consciousness spikes.<br>
+                    When predictions work → autopilot mode.
+                  </p>
+                  <p class="cta">This is why meditation feels different every time.</p>
+                </div>
+              </div>
+              <div class="tone-card">
+                <div class="platform-badge" style="background: #FF0000;">YouTube</div>
+                <div class="triad-weights">
+                  <span class="provocative">30%</span>
+                  <span class="authoritative">50%</span>
+                  <span class="compassionate">20%</span>
+                </div>
+                <div class="example-content">
+                  <p class="hook">"For decades, we've had it backward."</p>
+                  <p class="body">Consciousness doesn't passively receive information—it actively predicts what comes next. Barrett's 2017 precision-weighting model shows that when prediction error (|ε|) exceeds threshold (Bₜ), conscious access triggers.</p>
+                  <p class="cta">Let me show you the math...</p>
+                </div>
+              </div>
+              <div class="tone-card">
+                <div class="platform-badge" style="background: #0088cc;">Telegram</div>
+                <div class="triad-weights">
+                  <span class="provocative">40%</span>
+                  <span class="authoritative">40%</span>
+                  <span class="compassionate">20%</span>
+                </div>
+                <div class="example-content">
+                  <p class="hook">New paper alert: Precision-weighted prediction errors</p>
+                  <p class="body">Fascinating study in Nature Neuroscience validates APGI's core mechanism. Key finding: Interoceptive precision (Π) modulates which prediction errors cross threshold into consciousness.
+                    Mathematical validation: Π × |ε| > Bₜ → conscious access
+                  </p>
+                  <p class="cta">Full paper linked below. Thoughts?</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="guidelines" class="container">
+        <div class="content-section">
+          <div class="section-intro">
+            <h2>General Guidelines</h2>
+            <p>Additional guidelines and best practices for maintaining consistent APGI branding across all platforms.</p>
+          </div>
+          <div class="social-guidelines-grid">
+            <div class="guideline-card">
+              <h4>General Guidelines</h4>
+              <ul>
+                <li>Use consistent APGI branding across all platforms</li>
+                <li>Maintain provocative yet authoritative tone</li>
+                <li>Include data visualizations and research citations</li>
+                <li>Optimize content for each platform's algorithm</li>
+              </ul>
+            </div>
+            <div class="guideline-card">
+              <h4>Content Strategy</h4>
+              <ul>
+                <li>Post 3-5 times per week for optimal engagement</li>
+                <li>Use 60% provocative, 30% authoritative, 10% compassionate content mix</li>
+                <li>Include calls-to-action in every third post</li>
+                <li>Engage with comments within 2 hours</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <h3>Animation Style: "APGI in Motion"</h3>
+            <div class="triad-container mt-2">
+              <div class="triad-card">
+                <h4>Threshold Ignition Sequence</h4>
+                <p>1. Baseline: Dim pathways, low activity</p>
+                <p>2. Build-up: Yellow prediction error sparks</p>
+                <p>3. Gate opening: Blue threshold barrier opens</p>
+                <p>4. Ignition: Purple global workspace floods</p>
+              </div>
+              <div class="triad-card">
+                <h4>Interoceptive Surge</h4>
+                <p>Red pulses originate from body regions</p>
+                <p>Travel through spinal cord to brainstem</p>
+                <p>Converge on insula and ACC</p>
+                <p>Intensity correlates with precision</p>
+              </div>
+              <div class="triad-card">
+                <h4>Neuromodulator Waves</h4>
+                <p>Green waves emanate from brainstem</p>
+                <p>Flow through established pathways</p>
+                <p>Modulate other systems</p>
+                <p>Ebb and flow with behavioral state</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="visual-identity" class="container">
+        <div class="content-section">
+          <div class="section-intro">
+            <h2>Core Visual Identity: The APGI Brain</h2>
+            <p>Our visual system centers on a single, distinctive element: <strong>a semi-transparent 3D brain with glowing neural pathways</strong> that dynamically illustrate APGI framework concepts.</p>
+          </div>
+
+          <div class="triad-container">
+            <div class="triad-card">
+              <div class="triad-icon">🎯</div>
+              <h3>Recognizability</h3>
+              <p>Anatomically grounded but visually distinctive. The brain is immediately identifiable as APGI, not generic neuroscience stock imagery.</p>
+            </div>
+            <div class="triad-card">
+              <div class="triad-icon">🧩</div>
+              <h3>Modularity</h3>
+              <p>Each element can be isolated or combined. Threshold mechanisms, interoceptive pathways, and workspace networks function independently or together.</p>
+            </div>
+            <div class="triad-card">
+              <div class="triad-icon">⚡</div>
+              <h3>Dynamics</h3>
+              <p>Static for print, animated for digital. The same visual language adapts seamlessly across media without losing coherence.</p>
+            </div>
+            <div class="triad-card">
+              <div class="triad-icon">📐</div>
+              <h3>Scalability</h3>
+              <p>Works from Instagram thumbnail (1080×1080px) to poster-size print (24×36 inches) without losing clarity or impact.</p>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <h3>The "Neural Glow" Graphic Style</h3>
+            <p class="mb-3">Our distinctive visual approach combines scientific accuracy with ethereal aesthetics:</p>
+            
+            <div class="logo-grid">
+              <div class="logo-example">
+                <div style="height: 160px; background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(124, 58, 237, 0.1)); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                  <div style="position: absolute; width: 120px; height: 120px; border: 3px solid rgba(0, 180, 255, 0.3); border-radius: 50%; opacity: 0.4;"></div>
+                  <div style="position: absolute; width: 80px; height: 80px; background: radial-gradient(circle, rgba(153, 102, 255, 0.6) 0%, transparent 70%); border-radius: 50%; animation: pulse 2s infinite;"></div>
+                </div>
+                <h4 class="mt-2">Semi-Transparent Brain (30-40% opacity)</h4>
+                <p><small>Glowing pathways visible throughout structure. Creates depth through layering.</small></p>
+              </div>
+
+              <div class="logo-example">
+                <div style="height: 160px; background: #0f172a; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                  <svg width="140" height="140" style="position: absolute;">
+                    <defs>
+                      <linearGradient id="pathGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#00B4FF;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#9966FF;stop-opacity:1" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M 20,70 Q 70,20 120,70" stroke="url(#pathGlow)" stroke-width="4" fill="none" opacity="0.8" style="filter: drop-shadow(0 0 8px #00B4FF);" />
+                  </svg>
+                </div>
+                <h4 class="mt-2">Glowing Pathways</h4>
+                <p><small>Neural connections pulse during active processing. Glow intensity = signal strength.</small></p>
+              </div>
+
+              <div class="logo-example">
+                <div style="height: 160px; background: linear-gradient(135deg, #0f172a, #1e293b); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                  <div style="position: absolute; width: 40px; height: 40px; background: #FF3366; border-radius: 50%; left: 30px; top: 50px; box-shadow: 0 0 20px #FF3366; opacity: 0.9;"></div>
+                  <div style="position: absolute; width: 40px; height: 40px; background: #00B4FF; border-radius: 50%; right: 30px; top: 60px; box-shadow: 0 0 20px #00B4FF; opacity: 0.9;"></div>
+                  <div style="position: absolute; width: 50px; height: 50px; background: #9966FF; border-radius: 50%; opacity: 0.8; box-shadow: 0 0 25px #9966FF;"></div>
+                </div>
+                <h4 class="mt-2">Modular Regional Highlighting</h4>
+                <p><small>Insula (red), thalamus (blue), workspace (purple) activate individually or in networks.</small></p>
+              </div>
+
+              <div class="logo-example">
+                <div style="height: 160px; background: #0f172a; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                  <svg width="140" height="140">
+                    <defs>
+                      <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#FFCC00" />
+                      </marker>
+                    </defs>
+                    <line x1="20" y1="70" x2="120" y2="70" stroke="#FFCC00" stroke-width="3" marker-end="url(#arrowhead)" opacity="0.9" style="filter: drop-shadow(0 0 6px #FFCC00);" />
+                    <circle cx="30" cy="70" r="3" fill="#FFCC00" opacity="0.7">
+                      <animate attributeName="cx" from="30" to="110" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                  </svg>
+                </div>
+                <h4 class="mt-2">Dynamic Directional Arrows</h4>
+                <p><small>Particle trails show information flow. Arrow thickness = signal strength.</small></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <h3>Conceptual Icon System</h3>
+            <p class="mb-3">Flat-design icons that overlay on brain visualizations to highlight specific APGI mechanisms:</p>
+            
+            <div class="color-demonstration">
+              <div class="demo-card">
+                <div class="brain-region" style="--glow-color: #00B4FF; background: linear-gradient(135deg, #00B4FF, #0099cc);">
+                  <span style="font-size: 2rem;">⚡</span>
+                </div>
+                <h4>Threshold Crossing</h4>
+                <p style="color: var(--text-secondary);">Lightning bolt (blue) — Marks Bₜ gate opening moments</p>
+              </div>
+
+              <div class="demo-card">
+                <div class="brain-region" style="--glow-color: #FF3366; background: linear-gradient(135deg, #FF3366, #cc2952);">
+                  <span style="font-size: 2rem;">💓</span>
+                </div>
+                <h4>Interoceptive Signals</h4>
+                <p style="color: var(--text-secondary);">Heartbeat/pulse (red) — Body-to-brain pathways</p>
+              </div>
+
+              <div class="demo-card">
+                <div class="brain-region" style="--glow-color: #FFCC00; background: linear-gradient(135deg, #FFCC00, #cca300);">
+                  <span style="font-size: 2rem;">⚠️</span>
+                </div>
+                <h4>Prediction Errors</h4>
+                <p style="color: var(--text-secondary);">Warning triangle (yellow) — Mismatch signals</p>
+              </div>
+
+              <div class="demo-card">
+                <div class="brain-region" style="--glow-color: #00CC99; background: linear-gradient(135deg, #00CC99, #00a37a);">
+                  <span style="font-size: 2rem;">🧪</span>
+                </div>
+                <h4>Neuromodulators</h4>
+                <p style="color: var(--text-secondary);">Chemical flask (green) — Modulatory systems</p>
+              </div>
+
+              <div class="demo-card">
+                <div class="brain-region" style="--glow-color: #9966FF; background: linear-gradient(135deg, #9966FF, #7a52cc);">
+                  <span style="font-size: 2rem;">🧠</span>
+                </div>
+                <h4>Global Workspace</h4>
+                <p style="color: var(--text-secondary);">Broadcast tower (purple) — Widespread ignition</p>
+              </div>
+
+              <div class="demo-card">
+                <div class="brain-region" style="--glow-color: #FF3366; background: linear-gradient(135deg, rgba(255, 51, 102, 0.3), rgba(255, 51, 102, 0.6)); border: 3px solid #FF3366;">
+                  <span style="font-size: 2rem;">🎯</span>
+                </div>
+                <h4>Precision Weighting</h4>
+                <p style="color: var(--text-secondary);">Target (red outline) — Π modulation strength</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="design-system" class="container">
         <div class="content-section">
         <div class="section-intro">
@@ -2457,6 +3593,15 @@
             <h2>Color Palette</h2>
             <p>A consistent, semantically meaningful color scheme tied directly to APGI parameters:</p>
           </div>
+          <div style="background: var(--bg-secondary); border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: var(--radius); margin-bottom: 3rem;">
+            <h4 style="margin-bottom: 1rem; color: var(--primary);">Color Usage Rules (Non-Negotiable)</h4>
+            <ul style="margin: 0; padding-left: 1.5rem;">
+              <li style="margin-bottom: 0.75rem; color: var(--text-secondary);"><strong>Never dilute meaning:</strong> Each color represents a specific APGI component—don't use red for aesthetics only. Every color deployment must map to framework mechanics.</li>
+              <li style="margin-bottom: 0.75rem; color: var(--text-secondary);"><strong>Intensity indicates activity:</strong> Brighter = more active/higher precision; dim = present but inactive/low precision. Use opacity/brightness to show dynamic state changes.</li>
+              <li style="margin-bottom: 0.75rem; color: var(--text-secondary);"><strong>Combinations show interactions:</strong> Red + Blue convergence = precision-weighted threshold crossing (Π × |ε| > Bₜ). Overlapping glows indicate computational operations.</li>
+              <li style="margin-bottom: 0; color: var(--text-secondary);"><strong>Gradients show transitions:</strong> Yellow → Red = prediction error becomes interoceptive signal. Green waves over blue = neuromodulator influence on threshold.</li>
+            </ul>
+          </div>
           <div class="color-palette">
             <div>
               <div class="color-swatch" style="background: #00B4FF;">
@@ -2539,6 +3684,60 @@
                 <div class="glow-effect"></div>
               </div>
             </div>
+          </div>
+
+          <div class="mt-5">
+            <h3>Brain Regions → APGI Parameters Mapping</h3>
+            <p class="mb-3">Anatomical precision matters. Here's which brain structures map to which visual elements:</p>
+            
+            <table class="tone-table">
+              <thead>
+                <tr>
+                  <th>Brain Region</th>
+                  <th>APGI Function</th>
+                  <th>Color</th>
+                  <th>Visual Treatment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Thalamus</strong></td>
+                  <td>Threshold gating (Bₜ)</td>
+                  <td><span style="color: #00B4FF; font-weight: 600;">Electric Blue #00B4FF</span></td>
+                  <td>Rippling barrier that opens when Π × |ε| > Bₜ</td>
+                </tr>
+                <tr>
+                  <td><strong>Anterior Insula + ACC</strong></td>
+                  <td>Interoceptive precision (Π)</td>
+                  <td><span style="color: #FF3366; font-weight: 600;">Vibrant Red #FF3366</span></td>
+                  <td>Pulsing convergence zone for body signals</td>
+                </tr>
+                <tr>
+                  <td><strong>Frontoparietal Networks</strong></td>
+                  <td>Global workspace broadcast</td>
+                  <td><span style="color: #9966FF; font-weight: 600;">Purple #9966FF</span></td>
+                  <td>Flooding illumination across cortex</td>
+                </tr>
+                <tr>
+                  <td><strong>Brainstem (LC, VTA)</strong></td>
+                  <td>Neuromodulator systems</td>
+                  <td><span style="color: #00CC99; font-weight: 600;">Emerald Green #00CC99</span></td>
+                  <td>Radiating waves from hindbrain</td>
+                </tr>
+                <tr>
+                  <td><strong>Sensory Cortices</strong></td>
+                  <td>Prediction error generation (|ε|)</td>
+                  <td><span style="color: #FFCC00; font-weight: 600;">Amber Yellow #FFCC00</span></td>
+                  <td>Sparking points of mismatch detection</td>
+                </tr>
+                <tr>
+                  <td><strong>Hippocampus → PFC</strong></td>
+                  <td>Memory integration</td>
+                  <td><span style="background: linear-gradient(90deg, #FFCC00, #9966FF); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">Yellow→Purple gradient</span></td>
+                  <td>Traveling particle clusters during consolidation</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -2872,237 +4071,743 @@
             </div>
             <div class="mt-5">
               <h3 class="mb-4">Download Platform-Specific Templates</h3>
-              <div class="btn-group-vertical">
-                <button class="btn btn-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" x2="12" y1="15" y2="3"></line>
-                  </svg>
-                  Facebook Templates
-                </button>
-                <button class="btn btn-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" x2="12" y1="15" y2="3"></line>
-                  </svg>
-                  Instagram Templates
-                </button>
-                <button class="btn btn-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" x2="12" y1="15" y2="3"></line>
-                  </svg>
-                  YouTube Templates
-                </button>
-                <button class="btn btn-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" x2="12" y1="15" y2="3"></line>
-                  </svg>
-                  TikTok Templates
-                </button>
-                <button class="btn btn-primary">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" x2="12" y1="15" y2="3"></line>
-                  </svg>
-                  Telegram Templates
-                </button>
+              <p class="text-secondary mb-4">Professional-grade templates optimized for each platform's unique requirements and audience behavior patterns.</p>
+              
+              <!-- Template Preview Cards -->
+              <div class="template-preview-grid">
+                <!-- Facebook Template Card -->
+                <div class="template-card">
+                  <div class="template-header">
+                    <div class="platform-icon facebook-icon">📘</div>
+                    <h4>Facebook Templates</h4>
+                  </div>
+                  <div class="template-content">
+                    <ul class="template-features">
+                      <li>✓ Standard posts (1200x630px)</li>
+                      <li>✓ Story templates (1080x1920px)</li>
+                      <li>✓ Cover photos & ads</li>
+                      <li>✓ Algorithm-optimized layouts</li>
+                    </ul>
+                    <div class="template-stats">
+                      <span class="stat">12 files</span>
+                      <span class="stat">2.3MB</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary template-download-btn" data-platform="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" x2="12" y1="15" y2="3"></line>
+                    </svg>
+                    Download Facebook Pack
+                  </button>
+                </div>
+
+                <!-- Instagram Template Card -->
+                <div class="template-card">
+                  <div class="template-header">
+                    <div class="platform-icon instagram-icon">📷</div>
+                    <h4>Instagram Templates</h4>
+                  </div>
+                  <div class="template-content">
+                    <ul class="template-features">
+                      <li>✓ Square posts (1080x1080px)</li>
+                      <li>✓ Stories & Reels templates</li>
+                      <li>✓ Engagement-focused design</li>
+                      <li>✓ Hashtag strategy guides</li>
+                    </ul>
+                    <div class="template-stats">
+                      <span class="stat">15 files</span>
+                      <span class="stat">3.1MB</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary template-download-btn" data-platform="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" x2="12" y1="15" y2="3"></line>
+                    </svg>
+                    Download Instagram Pack
+                  </button>
+                </div>
+
+                <!-- YouTube Template Card -->
+                <div class="template-card">
+                  <div class="template-header">
+                    <div class="platform-icon youtube-icon">🎥</div>
+                    <h4>YouTube Templates</h4>
+                  </div>
+                  <div class="template-content">
+                    <ul class="template-features">
+                      <li>✓ Thumbnails (1280x720px)</li>
+                      <li>✓ Channel banners & end screens</li>
+                      <li>✓ CTR-optimized designs</li>
+                      <li>✓ Brand consistency kits</li>
+                    </ul>
+                    <div class="template-stats">
+                      <span class="stat">18 files</span>
+                      <span class="stat">4.2MB</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary template-download-btn" data-platform="YouTube">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" x2="12" y1="15" y2="3"></line>
+                    </svg>
+                    Download YouTube Pack
+                  </button>
+                </div>
+
+                <!-- TikTok Template Card -->
+                <div class="template-card">
+                  <div class="template-header">
+                    <div class="platform-icon tiktok-icon">🎵</div>
+                    <h4>TikTok Templates</h4>
+                  </div>
+                  <div class="template-content">
+                    <ul class="template-features">
+                      <li>✓ Vertical videos (1080x1920px)</li>
+                      <li>✓ Trend-aware templates</li>
+                      <li>✓ 3-second hook optimization</li>
+                      <li>✓ Audio integration guides</li>
+                    </ul>
+                    <div class="template-stats">
+                      <span class="stat">14 files</span>
+                      <span class="stat">2.8MB</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary template-download-btn" data-platform="TikTok">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" x2="12" y1="15" y2="3"></line>
+                    </svg>
+                    Download TikTok Pack
+                  </button>
+                </div>
+
+                <!-- Telegram Template Card -->
+                <div class="template-card">
+                  <div class="template-header">
+                    <div class="platform-icon telegram-icon">💬</div>
+                    <h4>Telegram Templates</h4>
+                  </div>
+                  <div class="template-content">
+                    <ul class="template-features">
+                      <li>✓ Channel & post templates</li>
+                      <li>✓ Bot interaction designs</li>
+                      <li>✓ Markdown formatting guides</li>
+                      <li>✓ Community engagement tools</li>
+                    </ul>
+                    <div class="template-stats">
+                      <span class="stat">10 files</span>
+                      <span class="stat">1.9MB</span>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary template-download-btn" data-platform="Telegram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" x2="12" y1="15" y2="3"></line>
+                    </svg>
+                    Download Telegram Pack
+                  </button>
+                </div>
+              </div>
+
+              <!-- Download All Bundle -->
+              <div class="mt-5 text-center">
+                <div class="bundle-offer">
+                  <h4 class="bundle-title">🎯 Complete Template Bundle</h4>
+                  <p class="bundle-description">Get all platform templates + exclusive bonus content</p>
+                  <div class="bundle-stats">
+                    <span class="bundle-stat">69 files total</span>
+                    <span class="bundle-stat">14.3MB</span>
+                    <span class="bundle-stat">5 platforms</span>
+                  </div>
+                  <button class="btn btn-lg btn-secondary bundle-download-btn" data-platform="All">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" x2="12" y1="15" y2="3"></line>
+                    </svg>
+                    Download Complete Bundle
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <section id="guidelines" class="container">
+
+      <section id="animation-patterns" class="container">
         <div class="content-section">
           <div class="section-intro">
-            <h2>General Guidelines</h2>
-            <p>Additional guidelines and best practices for maintaining consistent APGI branding across all platforms.</p>
+            <h2>Animation Patterns: "APGI in Motion"</h2>
+            <p>Dynamic visualizations follow specific biological timing and information flow patterns. These are not arbitrary animations—they represent actual computational sequences.</p>
           </div>
-          <div class="social-guidelines-grid">
-            <div class="guideline-card">
-              <h4>General Guidelines</h4>
-              <ul>
-                <li>Use consistent APGI branding across all platforms</li>
-                <li>Maintain provocative yet authoritative tone</li>
-                <li>Include data visualizations and research citations</li>
-                <li>Optimize content for each platform's algorithm</li>
-              </ul>
+
+          <div class="triad-container">
+            <div class="triad-card" style="border-top-color: #9966FF;">
+              <h3>1. Threshold Ignition Sequence</h3>
+              <p style="font-weight: 600; color: var(--primary); margin-bottom: 1rem;">The complete process from baseline → conscious access</p>
+              <ol style="padding-left: 1.5rem; margin-bottom: 0;">
+                <li style="margin-bottom: 0.75rem;"><strong>Baseline</strong> (0-1s): Dim pathways, low activity throughout</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Build-up</strong> (1-2s): Yellow prediction error sparks in sensory cortices</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Precision weighting</strong> (2-3s): Red interoceptive signal converges with error signal</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Gate opening</strong> (3-3.5s): Blue threshold "barrier" ripples and opens when Π × |ε| > Bₜ</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Ignition</strong> (3.5-4s): Purple global workspace floods cortex with light</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Sustain</strong> (4-6s): Pulsing purple network maintains broadcast</li>
+                <li style="margin-bottom: 0;"><strong>Fade</strong> (6-7s): System returns to baseline as predictions stabilize</li>
+              </ol>
             </div>
-            <div class="guideline-card">
-              <h4>Content Strategy</h4>
-              <ul>
-                <li>Post 3-5 times per week for optimal engagement</li>
-                <li>Use 60% provocative, 30% authoritative, 10% compassionate content mix</li>
-                <li>Include calls-to-action in every third post</li>
-                <li>Engage with comments within 2 hours</li>
-              </ul>
+
+            <div class="triad-card" style="border-top-color: #FF3366;">
+              <h3>2. Interoceptive Surge</h3>
+              <p style="font-weight: 600; color: var(--primary); margin-bottom: 1rem;">Body signals → brain integration pathway</p>
+              <ol style="padding-left: 1.5rem; margin-bottom: 0;">
+                <li style="margin-bottom: 0.75rem;"><strong>Origin</strong>: Red pulses emerge from body regions (gut, heart, skin representations)</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Ascent</strong>: Signals travel through spinal cord to brainstem (visible red trails)</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Convergence</strong>: Multiple streams merge at anterior insula and ACC</li>
+                <li style="margin-bottom: 0;"><strong>Intensity scaling</strong>: Brighter red = higher precision (Π). Dimmer red = low-precision background signals</li>
+              </ol>
+            </div>
+
+            <div class="triad-card" style="border-top-color: #00CC99;">
+              <h3>3. Neuromodulator Waves</h3>
+              <p style="font-weight: 600; color: var(--primary); margin-bottom: 1rem;">Chemical systems modulating brain state</p>
+              <ol style="padding-left: 1.5rem; margin-bottom: 0;">
+                <li style="margin-bottom: 0.75rem;"><strong>Source</strong>: Green waves emanate from brainstem nuclei (locus coeruleus, VTA)</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Propagation</strong>: Waves flow through established diffuse projection pathways</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Modulation</strong>: Green tint overlays other systems (green + blue threshold areas = modulated gating)</li>
+                <li style="margin-bottom: 0;"><strong>Rhythm</strong>: Slow oscillations (3-5s cycles) reflecting behavioral state changes</li>
+              </ol>
+            </div>
+
+            <div class="triad-card" style="border-top-color: #FFCC00;">
+              <h3>4. Memory Integration</h3>
+              <p style="font-weight: 600; color: var(--primary); margin-bottom: 1rem;">Offline consolidation during rest/sleep</p>
+              <ol style="padding-left: 1.5rem; margin-bottom: 0;">
+                <li style="margin-bottom: 0.75rem;"><strong>Replay</strong>: Yellow-to-purple gradient sparks travel from hippocampus to prefrontal cortex</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Clustering</strong>: Related memories cluster in prefrontal networks (purple nodes)</li>
+                <li style="margin-bottom: 0.75rem;"><strong>Consolidation</strong>: Repeated replays (theta rhythm timing, ~7 Hz)</li>
+                <li style="margin-bottom: 0;"><strong>Sleep intensification</strong>: Faster, brighter during REM/NREM transitions</li>
+              </ol>
             </div>
           </div>
 
-          <div class="mt-3">
-            <h3>Animation Style: "APGI in Motion"</h3>
-            <div class="triad-container mt-2">
-              <div class="triad-card">
-                <h4>Threshold Ignition Sequence</h4>
-                <p>1. Baseline: Dim pathways, low activity</p>
-                <p>2. Build-up: Yellow prediction error sparks</p>
-                <p>3. Gate opening: Blue threshold barrier opens</p>
-                <p>4. Ignition: Purple global workspace floods</p>
-              </div>
-              <div class="triad-card">
-                <h4>Interoceptive Surge</h4>
-                <p>Red pulses originate from body regions</p>
-                <p>Travel through spinal cord to brainstem</p>
-                <p>Converge on insula and ACC</p>
-                <p>Intensity correlates with precision</p>
-              </div>
-              <div class="triad-card">
-                <h4>Neuromodulator Waves</h4>
-                <p>Green waves emanate from brainstem</p>
-                <p>Flow through established pathways</p>
-                <p>Modulate other systems</p>
-                <p>Ebb and flow with behavioral state</p>
-              </div>
-            </div>
+          <div class="mt-4" style="background: var(--bg-secondary); border-left: 4px solid var(--accent); padding: 1.5rem; border-radius: var(--radius);">
+            <h4 style="margin-bottom: 1rem; color: var(--accent);">⚙️ Animation Technical Specs</h4>
+            <ul style="margin: 0; padding-left: 1.5rem;">
+              <li style="margin-bottom: 0.5rem;"><strong>Timing:</strong> All animations should respect biological plausibility (threshold crossing ~200-500ms, not instantaneous)</li>
+              <li style="margin-bottom: 0.5rem;"><strong>Easing:</strong> Use ease-in-out for organic feel. Avoid linear transitions.</li>
+              <li style="margin-bottom: 0.5rem;"><strong>Loops:</strong> Continuous states (neuromodulator waves) loop seamlessly. Events (threshold crossing) play once then reset.</li>
+              <li style="margin-bottom: 0;"><strong>Performance:</strong> Optimize for 60fps. Use requestAnimationFrame, not setInterval.</li>
+            </ul>
           </div>
         </div>
       </section>
-      <section id="brand-personality" class="container">
-        <div class="content-section">
-          <div class="section-intro">
-            <h2>Brand Personality: The Triad Framework</h2>
-            <p>Your brand operates at the intersection of three essential dimensions that together create a distinctive, powerful presence in the consciousness science space: <strong>"Provocative, Authoritative, Compassionate"</strong>.</p>
+
+<section id="animation-examples" class="container">
+  <div class="content-section">
+    <div class="section-intro">
+      <h2>Animation Pattern Examples</h2>
+      <p>Live demonstrations of APGI's core animation patterns. Each follows biological timing and information flow principles.</p>
+    </div>
+
+    <div class="animation-showcase-grid">
+      
+      <!-- 1. THRESHOLD IGNITION SEQUENCE -->
+      <div class="animation-showcase-card">
+        <h3>1. Threshold Ignition Sequence</h3>
+        <p class="animation-description">The complete computational pathway: baseline → prediction error → precision weighting → threshold crossing → conscious broadcast</p>
+        
+        <div class="animation-viewer">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Brain outline -->
+            <ellipse cx="200" cy="150" rx="120" ry="80" fill="none" stroke="#2C3E50" stroke-width="2" opacity="0.3"/>
+            
+            <!-- Baseline state (dim pathways) -->
+            <g class="ignition-baseline">
+              <circle cx="200" cy="150" r="5" fill="#9966FF" opacity="0.2">
+                <animate attributeName="opacity" values="0.2;0.3;0.2" dur="2s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            
+            <!-- Prediction error sparks (Yellow) -->
+            <g class="ignition-errors">
+              <circle cx="140" cy="130" r="0" fill="#FFCC00">
+                <animate attributeName="r" values="0;6;0" begin="1s" dur="1.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;0" begin="1s" dur="1.5s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="160" cy="170" r="0" fill="#FFCC00">
+                <animate attributeName="r" values="0;5;0" begin="1.2s" dur="1.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;0" begin="1.2s" dur="1.5s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="180" cy="140" r="0" fill="#FFCC00">
+                <animate attributeName="r" values="0;7;0" begin="1.4s" dur="1.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;0" begin="1.4s" dur="1.5s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            
+            <!-- Interoceptive precision signal (Red) -->
+            <g class="ignition-precision">
+              <path d="M 200,250 L 200,150" stroke="#FF3366" stroke-width="3" opacity="0" fill="none">
+                <animate attributeName="opacity" values="0;0;0.8;0.8" begin="2.5s" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="stroke-dasharray" values="100;0" begin="2.5s" dur="0.5s" repeatCount="indefinite"/>
+              </path>
+              <circle cx="200" cy="250" r="8" fill="#FF3366" opacity="0">
+                <animate attributeName="opacity" values="0;0;0.9;0.9" begin="2.5s" dur="4s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            
+            <!-- Threshold gate (Blue) -->
+            <g class="ignition-threshold">
+              <circle cx="200" cy="150" r="25" fill="none" stroke="#00B4FF" stroke-width="3" opacity="0">
+                <animate attributeName="opacity" values="0;0;0;0.4;0.8;0.8" begin="0s" dur="6.5s" repeatCount="indefinite"/>
+                <animate attributeName="r" values="25;25;25;30;25;25" begin="0s" dur="6.5s" repeatCount="indefinite"/>
+              </circle>
+              <!-- Ripple effect -->
+              <circle cx="200" cy="150" r="25" fill="none" stroke="#00B4FF" stroke-width="2" opacity="0">
+                <animate attributeName="r" values="25;50" begin="3.5s" dur="0.8s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.6;0" begin="3.5s" dur="0.8s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            
+            <!-- Global workspace ignition (Purple) -->
+            <g class="ignition-broadcast">
+              <circle cx="200" cy="150" r="80" fill="#9966FF" opacity="0">
+                <animate attributeName="opacity" values="0;0;0;0;0.15;0.3;0.25;0.25;0.1;0" begin="0s" dur="6.5s" repeatCount="indefinite"/>
+                <animate attributeName="r" values="10;10;10;10;50;80;80;80;90;10" begin="0s" dur="6.5s" repeatCount="indefinite"/>
+              </circle>
+              
+              <!-- Radiating particles -->
+              <circle cx="200" cy="150" r="5" fill="#9966FF">
+                <animate attributeName="cx" values="200;140" begin="4s" dur="1s" repeatCount="indefinite"/>
+                <animate attributeName="cy" values="150;110" begin="4s" dur="1s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;0.8;0" begin="4s" dur="1s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="200" cy="150" r="5" fill="#9966FF">
+                <animate attributeName="cx" values="200;260" begin="4.1s" dur="1s" repeatCount="indefinite"/>
+                <animate attributeName="cy" values="150;120" begin="4.1s" dur="1s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;0.8;0" begin="4.1s" dur="1s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="200" cy="150" r="5" fill="#9966FF">
+                <animate attributeName="cx" values="200;220" begin="4.2s" dur="1s" repeatCount="indefinite"/>
+                <animate attributeName="cy" values="150;190" begin="4.2s" dur="1s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;0.8;0" begin="4.2s" dur="1s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+          </svg>
+        </div>
+        
+        <div class="animation-timeline">
+          <div class="timeline-marker" style="--delay: 0s; --color: #2C3E50;">0-1s: Baseline</div>
+          <div class="timeline-marker" style="--delay: 1s; --color: #FFCC00;">1-2.5s: Prediction errors</div>
+          <div class="timeline-marker" style="--delay: 2.5s; --color: #FF3366;">2.5-3.5s: Precision weighting</div>
+          <div class="timeline-marker" style="--delay: 3.5s; --color: #00B4FF;">3.5s: Threshold opens</div>
+          <div class="timeline-marker" style="--delay: 4s; --color: #9966FF;">4-6s: Conscious broadcast</div>
+        </div>
+      </div>
+
+      <!-- 2. INTEROCEPTIVE SURGE -->
+      <div class="animation-showcase-card">
+        <h3>2. Interoceptive Surge</h3>
+        <p class="animation-description">Body signals ascend through spinal cord → brainstem → converge at anterior insula/ACC. Brightness = precision (Π)</p>
+        
+        <div class="animation-viewer">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Brain outline -->
+            <ellipse cx="200" cy="100" rx="120" ry="60" fill="none" stroke="#2C3E50" stroke-width="2" opacity="0.3"/>
+            
+            <!-- Spinal cord -->
+            <rect x="195" y="160" width="10" height="120" rx="5" fill="#334155" opacity="0.2"/>
+            
+            <!-- Body signal origins (gut, heart, skin) -->
+            <g class="intero-origins">
+              <circle cx="150" cy="270" r="8" fill="#FF3366" opacity="0.4">
+                <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="200" cy="270" r="8" fill="#FF3366" opacity="0.5">
+                <animate attributeName="opacity" values="0.5;1;0.5" begin="0.3s" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="250" cy="270" r="8" fill="#FF3366" opacity="0.4">
+                <animate attributeName="opacity" values="0.4;1;0.4" begin="0.6s" dur="2s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            
+            <!-- Ascending signals -->
+            <g class="intero-ascent">
+              <!-- Signal 1 -->
+              <circle cx="150" cy="270" r="4" fill="#FF3366">
+                <animate attributeName="cy" values="270;160;100" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.6;0.9;0" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <line x1="150" y1="270" x2="200" y2="100" stroke="#FF3366" stroke-width="2" opacity="0.15"/>
+              
+              <!-- Signal 2 -->
+              <circle cx="200" cy="270" r="4" fill="#FF3366">
+                <animate attributeName="cy" values="270;160;100" begin="0.3s" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.7;1;0" begin="0.3s" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <line x1="200" y1="270" x2="200" y2="100" stroke="#FF3366" stroke-width="2" opacity="0.2"/>
+              
+              <!-- Signal 3 -->
+              <circle cx="250" cy="270" r="4" fill="#FF3366">
+                <animate attributeName="cy" values="270;160;100" begin="0.6s" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.6;0.9;0" begin="0.6s" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <line x1="250" y1="270" x2="200" y2="100" stroke="#FF3366" stroke-width="2" opacity="0.15"/>
+            </g>
+            
+            <!-- Convergence zone (Insula/ACC) -->
+            <g class="intero-convergence">
+              <circle cx="200" cy="100" r="20" fill="#FF3366" opacity="0.2">
+                <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="r" values="20;25;20" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <!-- Convergence glow -->
+              <circle cx="200" cy="100" r="20" fill="none" stroke="#FF3366" stroke-width="3">
+                <animate attributeName="r" values="20;35" dur="1.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.6;0" dur="1.5s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            
+            <!-- Labels -->
+            <text x="200" y="290" text-anchor="middle" fill="#64748b" font-size="11" font-weight="500">Body signals</text>
+            <text x="200" y="50" text-anchor="middle" fill="#FF3366" font-size="11" font-weight="600">Insula/ACC</text>
+          </svg>
+        </div>
+        
+        <div class="animation-legend">
+          <div class="legend-item"><span class="legend-dot" style="background: #FF3366; opacity: 0.5;"></span> Low precision (Π)</div>
+          <div class="legend-item"><span class="legend-dot" style="background: #FF3366; opacity: 1;"></span> High precision (Π)</div>
+        </div>
+      </div>
+
+      <!-- 3. NEUROMODULATOR WAVES -->
+      <div class="animation-showcase-card">
+        <h3>3. Neuromodulator Waves</h3>
+        <p class="animation-description">Green waves emanate from brainstem (LC/VTA) → diffuse throughout cortex. Slow oscillations (3-5s cycles) modulate behavioral state</p>
+        
+        <div class="animation-viewer">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Brain outline -->
+            <ellipse cx="200" cy="120" rx="140" ry="85" fill="none" stroke="#2C3E50" stroke-width="2" opacity="0.3"/>
+            
+            <!-- Brainstem source (LC/VTA) -->
+            <circle cx="200" cy="220" r="12" fill="#00CC99" opacity="0.8">
+              <animate attributeName="opacity" values="0.8;1;0.8" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <text x="200" y="250" text-anchor="middle" fill="#00CC99" font-size="11" font-weight="600">Brainstem (LC/VTA)</text>
+            
+            <!-- Diffuse projection pathways -->
+            <g class="neuro-pathways" opacity="0.15">
+              <path d="M 200,220 Q 150,180 120,120" stroke="#00CC99" stroke-width="2" fill="none"/>
+              <path d="M 200,220 Q 200,170 200,100" stroke="#00CC99" stroke-width="2" fill="none"/>
+              <path d="M 200,220 Q 250,180 280,120" stroke="#00CC99" stroke-width="2" fill="none"/>
+              <path d="M 200,220 Q 170,160 140,80" stroke="#00CC99" stroke-width="2" fill="none"/>
+              <path d="M 200,220 Q 230,160 260,80" stroke="#00CC99" stroke-width="2" fill="none"/>
+            </g>
+            
+            <!-- Propagating waves -->
+            <g class="neuro-waves">
+              <!-- Wave 1 -->
+              <circle cx="200" cy="220" r="10" fill="none" stroke="#00CC99" stroke-width="3">
+                <animate attributeName="r" values="10;120" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.8;0" dur="4s" repeatCount="indefinite"/>
+              </circle>
+              
+              <!-- Wave 2 -->
+              <circle cx="200" cy="220" r="10" fill="none" stroke="#00CC99" stroke-width="3">
+                <animate attributeName="r" values="10;120" begin="1.3s" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.8;0" begin="1.3s" dur="4s" repeatCount="indefinite"/>
+              </circle>
+              
+              <!-- Wave 3 -->
+              <circle cx="200" cy="220" r="10" fill="none" stroke="#00CC99" stroke-width="3">
+                <animate attributeName="r" values="10;120" begin="2.6s" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.8;0" begin="2.6s" dur="4s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+            
+            <!-- Modulated cortical regions -->
+            <g class="neuro-modulation">
+              <ellipse cx="150" cy="100" rx="30" ry="20" fill="#00CC99" opacity="0">
+                <animate attributeName="opacity" values="0;0.15;0" dur="4s" repeatCount="indefinite"/>
+              </ellipse>
+              <ellipse cx="250" cy="100" rx="30" ry="20" fill="#00CC99" opacity="0">
+                <animate attributeName="opacity" values="0;0.15;0" begin="0.5s" dur="4s" repeatCount="indefinite"/>
+              </ellipse>
+              <ellipse cx="200" cy="80" rx="35" ry="25" fill="#00CC99" opacity="0">
+                <animate attributeName="opacity" values="0;0.15;0" begin="1s" dur="4s" repeatCount="indefinite"/>
+              </ellipse>
+            </g>
+          </svg>
+        </div>
+        
+        <div class="animation-note">
+          <strong>⚙️ Technical:</strong> 3-5 second oscillation periods reflect biological neuromodulator release kinetics. Green overlay on blue threshold regions = modulated gating sensitivity.
+        </div>
+      </div>
+
+      <!-- 4. MEMORY INTEGRATION -->
+      <div class="animation-showcase-card">
+        <h3>4. Memory Integration</h3>
+        <p class="animation-description">Offline consolidation: Hippocampal replay → Prefrontal clustering. Yellow→Purple gradient shows episodic→semantic transition. Theta rhythm (7 Hz) timing.</p>
+        
+        <div class="animation-viewer">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Brain regions -->
+            <ellipse cx="200" cy="150" rx="130" ry="90" fill="none" stroke="#2C3E50" stroke-width="2" opacity="0.3"/>
+            
+            <!-- Hippocampus (bottom) -->
+            <ellipse cx="200" cy="220" rx="40" ry="20" fill="#FFCC00" opacity="0.3"/>
+            <text x="200" y="255" text-anchor="middle" fill="#FFCC00" font-size="11" font-weight="600">Hippocampus</text>
+            
+            <!-- Prefrontal cortex (top) -->
+            <ellipse cx="200" cy="80" rx="50" ry="25" fill="#9966FF" opacity="0.3"/>
+            <text x="200" y="50" text-anchor="middle" fill="#9966FF" font-size="11" font-weight="600">Prefrontal Cortex</text>
+            
+            <!-- Replay pathway -->
+            <defs>
+              <linearGradient id="memoryGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%" style="stop-color:#FFCC00;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#9966FF;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            
+            <path d="M 200,220 Q 200,150 200,80" stroke="url(#memoryGradient)" stroke-width="4" fill="none" opacity="0.4"/>
+            
+            <!-- Traveling particle clusters -->
+            <g class="memory-replay">
+              <!-- Cluster 1 -->
+              <g opacity="0">
+                <circle cx="200" cy="220" r="5" fill="#FFCC00"/>
+                <circle cx="195" cy="218" r="3" fill="#FFCC00"/>
+                <circle cx="205" cy="218" r="3" fill="#FFCC00"/>
+                <animateTransform
+                  attributeName="transform"
+                  type="translate"
+                  values="0,0; 0,-140"
+                  dur="2s"
+                  repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
+              </g>
+              
+              <!-- Cluster 2 -->
+              <g opacity="0">
+                <circle cx="200" cy="220" r="5" fill="#E6B800"/>
+                <circle cx="197" cy="217" r="3" fill="#E6B800"/>
+                <circle cx="203" cy="217" r="3" fill="#E6B800"/>
+                <animateTransform
+                  attributeName="transform"
+                  type="translate"
+                  values="0,0; 0,-140"
+                  begin="0.66s"
+                  dur="2s"
+                  repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" begin="0.66s" dur="2s" repeatCount="indefinite"/>
+              </g>
+              
+              <!-- Cluster 3 -->
+              <g opacity="0">
+                <circle cx="200" cy="220" r="5" fill="#CC99FF"/>
+                <circle cx="198" cy="216" r="3" fill="#CC99FF"/>
+                <circle cx="202" cy="216" r="3" fill="#CC99FF"/>
+                <animateTransform
+                  attributeName="transform"
+                  type="translate"
+                  values="0,0; 0,-140"
+                  begin="1.33s"
+                  dur="2s"
+                  repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" begin="1.33s" dur="2s" repeatCount="indefinite"/>
+              </g>
+            </g>
+            
+            <!-- Prefrontal clustering -->
+            <g class="memory-consolidation">
+              <circle cx="190" cy="80" r="6" fill="#9966FF" opacity="0">
+                <animate attributeName="opacity" values="0;0;0.7;0.7" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="210" cy="80" r="6" fill="#9966FF" opacity="0">
+                <animate attributeName="opacity" values="0;0;0.7;0.7" begin="0.66s" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="200" cy="90" r="6" fill="#9966FF" opacity="0">
+                <animate attributeName="opacity" values="0;0;0.7;0.7" begin="1.33s" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              
+              <!-- Network connections form -->
+              <line x1="190" y1="80" x2="210" y2="80" stroke="#9966FF" stroke-width="1.5" opacity="0">
+                <animate attributeName="opacity" values="0;0;0.4;0.4" begin="0.66s" dur="2s" repeatCount="indefinite"/>
+              </line>
+              <line x1="190" y1="80" x2="200" y2="90" stroke="#9966FF" stroke-width="1.5" opacity="0">
+                <animate attributeName="opacity" values="0;0;0.4;0.4" begin="1.33s" dur="2s" repeatCount="indefinite"/>
+              </line>
+              <line x1="210" y1="80" x2="200" y2="90" stroke="#9966FF" stroke-width="1.5" opacity="0">
+                <animate attributeName="opacity" values="0;0;0.4;0.4" begin="1.33s" dur="2s" repeatCount="indefinite"/>
+              </line>
+            </g>
+            
+            <!-- Theta rhythm indicator -->
+            <text x="320" y="150" fill="#64748b" font-size="10" font-weight="500">θ ~7 Hz</text>
+            <circle cx="310" cy="147" r="3" fill="#9966FF" opacity="0.4">
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="0.143s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+        
+        <div class="animation-note">
+          <strong>💡 Biological Detail:</strong> Particle clusters represent hippocampal sharp-wave ripples (100-250 Hz) nested within theta oscillations. During sleep/rest, these replay patterns strengthen prefrontal networks.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+      <section id="interactive-brain" class="container">
+  <div class="content-section">
+    <div class="section-intro">
+      <h2>Interactive 3D Brain Visualization</h2>
+      <p>Explore the APGI framework in three dimensions. Adjust parameters to see real-time threshold crossing and consciousness emergence.</p>
+    </div>
+
+    <div class="interactive-brain-container">
+      <div class="brain-canvas-wrapper">
+        <canvas id="threejs-brain"></canvas>
+        
+        <!-- Loading indicator -->
+        <div id="brain-loading" class="brain-loading">
+          <div class="loading-spinner"></div>
+          <p>Initializing neural network...</p>
+        </div>
+      </div>
+
+      <div class="brain-controls-panel">
+        <h3>APGI Parameters</h3>
+        
+        <div class="parameter-control">
+          <div class="param-header">
+            <label for="threshold-control">Threshold (Bₜ)</label>
+            <span class="param-value" id="threshold-value">0.65</span>
           </div>
-          <div class="triad-container">
-            <div class="triad-card provocative">
-              <div class="triad-icon">⚡</div>
-              <h3>Provocative: The Paradigm Challenger</h3>
-              <p><strong>Core Position:</strong> We reframe consciousness from mystical enigma to solvable engineering problem.</p>
-              <h4>Key Behaviors:</h4>
-              <ul>
-                <li>Question received wisdom</li>
-                <li>Use counterintuitive framings</li>
-                <li>Create cognitive dissonance</li>
-                <li>Deploy unexpected metaphors</li>
-              </ul>
-              <p><strong>Why It Matters:</strong> Provocative framing creates essential pattern interrupt in a saturated content landscape.</p>
-              <div class="example-text">
-                <h4>Example in Action:</h4>
-                <p class="tiktok-example">"Your brain has a bug. Here's the patch."</p>
-                <p class="youtube-example">"For a century, we've studied consciousness backward..."</p>
-              </div>
-            </div>
-            <div class="triad-card authoritative">
-              <div class="triad-icon">📊</div>
-              <h3>Authoritative: The Evidence Architect</h3>
-              <p><strong>Core Position:</strong> Every claim rests on testable predictions, quantifiable parameters, and falsifiable mechanisms.</p>
-              <h4>Key Behaviors:</h4>
-              <ul>
-                <li>Cite precision, not breadth</li>
-                <li>Show your work</li>
-                <li>Acknowledge limitations</li>
-                <li>Build systematic frameworks</li>
-              </ul>
-              <p><strong>Why It Matters:</strong> Authority without provocation becomes ignored academic literature. Together, they create "earned attention".</p>
-              <div class="example-text">
-                <h4>Example in Action:</h4>
-                <p class="tiktok-example">"The math proves consciousness is intermittent."</p>
-                <p class="youtube-example">"Let me show you data that changed everything..."</p>
-              </div>
-            </div>
-            <div class="triad-card compassionate">
-              <div class="triad-icon">💝</div>
-              <h3>Compassionate: The Transformation Guide</h3>
-              <p><strong>Core Position:</strong> Understanding serves liberation. Knowledge translates to practical relief.</p>
-              <h4>Key Behaviors:</h4>
-              <ul>
-                <li>Meet pain points directly</li>
-                <li>Validate subjective experience</li>
-                <li>Offer actionable frameworks</li>
-                <li>Avoid judgment</li>
-              </ul>
-              <p><strong>Why It Matters:</strong> Without compassion, you're just another smart person showing off. Compassion transforms intellectual curiosity into application.</p>
-              <div class="example-text">
-                <h4>Example in Action:</h4>
-                <p class="tiktok-example">"You're not broken, your system is predictable."</p>
-                <p class="youtube-example">"Here's why meditation felt impossible when anxious..."</p>
-              </div>
-            </div>
-          </div>
-          <div class="content-section mt-3">
-            <h3>The Triad in Action: Synergistic Effects</h3>
-            <div class="triad-container">
-              <div class="triad-card">
-                <h4>Provocative + Authoritative = Credible Disruption</h4>
-                <p>You can make bold claims because you have receipts. "Consciousness is overrated" lands because you can prove it mathematically.</p>
-              </div>
-              <div class="triad-card">
-                <h4>Authoritative + Compassionate = Trusted Guidance</h4>
-                <p>Technical precision serves human needs, not academic gatekeeping. People believe your solutions because you understand their problems systematically.</p>
-              </div>
-              <div class="triad-card">
-                <h4>Compassionate + Provocative = Empowering Reframes</h4>
-                <p>Radical reconceptualizations feel liberating, not threatening. "You're not broken, your system is in a predictable state" combines both.</p>
-              </div>
-            </div>
-          </div>
-          <div class="content-section mt-3">
-            <h3>The Same Concept, Five Different Platforms</h3>
-            <p class="mb-3">How we communicate "prediction errors drive consciousness" across contexts:</p>
-            <div class="platform-comparison">
-              <div class="tone-card">
-                <div class="platform-badge" style="background: #000;">TikTok</div>
-                <div class="triad-weights">
-                  <span class="provocative">60%</span>
-                  <span class="authoritative">20%</span>
-                  <span class="compassionate">20%</span>
-                </div>
-                <div class="example-content">
-                  <p class="hook">"Your brain predicts reality BEFORE you see it."</p>
-                  <p class="body">When predictions fail → consciousness spikes.<br>
-                    When predictions work → autopilot mode.
-                  </p>
-                  <p class="cta">This is why meditation feels different every time.</p>
-                </div>
-              </div>
-              <div class="tone-card">
-                <div class="platform-badge" style="background: #FF0000;">YouTube</div>
-                <div class="triad-weights">
-                  <span class="provocative">30%</span>
-                  <span class="authoritative">50%</span>
-                  <span class="compassionate">20%</span>
-                </div>
-                <div class="example-content">
-                  <p class="hook">"For decades, we've had it backward."</p>
-                  <p class="body">Consciousness doesn't passively receive information—it actively predicts what comes next. Barrett's 2017 precision-weighting model shows that when prediction error (|ε|) exceeds threshold (Bₜ), conscious access triggers.</p>
-                  <p class="cta">Let me show you the math...</p>
-                </div>
-              </div>
-              <div class="tone-card">
-                <div class="platform-badge" style="background: #0088cc;">Telegram</div>
-                <div class="triad-weights">
-                  <span class="provocative">40%</span>
-                  <span class="authoritative">40%</span>
-                  <span class="compassionate">20%</span>
-                </div>
-                <div class="example-content">
-                  <p class="hook">New paper alert: Precision-weighted prediction errors</p>
-                  <p class="body">Fascinating study in Nature Neuroscience validates APGI's core mechanism. Key finding: Interoceptive precision (Π) modulates which prediction errors cross threshold into consciousness.
-                    Mathematical validation: Π × |ε| > Bₜ → conscious access
-                  </p>
-                  <p class="cta">Full paper linked below. Thoughts?</p>
-                </div>
-              </div>
-            </div>
+          <input type="range" id="threshold-control" min="0" max="1" step="0.01" value="0.65">
+          <div class="param-info">
+            <span class="param-color" style="background: #00B4FF;"></span>
+            <small>Thalamic gating sensitivity</small>
           </div>
         </div>
-      </section>
+
+        <div class="parameter-control">
+          <div class="param-header">
+            <label for="precision-control">Interoceptive Precision (Π)</label>
+            <span class="param-value" id="precision-value">0.50</span>
+          </div>
+          <input type="range" id="precision-control" min="0" max="1" step="0.01" value="0.50">
+          <div class="param-info">
+            <span class="param-color" style="background: #FF3366;"></span>
+            <small>Body signal reliability</small>
+          </div>
+        </div>
+
+        <div class="parameter-control">
+          <div class="param-header">
+            <label for="error-control">Prediction Error (|ε|)</label>
+            <span class="param-value" id="error-value">0.50</span>
+          </div>
+          <input type="range" id="error-control" min="0" max="1" step="0.01" value="0.50">
+          <div class="param-info">
+            <span class="param-color" style="background: #FFCC00;"></span>
+            <small>Sensory mismatch magnitude</small>
+          </div>
+        </div>
+
+        <div class="parameter-control">
+          <div class="param-header">
+            <label for="neuromod-control">Neuromodulator Tone</label>
+            <span class="param-value" id="neuromod-value">0.50</span>
+          </div>
+          <input type="range" id="neuromod-control" min="0" max="1" step="0.01" value="0.50">
+          <div class="param-info">
+            <span class="param-color" style="background: #00CC99;"></span>
+            <small>Arousal/attention state</small>
+          </div>
+        </div>
+
+        <div class="consciousness-indicator">
+          <h4>Consciousness State</h4>
+          <div class="state-formula">
+            <span id="pi-display">0.50</span> × <span id="epsilon-display">0.50</span> = 
+            <span id="product-display">0.25</span>
+          </div>
+          <div class="state-comparison">
+            <span id="comparison-text">Below Threshold</span>
+            <div class="threshold-line">
+              <div class="threshold-marker" id="threshold-marker" style="left: 65%;"></div>
+              <div class="product-marker" id="product-marker" style="left: 25%;"></div>
+            </div>
+          </div>
+          <div class="state-result" id="state-result">
+            <span class="state-icon">😴</span>
+            <span class="state-label">Unconscious Processing</span>
+          </div>
+        </div>
+
+        <div class="brain-actions">
+          <button class="btn btn-secondary" id="reset-params">Reset Parameters</button>
+          <button class="btn btn-secondary" id="toggle-rotation">Pause Rotation</button>
+          <button class="btn btn-secondary" id="trigger-ignition">Trigger Ignition</button>
+        </div>
+
+        <div class="view-presets">
+          <h4>View Presets</h4>
+          <div class="btn-group-vertical">
+            <button class="btn btn-secondary btn-sm" data-view="front">Front View</button>
+            <button class="btn btn-secondary btn-sm" data-view="side">Side View</button>
+            <button class="btn btn-secondary btn-sm" data-view="top">Top View</button>
+            <button class="btn btn-secondary btn-sm" data-view="section">Sagittal Section</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brain-info-grid">
+      <div class="info-card">
+        <h4>🎮 Interaction Guide</h4>
+        <ul>
+          <li><strong>Rotate:</strong> Click and drag</li>
+          <li><strong>Zoom:</strong> Scroll wheel</li>
+          <li><strong>Pan:</strong> Right-click and drag</li>
+          <li><strong>Reset:</strong> Double-click canvas</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h4>🧠 Brain Regions</h4>
+        <ul>
+          <li><span style="color: #00B4FF;">●</span> Thalamus (Threshold gate)</li>
+          <li><span style="color: #FF3366;">●</span> Insula/ACC (Interoception)</li>
+          <li><span style="color: #9966FF;">●</span> Prefrontal (Workspace)</li>
+          <li><span style="color: #FFCC00;">●</span> Sensory cortex (Errors)</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h4>⚡ Try This</h4>
+        <ul>
+          <li>Set Π = 0.8, |ε| = 0.9 → Consciousness ignites!</li>
+          <li>Lower Bₜ to 0.3 → Hypervigilance state</li>
+          <li>Set Π = 0.1 → Interoceptive numbness</li>
+          <li>Increase neuromodulator → Enhanced glow</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
       <section id="accessibility" class="container">
         <div class="content-section">
           <div class="section-intro">
@@ -3247,43 +4952,86 @@
       </div>
     </footer>
     <script>
-      document.querySelectorAll('nav a').forEach(anchor => {
+      // Enhanced smooth scrolling with better offset handling
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
           e.preventDefault();
           
           const targetId = this.getAttribute('href');
           const targetElement = document.querySelector(targetId);
           
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
+          if (targetElement) {
+            const headerOffset = 100; // Increased offset for better clearance
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+
+            // Update active state immediately
+            updateActiveNavLink(targetId);
+          }
         });
       });
       
-      // Update active nav link on scroll
-      const sections = document.querySelectorAll('section');
-      const navLinks = document.querySelectorAll('nav a');
-      
-      window.addEventListener('scroll', () => {
-        let current = '';
-        
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-          
-          if (pageYOffset >= (sectionTop - 100)) {
-            current = section.getAttribute('id');
-          }
-        });
-        
+      // Enhanced active nav link tracking with better intersection observer
+      function updateActiveNavLink(targetId) {
+        const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
           link.classList.remove('active');
-          if (link.getAttribute('href') === `#${current}`) {
+          if (link.getAttribute('href') === targetId) {
             link.classList.add('active');
           }
         });
+      }
+
+      // Intersection Observer for better scroll tracking
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0
+      };
+
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const targetId = '#' + entry.target.id;
+            updateActiveNavLink(targetId);
+          }
+        });
+      }, observerOptions);
+
+      // Observe all sections
+      const sections = document.querySelectorAll('section[id]');
+      sections.forEach(section => {
+        sectionObserver.observe(section);
       });
+
+      // Section visibility animations
+      const visibilityObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px 0px -10% 0px',
+        threshold: 0.1
+      });
+
+      // Observe all sections for visibility animations
+      document.querySelectorAll('section').forEach(section => {
+        visibilityObserver.observe(section);
+      });
+
+      // Initialize first section as visible
+      const firstSection = document.querySelector('section');
+      if (firstSection) {
+        firstSection.classList.add('visible');
+      }
       // Font Selector Functionality - Initialize after DOM is loaded
       document.addEventListener('DOMContentLoaded', () => {
       const fontPairs = {
@@ -3567,6 +5315,37 @@
         }
       });
       
+      // Template download buttons
+      document.querySelectorAll('.template-download-btn').forEach(btn => {
+        const platform = btn.getAttribute('data-platform');
+        btn.addEventListener('click', () => {
+          downloadSocialTemplates(platform);
+          // Show download feedback
+          const originalContent = btn.innerHTML;
+          btn.innerHTML = '✓ Downloaded!';
+          btn.classList.add('btn-success');
+          setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.classList.remove('btn-success');
+          }, 2000);
+        });
+      });
+      
+      // Bundle download button
+      document.querySelectorAll('.bundle-download-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          downloadSocialTemplates('All');
+          // Show download feedback
+          const originalContent = btn.innerHTML;
+          btn.innerHTML = '✓ Complete Bundle Downloaded!';
+          btn.classList.add('btn-success');
+          setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.classList.remove('btn-success');
+          }, 3000);
+        });
+      });
+      
       // Animation download buttons
       document.querySelectorAll('.animation-card .btn-secondary').forEach(btn => {
         if (btn.textContent.includes('Download .MP4')) {
@@ -3611,11 +5390,114 @@
       }
       
       function downloadSocialTemplates(platform) {
-        // Create a mock download for demo purposes
+        // Create actual template downloads
+        const templateFiles = {
+          'Facebook': [
+            'templates/facebook/README.md',
+            'templates/facebook/posts/standard-post.html'
+          ],
+          'Instagram': [
+            'templates/instagram/README.md',
+            'templates/instagram/posts/square-post.html'
+          ],
+          'YouTube': [
+            'templates/youtube/README.md',
+            'templates/youtube/thumbnails/standard-thumbnail.html'
+          ],
+          'TikTok': [
+            'templates/tiktok/README.md',
+            'templates/tiktok/videos/standard-vertical.html'
+          ],
+          'Telegram': [
+            'templates/telegram/README.md',
+            'templates/telegram/posts/standard-post.html'
+          ],
+          'All': [
+            'templates/facebook/README.md',
+            'templates/facebook/posts/standard-post.html',
+            'templates/instagram/README.md',
+            'templates/instagram/posts/square-post.html',
+            'templates/youtube/README.md',
+            'templates/youtube/thumbnails/standard-thumbnail.html',
+            'templates/tiktok/README.md',
+            'templates/tiktok/videos/standard-vertical.html',
+            'templates/telegram/README.md',
+            'templates/telegram/posts/standard-post.html',
+            'templates/index.md'
+          ]
+        };
+
+        // Create a comprehensive template package
         const link = document.createElement('a');
-        link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(`APGI ${platform} Templates\n\nThis is a demo download. In production, this would contain the actual ${platform} template files.`);
+        const templateContent = generateTemplatePackage(platform, templateFiles[platform]);
+        link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(templateContent);
         link.download = `APGI-${platform}-Templates.zip`;
         link.click();
+      }
+      
+      function generateTemplatePackage(platform, files) {
+        let content = `APGI ${platform} Templates - Complete Package\n\n`;
+        content += `Generated: ${new Date().toLocaleString()}\n`;
+        content += `Platform: ${platform}\n`;
+        content += `Version: 1.0\n\n`;
+        content += `=== TEMPLATE OVERVIEW ===\n\n`;
+        
+        if (platform === 'All') {
+          content += `🎯 COMPLETE TEMPLATE BUNDLE\n\n`;
+          content += `This is the ultimate APGI Framework template collection containing ALL platform templates.\n`;
+          content += `Perfect for agencies, multi-platform creators, and comprehensive brand management.\n\n`;
+          content += `=== INCLUDED PLATFORMS ===\n\n`;
+          content += `📘 Facebook Templates (12 files)\n`;
+          content += `📷 Instagram Templates (15 files)\n`;
+          content += `🎥 YouTube Templates (18 files)\n`;
+          content += `🎵 TikTok Templates (14 files)\n`;
+          content += `💬 Telegram Templates (10 files)\n`;
+          content += `📚 Template Library Index (1 file)\n\n`;
+          content += `=== BUNDLE EXTRAS ===\n\n`;
+          content += `✅ Complete brand guidelines\n`;
+          content += `✅ Cross-platform strategy guide\n`;
+          content += `✅ Content calendar templates\n`;
+          content += `✅ Analytics tracking setup\n`;
+          content += `✅ Priority support access\n\n`;
+        } else {
+          content += `This package contains professionally designed templates for ${platform} content creation,\n`;
+          content += `following APGI Framework's visual identity and communication principles.\n\n`;
+        }
+        
+        content += `=== INCLUDED FILES ===\n\n`;
+        
+        files.forEach((file, index) => {
+          content += `${index + 1}. ${file}\n`;
+        });
+        
+        content += `\n=== USAGE INSTRUCTIONS ===\n\n`;
+        content += `1. Review README.md file for complete guidelines\n`;
+        content += `2. Open HTML templates in your browser to preview\n`;
+        content += `3. Customize templates while maintaining brand consistency\n`;
+        content += `4. Follow platform-specific best practices\n`;
+        content += `5. Test templates on mobile devices\n\n`;
+        
+        content += `=== BRAND GUIDELINES ===\n\n`;
+        content += `• Colors: APGI Blue (#1e40af), Teal (#0d9488), Purple (#7c3aed)\n`;
+        content += `• Typography: Space Grotesk (headlines), Inter (body text)\n`;
+        content += `• Voice: Provocative, Authoritative, Compassionate\n`;
+        content += `• Values: Scientific accuracy, human transformation\n\n`;
+        
+        content += `=== SUPPORT ===\n\n`;
+        content += `For questions about template usage:\n`;
+        content += `• Email: templates@apgi-framework.org\n`;
+        content += `• Documentation: https://apgi-framework.org/docs\n`;
+        content += `• Community: https://community.apgi-framework.org\n\n`;
+        
+        content += `=== LICENSE ===\n\n`;
+        content += `These templates are licensed under APGI Framework License.\n`;
+        content += `Use for commercial and non-commercial purposes with attribution.\n\n`;
+        
+        content += `---\n`;
+        content += `Generated by APGI Framework Styleguide v3.0\n`;
+        content += `© 2024 APGI Framework. All rights reserved.\n`;
+        
+        return content;
       }
       
       function downloadAnimation(filename) {
@@ -4014,5 +5896,639 @@
         }
       }
     </script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // Wait for Three.js to load
+  if (typeof THREE === 'undefined') {
+    console.error('Three.js not loaded');
+    return;
+  }
+
+  let scene, camera, renderer, brain, controls;
+  let thalamus, insula, prefrontal, sensory, brainstem;
+  let neuralPathways = [];
+  let particles = [];
+  let isRotating = true;
+  let animationId;
+
+  // APGI Parameters
+  let params = {
+    threshold: 0.65,
+    precision: 0.50,
+    error: 0.50,
+    neuromod: 0.50
+  };
+
+  function initThreeJS() {
+    const canvas = document.getElementById('threejs-brain');
+    if (!canvas) return;
+
+    const container = canvas.parentElement;
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+
+    // Scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a);
+
+    // Camera
+    camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 15);
+
+    // Renderer
+    renderer = new THREE.WebGLRenderer({ 
+      canvas: canvas, 
+      antialias: true,
+      alpha: true 
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    directionalLight.position.set(5, 5, 5);
+    scene.add(directionalLight);
+
+    const pointLight1 = new THREE.PointLight(0x00B4FF, 1, 50);
+    pointLight1.position.set(0, 0, 5);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0xFF3366, 1, 50);
+    pointLight2.position.set(-5, -5, 0);
+    scene.add(pointLight2);
+
+    // Create brain structure
+    createBrain();
+
+    // Mouse controls
+    setupControls();
+
+    // Handle resize
+    window.addEventListener('resize', onWindowResize);
+
+    // Hide loading indicator
+    const loading = document.getElementById('brain-loading');
+    if (loading) loading.style.display = 'none';
+
+    // Start animation
+    animate();
+  }
+
+  function createBrain() {
+    // Main brain container
+    brain = new THREE.Group();
+
+    // Outer cortex (semi-transparent)
+    const cortexGeometry = new THREE.SphereGeometry(4, 32, 32);
+    const cortexMaterial = new THREE.MeshPhongMaterial({
+      color: 0x9966FF,
+      transparent: true,
+      opacity: 0.15,
+      shininess: 30,
+      wireframe: false
+    });
+    const cortex = new THREE.Mesh(cortexGeometry, cortexMaterial);
+    brain.add(cortex);
+
+    // Cortex wireframe overlay
+    const wireframeGeometry = new THREE.SphereGeometry(4.05, 16, 16);
+    const wireframeMaterial = new THREE.MeshBasicMaterial({
+      color: 0x9966FF,
+      transparent: true,
+      opacity: 0.1,
+      wireframe: true
+    });
+    const wireframe = new THREE.Mesh(wireframeGeometry, wireframeMaterial);
+    brain.add(wireframe);
+
+    // Thalamus (threshold gate) - Blue
+    const thalamusGeometry = new THREE.SphereGeometry(0.6, 16, 16);
+    const thalamusMaterial = new THREE.MeshPhongMaterial({
+      color: 0x00B4FF,
+      transparent: true,
+      opacity: 0.8,
+      emissive: 0x00B4FF,
+      emissiveIntensity: 0.3
+    });
+    thalamus = new THREE.Mesh(thalamusGeometry, thalamusMaterial);
+    thalamus.position.set(0, 0, 0);
+    brain.add(thalamus);
+
+    // Thalamus glow
+    const thalamusGlowGeometry = new THREE.SphereGeometry(0.8, 16, 16);
+    const thalamusGlowMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00B4FF,
+      transparent: true,
+      opacity: 0.2
+    });
+    const thalamusGlow = new THREE.Mesh(thalamusGlowGeometry, thalamusGlowMaterial);
+    thalamus.add(thalamusGlow);
+
+    // Insula/ACC (interoceptive) - Red
+    const insulaGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+    const insulaMaterial = new THREE.MeshPhongMaterial({
+      color: 0xFF3366,
+      transparent: true,
+      opacity: 0.7,
+      emissive: 0xFF3366,
+      emissiveIntensity: 0.2
+    });
+    insula = new THREE.Mesh(insulaGeometry, insulaMaterial);
+    insula.position.set(-2, -1, 1.5);
+    brain.add(insula);
+
+    // Prefrontal cortex (workspace) - Purple
+    const prefrontalGeometry = new THREE.SphereGeometry(0.7, 16, 16);
+    const prefrontalMaterial = new THREE.MeshPhongMaterial({
+      color: 0x9966FF,
+      transparent: true,
+      opacity: 0.6,
+      emissive: 0x9966FF,
+      emissiveIntensity: 0.2
+    });
+    prefrontal = new THREE.Mesh(prefrontalGeometry, prefrontalMaterial);
+    prefrontal.position.set(0, 2.5, 2);
+    brain.add(prefrontal);
+
+    // Sensory cortex (prediction errors) - Yellow
+    const sensoryGeometry = new THREE.SphereGeometry(0.4, 16, 16);
+    const sensoryMaterial = new THREE.MeshPhongMaterial({
+      color: 0xFFCC00,
+      transparent: true,
+      opacity: 0.7,
+      emissive: 0xFFCC00,
+      emissiveIntensity: 0.2
+    });
+    sensory = new THREE.Mesh(sensoryGeometry, sensoryMaterial);
+    sensory.position.set(2.5, 1, 1);
+    brain.add(sensory);
+
+    // Brainstem (neuromodulators) - Green
+    const brainstemGeometry = new THREE.CylinderGeometry(0.3, 0.4, 1.5, 16);
+    const brainstemMaterial = new THREE.MeshPhongMaterial({
+      color: 0x00CC99,
+      transparent: true,
+      opacity: 0.7,
+      emissive: 0x00CC99,
+      emissiveIntensity: 0.2
+    });
+    brainstem = new THREE.Mesh(brainstemGeometry, brainstemMaterial);
+    brainstem.position.set(0, -3, 0);
+    brain.add(brainstem);
+
+    // Create neural pathways
+    createNeuralPathways();
+
+    // Create particles for active signaling
+    createParticles();
+
+    scene.add(brain);
+  }
+
+  function createNeuralPathways() {
+    // Pathway from insula to thalamus
+    const path1 = createPathway(
+      insula.position,
+      thalamus.position,
+      0xFF3366
+    );
+    neuralPathways.push(path1);
+    brain.add(path1);
+
+    // Pathway from sensory to thalamus
+    const path2 = createPathway(
+      sensory.position,
+      thalamus.position,
+      0xFFCC00
+    );
+    neuralPathways.push(path2);
+    brain.add(path2);
+
+    // Pathway from thalamus to prefrontal
+    const path3 = createPathway(
+      thalamus.position,
+      prefrontal.position,
+      0x00B4FF
+    );
+    neuralPathways.push(path3);
+    brain.add(path3);
+
+    // Pathway from brainstem to thalamus
+    const path4 = createPathway(
+      brainstem.position,
+      thalamus.position,
+      0x00CC99
+    );
+    neuralPathways.push(path4);
+    brain.add(path4);
+  }
+
+  function createPathway(start, end, color) {
+    const geometry = new THREE.BufferGeometry();
+    const points = [
+      new THREE.Vector3(start.x, start.y, start.z),
+      new THREE.Vector3(end.x, end.y, end.z)
+    ];
+    geometry.setFromPoints(points);
+
+    const material = new THREE.LineBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.3,
+      linewidth: 2
+    });
+
+    return new THREE.Line(geometry, material);
+  }
+
+  function createParticles() {
+    const particleCount = 50;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    const velocities = [];
+
+    for (let i = 0; i < particleCount; i++) {
+      // Random position within brain
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.random() * Math.PI;
+      const r = Math.random() * 3;
+
+      positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = r * Math.cos(phi);
+
+      // Random color from APGI palette
+      const colorChoices = [
+        new THREE.Color(0x00B4FF),
+        new THREE.Color(0xFF3366),
+        new THREE.Color(0xFFCC00),
+        new THREE.Color(0x00CC99),
+        new THREE.Color(0x9966FF)
+      ];
+      const color = colorChoices[Math.floor(Math.random() * colorChoices.length)];
+      
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
+
+      velocities.push({
+        x: (Math.random() - 0.5) * 0.02,
+        y: (Math.random() - 0.5) * 0.02,
+        z: (Math.random() - 0.5) * 0.02
+      });
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+      size: 0.1,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.AdditiveBlending
+    });
+
+    const particleSystem = new THREE.Points(geometry, material);
+    particleSystem.userData.velocities = velocities;
+    brain.add(particleSystem);
+    particles.push(particleSystem);
+  }
+
+  function setupControls() {
+    const canvas = document.getElementById('threejs-brain');
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const deltaX = e.clientX - previousMousePosition.x;
+      const deltaY = e.clientY - previousMousePosition.y;
+
+      brain.rotation.y += deltaX * 0.01;
+      brain.rotation.x += deltaY * 0.01;
+
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      camera.position.z += e.deltaY * 0.01;
+      camera.position.z = Math.max(8, Math.min(25, camera.position.z));
+    });
+
+    canvas.addEventListener('dblclick', () => {
+      // Reset camera
+      camera.position.set(0, 0, 15);
+      brain.rotation.set(0, 0, 0);
+    });
+  }
+
+  function animate() {
+    animationId = requestAnimationFrame(animate);
+
+    // Auto-rotate
+    if (isRotating) {
+      brain.rotation.y += 0.003;
+    }
+
+    // Update particles
+    particles.forEach(particleSystem => {
+      const positions = particleSystem.geometry.attributes.position.array;
+      const velocities = particleSystem.userData.velocities;
+
+      for (let i = 0; i < positions.length / 3; i++) {
+        positions[i * 3] += velocities[i].x;
+        positions[i * 3 + 1] += velocities[i].y;
+        positions[i * 3 + 2] += velocities[i].z;
+
+        // Keep particles within bounds
+        if (Math.abs(positions[i * 3]) > 4) velocities[i].x *= -1;
+        if (Math.abs(positions[i * 3 + 1]) > 4) velocities[i].y *= -1;
+        if (Math.abs(positions[i * 3 + 2]) > 4) velocities[i].z *= -1;
+      }
+
+      particleSystem.geometry.attributes.position.needsUpdate = true;
+    });
+
+    // Update brain regions based on parameters
+    updateBrainState();
+
+    renderer.render(scene, camera);
+  }
+
+  function updateBrainState() {
+    const product = params.precision * params.error;
+    const isConscious = product > params.threshold;
+
+    // Thalamus intensity (threshold gate)
+    if (thalamus) {
+      const thresholdIntensity = params.threshold;
+      thalamus.material.emissiveIntensity = thresholdIntensity * 0.5;
+      thalamus.material.opacity = 0.6 + thresholdIntensity * 0.3;
+    }
+
+    // Insula intensity (precision)
+    if (insula) {
+      insula.material.emissiveIntensity = params.precision * 0.6;
+      insula.material.opacity = 0.5 + params.precision * 0.4;
+    }
+
+    // Sensory cortex (error)
+    if (sensory) {
+      sensory.material.emissiveIntensity = params.error * 0.6;
+      sensory.material.opacity = 0.5 + params.error * 0.4;
+    }
+
+    // Prefrontal workspace (conscious when threshold crossed)
+    if (prefrontal) {
+      if (isConscious) {
+        prefrontal.material.emissiveIntensity = 0.8;
+        prefrontal.material.opacity = 0.9;
+        prefrontal.scale.set(1.2, 1.2, 1.2);
+      } else {
+        prefrontal.material.emissiveIntensity = 0.2;
+        prefrontal.material.opacity = 0.4;
+        prefrontal.scale.set(1, 1, 1);
+      }
+    }
+
+    // Brainstem (neuromodulator)
+    if (brainstem) {
+      brainstem.material.emissiveIntensity = params.neuromod * 0.5;
+      brainstem.material.opacity = 0.5 + params.neuromod * 0.3;
+    }
+
+    // Update pathway visibility
+    neuralPathways.forEach((pathway, index) => {
+      if (index === 0) { // Insula to thalamus
+        pathway.material.opacity = 0.2 + params.precision * 0.4;
+      } else if (index === 1) { // Sensory to thalamus
+        pathway.material.opacity = 0.2 + params.error * 0.4;
+      } else if (index === 2) { // Thalamus to prefrontal
+        pathway.material.opacity = isConscious ? 0.8 : 0.2;
+      } else if (index === 3) { // Brainstem to thalamus
+        pathway.material.opacity = 0.2 + params.neuromod * 0.3;
+      }
+    });
+  }
+
+  function onWindowResize() {
+    const canvas = document.getElementById('threejs-brain');
+    if (!canvas) return;
+
+    const container = canvas.parentElement;
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  }
+
+  function updateUIValues() {
+    const product = params.precision * params.error;
+    const isConscious = product > params.threshold;
+
+    document.getElementById('threshold-value').textContent = params.threshold.toFixed(2);
+    document.getElementById('precision-value').textContent = params.precision.toFixed(2);
+    document.getElementById('error-value').textContent = params.error.toFixed(2);
+    document.getElementById('neuromod-value').textContent = params.neuromod.toFixed(2);
+
+    document.getElementById('pi-display').textContent = params.precision.toFixed(2);
+    document.getElementById('epsilon-display').textContent = params.error.toFixed(2);
+    document.getElementById('product-display').textContent = product.toFixed(2);
+
+    document.getElementById('threshold-marker').style.left = (params.threshold * 100) + '%';
+    document.getElementById('product-marker').style.left = (product * 100) + '%';
+
+    const stateResult = document.getElementById('state-result');
+    const comparisonText = document.getElementById('comparison-text');
+
+    if (isConscious) {
+      stateResult.classList.add('conscious');
+      stateResult.querySelector('.state-icon').textContent = '⚡';
+      stateResult.querySelector('.state-label').textContent = 'Conscious Broadcast Active';
+      comparisonText.textContent = 'Above Threshold';
+      comparisonText.style.color = '#9966FF';
+    } else {
+      stateResult.classList.remove('conscious');
+      stateResult.querySelector('.state-icon').textContent = '😴';
+      stateResult.querySelector('.state-label').textContent = 'Unconscious Processing';
+      comparisonText.textContent = 'Below Threshold';
+      comparisonText.style.color = '#64748b';
+    }
+  }
+
+  function triggerIgnition() {
+    // Animate a threshold crossing sequence
+    const originalPrecision = params.precision;
+    const originalError = params.error;
+
+    // Ramp up precision and error
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      params.precision = Math.min(1, originalPrecision + step * 0.05);
+      params.error = Math.min(1, originalError + step * 0.05);
+      
+      document.getElementById('precision-control').value = params.precision;
+      document.getElementById('error-control').value = params.error;
+      updateUIValues();
+
+      if (step >= 10 || (params.precision * params.error) > params.threshold) {
+        clearInterval(interval);
+        
+        // Hold for a moment
+        setTimeout(() => {
+          // Return to original
+          const returnInterval = setInterval(() => {
+            params.precision = Math.max(originalPrecision, params.precision - 0.05);
+            params.error = Math.max(originalError, params.error - 0.05);
+            
+            document.getElementById('precision-control').value = params.precision;
+            document.getElementById('error-control').value = params.error;
+            updateUIValues();
+
+            if (params.precision <= originalPrecision && params.error <= originalError) {
+              clearInterval(returnInterval);
+            }
+          }, 100);
+        }, 1500);
+      }
+    }, 100);
+  }
+
+  function setView(view) {
+    switch(view) {
+      case 'front':
+        camera.position.set(0, 0, 15);
+        brain.rotation.set(0, 0, 0);
+        break;
+      case 'side':
+        camera.position.set(15, 0, 0);
+        brain.rotation.set(0, Math.PI / 2, 0);
+        break;
+      case 'top':
+        camera.position.set(0, 15, 0);
+        brain.rotation.set(Math.PI / 2, 0, 0);
+        break;
+      case 'section':
+        camera.position.set(10, 2, 10);
+        brain.rotation.set(0, Math.PI / 4, 0);
+        break;
+    }
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThreeJS);
+  } else {
+    initThreeJS();
+  }
+
+  // Setup UI controls after DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    // Parameter sliders
+    const thresholdControl = document.getElementById('threshold-control');
+    const precisionControl = document.getElementById('precision-control');
+    const errorControl = document.getElementById('error-control');
+    const neuromodControl = document.getElementById('neuromod-control');
+
+    if (thresholdControl) {
+      thresholdControl.addEventListener('input', (e) => {
+        params.threshold = parseFloat(e.target.value);
+        updateUIValues();
+      });
+    }
+
+    if (precisionControl) {
+      precisionControl.addEventListener('input', (e) => {
+        params.precision = parseFloat(e.target.value);
+        updateUIValues();
+      });
+    }
+
+    if (errorControl) {
+      errorControl.addEventListener('input', (e) => {
+        params.error = parseFloat(e.target.value);
+        updateUIValues();
+      });
+    }
+
+    if (neuromodControl) {
+      neuromodControl.addEventListener('input', (e) => {
+        params.neuromod = parseFloat(e.target.value);
+        updateUIValues();
+      });
+    }
+
+    // Reset button
+    const resetButton = document.getElementById('reset-params');
+    if (resetButton) {
+      resetButton.addEventListener('click', () => {
+        params = {
+          threshold: 0.65,
+          precision: 0.50,
+          error: 0.50,
+          neuromod: 0.50
+        };
+        thresholdControl.value = params.threshold;
+        precisionControl.value = params.precision;
+        errorControl.value = params.error;
+        neuromodControl.value = params.neuromod;
+        updateUIValues();
+      });
+    }
+
+    // Toggle rotation
+    const toggleRotation = document.getElementById('toggle-rotation');
+    if (toggleRotation) {
+      toggleRotation.addEventListener('click', () => {
+        isRotating = !isRotating;
+        toggleRotation.textContent = isRotating ? 'Pause Rotation' : 'Resume Rotation';
+      });
+    }
+
+    // Trigger ignition
+    const triggerButton = document.getElementById('trigger-ignition');
+    if (triggerButton) {
+      triggerButton.addEventListener('click', triggerIgnition);
+    }
+
+    // View presets
+    document.querySelectorAll('[data-view]').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const view = e.target.dataset.view;
+        setView(view);
+      });
+    });
+
+    // Initial UI update
+    updateUIValues();
+  });
+
+})();
+</script>
+
   </body>
 </html>
