@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="../js/performance-optimizer.js"></script>
+    <script src="../js/accessibility-enhancer.js"></script>
+    <script src="../js/navigation.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Framework - Academic Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #6b9ac4;
+            --light: #f0f4f8;
+            --dark: #2d3748;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s ease;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        [data-theme="dark"] {
+            --primary: #6b9ac4;
+            --secondary: #4a6fa5;
+            --accent: #8bb4d8;
+            --light: #2d3748;
+            --dark: #f0f4f8;
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --border-color: #4a5568;
+            --card-bg: #2d3748;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding-bottom: 60px;
+            transition: var(--transition);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: slideInDown 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 1200px;
+            margin: 0 auto 25px;
+            animation: slideInUp 0.8s ease-out 0.2s both;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 0.95;
+                transform: translateY(0);
+            }
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .theme-toggle:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .theme-toggle i {
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        [data-theme="dark"] .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dashboard-section:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-3px);
+        }
+        
+        .dashboard-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .dashboard-section:hover::before {
+            left: 100%;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--border-color);
+            position: relative;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .section-number {
+            background: var(--gradient-primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-right: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        /* Chart Containers */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .large-chart-container {
+            height: 400px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chart-title i {
+            color: var(--accent);
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .control-btn:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            border-color: transparent;
+        }
+        
+        /* Grid Span Classes */
+        .span-6 {
+            grid-column: span 6;
+        }
+        
+        .span-12 {
+            grid-column: span 12;
+        }
+        
+        .span-4 {
+            grid-column: span 4;
+        }
+        
+        .span-8 {
+            grid-column: span 8;
+        }
+        
+        .span-3 {
+            grid-column: span 3;
+        }
+        
+        /* Parameter Badges */
+        .parameter-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .parameter-badge {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+        
+        .parameter-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .parameter-badge.epsilon {
+            border-left: 5px solid var(--accent);
+        }
+        
+        .parameter-badge.pi {
+            border-left: 5px solid #e53e3e;
+        }
+        
+        .parameter-badge.theta {
+            border-left: 5px solid #38a169;
+        }
+        
+        .parameter-badge.beta {
+            border-left: 5px solid #d69e2e;
+        }
+        
+        .parameter-badge span:first-child {
+            background: var(--gradient-primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        /* Annotation */
+        .annotation {
+            background: rgba(107, 154, 196, 0.05);
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin-top: 25px;
+        }
+        
+        .annotation-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .annotation-title i {
+            color: var(--accent);
+        }
+        
+        .annotation p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Data Table */
+        .data-table-container {
+            overflow-x: auto;
+            margin-top: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        .data-table th {
+            background-color: var(--bg-secondary);
+            color: var(--primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 18px 20px;
+            border-bottom: 3px solid var(--border-color);
+            white-space: nowrap;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-fast);
+        }
+        
+        .data-table tr:hover {
+            background-color: var(--bg-secondary);
+        }
+        
+        .data-table tr:hover td {
+            transform: translateX(5px);
+        }
+        
+        .data-table .highlight {
+            background-color: rgba(56, 161, 105, 0.1);
+            font-weight: 600;
+            color: var(--success);
+        }
+        
+        /* Export Controls */
+        .export-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .export-btn {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 12px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        
+        .export-btn:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            border-color: transparent;
+        }
+        
+        .export-btn i {
+            font-size: 16px;
+        }
+        
+        .export-btn.export-data {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .export-btn.export-data:hover {
+            background: var(--gradient-secondary);
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
+        }
+        
+        /* Summary Section */
+        .summary-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient-accent);
+        }
+        
+        .summary-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--border-color);
+            position: relative;
+            font-weight: 700;
+        }
+        
+        .summary-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--gradient-accent);
+            border-radius: 2px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+        }
+        
+        .summary-card {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-card-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .summary-card-title i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .included-title {
+            color: var(--success);
+        }
+        
+        .included-title i {
+            color: var(--success);
+        }
+        
+        .element-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .element-list li {
+            padding: 15px 0;
+            padding-left: 40px;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .element-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .included-list li:before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(56, 161, 105, 0.3);
+        }
+        
+        .element-name {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        
+        .element-detail {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Plain Language Section */
+        .plain-language {
+            background: linear-gradient(135deg, #f8fafc, #edf2f7);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-top: 30px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        [data-theme="dark"] .plain-language {
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+        }
+        
+        .plain-language-title {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .plain-language-title i {
+            color: var(--accent);
+        }
+        
+        .quote-container {
+            position: relative;
+            padding: 25px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .quote-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quote-container:before {
+            content: '"';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 4rem;
+            color: rgba(107, 154, 196, 0.2);
+            font-family: Georgia, serif;
+        }
+        
+        .quote {
+            font-size: 1.1rem;
+            color: var(--dark);
+            font-style: italic;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .note-box {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid var(--danger);
+        }
+        
+        [data-theme="dark"] .note-box {
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            border-left: 5px solid var(--danger);
+        }
+        
+        .note-title {
+            font-weight: 700;
+            color: var(--danger);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .note-text {
+            color: var(--dark);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Dashboard Footer */
+        .dashboard-footer {
+            text-align: center;
+            padding: 40px;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            margin-top: 50px;
+            box-shadow: var(--shadow);
+        }
+        
+        .footer-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .footer-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Academic Design Goal Box */
+        .design-goal {
+            background-color: var(--bg-secondary);
+            border-left: 5px solid var(--primary);
+            padding: 30px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+        
+        .design-goal h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .design-goal h3 i {
+            color: var(--accent);
+        }
+        
+        .design-goal p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .span-6, .span-8, .span-4 {
+                grid-column: span 12;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+                margin-bottom: 12px;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }
+            
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            
+            .dashboard-section {
+                padding: 25px;
+                margin-bottom: 25px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+            
+            .section-number {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .large-chart-container {
+                height: 300px;
+            }
+            
+            .chart-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .chart-controls {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .parameter-badges {
+                flex-direction: column;
+            }
+            
+            .export-controls {
+                flex-direction: column;
+            }
+            
+            .data-table th, .data-table td {
+                padding: 12px 15px;
+            }
+            
+            .summary-section {
+                padding: 25px;
+            }
+            
+            .summary-card {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .dashboard-section {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-btn, .export-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            
+            .parameter-badge {
+                padding: 12px 15px;
+            }
+            
+            .chart-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+        <span>Dark Mode</span>
+    </div>
+    
+    <header>
+        <h1>APGI Framework - Academic Dashboard</h1>
+        <p class="subtitle">Formal analysis, comparison, hypothesis testing, and publication-grade visualization. Designed for researchers, clinicians, and academics requiring statistical rigor, reproducibility, and model falsifiability.</p>
+    </header>
+    
+    <div class="container">
+        <!-- Academic Design Goal -->
+        <div class="design-goal">
+            <h3><i class="fas fa-bullseye"></i> Academic Design Goal</h3>
+            <p>Allow formal analysis, comparison, hypothesis testing, and publication-grade figures with minimal redundancy. This dashboard transforms the APGI framework into a research tool with statistical grounding, model falsifiability, and export capabilities for academic publication.</p>
+        </div>
+        
+        <!-- Academic Dashboard Summary -->
+        <div class="summary-section">
+            <h2 class="summary-title">Academic Dashboard Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h4 class="summary-card-title included-title"><i class="fas fa-check-circle"></i> Elements</h4>
+                    <ul class="element-list included-list">
+                        <li>
+                            <div class="element-name">ε × π Scatter Plot (Core)</div>
+                            <div class="element-detail">Primary parameter space representation with color=β, size=θₜ</div>
+                        </li>
+                        <li>
+                            <div class="element-name">Radar Snapshot</div>
+                            <div class="element-detail">Secondary visualization for comparison and presentation</div>
+                        </li>
+                        <li>
+                            <div class="element-name">Time Series Analysis</div>
+                            <div class="element-detail">Multi-line temporal dynamics with event markers</div>
+                        </li>
+                        <li>
+                            <div class="element-name">Distribution Plots</div>
+                            <div class="element-detail">Violin/box plots for group comparisons and statistical grounding</div>
+                        </li>
+                        <li>
+                            <div class="element-name">Interaction Matrix</div>
+                            <div class="element-detail">Parameter–parameter correlations and lagged correlations</div>
+                        </li>
+                        <li>
+                            <div class="element-name">Ignition Threshold Plot</div>
+                            <div class="element-detail">Integrated ε·π vs θₜ with binary ignition overlay</div>
+                        </li>
+                        <li>
+                            <div class="element-name">Full Data Table</div>
+                            <div class="element-detail">Raw scores, normalized values, confidence intervals, trial-level data</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-grid">
+            <div class="dashboard-section span-8">
+                <div class="section-header">
+                    <div class="section-number">1</div>
+                    <div>
+                        <h3 class="section-title">Parameter Space Representation (Primary)</h3>
+                        <p class="section-subtitle">Scatter Plot: ε × π with color=β, size=θₜ</p>
+                    </div>
+                </div>
+                
+                <div class="parameter-badges">
+                    <div class="parameter-badge epsilon">
+                        <span>ε</span>
+                        <span>Sensitivity to environmental signals</span>
+                    </div>
+                    <div class="parameter-badge pi">
+                        <span>π</span>
+                        <span>Processing intensity</span>
+                    </div>
+                    <div class="parameter-badge beta">
+                        <span>β</span>
+                        <span>Body vs world focus balance</span>
+                    </div>
+                    <div class="parameter-badge theta">
+                        <span>θₜ</span>
+                        <span>Awareness threshold</span>
+                    </div>
+                </div>
+                
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-chart-scatter"></i> ε × π Scatter Plot with Population Cloud</div>
+                    <div class="chart-controls">
+                        <button class="control-btn" id="toggleCloud">Toggle Population Cloud</button>
+                        <button class="control-btn" id="toggleClusters">Show Clusters</button>
+                        <button class="control-btn" id="exportScatter">Export as SVG</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container large-chart-container">
+                    <canvas id="scatterChart"></canvas>
+                </div>
+                
+                <div class="annotation">
+                    <div class="annotation-title"><i class="fas fa-flask"></i> Academic Purpose</div>
+                    <p>Directly visualizes ignition dynamics (ε×π), supports clustering analysis, and matches predictive processing logic. Enables hypothesis testing about parameter relationships and population distributions.</p>
+                </div>
+            </div>
+            
+            <div class="dashboard-section span-4">
+                <div class="section-header">
+                    <div class="section-number">2</div>
+                    <div>
+                        <h3 class="section-title">Full Signature Snapshot</h3>
+                        <p class="section-subtitle">Radar Chart (Secondary, Not Primary)</p>
+                    </div>
+                </div>
+                
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-chart-radar"></i> Individual vs Group Comparison</div>
+                    <div class="chart-controls">
+                        <button class="control-btn" id="toggleRadarOverlay">Toggle Overlay</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                
+                <div class="annotation">
+                    <div class="annotation-title"><i class="fas fa-clipboard-check"></i> Academic Context</div>
+                    <p>Used for comparison, presentation, and supplementary figures. Academics understand radar charts but analyze primarily from scatter plots and statistical visualizations.</p>
+                </div>
+            </div>
+            
+            <div class="dashboard-section span-6">
+                <div class="section-header">
+                    <div class="section-number">3</div>
+                    <div>
+                        <h3 class="section-title">Temporal Dynamics</h3>
+                        <p class="section-subtitle">Multi-Line Time Series with Event Markers</p>
+                    </div>
+                </div>
+                
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-chart-line"></i> Parameter Values Across Time/Sessions</div>
+                    <div class="chart-controls">
+                        <button class="control-btn" id="toggleParameters">Toggle Parameters</button>
+                        <button class="control-btn" id="addEventMarker">Add Event Marker</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="timeSeriesChart"></canvas>
+                </div>
+                
+                <div class="annotation">
+                    <div class="annotation-title"><i class="fas fa-hourglass-half"></i> Academic Purpose</div>
+                    <p>Enables stability analysis, state transition identification, and trait inference. Event markers allow correlation with interventions, tasks, or stimuli.</p>
+                </div>
+            </div>
+            
+            <div class="dashboard-section span-6">
+                <div class="section-header">
+                    <div class="section-number">4</div>
+                    <div>
+                        <h3 class="section-title">Distribution & Variability</h3>
+                        <p class="section-subtitle">Violin/Box Plots for Group Comparisons</p>
+                    </div>
+                </div>
+                
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Parameter Distributions (Group A vs Group B)</div>
+                    <div class="chart-controls">
+                        <button class="control-btn" id="togglePlotType">Toggle Violin/Box</button>
+                        <button class="control-btn" id="addGroup">Add Comparison Group</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+                
+                <div class="annotation">
+                    <div class="annotation-title"><i class="fas fa-balance-scale"></i> Academic Purpose</div>
+                    <p>Provides statistical grounding and reviewer-friendly visualizations for pre/post interventions, group comparisons, and variability analysis.</p>
+                </div>
+            </div>
+            
+            <div class="dashboard-section span-6">
+                <div class="section-header">
+                    <div class="section-number">5</div>
+                    <div>
+                        <h3 class="section-title">Interaction Structure</h3>
+                        <p class="section-subtitle">Correlation/Interaction Matrix</p>
+                    </div>
+                </div>
+                
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-project-diagram"></i> Parameter–Parameter Correlations</div>
+                    <div class="chart-controls">
+                        <button class="control-btn" id="toggleLagged">Toggle Lagged Correlations</button>
+                        <button class="control-btn" id="exportMatrix">Export Matrix</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="correlationChart"></canvas>
+                </div>
+                
+                <div class="annotation">
+                    <div class="annotation-title"><i class="fas fa-link"></i> Academic Purpose</div>
+                    <p>Tests independence assumptions between parameters and validates model structure. Lagged correlations reveal temporal relationships.</p>
+                </div>
+            </div>
+            
+            <!-- Ignition Modeling View -->
+            <div class="dashboard-section span-6">
+                <div class="section-header">
+                    <div class="section-number">6</div>
+                    <div>
+                        <h3 class="section-title">Ignition Modeling View</h3>
+                        <p class="section-subtitle">Threshold Crossing Plot</p>
+                    </div>
+                </div>
+                
+                <div class="chart-header">
+                    <div class="chart-title"><i class="fas fa-fire"></i> Integrated ε·π vs θₜ with Binary Ignition Overlay</div>
+                    <div class="chart-controls">
+                        <button class="control-btn" id="toggleThreshold">Adjust Threshold</button>
+                        <button class="control-btn" id="fitModel">Fit Model</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="ignitionChart"></canvas>
+                </div>
+                
+                <div class="annotation">
+                    <div class="annotation-title"><i class="fas fa-check-double"></i> Academic Purpose</div>
+                    <p>Direct test of core ignition hypothesis (ε·π > θₜ). Enables model falsifiability and validation against empirical data.</p>
+                </div>
+            </div>
+            
+            <!-- Tabular Ground Truth -->
+            <div class="dashboard-section span-12">
+                <div class="section-header">
+                    <div class="section-number">7</div>
+                    <div>
+                        <h3 class="section-title">Tabular Ground Truth</h3>
+                        <p class="section-subtitle">Raw Data with Confidence Intervals</p>
+                    </div>
+                </div>
+                
+                <div class="export-controls">
+                    <button class="export-btn export-data" id="exportCSV">
+                        <i class="fas fa-file-csv"></i>
+                        <span>Export as CSV</span>
+                    </button>
+                    <button class="export-btn" id="exportJSON">
+                        <i class="fas fa-file-code"></i>
+                        <span>Export as JSON</span>
+                    </button>
+                    <button class="export-btn" id="exportExcel">
+                        <i class="fas fa-file-excel"></i>
+                        <span>Export for Excel</span>
+                    </button>
+                    <button class="export-btn" id="showRawData">
+                        <i class="fas fa-database"></i>
+                        <span>Show Raw Trial Data</span>
+                    </button>
+                </div>
+                
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Session</th>
+                                <th>ε</th>
+                                <th>π</th>
+                                <th>θₜ</th>
+                                <th>β</th>
+                                <th>ε·π</th>
+                                <th>Ignition (ε·π > θₜ)</th>
+                                <th>95% CI ε</th>
+                                <th>95% CI π</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P001</td>
+                                <td>S01</td>
+                                <td>0.72</td>
+                                <td>0.68</td>
+                                <td>0.45</td>
+                                <td>0.62</td>
+                                <td>0.49</td>
+                                <td class="highlight">TRUE</td>
+                                <td>[0.68, 0.76]</td>
+                                <td>[0.64, 0.72]</td>
+                                <td>Baseline</td>
+                            </tr>
+                            <tr>
+                                <td>P001</td>
+                                <td>S02</td>
+                                <td>0.65</td>
+                                <td>0.71</td>
+                                <td>0.52</td>
+                                <td>0.58</td>
+                                <td>0.46</td>
+                                <td>FALSE</td>
+                                <td>[0.61, 0.69]</td>
+                                <td>[0.67, 0.75]</td>
+                                <td>Post-intervention</td>
+                            </tr>
+                            <tr>
+                                <td>P002</td>
+                                <td>S01</td>
+                                <td>0.81</td>
+                                <td>0.42</td>
+                                <td>0.38</td>
+                                <td>0.71</td>
+                                <td>0.34</td>
+                                <td>FALSE</td>
+                                <td>[0.77, 0.85]</td>
+                                <td>[0.38, 0.46]</td>
+                                <td>Baseline</td>
+                            </tr>
+                            <tr>
+                                <td>P003</td>
+                                <td>S01</td>
+                                <td>0.58</td>
+                                <td>0.89</td>
+                                <td>0.61</td>
+                                <td>0.49</td>
+                                <td>0.52</td>
+                                <td class="highlight">TRUE</td>
+                                <td>[0.54, 0.62]</td>
+                                <td>[0.85, 0.93]</td>
+                                <td>High processing load</td>
+                            </tr>
+                            <tr>
+                                <td>P004</td>
+                                <td>S01</td>
+                                <td>0.49</td>
+                                <td>0.53</td>
+                                <td>0.42</td>
+                                <td>0.82</td>
+                                <td>0.26</td>
+                                <td>FALSE</td>
+                                <td>[0.45, 0.53]</td>
+                                <td>[0.49, 0.57]</td>
+                                <td>Body-focused baseline</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="annotation">
+                    <div class="annotation-title"><i class="fas fa-clipboard-list"></i> Academic Purpose</div>
+                    <p>Ensures reproducibility, enables meta-analysis, and provides export functionality for secondary analysis. Trial-level data allows granular examination of parameter stability.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Plain Language Section for Academic Context -->
+        <div class="plain-language">
+            <h4 class="plain-language-title"><i class="fas fa-graduation-cap"></i> Academic Dashboard Philosophy</h4>
+            
+            <div class="quote-container">
+                <p class="quote">"This dashboard prioritizes hypothesis testing over narrative interpretation. Each visualization is designed to answer specific research questions about the APGI framework's predictive validity."</p>
+            </div>
+            
+            <div class="quote-container">
+                <p class="quote">"Statistical rigor replaces metaphorical explanation. Confidence intervals, p-values, and effect sizes provide the language of scientific discourse."</p>
+            </div>
+            
+            <div class="quote-container">
+                <p class="quote">"Export functionality ensures reproducibility—the cornerstone of scientific validity. Every chart and table can be reproduced independently."</p>
+            </div>
+            
+            <div class="note-box">
+                <div class="note-title"><i class="fas fa-exclamation-circle"></i> Key Academic Distinction</div>
+                <p class="note-text">This dashboard differs fundamentally from the general user version. Where the general dashboard validates subjective experience, this dashboard tests objective hypotheses. Where the general dashboard comforts, this dashboard challenges assumptions through falsifiability.</p>
+            </div>
+        </div>
+        
+        <!-- Dashboard Footer -->
+        <div class="dashboard-footer">
+            <h3 class="footer-title">APGI Academic Framework</h3>
+            <p class="footer-subtitle">Designed for research integrity, statistical validity, and publication readiness. All visualizations are export-ready for academic journals, conference presentations, and research documentation.</p>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('academic-theme');
+        
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            body.setAttribute('data-theme', 'dark');
+            updateToggleButton(true);
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            
+            if (isDark) {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('academic-theme', 'light');
+                updateToggleButton(false);
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('academic-theme', 'dark');
+                updateToggleButton(true);
+            }
+            
+            // Update all charts for new theme
+            updateChartThemes();
+        });
+        
+        function updateToggleButton(isDark) {
+            const icon = themeToggle.querySelector('i');
+            const text = themeToggle.querySelector('span');
+            
+            if (isDark) {
+                icon.className = 'fas fa-sun';
+                text.textContent = 'Light Mode';
+            } else {
+                icon.className = 'fas fa-moon';
+                text.textContent = 'Dark Mode';
+            }
+        }
+        
+        // Chart initialization and data
+        let scatterChart, radarChart, timeSeriesChart, distributionChart, correlationChart, ignitionChart;
+        
+        // Generate sample data
+        function generateSampleData() {
+            const data = [];
+            for (let i = 0; i < 50; i++) {
+                data.push({
+                    id: `P${(i+1).toString().padStart(3, '0')}`,
+                    epsilon: 0.3 + Math.random() * 0.6, // 0.3-0.9
+                    pi: 0.2 + Math.random() * 0.7, // 0.2-0.9
+                    theta: 0.4 + Math.random() * 0.4, // 0.4-0.8
+                    beta: Math.random(), // 0-1
+                    group: i < 25 ? 'A' : 'B'
+                });
+            }
+            return data;
+        }
+        
+        const sampleData = generateSampleData();
+        
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            initScatterChart();
+            initRadarChart();
+            initTimeSeriesChart();
+            initDistributionChart();
+            initCorrelationChart();
+            initIgnitionChart();
+            
+            // Set up control buttons
+            setupControls();
+            
+            // Add animations
+            animateElements();
+        });
+        
+        function initScatterChart() {
+            const ctx = document.getElementById('scatterChart').getContext('2d');
+            
+            const scatterData = sampleData.map(point => ({
+                x: point.epsilon * 100,
+                y: point.pi * 100,
+                r: 5 + point.theta * 15, // Size based on theta
+                color: point.beta, // Color based on beta
+                group: point.group
+            }));
+            
+            scatterChart = new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: 'Group A',
+                        data: scatterData.filter(d => d.group === 'A'),
+                        backgroundColor: (ctx) => {
+                            const value = ctx.dataset.data[ctx.dataIndex].color;
+                            return `rgba(102, 126, 234, ${0.5 + value * 0.5})`;
+                        },
+                        borderColor: (ctx) => {
+                            const value = ctx.dataset.data[ctx.dataIndex].color;
+                            return `rgba(102, 126, 234, ${0.8 + value * 0.2})`;
+                        },
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Group B',
+                        data: scatterData.filter(d => d.group === 'B'),
+                        backgroundColor: (ctx) => {
+                            const value = ctx.dataset.data[ctx.dataIndex].color;
+                            return `rgba(240, 147, 251, ${0.5 + value * 0.5})`;
+                        },
+                        borderColor: (ctx) => {
+                            const value = ctx.dataset.data[ctx.dataIndex].color;
+                            return `rgba(240, 147, 251, ${0.8 + value * 0.2})`;
+                        },
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: getComputedStyle(document.body).getPropertyValue('--primary'),
+                            bodyColor: getComputedStyle(document.body).getPropertyValue('--dark'),
+                            borderColor: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            callbacks: {
+                                label: (context) => {
+                                    const point = context.dataset.data[context.dataIndex];
+                                    return [
+                                        `ε: ${(point.x/100).toFixed(2)}`,
+                                        `π: ${(point.y/100).toFixed(2)}`,
+                                        `θₜ: ${((point.r-5)/15).toFixed(2)}`,
+                                        `β: ${point.color.toFixed(2)}`,
+                                        `ε·π: ${((point.x/100)*(point.y/100)).toFixed(2)}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'ε (Environmental Sensitivity)',
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            min: 20,
+                            max: 100,
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'π (Processing Intensity)',
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            min: 10,
+                            max: 100,
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['ε', 'π', 'θₜ', 'β'],
+                    datasets: [
+                        {
+                            label: 'Individual',
+                            data: [0.72, 0.68, 0.45, 0.62],
+                            backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(102, 126, 234, 1)',
+                            borderWidth: 2,
+                            pointRadius: 5
+                        },
+                        {
+                            label: 'Group Average',
+                            data: [0.65, 0.60, 0.50, 0.55],
+                            backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                            borderColor: 'rgba(240, 147, 251, 0.6)',
+                            pointBackgroundColor: 'rgba(240, 147, 251, 0.6)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(240, 147, 251, 0.6)',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color')
+                            },
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color')
+                            },
+                            pointLabels: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                backdropColor: 'transparent',
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            min: 0,
+                            max: 1,
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14
+                                },
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initTimeSeriesChart() {
+            const ctx = document.getElementById('timeSeriesChart').getContext('2d');
+            
+            // Generate time series data
+            const timePoints = Array.from({length: 10}, (_, i) => i + 1);
+            
+            timeSeriesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timePoints.map(t => `Session ${t}`),
+                    datasets: [
+                        {
+                            label: 'ε',
+                            data: [0.72, 0.68, 0.65, 0.71, 0.69, 0.67, 0.70, 0.68, 0.66, 0.64],
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.3,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'π',
+                            data: [0.68, 0.71, 0.69, 0.65, 0.72, 0.70, 0.67, 0.69, 0.71, 0.68],
+                            borderColor: 'rgba(240, 147, 251, 1)',
+                            backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                            tension: 0.3,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'θₜ',
+                            data: [0.45, 0.42, 0.48, 0.52, 0.50, 0.47, 0.49, 0.51, 0.53, 0.50],
+                            borderColor: 'rgba(79, 172, 254, 1)',
+                            backgroundColor: 'rgba(79, 172, 254, 0.1)',
+                            tension: 0.3,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'β',
+                            data: [0.62, 0.58, 0.55, 0.60, 0.57, 0.59, 0.61, 0.56, 0.54, 0.58],
+                            borderColor: 'rgba(46, 204, 113, 1)',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            tension: 0.3,
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            min: 0,
+                            max: 1,
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14
+                                },
+                                padding: 20
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                intervention: {
+                                    type: 'line',
+                                    xMin: 4.5,
+                                    xMax: 4.5,
+                                    borderColor: 'rgba(142, 68, 173, 0.8)',
+                                    borderWidth: 3,
+                                    borderDash: [5, 5],
+                                    label: {
+                                        content: 'Intervention',
+                                        enabled: true,
+                                        position: 'end',
+                                        backgroundColor: 'rgba(142, 68, 173, 0.8)',
+                                        color: 'white',
+                                        font: {
+                                            size: 12,
+                                            weight: '600'
+                                        },
+                                        padding: 8,
+                                        borderRadius: 6
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initDistributionChart() {
+            const ctx = document.getElementById('distributionChart').getContext('2d');
+            
+            // Generate distribution data
+            const groups = ['Group A', 'Group B'];
+            const parameters = ['ε', 'π', 'θₜ', 'β'];
+            
+            distributionChart = new Chart(ctx, {
+                type: 'boxplot',
+                data: {
+                    labels: parameters,
+                    datasets: [
+                        {
+                            label: 'Group A',
+                            data: [
+                                [0.65, 0.68, 0.72, 0.75, 0.78], // ε
+                                [0.60, 0.64, 0.68, 0.72, 0.76], // π
+                                [0.40, 0.45, 0.50, 0.55, 0.60], // θₜ
+                                [0.50, 0.55, 0.60, 0.65, 0.70]  // β
+                            ],
+                            backgroundColor: 'rgba(102, 126, 234, 0.3)',
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Group B',
+                            data: [
+                                [0.55, 0.60, 0.65, 0.70, 0.75], // ε
+                                [0.55, 0.60, 0.65, 0.70, 0.75], // π
+                                [0.45, 0.50, 0.55, 0.60, 0.65], // θₜ
+                                [0.60, 0.65, 0.70, 0.75, 0.80]  // β
+                            ],
+                            backgroundColor: 'rgba(240, 147, 251, 0.3)',
+                            borderColor: 'rgba(240, 147, 251, 1)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        y: {
+                            min: 0,
+                            max: 1,
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14
+                                },
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initCorrelationChart() {
+            const ctx = document.getElementById('correlationChart').getContext('2d');
+            
+            const parameters = ['ε', 'π', 'θₜ', 'β'];
+            const correlationMatrix = [
+                [1.00, 0.65, -0.30, 0.15],
+                [0.65, 1.00, -0.45, 0.25],
+                [-0.30, -0.45, 1.00, -0.10],
+                [0.15, 0.25, -0.10, 1.00]
+            ];
+            
+            correlationChart = new Chart(ctx, {
+                type: 'matrix',
+                data: {
+                    datasets: [{
+                        label: 'Correlation Matrix',
+                        data: parameters.flatMap((param1, i) => 
+                            parameters.map((param2, j) => ({
+                                x: param1,
+                                y: param2,
+                                v: correlationMatrix[i][j]
+                            }))
+                        ),
+                        backgroundColor: (ctx) => {
+                            const value = ctx.dataset.data[ctx.dataIndex].v;
+                            const alpha = Math.abs(value) * 0.7 + 0.3;
+                            if (value > 0) {
+                                return `rgba(102, 126, 234, ${alpha})`;
+                            } else if (value < 0) {
+                                return `rgba(240, 147, 251, ${alpha})`;
+                            } else {
+                                return `rgba(149, 165, 166, ${alpha})`;
+                            }
+                        },
+                        borderWidth: 2,
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--card-bg'),
+                        width: (ctx) => {
+                            const chart = ctx.chart;
+                            const a = chart.chartArea || {};
+                            return (a.right - a.left) / 4 - 10;
+                        },
+                        height: (ctx) => {
+                            const chart = ctx.chart;
+                            const a = chart.chartArea || {};
+                            return (a.bottom - a.top) / 4 - 10;
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: getComputedStyle(document.body).getPropertyValue('--primary'),
+                            bodyColor: getComputedStyle(document.body).getPropertyValue('--dark'),
+                            borderColor: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            callbacks: {
+                                title: (items) => {
+                                    const item = items[0];
+                                    return `${item.raw.x} × ${item.raw.y}`;
+                                },
+                                label: (item) => {
+                                    return `r = ${item.raw.v.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'category',
+                            labels: parameters,
+                            offset: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        y: {
+                            type: 'category',
+                            labels: parameters.slice().reverse(),
+                            offset: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initIgnitionChart() {
+            const ctx = document.getElementById('ignitionChart').getContext('2d');
+            
+            // Generate ignition data
+            const ignitionData = sampleData.map(point => ({
+                x: point.epsilon * point.pi, // ε·π
+                y: point.theta, // θₜ
+                ignition: (point.epsilon * point.pi) > point.theta,
+                id: point.id
+            }));
+            
+            ignitionChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Ignition (ε·π > θₜ)',
+                            data: ignitionData.filter(d => d.ignition),
+                            backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                            borderColor: 'rgba(39, 174, 96, 1)',
+                            borderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 10
+                        },
+                        {
+                            label: 'No Ignition',
+                            data: ignitionData.filter(d => !d.ignition),
+                            backgroundColor: 'rgba(240, 147, 251, 0.7)',
+                            borderColor: 'rgba(192, 57, 43, 1)',
+                            borderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 10
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: getComputedStyle(document.body).getPropertyValue('--primary'),
+                            bodyColor: getComputedStyle(document.body).getPropertyValue('--dark'),
+                            borderColor: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                            borderWidth: 1,
+                            cornerRadius: 12,
+                            callbacks: {
+                                label: (context) => {
+                                    const point = context.dataset.data[context.dataIndex];
+                                    return [
+                                        `ε·π: ${point.x.toFixed(2)}`,
+                                        `θₜ: ${point.y.toFixed(2)}`,
+                                        `Ignition: ${point.ignition ? 'YES' : 'NO'}`
+                                    ];
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                thresholdLine: {
+                                    type: 'line',
+                                    borderColor: 'rgba(142, 68, 173, 0.8)',
+                                    borderWidth: 3,
+                                    borderDash: [5, 5],
+                                    label: {
+                                        content: 'Ignition Threshold',
+                                        enabled: true,
+                                        position: 'end',
+                                        backgroundColor: 'rgba(142, 68, 173, 0.8)',
+                                        color: 'white',
+                                        font: {
+                                            size: 12,
+                                            weight: '600'
+                                        },
+                                        padding: 8,
+                                        borderRadius: 6
+                                    },
+                                    scaleID: 'y',
+                                    value: 0.5,
+                                    endValue: 0.5
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'ε·π (Sensitivity × Processing)',
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            min: 0,
+                            max: 0.8,
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'θₜ (Awareness Threshold)',
+                                color: getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            },
+                            min: 0.2,
+                            max: 0.8,
+                            grid: {
+                                color: getComputedStyle(document.body).getPropertyValue('--border-color'),
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: getComputedStyle(document.body).getPropertyValue('--text-secondary'),
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function setupControls() {
+            // Scatter chart controls
+            document.getElementById('toggleCloud').addEventListener('click', () => {
+                alert('Population cloud toggled (implementation would show/hide population distribution overlay)');
+            });
+            
+            document.getElementById('toggleClusters').addEventListener('click', () => {
+                alert('Cluster analysis toggled (implementation would run clustering algorithm and color-code results)');
+            });
+            
+            document.getElementById('exportScatter').addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.download = 'apgi-scatter-plot.svg';
+                link.href = '#';
+                link.click();
+                alert('Scatter plot exported as SVG (simulated)');
+            });
+            
+            // Radar chart controls
+            document.getElementById('toggleRadarOverlay').addEventListener('click', () => {
+                const radarDataset = radarChart.data.datasets[1];
+                radarDataset.hidden = !radarDataset.hidden;
+                radarChart.update();
+            });
+            
+            // Time series controls
+            document.getElementById('toggleParameters').addEventListener('click', () => {
+                timeSeriesChart.data.datasets.forEach(dataset => {
+                    dataset.hidden = !dataset.hidden;
+                });
+                timeSeriesChart.update();
+            });
+            
+            document.getElementById('addEventMarker').addEventListener('click', () => {
+                alert('Event marker added at current session (implementation would add annotation)');
+            });
+            
+            // Distribution chart controls
+            let isViolin = false;
+            document.getElementById('togglePlotType').addEventListener('click', () => {
+                isViolin = !isViolin;
+                distributionChart.config.type = isViolin ? 'violin' : 'boxplot';
+                distributionChart.update();
+            });
+            
+            document.getElementById('addGroup').addEventListener('click', () => {
+                alert('Comparison group added (implementation would add new dataset)');
+            });
+            
+            // Correlation matrix controls
+            document.getElementById('toggleLagged').addEventListener('click', () => {
+                alert('Lagged correlations toggled (implementation would show temporal correlations)');
+            });
+            
+            document.getElementById('exportMatrix').addEventListener('click', () => {
+                alert('Correlation matrix exported (simulated)');
+            });
+            
+            // Ignition chart controls
+            document.getElementById('toggleThreshold').addEventListener('click', () => {
+                const newThreshold = parseFloat(prompt('Enter new threshold value (0-1):', '0.5'));
+                if (!isNaN(newThreshold) && newThreshold >= 0 && newThreshold <= 1) {
+                    ignitionChart.options.plugins.annotation.annotations.thresholdLine.value = newThreshold;
+                    ignitionChart.options.plugins.annotation.annotations.thresholdLine.endValue = newThreshold;
+                    ignitionChart.update();
+                }
+            });
+            
+            document.getElementById('fitModel').addEventListener('click', () => {
+                alert('Model fitting algorithm executed (implementation would fit logistic regression to ignition data)');
+            });
+            
+            // Export controls
+            document.getElementById('exportCSV').addEventListener('click', () => {
+                alert('Data exported as CSV (simulated)');
+            });
+            
+            document.getElementById('exportJSON').addEventListener('click', () => {
+                alert('Data exported as JSON (simulated)');
+            });
+            
+            document.getElementById('exportExcel').addEventListener('click', () => {
+                alert('Data exported for Excel (simulated)');
+            });
+            
+            document.getElementById('showRawData').addEventListener('click', () => {
+                alert('Raw trial-level data displayed (implementation would show expanded table)');
+            });
+        }
+        
+        function updateChartThemes() {
+            const textColor = getComputedStyle(document.body).getPropertyValue('--text-primary');
+            const gridColor = getComputedStyle(document.body).getPropertyValue('--border-color');
+            const secondaryColor = getComputedStyle(document.body).getPropertyValue('--text-secondary');
+            
+            // Update all charts
+            const charts = [scatterChart, radarChart, timeSeriesChart, distributionChart, correlationChart, ignitionChart];
+            
+            charts.forEach(chart => {
+                if (chart && chart.options) {
+                    // Update scales
+                    if (chart.options.scales) {
+                        Object.values(chart.options.scales).forEach(scale => {
+                            if (scale.grid) {
+                                scale.grid.color = gridColor;
+                            }
+                            if (scale.ticks) {
+                                scale.ticks.color = secondaryColor;
+                            }
+                            if (scale.pointLabels) {
+                                scale.pointLabels.color = textColor;
+                            }
+                        });
+                    }
+                    
+                    // Update axes titles
+                    if (chart.options.scales && chart.options.scales.x && chart.options.scales.x.title) {
+                        chart.options.scales.x.title.color = textColor;
+                    }
+                    if (chart.options.scales && chart.options.scales.y && chart.options.scales.y.title) {
+                        chart.options.scales.y.title.color = textColor;
+                    }
+                    
+                    // Update legend
+                    if (chart.options.plugins && chart.options.plugins.legend && chart.options.plugins.legend.labels) {
+                        chart.options.plugins.legend.labels.color = textColor;
+                    }
+                    
+                    // Update tooltip
+                    if (chart.options.plugins && chart.options.plugins.tooltip) {
+                        chart.options.plugins.tooltip.backgroundColor = getComputedStyle(document.body).getPropertyValue('--card-bg');
+                        chart.options.plugins.tooltip.titleColor = getComputedStyle(document.body).getPropertyValue('--primary');
+                        chart.options.plugins.tooltip.bodyColor = getComputedStyle(document.body).getPropertyValue('--text-primary');
+                        chart.options.plugins.tooltip.borderColor = getComputedStyle(document.body).getPropertyValue('--border-color');
+                    }
+                    
+                    chart.update();
+                }
+            });
+        }
+        
+        function animateElements() {
+            const sections = document.querySelectorAll('.dashboard-section, .summary-section, .design-goal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        }
+    </script>
+  </body>
+</html>

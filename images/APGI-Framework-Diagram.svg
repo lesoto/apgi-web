@@ -1,0 +1,102 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#1e293b">
+    APGI Framework: Three Dimensions of Consciousness
+  </text>
+  
+  <!-- Central Circle -->
+  <circle cx="400" cy="300" r="80" fill="url(#grad1)" opacity="0.8"/>
+  <text x="400" y="295" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">
+    APGI
+  </text>
+  <text x="400" y="315" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="white">
+    Framework
+  </text>
+  
+  <!-- Threshold Sensitivity -->
+  <circle cx="200" cy="200" r="60" fill="#3b82f6" opacity="0.7"/>
+  <text x="200" y="195" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+    Threshold
+  </text>
+  <text x="200" y="210" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="white">
+    Sensitivity
+  </text>
+  <text x="200" y="130" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">
+    How easily information
+  </text>
+  <text x="200" y="145" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">
+    breaks into awareness
+  </text>
+  
+  <!-- Interoceptive Accuracy -->
+  <circle cx="600" cy="200" r="60" fill="#8b5cf6" opacity="0.7"/>
+  <text x="600" y="195" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+    Interoceptive
+  </text>
+  <text x="600" y="210" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="white">
+    Accuracy
+  </text>
+  <text x="600" y="130" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">
+    How precisely you perceive
+  </text>
+  <text x="600" y="145" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">
+    internal bodily states
+  </text>
+  
+  <!-- Somatic Bias -->
+  <circle cx="400" cy="450" r="60" fill="#ec4899" opacity="0.7"/>
+  <text x="400" y="445" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+    Somatic
+  </text>
+  <text x="400" y="460" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="white">
+    Bias
+  </text>
+  <text x="400" y="530" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">
+    How much bodily sensations
+  </text>
+  <text x="400" y="545" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">
+    dominate conscious experience
+  </text>
+  
+  <!-- Connection Lines -->
+  <line x1="260" y1="230" x2="340" y2="270" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="540" y1="230" x2="460" y2="270" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="400" y1="380" x2="400" y2="340" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- Arrows showing interaction -->
+  <path d="M 200 260 Q 300 350 400 390" stroke="#64748b" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 600 260 Q 500 350 400 390" stroke="#64748b" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 200 170 Q 300 100 400 170" stroke="#64748b" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 600 170 Q 500 100 400 170" stroke="#64748b" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Consciousness Signature Label -->
+  <rect x="320" y="280" width="160" height="40" rx="20" fill="url(#grad2)" opacity="0.8"/>
+  <text x="400" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+    Consciousness
+  </text>
+  <text x="400" y="320" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="white">
+    Signature
+  </text>
+</svg>

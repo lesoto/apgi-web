@@ -1,0 +1,45 @@
+{
+  "visualizationData": {
+    "title": "Ignition Landscape - APGI Framework",
+    "description": "Interactive visualization of neural ignition patterns and consciousness states",
+    "datasets": [
+      {
+        "name": "Consciousness Level",
+        "type": "heatmap",
+        "data": [
+          {"x": 0, "y": 0, "z": 0.2, "value": 0.2},
+          {"x": 1, "y": 0, "z": 0.3, "value": 0.3},
+          {"x": 2, "y": 0, "z": 0.4, "value": 0.4},
+          {"x": 3, "y": 0, "z": 0.5, "value": 0.5},
+          {"x": 4, "y": 0, "z": 0.6, "value": 0.6},
+          {"x": 5, "y": 0, "z": 0.7, "value": 0.7},
+          {"x": 6, "y": 0, "z": 0.8, "value": 0.8},
+          {"x": 7, "y": 0, "z": 0.9, "value": 0.9}
+        ]
+      },
+      {
+        "name": "Neural Activity",
+        "type": "surface",
+        "data": [
+          {"x": 0, "y": 0, "z": 0.2},
+          {"x": 1, "y": 0, "z": 0.3},
+          {"x": 2, "y": 0, "z": 0.4},
+          {"x": 3, "y": 0, "z": 0.5},
+          {"x": 4, "y": 0, "z": 0.6},
+          {"x": 5, "y": 0, "z": 0.7},
+          {"x": 6, "y": 0, "z": 0.8},
+          {"x": 7, "y": 0, "z": 0.9}
+        ]
+      }
+    ],
+    "config": {
+      "responsive": true,
+      "displayModeBar": false,
+      "displayLogo": false,
+      "modeBarButtonsToRemove": ["pan2d", "lasso2d", "select2d"],
+      "camera": {
+        "eye": {"x": 1.5, "y": 1.5, "z": 1.5}
+      }
+    }
+  }
+}

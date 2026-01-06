@@ -1,528 +1,179 @@
 # APGI Framework Website
 
-**Allostatic Precision-Gated Ignition (APGI) Framework** - A comprehensive web platform for understanding and exploring consciousness architecture through an interactive, research-backed framework.
+## Status: 🚧 In Development - Core Features Functional
 
----
+### Current State Overview
 
-## Table of Contents
+The APGI Framework website is a comprehensive psychological assessment platform with multiple interactive components. While core functionality is implemented, several areas require attention for full production readiness.
 
-- [Overview](#overview)
-- [Project Structure](#project-structure)
-- [Main Pages](#main-pages)
-- [Technical Components](#technical-components)
-- [Design System](#design-system)
-- [Key Concepts & Terminology](#key-concepts--terminology)
-- [Development](#development)
-- [License](#license)
+### ⚠️ **Partially Completed Issues:**
 
----
+#### **Accessibility Compliance** (70% Complete)
 
-## Overview
+- **Completed:**
+  - ARIA labels added to main navigation buttons
+  - Enhanced quiz navigation with proper labels
+  - Improved tab navigation with aria-selected states
+  - Added role attributes where missing
+- **Remaining Work:**
+  - Color contrast optimization
+  - Focus indicator improvements
+  - Screen reader testing for complex visualizations
 
-The APGI Framework presents a novel theoretical framework for understanding consciousness as a metabolically expensive, allostatically gated control mechanism. This interactive platform combines academic rigor with user-friendly interfaces to help people understand their unique consciousness signature through:
+### ❌ **Critical Issues Requiring Attention:**
 
-- **Interactive Assessments**: Comprehensive quizzes to evaluate consciousness parameters
-- **Personalized Dashboards**: Detailed visualizations of individual consciousness profiles
-- **Educational Resources**: Academic papers, book content, and conceptual visualizations
-- **Research Tools**: Advanced visualizations for exploring consciousness states and networks
-
-**Key Features:**
-- Interactive consciousness assessment quiz
-- Real-time data visualization with radar charts, gauges, and graphs
-- Academic paper presentation with modern UI
-- Dashboard system for personalized consciousness profiles
-- Book promotion and educational content
-
----
-
-## Main Pages
-
-### Core Experience
-
-#### **Home.html**
-The primary landing page for the APGI Framework.
-
-**Purpose:** Convert visitors into engaged users by explaining the framework and offering immediate value through an interactive quiz.
-
-**Key Features:**
-- Interactive consciousness assessment quiz
-- Real-time visualization of results
-- Consciousness archetype identification
-- Responsive design with dark/light theme support
-- Engaging animations and transitions
-- Testimonials and social proof
-
-**Key Features:**
-- Hero section with animated gradient background
-- Embedded consciousness assessment quiz (12 questions)
-- Real-time radar chart visualization of results
-- Consciousness "archetypes" (The Analyst, The Empath, The Pragmatist, The Sensor, The Intuitive)
-- Email capture for detailed results
-- Responsive design with dark/light theme support
-- Three core dimensions measured:
-  - **Threshold Sensitivity** - How easily information breaks into awareness
-  - **Interoceptive Accuracy** - How precisely you perceive internal bodily states
-  - **Somatic Bias** - How much bodily sensations dominate conscious experience
-
-**Technologies:** Vanilla JavaScript, CSS animations, SVG for visualizations
-
----
-
-#### **Book-Available-Now.html**
-Book promotion landing page.
-
-**Purpose:** Drive book sales and engagement with the APGI framework through a compelling book landing page.
-
-**Key Features:**
-- Book cover display with hover effects
-- Purchase buttons for different platforms
-- Book description and key highlights
-- Gradient-based modern design
-- Call-to-action buttons
-
----
-
-#### **Book-Outline.html**
-Detailed table of contents and chapter breakdown for the APGI book.
-
-**Purpose:** Preview book content for potential readers.
-
-**Key Features:**
-- Comprehensive chapter listing
-- Topic breakdown
-- Visual hierarchy of content
-- Book promotion elements
-
----
-
-### Research & Theory
-
-#### **APGI-Paper.html**
-Academic presentation of the APGI framework.
-
-**Purpose:** Present the theoretical framework in a scholarly, visually appealing format suitable for researchers and academics.
-
-**Key Features:**
-- Interactive academic paper interface
-- Animated neural network visualization
-- Sticky navigation with smooth scrolling
-- Core framework components:
-  1. Allostatic Regulation
-  2. Precision Weighting
-  3. Global Ignition
-  4. Interoceptive Inference
-  5. Thermodynamic Constraints
-- Clinical applications and research implications
-- Downloadable PDF version
-- Citation management
-- Responsive design with dark/light theme
-
-**Technologies:** HTML5, CSS3, JavaScript, Canvas API
-
-**Key Features:**
-- Modern academic paper UI with dark/light theme
-- Animated neural network background (particle system)
-- Sticky navigation with smooth scrolling
-- Six core framework components:
-  1. **Allostatic Regulation** - Predictive homeostatic balance
-  2. **Precision Weighting** - Confidence-based signal gating
-  3. **Global Ignition** - Phase transition dynamics for conscious access
-  4. **Interoceptive Inference** - Hierarchical prediction of body states
-  5. **Thermodynamic Constraints** - Metabolic expenditure limits
-- Major theoretical contributions section
-- System architecture diagram (SVG-based processing pipeline)
-- Clinical translation pathways for psychiatric conditions:
-  - Anxiety Disorders (hypersensitive precision)
-  - Major Depression (blunted precision)
-  - Psychotic Disorders (aberrant precision)
-  - Substance Addiction (hijacked allostatic set-points)
-- Testable predictions for neuroscience and AI research
-- Citation management with BibTeX export
-- Download buttons for full paper and supplementary materials
-- Accessibility features (skip links, ARIA labels, keyboard navigation)
-
-**Technologies:** TailwindCSS CDN, Lucide icons, Canvas API for animations
-
----
-
-#### **Dashboard-Acad.html**
-Academic dashboard concept documentation.
-
-**Purpose:** Design specification document outlining the mental model dashboard for presenting APGI assessment results.
-
-**Key Features:**
-- Six dashboard sections (numbered 0-6):
-  - **Section 0:** Dashboard Summary
-  - **Section 1:** Core Profile View (Radar Chart with ε, π, θₜ, β parameters)
-  - **Section 2:** Numeric Reality Check (Bar charts)
-  - **Section 3:** Awareness & Overload Indicator (Ignition Gauge)
-  - **Section 4:** Body vs World Focus (Somatic Balance slider)
-  - **Section 5:** State Comparison (Line charts across mental states)
-  - **Section 6:** Plain-Language Summary Panel
-- Design principles and rationale
-- Element-by-element specifications
-- Plain language interpretation guidelines
-- Dark/light theme toggle
-- Responsive design for all devices
-- Export functionality for results
-- Shareable profile links
-
-**Note:** This is a specification document, not a functional dashboard.
-
----
-
-### Assessment & Quiz Pages
-
-#### **Assessment.html**
-Full consciousness assessment with enhanced UI.
-
-**Purpose:** Comprehensive version of the consciousness quiz with additional features.
-
-**Key Features:**
-- Multi-page quiz flow
-- Progress tracking
-- Enhanced result visualization
-- Detailed scoring system
-- User profile integration
-
----
-
-#### **Assessment-OnePage.html**
-Single-page version of the consciousness assessment.
-
-**Purpose:** Streamlined quiz experience without page navigation.
-
-**Key Features:**
-- All questions on one scrollable page
-- Instant scoring
-- Simplified result display
-- Mobile-optimized layout
-
----
-
-### Assessment & Analysis
-
-#### **Quiz.html**
-Comprehensive consciousness assessment with advanced analytics.
-
-**Purpose:** In-depth evaluation of consciousness parameters with detailed visualizations.
-
-**Key Features:**
-- 7-section assessment covering all APGI parameters
-- Interactive question interface with progress tracking
-- Real-time feedback and validation
-- Comprehensive results dashboard including:
-  - Radar charts for parameter visualization
-  - Interactive network diagrams
-  - Gauge charts for detailed metrics
-  - Temporal stability analysis
-  - Environmental fit assessment
-- 12 unique consciousness profiles with detailed analysis
-- Downloadable PDF report generation
-- Responsive design with dark/light theme support
-- Mobile-optimized interface
-
-**Sections:**
-1. Prediction Error Sensitivity (ε)
-2. Precision Allocation (π)
-3. Ignition Threshold (θₜ)
-4. Somatic Bias (β)
-5. Parameter Interactions
-6. Temporal Stability
-7. Environmental Fit
-
-**Technologies:** Vanilla JavaScript, Chart.js, HTML5 Canvas, CSS3 Animations
-
----
-
-#### **Quiz-2.html**
-Alternative quiz implementation.
-
-**Purpose:** Variant of the consciousness assessment with different question set or scoring approach.
-
-**Key Features:**
-- Alternative assessment methodology
-- Different question formulations
-- Variant scoring algorithms
-- Experimental features
-
----
-
-#### **Quiz-3.html**
-Third quiz variant.
-
-**Purpose:** Experimental version testing different approaches to consciousness assessment.
-
-**Key Features:**
-- Experimental question types
-- Alternative visualization methods
-- Testing new interaction patterns
-
----
-
-#### **Quiz-4.html**
-Fourth quiz variant.
-
-**Purpose:** Research-oriented version with specialized assessment focus.
-
-**Key Features:**
-- Research-specific questions
-- Advanced analytics
-- Detailed measurement tools
-
----
-
-### Dashboard & Visualization
-
-#### **Dashboard.html**
-Interactive dashboard for exploring consciousness profiles.
-
-**Purpose:** Present personalized APGI assessment results through an interactive, visually rich interface.
-
-**Key Features:**
-- 7-section dashboard layout:
-  1. **Dashboard Summary** - Overview of key metrics
-  2. **Core Profile View** - Radar chart visualization of parameters
-  3. **Numeric Reality Check** - Detailed parameter values and ranges
-  4. **Awareness & Overload** - Ignition threshold visualization
-  5. **Body vs World Focus** - Somatic bias analysis
-  6. **State Comparison** - Parameter variations across states
-  7. **Summary Panel** - Key insights and recommendations
-- Interactive visualizations with tooltips
-- Dark/light theme toggle
-- Responsive design for all devices
-- Export functionality for results
-- Shareable profile links
-
-**Technologies:** Vanilla JavaScript, CSS Grid/Flexbox, Chart.js
-
-**Key Features:**
-- Six-section layout matching Dashboard-Acad.html specification
-- Radar chart with four parameters (ε, π, θₜ, β)
-- Population average overlay for comparison
-- Normalized bar charts (0-100 scale)
-- Ignition gauge showing mental load vs. awareness threshold
-- Somatic balance slider (body-focused ↔ world-focused)
-- State comparison across: Resting, Focused, Stressed, Creative
-- Auto-generated plain-language interpretations:
-  - "You notice small problems quickly."
-  - "Your system trusts threat signals more than reward."
-  - "Awareness fills easily under stress."
-  - "Experience is strongly body-centered right now."
-- Animated transitions and scroll effects
-- Dark/light theme toggle
-- Responsive design
-
-**Technologies:** Vanilla JavaScript, CSS Grid, Intersection Observer API, Font Awesome
-
----
-
-#### **Profile.html**
-User profile management page.
-
-**Purpose:** Allow users to view and manage their consciousness profile data.
-
-**Key Features:**
-- Profile information display
-- Assessment history
-- Result comparisons over time
-- Settings and preferences
-
----
-
-### Visualization & Tools
-
-#### **PsyStates-Visualizer.html**
-Interactive visualization of psychological states.
-
-**Purpose:** Explore different states of consciousness through interactive models.
-
-**Key Features:**
-- State space visualization with 3D rendering
-- Dynamic parameter adjustment
-- State comparison tools
-- Export functionality for visualizations
-- Dark/light theme support with smooth transitions
-- Interactive tooltips and annotations
-- Responsive design for all devices
-- Performance-optimized rendering
-
-#### **State-Network-3d.html**
-3D network visualization of consciousness states.
-
-**Purpose:** Explore the interconnected nature of consciousness states in three dimensions.
-#### **Neuromoduratory-Cascade.html**
-Visualization of neuromodulatory influences on consciousness.
-
-**Purpose:** Illustrate how neuromodulators (NE, ACh) affect precision and ignition.
+#### **JavaScript File References**
 
-**Key Features:**
-- Cascade diagram
-- Interaction visualizations
-- Neurotransmitter effects display
-- Educational annotations
+- **Impact:** Broken functionality across multiple pages
+- **Issues:** Missing JavaScript files causing 404 errors:
+  - `performance-optimizer.js`
+  - `accessibility-enhancer.js`
+  - `navigation.js`
 
----
+- **Affected Pages:** Home.html, Quiz-Short.html, Assessment.html, PsyStates-Visualizer.html
 
-### Design System Pages
+#### **Performance Issues**
 
-#### **UI-Library.html**
-Component library and design system showcase.
+- **Impact:** Slow loading, poor mobile experience
+- **Issues:**
+  - No code splitting or lazy loading of heavy components
+  - No service worker for caching
+  - Multiple CDN dependencies (potential SPOF)
+  - No loading indicators for heavy visualizations
 
-**Purpose:** Document reusable UI components used throughout the site.
+#### **Code Quality Issues**
 
-**Key Features:**
-- Button styles and states
-- Card components
-- Form elements
-- Typography system
-- Color palette
-- Icon set
+- **Impact:** Maintenance difficulty, performance overhead
+- **Issues:**
+  - Some CSS duplication across files
+  - Inline styles present in several files
+  - No CSS/JS minification
+  - No build process or bundling
 
----
+#### **Mobile Responsiveness Issues**
 
-#### **UI-Library-Short.html**
-Condensed version of the UI library.
+- **Impact:** Poor mobile user experience
+- **Issues:**
+  - Some visualizations difficult to interact with on mobile
+  - Radar charts may be too small on small screens
+  - Long quiz pages require extensive scrolling
+  - Some horizontal overflow on small devices
 
-**Purpose:** Quick reference guide for essential components.
+#### **Design Inconsistencies**
 
-**Key Features:**
-- Core components only
-- Simplified documentation
-- Fast loading
+- **Impact:** Inconsistent user experience
+- **Issues:**
 
----
+  - Multiple design system files with slight variations
+  - Some pages use Tailwind CSS, others use custom CSS
+  - Font choices vary (multiple Google Font families)
+  - Header styles differ across pages
 
-#### **UI-Library-Complete.html**
-Comprehensive UI component library.
+## Page Status Overview
 
-**Purpose:** Complete design system documentation with all variations.
+### **Home.html** - Status: ⚠️ Partial Issues (85% Complete)
 
-**Key Features:**
-- All component variations
-- Usage guidelines
-- Code examples
-- Accessibility notes
+**Issues Found:**
 
----
+- Missing JavaScript files (404 errors for performance-optimizer.js, accessibility-enhancer.js, navigation.js)
 
-#### **Styleguide.html**
-Brand and visual style guidelines.
+- SVG rendering errors in radar chart visualization
 
-**Purpose:** Define visual identity and styling standards for the APGI website.
+- Quiz functionality partially working but results calculation incomplete
 
-**Key Features:**
-- Color palette definitions
-- Typography hierarchy
-- Spacing system
-- Grid system
-- Animation guidelines
-- Brand voice and tone
+- Email capture form non-functional (no backend)
 
----
+### **Quiz-Short.html** - Status: ⚠️ Partial Issues (70% Complete)
 
-### Utility Pages
+**Issues Found:**
 
-#### **Leftovers.html**
-Archive of deprecated or experimental features.
+- Missing JavaScript files (same 404 errors)
 
-**Purpose:** Storage for code snippets and features not currently in use but potentially valuable for future reference.
+- Assessment flow incomplete
 
-**Key Features:**
-- Experimental UI components
-- Alternative design approaches
-- Code snippets
-- Deprecated features
+- Results visualization not rendering properly
 
----
+- No progress tracking or validation
 
-## Technical Components
+### **Assessment.html** - Status: ⚠️ Partial Issues (70% Complete)
 
+**Issues Found:**
 
-#### **apgi_visualization.html**
-Interactive APGI network visualization.
+- Missing JavaScript files
 
-**Purpose:** Visual exploration tool for APGI network behavior.
+- Multi-section assessment not fully functional
 
-**Key Features:**
-- Network state visualization
-- Ignition process animation
-- Precision weighting display
-- Threshold dynamics
+- Navigation between sections broken
 
----
+- Results dashboard not rendering
 
-## Assets
+### **PsyStates-Visualizer.html** - Status: ✅ Good (80% Complete)
 
-### Images Directory
+**Issues Found:**
 
-#### **APGI-Framework-Diagram.png**
-Core framework architecture diagram.
+- Missing JavaScript files
 
-**Purpose:** Visual representation of the APGI system components and their relationships.
+- Recharts library loading errors
 
-**Content:**
-- Hierarchical processing layers
-- Precision weighting mechanisms
-- Global ignition dynamics
-- Feedback loops
+- Interactive state selection not working
 
----
+- Theme toggle partially functional
 
-#### **Evolutionary-Mismatch.jpg**
-Diagram illustrating evolutionary context.
+### **Privacy-Policy.html** - Status: ✅ Good (95% Complete)
 
-**Purpose:** Show why consciousness evolved and where modern mismatches occur.
+**Issues Found:**
 
----
+- Missing JavaScript files (minor impact)
 
-#### **Fundamental-values-logo.svg**
-Logo/icon for the framework.
+- No interactive elements (static content page)
 
-**Purpose:** Brand identity element.
+### **Paper.html** - Status: ⚠️ Partial Issues (75% Complete)
 
----
+**Issues Found:**
 
-#### **cover-tns-small.png**
-Book cover thumbnail.
+- Complex academic layout needs refinement
 
-**Purpose:** Display on book promotion pages.
+- Some interactive elements non-functional
 
----
+- Heavy content affects performance
 
-## Key Concepts & Terminology
+## Missing Features
 
-### APGI Framework Parameters
+### Core Functionality (High Impact)
 
-- **ε (Epsilon)** - Sensitivity to environmental signals
-- **π (Pi)** - Processing intensity / Precision weighting
-- **θₜ (Theta)** - Awareness threshold for conscious access
-- **β (Beta)** - Somatic bias (body vs. world focus balance)
-- **S (Surprise)** - Total precision-weighted prediction error
-- **Π^i(M,c,a)** - Context-dependent interoceptive precision
-- **Π^e** - Exteroceptive precision
-- **ε^i** - Interoceptive prediction error
-- **ε^e** - Exteroceptive prediction error
+- **User Authentication System** — Login/logout functionality not implemented
 
-### Core Theoretical Concepts
+- **Database Integration** — Quiz results not saved or retrievable
 
-- **Allostatic Regulation** - Predictive adjustment of internal states to maintain homeostatic balance
-- **Precision Weighting** - Confidence-based gating of signals that determines when prediction failures warrant conscious intervention
-- **Global Ignition** - Phase transition enabling sudden, system-wide information broadcast when errors exceed threshold
-- **Interoceptive Inference** - Hierarchical prediction of body states that gates conscious access
-- **Thermodynamic Constraints** - Metabolic expenditure limits making consciousness expensive and selective
-- **Predictive Processing** - Brain generates predictions and updates only when mismatches occur
-- **Free Energy Minimization** - Organisms minimize surprise to maintain homeostatic integrity
-- **Global Workspace Theory** - Conscious access through global broadcast to distributed networks
+- **Email Service Integration** — Newsletter and result delivery non-functional
 
-### Consciousness Archetypes
+- **Result History Tracking** — Users cannot compare assessments over time
 
-Based on quiz results, users are classified into five archetypes:
+- **PDF Report Generation** — Downloadable reports mentioned but not implemented
 
-1. **The Analyst** - Low threshold, moderate interoception, low somatic bias (focused, logical)
-2. **The Empath** - High threshold, high interoception, high somatic bias (empathetic, sensitive)
-3. **The Pragmatist** - Balanced across all dimensions (adaptable, flexible)
-4. **The Sensor** - High threshold, low interoception, low somatic bias (externally focused)
-5. **The Intuitive** - Low threshold, high interoception, high somatic bias (body-aware, introspective)
+### Navigation & Structure (Medium Impact)
 
----
+- **Main Navigation Menu** — No consistent site-wide navigation
+
+- **Breadcrumbs** — No wayfinding for complex content
+
+- **Search Functionality** — No content search capability
+
+- **404 Error Page** — Missing for broken links
+
+### Content Features (Medium Impact)
+
+- **FAQ Page** — Common questions not addressed
+- **Contact Form** — Functional contact system missing
+- **Blog/Resources Section** — No ongoing content platform
+- **Real Testimonials** — Only placeholder content
+⚠️ **Email forms vulnerable to spam (no CAPTCHA)**
+⚠️ **No CSRF protection (when backend added)**
+⚠️ **No input sanitization (when backend added)**
+⚠️ **External CDN dependencies (supply chain risk)**
+- Add Content Security Policy headers
+- Implement CAPTCHA on forms
+- Sanitize all user inputs
+- Use Subresource Integrity (SRI) for CDN resources
+- Implement service worker for offline support
+- Add analytics and error tracking

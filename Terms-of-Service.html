@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="js/performance-optimizer.js"></script>
+    <script src="js/accessibility-enhancer.js"></script>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - APGI Framework</title>
+    <style>
+        :root {
+            --bg: #fafbfc;
+            --bg-secondary: #ffffff;
+            --text: #1a1d23;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --accent: #3b82f6;
+            --accent-light: #dbeafe;
+            --accent-hover: #2563eb;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --max-width: 800px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 80px 20px 40px;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: var(--bg-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            display: inline-block;
+        }
+
+        main {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        h2:first-child {
+            margin-top: 0;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box h3 {
+            margin-top: 0;
+            color: #d97706;
+        }
+
+        .contact-info {
+            background: var(--accent-light);
+            border: 1px solid var(--accent);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .contact-info h3 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: var(--accent-hover);
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 80px 15px 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <main>
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing and using the APGI (Adaptive Predictive Coding Integration) Framework website and services, you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our services.</p>
+            <p>These Terms govern your use of our consciousness assessments, educational content, visualizations, and all other features available on our website.</p>
+
+            <h2>2. Description of Service</h2>
+            <p>The APGI Framework provides:</p>
+            <ul>
+                <li><strong>Educational Content:</strong> Information about consciousness research and predictive coding theory</li>
+                <li><strong>Assessment Tools:</strong> Consciousness state evaluations and psychological questionnaires</li>
+                <li><strong>Visualizations:</strong> Interactive representations of neural and cognitive processes</li>
+                <li><strong>Research Platform:</strong> Tools for consciousness research and data collection</li>
+                <li><strong>Book and Resources:</strong> Access to educational materials and publications</li>
+            </ul>
+
+            <h2>3. User Responsibilities</h2>
+            <p>As a user of our services, you agree to:</p>
+            <ul>
+                <li>Provide accurate and complete information when required</li>
+                <li>Use the services for legitimate educational and research purposes</li>
+                <li>Not attempt to circumvent security measures or exploit system vulnerabilities</li>
+                <li>Not use automated tools to access the service excessively</li>
+                <li>Respect the intellectual property rights of all content</li>
+                <li>Not share assessment results or personal data of others without consent</li>
+            </ul>
+
+            <div class="warning-box">
+                <h3>Important Medical Disclaimer</h3>
+                <p>The APGI Framework and its assessments are <strong>not</strong> medical devices and should not be used as a substitute for professional medical advice, diagnosis, or treatment. If you are experiencing mental health concerns, please consult with a qualified healthcare professional.</p>
+            </div>
+
+            <h2>4. Intellectual Property</h2>
+            <p>All content on the APGI Framework website, including but not limited to text, graphics, logos, images, data compilations, software, and assessments, is the property of APGI Framework or its content suppliers and is protected by intellectual property laws.</p>
+            <p>You may not:</p>
+            <ul>
+                <li>Reproduce, distribute, or create derivative works without explicit permission</li>
+                <li>Use our content for commercial purposes without authorization</li>
+                <li>Remove copyright or trademark notices from our content</li>
+                <li>Reverse engineer or attempt to extract source code from our applications</li>
+            </ul>
+
+            <h2>5. User-Generated Content</h2>
+            <p>If you submit content to our platform (such as assessment responses, comments, or feedback), you grant us a non-exclusive, royalty-free license to use, analyze, and improve our services. You retain ownership of your original content.</p>
+            <p>We may use anonymized data from assessments for research purposes to advance understanding of consciousness and cognitive processes.</p>
+
+            <h2>6. Privacy and Data Protection</h2>
+            <p>Your privacy is important to us. Our collection and use of personal information is governed by our <a href="Privacy-Policy.html">Privacy Policy</a>. By using our services, you consent to the collection and use of information as described in our Privacy Policy.</p>
+
+            <h2>7. Service Availability</h2>
+            <p>We strive to maintain high availability of our services, but we cannot guarantee uninterrupted access. We reserve the right to:</p>
+            <ul>
+                <li>Temporarily suspend services for maintenance or upgrades</li>
+                <li>Modify or discontinue features at our discretion</li>
+                <li>Limit access to prevent abuse or ensure fair usage</li>
+            </ul>
+
+            <h2>8. Disclaimers of Warranty</h2>
+            <p>The APGI Framework services are provided "as is" without warranties of any kind, either express or implied. We disclaim all warranties, including but not limited to:</p>
+            <ul>
+                <li>Accuracy or reliability of assessment results</li>
+                <li>Fitness for a particular purpose</li>
+                <li>Non-infringement of intellectual property rights</li>
+                <li>Compatibility with specific devices or browsers</li>
+            </ul>
+
+            <h2>9. Limitation of Liability</h2>
+            <p>To the fullest extent permitted by law, APGI Framework shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services, including but not limited to:</p>
+            <ul>
+                <li>Loss of data or information</li>
+                <li>Personal injury or emotional distress</li>
+                <li>Business interruption or loss of opportunity</li>
+                <li>Decisions made based on assessment results</li>
+            </ul>
+            <p>Our total liability for any claims arising from these Terms shall not exceed the amount you paid for our services, if any.</p>
+
+            <h2>10. Indemnification</h2>
+            <p>You agree to indemnify and hold APGI Framework harmless from any claims, damages, or expenses arising from your use of our services, violation of these Terms, or infringement of third-party rights.</p>
+
+            <h2>11. Termination</h2>
+            <p>We may terminate or suspend your access to our services at any time, with or without cause, without prior notice. Upon termination, all rights and licenses granted to you under these Terms will immediately cease.</p>
+
+            <h2>12. Governing Law</h2>
+            <p>These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which APGI Framework is based, without regard to conflict of law principles.</p>
+
+            <h2>13. Dispute Resolution</h2>
+            <p>Any disputes arising from these Terms or your use of our services shall be resolved through binding arbitration in accordance with the rules of the relevant arbitration association, rather than in court, except that you may assert claims in small claims court if your claims qualify.</p>
+
+            <h2>14. Changes to Terms</h2>
+            <p>We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting on our website. Your continued use of our services after such modifications constitutes acceptance of the updated Terms.</p>
+
+            <h2>15. Severability</h2>
+            <p>If any provision of these Terms is found to be unenforceable, the remaining provisions will remain in full force and effect.</p>
+
+            <h2>16. Entire Agreement</h2>
+            <p>These Terms, together with our Privacy Policy, constitute the entire agreement between you and APGI Framework regarding your use of our services.</p>
+
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <p>If you have questions about these Terms of Service, please contact us:</p>
+                <p><strong>Email:</strong> legal@apgiframework.com</p>
+                <p><strong>Website:</strong> <a href="https://apgiframework.com">apgiframework.com</a></p>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2026 APGI Framework. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

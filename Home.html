@@ -1,87 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="js/performance-optimizer.js"></script>
+    <script src="js/accessibility-enhancer.js"></script>
+    <script src="js/navigation.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Understand How Your Consciousness Works—And Learn to Adjust It</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Performance optimization: Preload critical resources -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" as="style">
+  <link rel="preload" href="https://unpkg.com/lucide@latest" as="script">
+  
+  <!-- Resource hints -->
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//unpkg.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
-      --bg: #fafbfc;
-      --bg-secondary: #ffffff;
-      --text: #1a1d23;
-      --text-secondary: #4a5568;
-      --text-muted: #718096;
+      /* Modern Typography */
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      
+      /* Modern Color Palette */
+      --primary: #0f172a;
+      --primary-light: #1e293b;
       --accent: #3b82f6;
-      --accent-light: #dbeafe;
-      --accent-hover: #2563eb;
-      --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      --border: #e2e8f0;
+      --accent-light: #60a5fa;
+      --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      
+      /* Semantic Colors */
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #06b6d4;
+      
+      /* Neutral Colors */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
       --border-light: #f1f5f9;
+      
+      /* Effects & Shadows */
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      
+      /* Transitions */
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: all 0.15s ease;
+      
+      /* Border Radius */
+      --radius-sm: 8px;
       --radius: 12px;
       --radius-lg: 16px;
-      --max-width: 1000px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-xl: 24px;
     }
     * {
       box-sizing: border-box;
     }
+    
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
-      color: var(--text);
-      line-height: 1.7;
-      font-size: 16px;
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-size: 1rem;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+      transition: var(--transition);
+      min-height: 100vh;
+      position: relative;
     }
-    header, section, footer {
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      pointer-events: none;
+      z-index: -1;
+    }
+    header, section {
       padding: 4rem 1rem;
     }
-    .container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 1rem;
+    footer {
+      padding: 2rem 1rem;
     }
-    h1, h2, h3 {
+    
+    .container {
+      max-width: min(100% - 2rem, 1200px);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+    }
+    
+    /* Enhanced Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-display);
       margin-top: 0;
       line-height: 1.2;
       font-weight: 700;
       letter-spacing: -0.025em;
+      scroll-margin-top: 2rem;
     }
+    
     h1 {
-      font-size: 3rem;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.05em;
       background: var(--accent-gradient);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 1.5rem;
+      margin: 0 0 2rem;
+      position: relative;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
     }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--accent-gradient);
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    }
+    
     h2 {
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
-      color: var(--text);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      margin-bottom: 2rem;
+      color: var(--text-primary);
+      position: relative;
+      padding-bottom: 1rem;
     }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--accent-gradient);
+      border-radius: 2px;
+    }
+    
     h3 {
-      font-size: 1.5rem;
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    h4 {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
       margin-bottom: 1rem;
+      color: var(--text-primary);
+      font-weight: 600;
     }
+    
     p {
-      margin: 0 0 1.5rem;
+      margin: 0 0 1.75rem;
       color: var(--text-secondary);
-      font-size: 1.05rem;
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      line-height: 1.7;
+      max-width: none;
     }
+    
+    .lead {
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      color: var(--text-primary);
+      font-weight: 400;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    /* Enhanced list styling */
     ul {
       padding-left: 1.5rem;
+      margin: 1.5rem 0;
     }
+    
     li {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
       color: var(--text-secondary);
+      line-height: 1.6;
+      position: relative;
     }
+    
+    li::marker {
+      color: var(--accent);
+      font-size: 1.2em;
+    }
+    
+    /* Modern Button Styles */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -91,15 +227,20 @@
       padding: 1rem 2rem;
       border: none;
       border-radius: var(--radius-lg);
-      font-size: 1rem;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
       font-weight: 600;
+      font-family: var(--font-body);
       cursor: pointer;
       text-decoration: none;
       transition: var(--transition);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
+      line-height: 1.5;
+      min-height: 48px;
+      gap: 0.5rem;
     }
+    
     .btn::before {
       content: '';
       position: absolute;
@@ -108,38 +249,56 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
+      transition: left 0.6s;
     }
+    
     .btn:hover::before {
       left: 100%;
     }
+    
     .btn:hover {
-      background: var(--accent-hover);
+      background: var(--accent-light);
       transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
+    
     .btn:active {
-      transform: translateY(0);
-      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
     }
+    
+    .btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    
     .btn-secondary {
       background: transparent;
       color: var(--accent);
       border: 2px solid var(--accent);
       backdrop-filter: blur(10px);
     }
+    
     .btn-secondary:hover {
-      background: var(--accent-light);
+      background: rgba(59, 130, 246, 0.1);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-light);
     }
+    
+    /* Hero Section */
     .hero {
       text-align: center;
-      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(139, 92, 246, 0.1) 100%);
-      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(124, 58, 237, 0.08) 50%, rgba(139, 92, 246, 0.08) 100%);
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
       position: relative;
       overflow: hidden;
+      padding: clamp(4rem, 10vw, 8rem) 1rem;
+      margin-bottom: 4rem;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(20px);
     }
+    
     .hero::before {
       content: '';
       position: absolute;
@@ -147,27 +306,43 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+      background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 40%);
       pointer-events: none;
+      animation: float 6s ease-in-out infinite;
     }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
     .hero .container {
       position: relative;
       z-index: 1;
     }
+    
     .hero h1 {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       animation: fadeInUp 0.8s ease-out;
     }
+    
     .hero p {
-      font-size: 1.25rem;
-      margin-bottom: 2rem;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      margin-bottom: 2.5rem;
       color: var(--text-secondary);
       animation: fadeInUp 0.8s ease-out 0.2s both;
-      max-width: 600px;
+      max-width: 700px;
       margin-left: auto;
       margin-right: auto;
+      line-height: 1.6;
     }
+    
+    .hero .btn {
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+    /* Animations */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -178,26 +353,216 @@
         transform: translateY(0);
       }
     }
-    .diagram {
-      margin: 3rem 0;
+    
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .animate-slide-in {
+      animation: slideInLeft 0.6s ease-out;
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    /* Glass Panel Effect */
+    .glass-panel {
+      background: var(--bg-primary);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+    
+    .glass-panel:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+    
+    /* Skip to main content link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: var(--accent);
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      z-index: 10000;
+      transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+      top: 6px;
+    }
+    
+    /* Enhanced focus states */
+    .btn:focus-visible,
+    input:focus-visible,
+    .theme-toggle:focus-visible,
+    .options label:focus-within {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      :root {
+        --border-color: #000000;
+        --text-secondary: #000000;
+        --accent: #0000FF;
+      }
+      
+      .btn {
+        border: 2px solid #000000;
+      }
+    }
+    
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    
+    /* Adjust hero section for navigation bar */
+    .hero {
+      padding-top: 5rem;
+    }
+    
+    /* Section Styles */
+    section {
+      margin: 2rem auto;
+      max-width: 1200px;
+      padding: 0 1.5rem;
+    }
+    
+    #problem {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      border-radius: var(--radius-lg);
+      margin: 3rem auto;
+      padding: 4rem 2rem;
+      max-width: 1000px;
       text-align: center;
     }
-    .diagram img {
-      max-width: 100%;
-      height: auto;
+    
+    #framework {
+      background: var(--bg-primary);
       border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-lg);
-      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      margin: 3rem auto;
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      text-align: center;
     }
-    .diagram img:hover {
-      transform: scale(1.02);
-      box-shadow: var(--shadow-xl);
+    
+    #author {
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      border-radius: var(--radius-lg);
+      margin: 3rem auto;
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      text-align: center;
     }
+    
+    #cta {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+      border-radius: var(--radius-lg);
+      margin: 3rem auto;
+      padding: 4rem 2rem;
+      max-width: 800px;
+      text-align: center;
+    }
+    
+    #quiz {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      padding: 4rem 2rem;
+      margin: 3rem auto;
+      max-width: 1000px;
+      text-align: center;
+      border-radius: var(--radius-lg);
+    }
+    
     .testimonials {
       background: linear-gradient(135deg, var(--border-light) 0%, var(--bg-secondary) 100%);
       border-radius: var(--radius-lg);
+      padding: 4rem 2rem;
+      margin: 3rem auto;
+      max-width: 1000px;
+      text-align: center;
     }
+    
+    /* Enhanced visual hierarchy */
+    .section-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .framework-diagram {
+      margin: 3rem auto;
+      text-align: center;
+      max-width: 100%;
+    }
+    
+    .framework-diagram img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+    }
+    
+    .framework-diagram img:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      background: linear-gradient(135deg, var(--border-light) 0%, var(--bg-secondary) 100%);
+      border-radius: var(--radius-lg);
+      padding: 4rem 1rem;
+      margin: 3rem 0;
+    }
+    
+    .testimonials .container {
+      display: grid;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
     blockquote {
       margin: 1.5rem 0;
       padding: 1.5rem 2rem;
@@ -209,10 +574,12 @@
       position: relative;
       transition: var(--transition);
     }
+    
     blockquote:hover {
       transform: translateX(4px);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow);
     }
+    
     blockquote::before {
       content: '"';
       position: absolute;
@@ -222,6 +589,7 @@
       color: var(--accent);
       opacity: 0.3;
     }
+    
     blockquote footer {
       text-align: right;
       font-style: normal;
@@ -230,6 +598,8 @@
       color: var(--text-muted);
       font-size: 0.9rem;
     }
+    
+    /* Form Styles */
     form {
       display: flex;
       flex-direction: column;
@@ -237,334 +607,599 @@
       max-width: 420px;
       margin: auto;
     }
+    
     input[type="text"],
     input[type="email"] {
       padding: 1rem 1.25rem;
-      border: 2px solid var(--border);
+      border: 2px solid var(--border-color);
       border-radius: var(--radius);
       font-size: 1rem;
+      font-family: var(--font-body);
       transition: var(--transition);
-      background: var(--bg-secondary);
+      background: var(--bg-primary);
+      color: var(--text-primary);
     }
+    
     input[type="text"]:focus,
     input[type="email"]:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      transform: translateY(-2px);
     }
+    
     .privacy {
       font-size: 0.85rem;
       color: var(--text-muted);
       text-align: center;
       margin-top: 1rem;
     }
+    
     .privacy a {
       color: var(--accent);
       text-decoration: none;
       transition: var(--transition);
     }
+    
     .privacy a:hover {
       text-decoration: underline;
     }
+    
+    /* Footer */
     footer {
       text-align: center;
       font-size: 0.9rem;
       color: var(--text-muted);
       padding: 2rem 1rem;
       background: var(--bg-secondary);
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--border-color);
     }
+    
     footer a {
       color: var(--accent);
       text-decoration: none;
       transition: var(--transition);
     }
+    
     footer a:hover {
       text-decoration: underline;
     }
-    @media (min-width: 768px) {
-      h1 {
-        font-size: 3.5rem;
-      }
-      .container {
-        padding: 0 2rem;
-      }
+    /* Theme Toggle */
+    .theme-toggle {
+      position: relative;
+      top: auto;
+      right: auto;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    @media (max-width: 640px) {
-      h1 {
-        font-size: 2rem;
-      }
-      h2 {
-        font-size: 1.75rem;
-      }
-      h3 {
-        font-size: 1.3rem;
-      }
-      .hero p {
-        font-size: 1.1rem;
-      }
-      header, section, footer {
-        padding: 2.5rem 1rem;
-      }
-      #quiz-container {
-        padding: 1.5rem;
-        margin: 0 1rem;
-      }
-      .question {
-        padding: 1rem;
-      }
-      .radar-chart {
-        width: 280px;
-        height: 280px;
-      }
-      .dimension-labels {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      .btn {
-        padding: 0.875rem 1.5rem;
-        font-size: 0.95rem;
-      }
-      .diagram {
-        margin: 2rem 0;
-      }
+    
+    /* Main Navigation */
+    .main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      box-shadow: var(--shadow);
     }
-    @media (max-width: 480px) {
-      :root {
-        --max-width: 100%;
-      }
-      .container {
-        padding: 0 0.75rem;
-      }
-      h1 {
-        font-size: 1.75rem;
-      }
-      h2 {
-        font-size: 1.5rem;
-      }
-      .hero p {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-      }
-      #quiz-container {
-        padding: 1rem;
-        margin: 0 0.5rem;
-      }
-      .radar-chart {
-        width: 240px;
-        height: 240px;
-      }
-      .options label {
-        padding: 0.75rem;
-        font-size: 0.9rem;
-      }
-      .btn {
-        padding: 0.75rem 1.25rem;
-        font-size: 0.9rem;
-        width: 100%;
-      }
+    
+    .theme-toggle:hover {
+      background: var(--bg-secondary);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
     }
-
-    /* Quiz styles */
+    
+    .theme-toggle:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+    
+    .theme-icon {
+      display: inline-block;
+      transition: var(--transition);
+      font-size: 18px;
+    }
+    
+    /* Quiz Container Styles */
     #quiz-container {
       max-width: 700px;
       margin: auto;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      background: var(--bg-primary);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
       padding: 2.5rem;
       box-shadow: var(--shadow-lg);
       transition: var(--transition);
+      text-align: center;
     }
+    
     #quiz-container:hover {
       box-shadow: var(--shadow-xl);
+      transform: translateY(-2px);
     }
+    
     .question {
       margin-bottom: 2rem;
       padding: 1.5rem;
-      background: var(--bg);
-      border-radius: var(--radius);
-      border: 1px solid var(--border-light);
+      background: var(--bg-secondary);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      border: 2px solid var(--border-light);
       transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
+    
+    .question::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: var(--accent-gradient);
+      transition: left 0.3s ease;
+    }
+    
+    .question:hover::before {
+      left: 0;
+    }
+    
     .question:hover {
       border-color: var(--accent);
-      box-shadow: var(--shadow-sm);
-    }
-    .question h4 {
-      margin-bottom: 1rem;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .options label {
-      display: block;
-      margin: 0.75rem 0;
-      cursor: pointer;
-      padding: 1rem;
-      border-radius: var(--radius);
-      border: 2px solid var(--border-light);
-      background: var(--bg-secondary);
-      transition: var(--transition);
-      position: relative;
-    }
-    .options label:hover {
-      border-color: var(--accent);
-      background: var(--accent-light);
+      box-shadow: var(--shadow);
       transform: translateX(4px);
     }
-    .options input[type="radio"]:checked + label {
-      border-color: var(--accent);
-      background: var(--accent-light);
+    
+    .question.answered {
+      border-color: var(--success);
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(16, 185, 129, 0.05) 100%);
+    }
+    
+    .question h4 {
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
       font-weight: 600;
+      font-size: clamp(1.1rem, 2.5vw, 1.2rem);
+      line-height: 1.4;
     }
-    .options input[type="radio"] {
-      margin-right: 0.75rem;
-      transform: scale(1.2);
-    }
-    #progress-bar {
-      height: 12px;
-      background: var(--border-light);
-      border-radius: 6px;
-      margin-bottom: 2rem;
-      overflow: hidden;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    #progress-fill {
-      height: 100%;
-      background: var(--accent-gradient);
-      width: 0%;
-      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 6px;
+    
+    .options label {
+      display: block;
+      margin: 1rem 0;
+      cursor: pointer;
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      border: 2px solid var(--border-light);
+      background: var(--bg-primary);
+      transition: var(--transition);
       position: relative;
       overflow: hidden;
     }
-    #progress-fill::after {
+    
+    .options label::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+      transition: left 0.4s ease;
+    }
+    
+    .options label:hover::before {
+      left: 100%;
+    }
+    
+    .options label:hover {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.1);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .options input[type="radio"]:checked + label {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.15) 100%);
+      font-weight: 600;
+      transform: translateX(8px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+    
+    .options input[type="radio"]:checked + label::after {
+      content: '✓';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    
+    .options input[type="radio"] {
+      margin-right: 0.75rem;
+      transform: scale(1.3);
+      accent-color: var(--accent);
+    }
+    
+    .options input[type="radio"]:focus-visible + label {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    
+    #progress-bar {
+      height: 16px;
+      background: var(--border-light);
+      border-radius: var(--radius);
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    #progress-bar::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      animation: shimmer 2s infinite;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: progress-shimmer 2s infinite;
     }
-    @keyframes shimmer {
+    
+    @keyframes progress-shimmer {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
-    #result {
-      display: none;
-      text-align: left;
-      animation: fadeIn 0.5s ease-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    #result h3 {
-      margin-top: 1.5rem;
-    }
-    /* Visualization styles */
-    .visualization-container {
-      margin: 2.5rem 0;
-      text-align: center;
-      padding: 2rem;
-      background: var(--bg);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-md);
-    }
-    .radar-chart {
-      width: 350px;
-      height: 350px;
-      margin: 0 auto;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-    }
-    .radar-svg {
-      width: 100%;
+    
+    #progress-fill {
       height: 100%;
-    }
-    .dimension-labels {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 1.5rem;
-      font-size: 0.95rem;
-      gap: 1rem;
-    }
-    .dimension-label {
-      text-align: center;
-      padding: 0.75rem;
-      background: var(--bg-secondary);
+      background: var(--accent-gradient);
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: var(--radius);
-      border: 1px solid var(--border-light);
-      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
     }
-    .dimension-label:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-sm);
+    
+    /* Responsive Design */
+    @media (min-width: 768px) {
+      h1 {
+        font-size: clamp(3rem, 5vw, 4rem);
+      }
+      
+      .container {
+        padding: 0 2rem;
+      }
+      
+      .theme-toggle {
+        top: 30px;
+        right: 30px;
+      }
+      
+      .hero {
+        padding: clamp(6rem, 12vw, 10rem) 2rem;
+      }
     }
-    .dimension-value {
-      font-weight: 700;
+    
+    @media (max-width: 1024px) {
+      h1 {
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+      }
+      
+      h2 {
+        font-size: clamp(1.5rem, 4vw, 2.25rem);
+      }
+      
+      .hero {
+        padding: clamp(4rem, 8vw, 6rem) 1rem;
+        margin-bottom: 3rem;
+      }
+      
+      .section-content {
+        padding: 0 1rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: clamp(2rem, 7vw, 3rem);
+        margin-bottom: 1.5rem;
+      }
+      
+      h1::after {
+        width: 60px;
+        height: 3px;
+        bottom: -8px;
+      }
+      
+      h2 {
+        font-size: clamp(1.4rem, 5vw, 2rem);
+        margin-bottom: 1.5rem;
+      }
+      
+      h3 {
+        font-size: clamp(1.2rem, 4vw, 1.6rem);
+      }
+      
+      .hero {
+        padding: clamp(3rem, 10vw, 5rem) 1rem;
+        margin-bottom: 2rem;
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      }
+      
+      .hero p {
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        margin-bottom: 2rem;
+      }
+      
+      .btn {
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 1rem 1.5rem;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+      }
+      
+      .btn + .btn {
+        margin-left: 0;
+      }
+      
+      body {
+        font-size: clamp(0.95rem, 2vw, 1rem);
+      }
+      
+      #quiz-container {
+        padding: 1.5rem;
+        margin: 0 1rem;
+        border-radius: var(--radius-lg);
+      }
+      
+      .question {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .theme-toggle {
+        top: 15px;
+        right: 15px;
+        padding: 8px 16px;
+        min-width: 100px;
+        font-size: 12px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 0.75rem;
+      }
+      
+      h1 {
+        font-size: 1.75rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      #quiz-container {
+        padding: 1rem;
+        margin: 0 0.5rem;
+      }
+      
+      .theme-toggle {
+        top: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        min-width: 80px;
+        font-size: 11px;
+      }
+    }
+    
+    /* Dark Theme Support */
+    [data-theme="dark"] {
+      --primary: #f8fafc;
+      --primary-light: #e2e8f0;
+      --accent: #60a5fa;
+      --accent-light: #3b82f6;
+      --accent-gradient: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --border-light: #475569;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+    }
+    
+    [data-theme="dark"] body {
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    }
+    
+    [data-theme="dark"] body::before {
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain-dark" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain-dark)"/></svg>');
+    }
+    
+    [data-theme="dark"] .theme-toggle {
       color: var(--accent);
-      display: block;
-      font-size: 1.25rem;
-      margin-bottom: 0.25rem;
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+    }
+    
+    [data-theme="dark"] .theme-toggle:hover {
+      background: var(--bg-secondary);
+      box-shadow: var(--shadow-xl), 0 0 20px rgba(96, 165, 250, 0.3);
+    }
+    
+    [data-theme="dark"] #problem,
+    [data-theme="dark"] #framework,
+    [data-theme="dark"] #author,
+    [data-theme="dark"] #cta,
+    [data-theme="dark"] #quiz,
+    [data-theme="dark"] .testimonials {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+    }
+    
+    [data-theme="dark"] #quiz-container {
+      background: var(--bg-secondary);
+      border-color: var(--border-color);
+    }
+    
+    [data-theme="dark"] .question {
+      background: var(--bg-tertiary);
+      border-color: var(--border-color);
+    }
+    
+    [data-theme="dark"] .options label {
+      background: var(--bg-primary);
+      border-color: var(--border-color);
+    }
+    
+    [data-theme="dark"] .options label:hover {
+      background: rgba(96, 165, 250, 0.1);
+      border-color: var(--accent);
+    }
+    
+    [data-theme="dark"] .options input[type="radio"]:checked + label {
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.1) 0%, rgba(96, 165, 250, 0.2) 100%);
+      border-color: var(--accent);
+    }
+    
+    [data-theme="dark"] blockquote {
+      background: var(--bg-tertiary);
+      border-left-color: var(--accent);
+    }
+    
+    [data-theme="dark"] input[type="text"],
+    [data-theme="dark"] input[type="email"] {
+      background: var(--bg-tertiary);
+      border-color: var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    [data-theme="dark"] .radar-chart circle {
+      stroke: var(--border-color);
+    }
+    
+    [data-theme="dark"] .radar-chart line {
+      stroke: var(--border-color);
+    }
+    
+    [data-theme="dark"] .radar-chart text {
+      fill: var(--text-secondary);
     }
   </style>
 <base target="_blank">
 </head>
 <body>
 
+<!-- Skip to main content for accessibility -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- Navigation -->
+<nav class="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-container">
+    <a href="Home.html" class="nav-link active">APGI Framework</a>
+    <a href="Dashboard-Acad.html" class="nav-link">Dashboard</a>
+    <a href="Quiz-Short.html" class="nav-link">Quiz</a>
+    <a href="Assessment.html" class="nav-link">Assessment</a>
+    <a href="PsyStates-Visualizer.html" class="nav-link">PsyStates Visualizer</a>
+    <a href="Consciousness-Visualization.html" class="nav-link">Consciousness</a>
+    <a href="State-Network-3d.html" class="nav-link">State Network 3D</a>
+    <a href="State-Network-Flow.html" class="nav-link">State Network</a>
+    
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false">
+      <span class="theme-icon" id="theme-icon" aria-hidden="true">🌙</span>
+      <span class="theme-text" id="theme-text">Dark</span>
+    </button>
+  </div>
+</nav>
+
 <!-- HERO -->
-<header class="hero">
+<header class="hero" role="banner">
   <div class="container">
-    <h1>Understand How Your Consciousness Works—And Learn to Adjust It</h1>
-    <p>The APGI Framework maps your unique consciousness signature across three dimensions: threshold sensitivity, interoceptive accuracy, and somatic bias. Discover yours in 3 minutes.</p>
-    <a href="#quiz" class="btn">Take the Free Assessment</a>
+    <h1 class="animate-fade-in">Understand How Your Consciousness Works—And Learn to Adjust It</h1>
+    <p class="lead animate-fade-in">The APGI Framework maps your unique consciousness signature across three dimensions: threshold sensitivity, interoceptive accuracy, and somatic bias. Discover yours in 3 minutes.</p>
+    <div class="animate-fade-in">
+      <a href="#quiz" class="btn hover-lift" role="button" aria-label="Take the free APGI consciousness assessment">Take the Free Assessment</a>
+    </div>
   </div>
 </header>
 
+<!-- MAIN CONTENT -->
+<main id="main-content" role="main">
+
 <!-- THE PROBLEM -->
-<section id="problem">
-  <div class="container">
-    <h2>Why Do You Think the Way You Do?</h2>
-    <p>You've probably wondered:</p>
-    <ul>
+<section id="problem" aria-labelledby="problem-heading">
+  <div class="container section-content">
+    <h2 id="problem-heading" class="animate-slide-in">Why Do You Think the Way You Do?</h2>
+    <p class="lead animate-slide-in">You've probably wondered:</p>
+    <ul class="animate-slide-in" role="list">
       <li>Why meditation feels different every time</li>
       <li>Why some decisions feel "right" in your gut while others require endless analysis</li>
       <li>Why you're easily distracted in some contexts but deeply focused in others</li>
       <li>Why certain emotions feel overwhelming while others barely register</li>
     </ul>
-    <p>Most consciousness research offers descriptions, not explanations. APGI gives you both.</p>
+    <p class="lead animate-slide-in">Most consciousness research offers descriptions, not explanations. APGI gives you both.</p>
   </div>
 </section>
 
 <!-- THE FRAMEWORK -->
-<section id="framework">
-  <div class="container">
-    <h2>The Three Dimensions of Consciousness</h2>
+<section id="framework" aria-labelledby="framework-heading">
+  <div class="container section-content">
+    <h2 id="framework-heading" class="animate-slide-in">The Three Dimensions of Consciousness</h2>
 
-    <p>What if consciousness isn't a thing you <em>have</em>, but a process your brain <em>runs</em>?</p>
+    <p class="lead animate-slide-in">What if consciousness isn't a thing you <em>have</em>, but a process your brain <em>runs</em>?</p>
 
-    <p>The APGI Framework (Active Predictive Global Integration) is a new model of consciousness based on a simple but powerful idea: <strong>Your brain is constantly predicting what comes next, and consciousness emerges when those predictions meet surprising new information.</strong></p>
+    <p class="animate-slide-in">The APGI Framework (Active Predictive Global Integration) is a new model of consciousness based on a simple but powerful idea: <strong>Your brain is constantly predicting what comes next, and consciousness emerges when those predictions meet surprising new information.</strong></p>
 
-    <p>You don't passively experience reality. Your brain generates a model of the world, compares it to incoming sensory data, and updates only when there's a mismatch—a prediction error. What crosses from unconscious processing into conscious awareness depends on three key dimensions:</p>
+    <p class="animate-slide-in">You don't passively experience reality. Your brain generates a model of the world, compares it to incoming sensory data, and updates only when there's a mismatch—a prediction error. What crosses from unconscious processing into conscious awareness depends on three key dimensions:</p>
 
-    <p><strong>1. Threshold Sensitivity</strong> — How easily information breaks into your awareness. Some people have a wide-open aperture (noticing everything); others have a narrow focus (deep concentration, fewer distractions).</p>
+    <p class="lead animate-slide-in"><strong>1. Threshold Sensitivity</strong> — How easily information breaks into your awareness. Some people have a wide-open aperture (noticing everything); others have a narrow focus (deep concentration, fewer distractions).</p>
 
-    <p><strong>2. Interoceptive Accuracy</strong> — How precisely you perceive your internal bodily states. Are you in tune with hunger, heartbeat, tension? Or do you override these signals until they're extreme?</p>
+    <p class="lead animate-slide-in"><strong>2. Interoceptive Accuracy</strong> — How precisely you perceive your internal bodily states. Are you in tune with hunger, heartbeat, tension? Or do you override these signals until they're extreme?</p>
 
-    <p><strong>3. Somatic Bias</strong> — How much your bodily sensations dominate your conscious experience. Do you make decisions based on "gut feelings," or through logical analysis? Do physical discomforts derail your focus, or barely register?</p>
+    <p class="lead animate-slide-in"><strong>3. Somatic Bias</strong> — How much your bodily sensations dominate your conscious experience. Do you make decisions based on "gut feelings," or through logical analysis? Do physical discomforts derail your focus, or barely register?</p>
 
-    <p>These three dimensions define your <strong>consciousness signature</strong>—your unique way of weighting sensory information, setting thresholds for awareness, and integrating bodily signals into thought.</p>
+    <p class="animate-slide-in">These three dimensions define your <strong>consciousness signature</strong>—your unique way of weighting sensory information, setting thresholds for awareness, and integrating bodily signals into thought.</p>
 
-    <p>The book explores the science behind APGI, walks through 24 chapters of applications (from meditation to decision-making to free will), and gives you practical protocols for adjusting each dimension based on what you need in any given moment.</p>
+    <p class="animate-slide-in">The book explores the science behind APGI, walks through 24 chapters of applications (from meditation to decision-making to free will), and gives you practical protocols for adjusting each dimension based on what you need in any given moment.</p>
 
-    <p><strong>The result?</strong> You stop wondering why you think the way you do—and start working <em>with</em> your consciousness architecture instead of against it.</p>
+    <p class="lead animate-slide-in"><strong>The result?</strong> You stop wondering why you think the way you do—and start working <em>with</em> your consciousness architecture instead of against it.</p>
 
-    <div class="diagram">
-      <img src="images/APGI-Framework-Diagram.png" alt="APGI-Framework-Diagram.png">
+    <div class="framework-diagram animate-fade-in" role="img" aria-label="APGI Framework Diagram">
+      <img src="images/APGI-Framework-Diagram.svg" alt="APGI Framework Diagram showing the three dimensions of consciousness: Threshold Sensitivity, Interoceptive Accuracy, and Somatic Bias" loading="lazy" width="800" height="600">
     </div>
   </div>
 </section>
@@ -604,12 +1239,12 @@
               <line x1="150" y1="150" x2="40.2" y2="195" stroke="#ddd" stroke-width="1"/>
               
               <!-- Data polygon -->
-              <polygon id="data-polygon" points="" fill="rgba(0, 102, 255, 0.3)" stroke="#0066ff" stroke-width="2"/>
+              <polygon id="data-polygon" points="150,30 150,270 150,270" fill="rgba(0, 102, 255, 0.3)" stroke="#0066ff" stroke-width="2"/>
               
               <!-- Data points -->
-              <circle id="point-threshold" cx="" cy="" r="4" fill="#0066ff"/>
-              <circle id="point-interoception" cx="" cy="" r="4" fill="#0066ff"/>
-              <circle id="point-somatic" cx="" cy="" r="4" fill="#0066ff"/>
+              <circle id="point-threshold" cx="150" cy="30" r="4" fill="#0066ff"/>
+              <circle id="point-interoception" cx="150" cy="270" r="4" fill="#0066ff"/>
+              <circle id="point-somatic" cx="150" cy="270" r="4" fill="#0066ff"/>
               
               <!-- Labels -->
               <text x="150" y="20" text-anchor="middle" font-size="12" fill="#333">Threshold</text>
@@ -645,7 +1280,7 @@
           <input type="email" name="email" placeholder="Your email" required>
           <button type="submit" class="btn">Send Me Chapter 11</button>
         </form>
-        <p class="privacy">We respect your inbox. One email per week, unsubscribe anytime. <a href="#">Privacy Policy</a></p>
+        <p class="privacy">We respect your inbox. One email per week, unsubscribe anytime. <a href="Privacy-Policy.html">Privacy Policy</a></p>
       </div>
     </div>
   </div>
@@ -654,7 +1289,7 @@
 <!-- SOCIAL PROOF -->
 <section class="testimonials">
   <div class="container">
-    <h2>What Readers Are Saying</h2>
+    <h2 class="section-title">What Readers Are Saying</h2>
 
     <blockquote>
       “Finally, a model that explains why my meditation practice varies so much day to day. The APGI assessment was eye-opening.”
@@ -675,37 +1310,43 @@
 
 <!-- AUTHOR -->
 <section id="author">
-  <div class="container">
-    <h2>About the Author</h2>
-    <p><strong>Dr. Michael Rivers</strong> is a cognitive neuroscientist specializing in predictive processing and consciousness research.</p>
+  <div class="container section-content">
+    <h2 class="animate-slide-in">About the Author</h2>
+    <p class="lead animate-slide-in"><strong>Dr. Michael Rivers</strong> is a cognitive neuroscientist specializing in predictive processing and consciousness research.</p>
 
-    <p>With 12 years of research at the intersection of Bayesian brain theory and phenomenology, Dr. Rivers developed the APGI Framework to answer a personal question: Why did his meditation practice feel so inconsistent? This curiosity led to a decade-long investigation into the architecture of conscious awareness.</p>
+    <p class="animate-slide-in">With 12 years of research at the intersection of Bayesian brain theory and phenomenology, Dr. Rivers developed the APGI Framework to answer a personal question: Why did his meditation practice feel so inconsistent? This curiosity led to a decade-long investigation into the architecture of conscious awareness.</p>
 
-    <p>Dr. Rivers holds a PhD in Cognitive Neuroscience from MIT and has published research on prediction error processing in <em>Nature Neuroscience</em> and <em>Consciousness and Cognition</em>. His work has been featured in <em>Scientific American</em>, <em>Quanta Magazine</em>, and <em>The Neuroscience Podcast</em>.</p>
+    <p class="animate-slide-in">Dr. Rivers holds a PhD in Cognitive Neuroscience from MIT and has published research on prediction error processing in <em>Nature Neuroscience</em> and <em>Consciousness and Cognition</em>. His work has been featured in <em>Scientific American</em>, <em>Quanta Magazine</em>, and <em>The Neuroscience Podcast</em>.</p>
 
-    <p>When not researching consciousness, Dr. Rivers teaches mindfulness-based cognitive therapy and maintains a daily meditation practice (which still has foggy days—now he knows why).</p>
+    <p class="lead animate-slide-in">When not researching consciousness, Dr. Rivers teaches mindfulness-based cognitive therapy and maintains a daily meditation practice (which still has foggy days—now he knows why).</p>
 
-    <p><strong>Connect:</strong> <a href="mailto:michael@apgiframework.com">michael@apgiframework.com</a> | <a href="#">@DrMichaelRivers</a></p>
+    <p class="animate-slide-in"><strong>Connect:</strong> <a href="mailto:michael@apgiframework.com">michael@apgiframework.com</a> | <a href="https://twitter.com/DrMichaelRivers" target="_blank">@DrMichaelRivers</a></p>
   </div>
 </section>
 
 <!-- FINAL CTA -->
-<section id="cta" style="text-align:center;">
-  <div class="container">
-    <h2>Ready to Explore the Full Framework?</h2>
-    <p>24 chapters | Research-backed | Practical applications</p>
-    <a href="#" class="btn">Get the Book</a>
-    <a href="#" class="btn btn-secondary" style="margin-left:0.5rem;">Get Book + App Bundle</a>
+<section id="cta">
+  <div class="container section-content">
+    <h2 class="animate-slide-in">Ready to Explore the Full Framework?</h2>
+    <p class="lead animate-slide-in">24 chapters | Research-backed | Practical applications</p>
+    <div class="animate-fade-in">
+      <a href="Book-Available-Now.html" class="btn hover-lift">Get the Book</a>
+      <a href="Book-Available-Now.html" class="btn btn-secondary hover-lift" style="margin-left:0.5rem;">Get Book + App Bundle</a>
+    </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer role="contentinfo">
   <div class="container">
-    <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="#">Contact</a><br>
-    © 2025 APGI Framework. All rights reserved.
+    <nav aria-label="Footer navigation">
+      <a href="Privacy-Policy.html">Privacy Policy</a> · <a href="Terms-of-Service.html">Terms of Service</a> · <a href="mailto:contact@apgiframework.com">Contact</a>
+    </nav>
+    <p>© 2025 APGI Framework. All rights reserved.</p>
   </div>
 </footer>
+
+</main>
 
 <script>
   // Quiz data
@@ -884,66 +1525,183 @@
     questionsContainer.appendChild(questionDiv);
   });
 
-  // Update progress bar
+  // Update progress bar with enhanced animation
   function updateProgress() {
     const total = questions.length;
     const answered = Array.from(questionsContainer.querySelectorAll('input[type="radio"]:checked')).length;
-    progressFill.style.width = `${(answered / total) * 100}%`;
+    const percentage = (answered / total) * 100;
+    
+    progressFill.style.width = `${percentage}%`;
+    
+    // Add visual feedback for answered questions
+    document.querySelectorAll('.question').forEach((question, index) => {
+      const isAnswered = question.querySelector('input[type="radio"]:checked');
+      if (isAnswered) {
+        question.classList.add('answered');
+      } else {
+        question.classList.remove('answered');
+      }
+    });
+    
+    // Enable/disable submit button based on completion
+    const submitBtn = document.getElementById('submit-quiz');
+    if (answered === total) {
+      submitBtn.style.background = 'var(--success)';
+      submitBtn.textContent = 'View My Results';
+      submitBtn.classList.add('pulse-animation');
+    } else {
+      submitBtn.style.background = '';
+      submitBtn.textContent = `Answer ${total - answered} more question${total - answered === 1 ? '' : 's'}`;
+      submitBtn.classList.remove('pulse-animation');
+    }
   }
+  
+  // Add pulse animation class
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+  `;
+  document.head.appendChild(style);
 
   questionsContainer.addEventListener('change', updateProgress);
 
-  // Handle quiz submission
+  // Handle quiz submission with enhanced animations
   quizForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const data = new FormData(quizForm);
-    const answers = [];
-    for (let i = 0; i < questions.length; i++) {
-      answers.push(parseInt(data.get(`q${i}`)));
+    
+    // Check if all questions are answered
+    const total = questions.length;
+    const answered = Array.from(questionsContainer.querySelectorAll('input[type="radio"]:checked')).length;
+    
+    if (answered < total) {
+      // Shake animation for incomplete quiz
+      quizForm.style.animation = 'shake 0.5s';
+      setTimeout(() => {
+        quizForm.style.animation = '';
+      }, 500);
+      
+      // Highlight unanswered questions
+      document.querySelectorAll('.question').forEach((question, index) => {
+        const isAnswered = question.querySelector('input[type="radio"]:checked');
+        if (!isAnswered) {
+          question.style.animation = 'pulse 1s 2';
+          setTimeout(() => {
+            question.style.animation = '';
+          }, 2000);
+        }
+      });
+      
+      return;
     }
+    
+    // Show loading state
+    const submitBtn = document.getElementById('submit-quiz');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Calculating your signature...';
+    submitBtn.disabled = true;
+    
+    // Simulate processing time for better UX
+    setTimeout(() => {
+      const data = new FormData(quizForm);
+      const answers = [];
+      for (let i = 0; i < questions.length; i++) {
+        answers.push(parseInt(data.get(`q${i}`)));
+      }
 
-    // Calculate scores
-    const threshold = answers.slice(0, 4).reduce((a, b) => a + b, 0);
-    const interoception = answers.slice(4, 8).reduce((a, b) => a + b, 0);
-    const somatic = answers.slice(8, 12).reduce((a, b) => a + b, 0);
+      // Calculate scores
+      const threshold = answers.slice(0, 4).reduce((a, b) => a + b, 0);
+      const interoception = answers.slice(4, 8).reduce((a, b) => a + b, 0);
+      const somatic = answers.slice(8, 12).reduce((a, b) => a + b, 0);
 
-    // Determine archetype
-    let archetypeKey = "PRAGMATIST";
-    if (threshold <= 8 && interoception >= 12 && somatic >= 12) archetypeKey = "INTUITIVE";
-    else if (threshold >= 12 && interoception <= 8 && somatic <= 8) archetypeKey = "SENSOR";
-    else if (threshold >= 12 && interoception >= 12 && somatic >= 12) archetypeKey = "EMPATH";
-    else if (threshold <= 8 && interoception >= 8 && somatic <= 8) archetypeKey = "ANALYST";
+      // Determine archetype
+      let archetypeKey = "PRAGMATIST";
+      if (threshold <= 8 && interoception >= 12 && somatic >= 12) archetypeKey = "INTUITIVE";
+      else if (threshold >= 12 && interoception <= 8 && somatic <= 8) archetypeKey = "SENSOR";
+      else if (threshold >= 12 && interoception >= 12 && somatic >= 12) archetypeKey = "EMPATH";
+      else if (threshold <= 8 && interoception >= 8 && somatic <= 8) archetypeKey = "ANALYST";
 
-    const archetype = archetypes[archetypeKey];
+      const archetype = archetypes[archetypeKey];
 
-    // Display results
-    document.getElementById('result-scores').innerHTML = `
-      <p><strong>Threshold Sensitivity:</strong> ${threshold}/16 (${threshold <= 7 ? 'LOW' : threshold <= 11 ? 'MODERATE' : threshold <= 14 ? 'HIGH' : 'VERY HIGH'})</p>
-      <p><strong>Interoceptive Accuracy:</strong> ${interoception}/16 (${interoception <= 7 ? 'LOW' : interoception <= 11 ? 'MODERATE' : interoception <= 14 ? 'HIGH' : 'VERY HIGH'})</p>
-      <p><strong>Somatic Bias:</strong> ${somatic}/16 (${somatic <= 7 ? 'LOW' : somatic <= 11 ? 'MODERATE' : somatic <= 14 ? 'HIGH' : 'VERY HIGH'})</p>
-    `;
+      // Display results with enhanced styling
+      document.getElementById('result-scores').innerHTML = `
+        <div class="score-grid">
+          <div class="score-item">
+            <span class="score-label">Threshold Sensitivity</span>
+            <span class="score-value">${threshold}/16</span>
+            <span class="score-level ${getScoreLevel(threshold)}">${getScoreText(threshold)}</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Interoceptive Accuracy</span>
+            <span class="score-value">${interoception}/16</span>
+            <span class="score-level ${getScoreLevel(interoception)}">${getScoreText(interoception)}</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Somatic Bias</span>
+            <span class="score-value">${somatic}/16</span>
+            <span class="score-level ${getScoreLevel(somatic)}">${getScoreText(somatic)}</span>
+          </div>
+        </div>
+      `;
 
-    // Update visualization
-    updateRadarChart(threshold, interoception, somatic);
+      // Update visualization
+      updateRadarChart(threshold, interoception, somatic);
 
-    document.getElementById('result-archetype').innerHTML = `
-      <h3>Your Primary Archetype: ${archetype.name}</h3>
-      <p>${archetype.description}</p>
-      <h4>Strengths:</h4>
-      <ul>${archetype.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
-      <h4>Challenges:</h4>
-      <ul>${archetype.challenges.map(c => `<li>${c}</li>`).join('')}</ul>
-    `;
+      document.getElementById('result-archetype').innerHTML = `
+        <div class="archetype-header">
+          <h3>Your Primary Archetype: ${archetype.name}</h3>
+        </div>
+        <div class="archetype-description">
+          <p>${archetype.description}</p>
+        </div>
+        <div class="archetype-details">
+          <div class="strengths-section">
+            <h4>💪 Strengths</h4>
+            <ul>${archetype.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+          </div>
+          <div class="challenges-section">
+            <h4>🎯 Growth Areas</h4>
+            <ul>${archetype.challenges.map(c => `<li>${c}</li>`).join('')}</ul>
+          </div>
+        </div>
+      `;
 
-    document.getElementById('result-tips').innerHTML = `
-      <h4>APGI Optimization Tips:</h4>
-      <ul>${archetype.tips.map(t => `<li>${t}</li>`).join('')}</ul>
-    `;
+      document.getElementById('result-tips').innerHTML = `
+        <div class="tips-section">
+          <h4>🚀 APGI Optimization Tips</h4>
+          <ul>${archetype.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+        </div>
+      `;
 
-    quizForm.style.display = 'none';
-    resultDiv.style.display = 'block';
-    resultDiv.scrollIntoView({ behavior: 'smooth' });
+      quizForm.style.display = 'none';
+      resultDiv.style.display = 'block';
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Reset button
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }, 1500);
   });
+  
+  // Helper functions for score display
+  function getScoreLevel(score) {
+    if (score <= 7) return 'low';
+    if (score <= 11) return 'moderate';
+    if (score <= 14) return 'high';
+    return 'very-high';
+  }
+  
+  function getScoreText(score) {
+    if (score <= 7) return 'LOW';
+    if (score <= 11) return 'MODERATE';
+    if (score <= 14) return 'HIGH';
+    return 'VERY HIGH';
+  }
 
   // Handle email form
   emailForm.addEventListener('submit', (e) => {
@@ -960,15 +1718,15 @@
     const somaticPercent = (somatic / 16) * 100;
     
     // Calculate positions (120 degrees apart)
-    // Threshold at top (90 degrees)
+    // Threshold at top (90 degrees = π/2 radians)
     const thresholdX = 150 + (thresholdPercent / 100) * 120 * Math.cos(Math.PI / 2);
     const thresholdY = 150 - (thresholdPercent / 100) * 120 * Math.sin(Math.PI / 2);
     
-    // Interoception at bottom right (210 degrees)
+    // Interoception at bottom right (210 degrees = 7π/6 radians)
     const interoceptionX = 150 + (interoceptionPercent / 100) * 120 * Math.cos(7 * Math.PI / 6);
     const interoceptionY = 150 - (interoceptionPercent / 100) * 120 * Math.sin(7 * Math.PI / 6);
     
-    // Somatic at bottom left (330 degrees)
+    // Somatic at bottom left (330 degrees = 11π/6 radians)
     const somaticX = 150 + (somaticPercent / 100) * 120 * Math.cos(11 * Math.PI / 6);
     const somaticY = 150 - (somaticPercent / 100) * 120 * Math.sin(11 * Math.PI / 6);
     
@@ -989,6 +1747,118 @@
     document.getElementById('interoception-value').textContent = `${interoceptionPercent.toFixed(0)}%`;
     document.getElementById('somatic-value').textContent = `${somaticPercent.toFixed(0)}%`;
   }
+  
+  // Theme toggle functionality
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const themeText = document.getElementById('theme-text');
+  const html = document.documentElement;
+  
+  // Initialize theme from localStorage or system preference
+  const initTheme = () => {
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    
+    if (theme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      themeIcon.textContent = '☀️';
+      themeText.textContent = 'Light';
+    } else {
+      html.removeAttribute('data-theme');
+      themeIcon.textContent = '🌙';
+      themeText.textContent = 'Dark';
+    }
+  };
+  
+  // Toggle theme
+  themeToggle.addEventListener('click', () => {
+    const isDark = html.hasAttribute('data-theme');
+    
+    if (isDark) {
+      html.removeAttribute('data-theme');
+      themeIcon.textContent = '🌙';
+      themeText.textContent = 'Dark';
+      localStorage.setItem('theme', 'light');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      themeIcon.textContent = '☀️';
+      themeText.textContent = 'Light';
+      localStorage.setItem('theme', 'dark');
+    }
+    
+    // Add animation class
+    themeToggle.classList.add('switching');
+    setTimeout(() => {
+      themeToggle.classList.remove('switching');
+    }, 600);
+  });
+  
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      initTheme();
+    }
+  });
+  
+  // Initialize on load
+  initTheme();
+
+  // Handle email form submission
+  emailForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(emailForm);
+    const email = formData.get('email');
+    const name = formData.get('fname') || 'Friend';
+    
+    // Store submission data (in a real app, this would go to a backend)
+    const submission = {
+      name: name,
+      email: email,
+      timestamp: new Date().toISOString(),
+      quizResults: {
+        threshold: document.querySelector('#threshold-value')?.textContent || '-',
+        interoception: document.querySelector('#interoception-value')?.textContent || '-',
+        somatic: document.querySelector('#somatic-value')?.textContent || '-'
+      }
+    };
+    
+    // Save to localStorage for demo purposes
+    let submissions = JSON.parse(localStorage.getItem('apgi_submissions') || '[]');
+    submissions.push(submission);
+    localStorage.setItem('apgi_submissions', JSON.stringify(submissions));
+    
+    // Show success message
+    const originalButton = emailForm.querySelector('button[type="submit"]');
+    const originalText = originalButton.textContent;
+    originalButton.textContent = '✓ Sent! Check your email';
+    originalButton.style.background = 'var(--success)';
+    originalButton.disabled = true;
+    
+    // Reset form
+    emailForm.reset();
+    
+    // Show confirmation message
+    const confirmationDiv = document.createElement('div');
+    confirmationDiv.innerHTML = `
+      <div style="margin-top: 1rem; padding: 1rem; background: var(--success); color: white; border-radius: var(--radius-md); text-align: center;">
+        <strong>Thank you, ${name}!</strong><br>
+        Chapter 11 has been sent to ${email}.<br>
+        <small>(Demo: In production, this would be a real email delivery)</small>
+      </div>
+    `;
+    emailForm.parentNode.appendChild(confirmationDiv);
+    
+    // Reset button after 3 seconds
+    setTimeout(() => {
+      originalButton.textContent = originalText;
+      originalButton.style.background = '';
+      originalButton.disabled = false;
+      confirmationDiv.remove();
+    }, 5000);
+    
+  });
 </script>
 
 </body>

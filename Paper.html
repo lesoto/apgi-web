@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="APGI Framework - Allostatic Precision-Gated Ignition Framework of Conscious Access. A theoretical framework integrating predictive processing and thermodynamic constraints.">
+    <meta name="keywords" content="consciousness, neuroscience, APGI, predictive processing, thermodynamics, allostasis">
+    <title>APGI Framework - Principles of Conscious Access</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           CSS CUSTOM PROPERTIES - LIGHT & DARK THEMES
+           ============================================ */
+        :root {
+            /* Light Theme */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: rgba(226, 232, 240, 0.8);
+            --border-color: #e2e8f0;
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            --gradient-start: #2563eb;
+            --gradient-mid: #4f46e5;
+            --gradient-end: #7c3aed;
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark {
+            /* Dark Theme */
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --card-border: rgba(71, 85, 105, 0.5);
+            --border-color: #334155;
+            --nav-bg: rgba(15, 23, 42, 0.8);
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --gradient-start: #3b82f6;
+            --gradient-mid: #6366f1;
+            --gradient-end: #8b5cf6;
+        }
+        
+        /* ============================================
+           BASE STYLES & TYPOGRAPHY
+           ============================================ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.7;
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-feature-settings: normal;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5em;
+        }
+        
+        h1 { 
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 0.5rem 0;
+            margin-bottom: 1rem;
+        }
+        
+        h2 { 
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        h3 { 
+            font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        
+        strong {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* ============================================
+           LAYOUT & CONTAINERS
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        section {
+            margin-bottom: 4rem;
+        }
+        
+        /* ============================================
+           GLASS MORPHISM CARDS
+           ============================================ */
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg), 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .glass-panel:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-color: var(--accent-color);
+        }
+        
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        nav {
+            position: fixed;
+            width: 100%;
+            z-index: 40;
+            top: 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        nav.scrolled {
+            background: var(--nav-bg);
+            border-bottom-color: var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+        }
+        
+        .nav-brand .logo-icon {
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .nav-menu {
+            display: none;
+            gap: 0.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .nav-menu {
+                display: flex;
+            }
+        }
+        
+        .nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .nav-item:hover,
+        .nav-item:focus {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-1px);
+            outline: none;
+        }
+        
+        .nav-item.current {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--gradient-mid));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.4);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover,
+        .btn-primary:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.5);
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .btn-secondary:hover,
+        .btn-secondary:focus {
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-md);
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+        }
+        
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(40px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .slide-up {
+            animation: slideUp 1s ease-out;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .animate-ping {
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        
+        /* ============================================
+           ACCESSIBILITY
+           ============================================ */
+        .skip-link {
+            position: absolute;
+            top: -60px;
+            left: 1rem;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            z-index: 1000;
+            transition: top 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .skip-link:focus {
+            top: 1rem;
+            outline: 2px solid var(--accent-hover);
+            outline-offset: 2px;
+        }
+        
+        *:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 2px;
+            border-radius: var(--radius-sm);
+        }
+        
+        /* ============================================
+           TOAST NOTIFICATION
+           ============================================ */
+        #toast {
+            position: fixed;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            transform: translateY(5rem);
+            opacity: 0;
+            transition: all 0.3s ease;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        #main-content {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 5rem;
+            overflow: hidden;
+        }
+        
+        #neuralCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                var(--bg-primary) 0%,
+                transparent 30%,
+                transparent 70%,
+                var(--bg-primary) 100%
+            );
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 20;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        @media (min-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+        
+        .badge-primary {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+        
+        .dark .badge-primary {
+            color: #a5b4fc;
+        }
+        
+        .badge-secondary {
+            background: rgba(71, 85, 105, 0.3);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            color: var(--text-muted);
+        }
+        
+        .badge-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background: currentColor;
+        }
+        
+        /* ============================================
+           GRID LAYOUTS
+           ============================================ */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* ============================================
+           IGNITION CARDS
+           ============================================ */
+        .ignition-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 2rem;
+            border-radius: var(--radius-xl);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .ignition-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-color);
+        }
+        
+        .icon-box {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .ignition-card:hover .icon-box {
+            transform: scale(1.1);
+        }
+        
+        /* ============================================
+           MOBILE MENU
+           ============================================ */
+        #mobile-menu {
+            display: none;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 100%;
+        }
+        
+        #mobile-menu.show {
+            display: block;
+        }
+        
+        .mobile-menu-items {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            gap: 1rem;
+        }
+        
+        .mobile-menu-items a {
+            color: var(--text-secondary);
+            padding: 0.75rem;
+            text-align: center;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .mobile-menu-items a:hover,
+        .mobile-menu-items a:focus {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        /* ============================================
+           UTILITY CLASSES
+           ============================================ */
+        .text-center { text-align: center; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .hidden { display: none; }
+        
+        @media (min-width: 640px) {
+            .sm\:flex { display: flex; }
+            .sm\:hidden { display: none; }
+        }
+        
+        @media (min-width: 768px) {
+            .md\:flex { display: flex; }
+            .md\:hidden { display: none; }
+            .md\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .lg\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .lg\:block { display: block; }
+            .lg\:flex-row { flex-direction: row; }
+        }
+        
+        .max-w-3xl { max-width: 48rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-6xl { max-width: 72rem; }
+        .max-w-7xl { max-width: 80rem; }
+        
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+        .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+        
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        .space-y-8 > * + * { margin-top: 2rem; }
+        
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+        .gap-12 { gap: 3rem; }
+        
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mb-16 { margin-bottom: 4rem; }
+        .mb-20 { margin-bottom: 5rem; }
+        
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-12 { margin-top: 3rem; }
+        
+        .pt-4 { padding-top: 1rem; }
+        .pt-6 { padding-top: 1.5rem; }
+        .pt-8 { padding-top: 2rem; }
+        
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        
+        .rounded-lg { border-radius: var(--radius-lg); }
+        .rounded-xl { border-radius: var(--radius-xl); }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-full { border-radius: 9999px; }
+        
+        .flex { display: flex; }
+        .inline-flex { display: inline-flex; }
+        .flex-col { flex-direction: column; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        
+        .border { border-width: 1px; }
+        .border-t { border-top-width: 1px; }
+        .border-b { border-bottom-width: 1px; }
+        .border-y { border-top-width: 1px; border-bottom-width: 1px; }
+        .border-l-4 { border-left-width: 4px; }
+        
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-5xl { font-size: 3rem; }
+        .text-7xl { font-size: 4.5rem; }
+        
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+        .font-normal { font-weight: 400; }
+        
+        .uppercase { text-transform: uppercase; }
+        .tracking-wider { letter-spacing: 0.05em; }
+        .tracking-widest { letter-spacing: 0.1em; }
+        .tracking-tight { letter-spacing: -0.025em; }
+        .tracking-tighter { letter-spacing: -0.05em; }
+        
+        .leading-relaxed { line-height: 1.625; }
+        .leading-7 { line-height: 1.75rem; }
+        .leading-tight { line-height: 1.25; }
+        
+        .overflow-x-auto { overflow-x: auto; }
+        .overflow-hidden { overflow: hidden; }
+        
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+        
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        
+        .z-0 { z-index: 0; }
+        .z-10 { z-index: 10; }
+        .z-20 { z-index: 20; }
+        .z-30 { z-index: 30; }
+        .z-40 { z-index: 40; }
+        .z-50 { z-index: 50; }
+        
+        .pointer-events-none { pointer-events: none; }
+        
+        .flex-shrink-0 { flex-shrink: 0; }
+        
+        .aspect-\[16\/9\] { aspect-ratio: 16 / 9; }
+        
+        .transition-all { transition: all 0.3s ease; }
+        .transition-colors { transition: color 0.2s ease, background-color 0.2s ease; }
+        .transition-transform { transition: transform 0.3s ease; }
+        
+        .hover\:scale-110:hover { transform: scale(1.1); }
+        .hover\:scale-\[1\.01\]:hover { transform: scale(1.01); }
+        .hover\:translate-y-1:hover { transform: translateY(0.25rem); }
+        .hover\:translate-y-0\.5:hover { transform: translateY(0.125rem); }
+        .hover\:underline:hover { text-decoration: underline; }
+        
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+        
+        /* ============================================
+           COLOR UTILITIES
+           ============================================ */
+        .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); }
+        .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+        .bg-gradient-to-b { background-image: linear-gradient(to bottom, var(--tw-gradient-stops)); }
+        
+        .from-indigo-900\/30 { --tw-gradient-from: rgba(49, 46, 129, 0.3); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(49, 46, 129, 0)); }
+        .to-purple-900\/30 { --tw-gradient-to: rgba(88, 28, 135, 0.3); }
+        .from-indigo-900\/20 { --tw-gradient-from: rgba(49, 46, 129, 0.2); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(49, 46, 129, 0)); }
+        .from-cyan-400 { --tw-gradient-from: #22d3ee; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(34, 211, 238, 0)); }
+        .to-indigo-600 { --tw-gradient-to: #4f46e5; }
+        
+        /* Border colors */
+        .border-indigo-500\/20 { border-color: rgba(99, 102, 241, 0.2); }
+        .border-yellow-500 { border-color: #eab308; }
+        .border-blue-500 { border-color: #3b82f6; }
+        .border-purple-500 { border-color: #a855f7; }
+        .border-red-500 { border-color: #ef4444; }
+        .border-amber-500 { border-color: #f59e0b; }
+        .border-violet-500 { border-color: #8b5cf6; }
+        .border-rose-500 { border-color: #f43f5e; }
+        
+        /* Background colors */
+        .bg-indigo-500\/10 { background-color: rgba(99, 102, 241, 0.1); }
+        .bg-rose-500\/10 { background-color: rgba(244, 63, 94, 0.1); }
+        .bg-amber-500\/10 { background-color: rgba(245, 158, 11, 0.1); }
+        .bg-cyan-500\/10 { background-color: rgba(6, 182, 212, 0.1); }
+        .bg-emerald-500\/10 { background-color: rgba(16, 185, 129, 0.1); }
+        .bg-blue-500\/10 { background-color: rgba(59, 130, 246, 0.1); }
+        .bg-violet-500\/10 { background-color: rgba(139, 92, 246, 0.1); }
+        .bg-purple-500\/10 { background-color: rgba(168, 85, 247, 0.1); }
+        .bg-yellow-500\/10 { background-color: rgba(234, 179, 8, 0.1); }
+        .bg-red-500\/10 { background-color: rgba(239, 68, 68, 0.1); }
+        .bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.2); }
+        .bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.2); }
+        .bg-emerald-500\/20 { background-color: rgba(16, 185, 129, 0.2); }
+        
+        /* Text colors */
+        .text-indigo-300 { color: #a5b4fc; }
+        .text-indigo-400 { color: #818cf8; }
+        .text-cyan-400 { color: #22d3ee; }
+        .text-rose-300 { color: #fda4af; }
+        .text-rose-400 { color: #fb7185; }
+        .text-amber-300 { color: #fcd34d; }
+        .text-amber-400 { color: #fbbf24; }
+        .text-yellow-300 { color: #fde047; }
+        .text-yellow-400 { color: #facc15; }
+        .text-blue-300 { color: #93c5fd; }
+        .text-blue-400 { color: #60a5fa; }
+        .text-violet-300 { color: #c4b5fd; }
+        .text-violet-400 { color: #a78bfa; }
+        .text-purple-300 { color: #d8b4fe; }
+        .text-purple-400 { color: #c084fc; }
+        .text-emerald-400 { color: #34d399; }
+        .text-red-400 { color: #f87171; }
+        
+        /* Icon sizes */
+        .w-4 { width: 1rem; }
+        .h-4 { height: 1rem; }
+        .w-5 { width: 1.25rem; }
+        .h-5 { height: 1.25rem; }
+        .w-6 { width: 1.5rem; }
+        .h-6 { height: 1.5rem; }
+        .w-7 { width: 1.75rem; }
+        .h-7 { height: 1.75rem; }
+        .w-8 { width: 2rem; }
+        .h-8 { height: 2rem; }
+        .w-10 { width: 2.5rem; }
+        .h-10 { height: 2.5rem; }
+        .w-12 { width: 3rem; }
+        .h-12 { height: 3rem; }
+        .w-14 { width: 3.5rem; }
+        .h-14 { height: 3.5rem; }
+        .w-20 { width: 5rem; }
+        .w-24 { width: 6rem; }
+        .h-1 { height: 0.25rem; }
+        .w-2 { width: 0.5rem; }
+        .h-2 { height: 0.5rem; }
+        .w-3 { width: 0.75rem; }
+        .h-3 { height: 0.75rem; }
+        
+        /* Light mode overrides */
+        html:not(.dark) .text-white { color: var(--text-primary); }
+        html:not(.dark) .text-slate-300,
+        html:not(.dark) .text-slate-400 { color: var(--text-secondary); }
+        html:not(.dark) .text-slate-500,
+        html:not(.dark) .text-slate-600 { color: var(--text-muted); }
+        html:not(.dark) .text-slate-700 { color: var(--text-primary); }
+        
+        html:not(.dark) .bg-slate-800,
+        html:not(.dark) .bg-slate-900 { background-color: var(--bg-secondary); }
+        html:not(.dark) .bg-slate-700 { background-color: var(--bg-tertiary); }
+        html:not(.dark) .bg-slate-800\/40,
+        html:not(.dark) .bg-slate-800\/50 { background-color: rgba(226, 232, 240, 0.5); }
+        html:not(.dark) .bg-slate-900\/50 { background-color: rgba(241, 245, 249, 0.5); }
+        html:not(.dark) .bg-\[\#0b1120\] { background-color: var(--bg-secondary); }
+        
+        html:not(.dark) .border-slate-700,
+        html:not(.dark) .border-slate-800 { border-color: var(--border-color); }
+        html:not(.dark) .border-slate-700\/50,
+        html:not(.dark) .border-slate-800\/50 { border-color: rgba(226, 232, 240, 0.5); }
+        
+        /* Responsive text */
+        @media (max-width: 768px) {
+            .text-5xl { font-size: 2.5rem; }
+            .text-7xl { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div id="toast" role="alert" aria-live="polite">
+        <i data-lucide="check-circle" class="w-5 h-5"></i>
+        <span id="toast-message">Citation copied to clipboard</span>
+    </div>
+
+    <nav id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo-icon">
+                    <i data-lucide="brain" class="w-5 h-5"></i>
+                </div>
+                <span>APGI<span style="color: var(--text-muted); font-weight: 400;">.framework</span></span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="#abstract" class="nav-item">Abstract</a>
+                <a href="#concepts" class="nav-item">Key Concepts</a>
+                <a href="#contributions" class="nav-item">Contributions</a>
+                <a href="#architecture" class="nav-item">Architecture</a>
+                <a href="#clinical" class="nav-item">Clinical</a>
+                <a href="#predictions" class="nav-item">Predictions</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors" aria-label="Toggle dark mode" style="background: transparent; border: none; cursor: pointer;">
+                    <i data-lucide="moon" class="w-5 h-5 text-slate-700 dark:text-slate-300 hidden dark:block"></i>
+                    <i data-lucide="sun" class="w-5 h-5 text-slate-700 dark:text-slate-300 dark:hidden"></i>
+                </button>
+                <a href="#access" class="hidden sm:flex btn-primary text-sm px-6 py-2.5" style="padding: 0.625rem 1.5rem;">
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                    Read Paper
+                </a>
+                <button class="md:hidden text-white" id="mobile-menu-btn" aria-label="Toggle mobile menu" aria-expanded="false" style="background: transparent; border: none; cursor: pointer; color: var(--text-primary);">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" role="menu">
+            <div class="mobile-menu-items">
+                <a href="#abstract" role="menuitem">Abstract</a>
+                <a href="#concepts" role="menuitem">Key Concepts</a>
+                <a href="#contributions" role="menuitem">Contributions</a>
+                <a href="#architecture" role="menuitem">Architecture</a>
+                <a href="#clinical" role="menuitem">Clinical</a>
+                <a href="#predictions" role="menuitem">Predictions</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="main-content" class="fade-in">
+        <canvas id="neuralCanvas" aria-hidden="true"></canvas>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <div class="space-y-8">
+                <div class="flex flex-wrap gap-3">
+                    <div class="badge badge-primary">
+                        <span class="badge-dot animate-pulse"></span>
+                        Theoretical Framework
+                    </div>
+                    <div class="badge badge-secondary">
+                        2025
+                    </div>
+                </div>
+                
+                <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+                    <span class="gradient-text" style="display: block; background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Allostatic Precision-Gated Ignition</span>
+                    <span class="block text-4xl lg:text-5xl mt-4" style="color: var(--text-primary); -webkit-text-fill-color: initial;">Framework of Conscious Access</span>
+                </h1>
+                
+                <p class="text-lg max-w-xl leading-relaxed" style="color: var(--text-secondary);">
+                    <strong>Allostatic Precision-Gated Ignition Framework</strong> posits that consciousness emerges as a metabolically expensive, allostatically gated control mechanism activated when precision-weighted prediction errors threaten homeostatic integrity.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                    <a href="#access" class="btn-primary">
+                        <span>Access Full Paper</span>
+                        <i data-lucide="arrow-down" class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
+                    </a>
+                    <a href="#architecture" class="btn-secondary">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                        View Architecture
+                    </a>
+                </div>
+
+                <div class="pt-4 border-t" style="border-color: var(--border-color);">
+                    <div class="flex flex-wrap gap-2 text-xs font-mono" style="color: var(--text-muted);">
+                        <span class="px-2 py-1 rounded" style="background: var(--bg-secondary);">Consciousness Theory</span>
+                        <span class="px-2 py-1 rounded" style="background: var(--bg-secondary);">Predictive Processing</span>
+                        <span class="px-2 py-1 rounded" style="background: var(--bg-secondary);">Thermodynamics</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hidden lg:block" id="abstract">
+                <div class="glass-panel p-8 rounded-2xl relative overflow-hidden shadow-2xl">
+                    <div class="absolute top-0 right-0 p-4 opacity-5">
+                        <i data-lucide="brain-circuit" class="w-40 h-40" style="width: 10rem; height: 10rem;"></i>
+                    </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-indigo-400 font-mono text-sm tracking-wider">ABSTRACT</h3>
+                        <div class="flex gap-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500/20 border border-rose-500/50" style="width: 0.75rem; height: 0.75rem; border-radius: 9999px; background-color: rgba(244, 63, 94, 0.2); border: 1px solid rgba(244, 63, 94, 0.5);"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500/20 border border-amber-500/50" style="width: 0.75rem; height: 0.75rem; border-radius: 9999px; background-color: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5);"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500/20 border border-emerald-500/50" style="width: 0.75rem; height: 0.75rem; border-radius: 9999px; background-color: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5);"></span>
+                        </div>
+                    </div>
+                    <div class="space-y-4 text-sm leading-7" style="color: var(--text-secondary);">
+                        <p>
+                            <strong style="color: var(--text-primary);">The APGI framework proposes that consciousness functions as a metabolically expensive, allostatically gated control mechanism</strong> activated when precision-weighted interoceptive prediction errors exceed dynamic thresholds signaling threats to homeostatic integrity.
+                        </p>
+                        <p>
+                            APGI bridges thermodynamic principles, computational neuroscience, and biological cognition into a unified, mathematically rigorous framework.
+                        </p>
+                        <p>
+                            We demonstrate how precision weighting corresponds to adaptive time constants, ignition represents phase transitions in ODE systems, and allostatic regulation gates conscious access based on metabolic and homeostatic relevance.
+                        </p>
+                    </div>
+                    <div class="mt-6 flex items-center gap-4 border-t pt-4" style="border-color: var(--border-color);">
+                        <div class="text-xs font-mono" style="color: var(--text-muted);">
+                            Theoretical Neuroscience • Consciousness Studies
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gradient-to-r from-indigo-900/30 to-purple-900/30 border-y border-indigo-500/20" style="border-top: 1px solid rgba(99, 102, 241, 0.2); border-bottom: 1px solid rgba(99, 102, 241, 0.2);">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center space-y-6">
+                <div class="badge badge-primary mx-auto">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                    Core Innovation
+                </div>
+                <h2 class="text-3xl lg:text-4xl font-bold max-w-4xl mx-auto" style="color: var(--text-primary);">
+                    Consciousness as Thermodynamically Constrained Emergency Control
+                </h2>
+                <p class="text-lg max-w-3xl mx-auto leading-relaxed" style="color: var(--text-secondary);">
+                    Unlike traditional theories treating consciousness as a general-purpose processor, APGI proposes that conscious access functions as a specialized <strong class="text-indigo-300">"emergency broadcast system"</strong> — metabolically expensive and activated only when precision-weighted prediction errors signal threats to homeostatic integrity that cannot be resolved by unconscious processing.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="concepts" class="py-24 slide-up" style="background: var(--bg-secondary);">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-bold mb-6">Framework Components</h2>
+                <div class="w-24 h-1 bg-gradient-to-r mx-auto rounded-full mb-6" style="background: linear-gradient(to right, #6366f1, #8b5cf6);"></div>
+                <p class="text-xl max-w-3xl mx-auto leading-relaxed" style="color: var(--text-secondary);">
+                    Six core theoretical constructs that together constitute the APGI model of conscious access
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <div class="ignition-card">
+                    <div class="icon-box bg-rose-500/10 text-rose-400">
+                        <i data-lucide="gauge" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Allostatic Regulation</h3>
+                    <p class="leading-relaxed" style="color: var(--text-secondary);">
+                        Predictive adjustment of internal states to maintain homeostatic balance in anticipation of demands, serving as the foundational constraint determining when conscious access deployment is metabolically justified.
+                    </p>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-color); margin-top: auto;">
+                        <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--text-muted);">Foundation Layer</span>
+                    </div>
+                </div>
+
+                <div class="ignition-card">
+                    <div class="icon-box bg-amber-500/10 text-amber-400">
+                        <i data-lucide="sliders" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Precision Weighting</h3>
+                    <p class="leading-relaxed" style="color: var(--text-secondary);">
+                        Confidence-based gating of interoceptive signals that determines when prediction failures warrant conscious intervention, implemented through adaptive constants.
+                    </p>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-color); margin-top: auto;">
+                        <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--text-muted);">Signal Processing</span>
+                    </div>
+                </div>
+
+                <div class="ignition-card">
+                    <div class="icon-box bg-cyan-500/10 text-cyan-400">
+                        <i data-lucide="zap" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Global Ignition</h3>
+                    <p class="leading-relaxed" style="color: var(--text-secondary);">
+                        Phase transition dynamics in ODE systems enabling sudden, system-wide information broadcast when precision-weighted errors exceed dynamic thresholds, manifesting as the signature of conscious access.
+                    </p>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-color); margin-top: auto;">
+                        <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--text-muted);">Activation Mechanism</span>
+                    </div>
+                </div>
+
+                <div class="ignition-card">
+                    <div class="icon-box bg-emerald-500/10 text-emerald-400">
+                        <i data-lucide="radio" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Interoceptive Inference</h3>
+                    <p class="leading-relaxed" style="color: var(--text-secondary);">
+                        Hierarchical prediction of body states creates the signal stream that gates conscious access based on homeostatic relevance, integrating bottom-up sensory evidence with top-down predictions.
+                    </p>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-color); margin-top: auto;">
+                        <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--text-muted);">Signal Source</span>
+                    </div>
+                </div>
+
+                <div class="ignition-card">
+                    <div class="icon-box bg-blue-500/10 text-blue-400">
+                        <i data-lucide="thermometer" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Thermodynamic Constraints</h3>
+                    <p class="leading-relaxed" style="color: var(--text-secondary);">
+                        Metabolic expenditure limits establish consciousness as niche-specific optimization for "active niche dominance" strategies rather than universal cognitive architecture, grounded in quantitative energetic principles.
+                    </p>
+                    <div class="mt-6 pt-4 border-t" style="border-color: var(--border-color); margin-top: auto;">
+                        <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--text-muted);">Energy Budget</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contributions" class="py-24 slide-up" style="background: var(--bg-primary);">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Major Theoretical Contributions</h2>
+                <div class="h-1 w-20 mx-auto rounded-full" style="background: #6366f1;"></div>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-panel p-8 rounded-xl border-l-4 border-amber-500 fade-in">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                            <span class="text-amber-400 font-bold">1</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 text-amber-300">Thermodynamic Foundation for Consciousness</h3>
+                            <p class="leading-relaxed" style="color: var(--text-secondary);">
+                                Establishes consciousness as a metabolically constrained optimization strategy for "active niche dominance" rather than a universal cognitive architecture, grounded in quantitative energetic principles and falsifiable thermodynamic predictions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-xl border-l-4 border-violet-500 fade-in">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+                            <span class="text-violet-400 font-bold">2</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 text-violet-300">Integration of Multiple Frameworks</h3>
+                            <p class="leading-relaxed" style="color: var(--text-secondary);">
+                                Unifies predictive processing, global workspace theory, interoceptive inference, and thermodynamic constraints into a coherent, falsifiable model with explicit three-level epistemic architecture distinguishing thermodynamic, information-theoretic, and computational claims.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-xl border-l-4 border-rose-500 fade-in">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center flex-shrink-0">
+                            <span class="text-rose-400 font-bold">3</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-3 text-rose-300">Clinical Translation Pathways</h3>
+                            <p class="leading-relaxed" style="color: var(--text-secondary);">
+                                Develops specific mechanistic predictions for psychiatric conditions (anxiety, depression, psychosis, addiction) with testable hypotheses about precision-weighting aberrations and treatment implications targeting allostatic regulation.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="py-24 border-y" style="border-color: var(--border-color); background: var(--bg-secondary);">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">System Architecture</h2>
+                <div class="h-1 w-20 mx-auto rounded-full" style="background: #6366f1;"></div>
+                <p class="mt-4" style="color: var(--text-secondary);">Information flow from sensory input to conscious access</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="w-full lg:w-2/3">
+                    <div class="rounded-2xl p-8 shadow-2xl relative overflow-hidden" style="background: var(--bg-primary); border: 1px solid var(--border-color);">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+                        <h3 class="font-mono text-xs uppercase mb-8" style="color: var(--text-muted);">APGI Processing Pipeline</h3>
+                        
+                        <div class="w-full aspect-[16/9] relative rounded-lg border flex items-center justify-center" style="background: rgba(15, 23, 42, 0.5); border-color: var(--border-color);">
+                             <svg viewBox="0 0 800 500" class="w-full h-full">
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="28" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+                                    </marker>
+                                    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="28" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444" />
+                                    </marker>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+
+                                <!-- Connections -->
+                                <path d="M100 250 C 150 250, 200 150, 250 150" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                                <path d="M100 250 C 150 250, 200 350, 250 350" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                                <path d="M250 150 C 350 150, 350 250, 400 250" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                                <path d="M250 350 C 350 350, 350 250, 400 250" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                                <path d="M400 250 C 450 250, 500 150, 550 150" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                                <path d="M400 250 C 450 250, 500 250, 550 250" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                                <path d="M550 150 L 550 210" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+                                <path d="M550 250 C 600 250, 600 350, 650 350" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrowhead-red)" class="animate-pulse" />
+                                <path d="M550 250 C 600 250, 650 250, 700 250" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrowhead-red)" class="animate-pulse" />
+                                <path d="M650 350 L 700 290" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
+
+                                <!-- Nodes -->
+                                <g transform="translate(100, 250)">
+                                    <circle r="30" fill="#0ea5e9" opacity="0.8" />
+                                    <text y="45" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="monospace">Sensory</text>
+                                </g>
+
+                                <g transform="translate(250, 350)">
+                                    <circle r="25" fill="#eab308" opacity="0.8" />
+                                    <text y="45" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="monospace">Predictive</text>
+                                </g>
+
+                                <g transform="translate(400, 250)">
+                                    <rect x="-30" y="-30" width="60" height="60" rx="5" fill="#f97316" opacity="0.8" />
+                                    <text y="45" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="monospace">Precision</text>
+                                </g>
+
+                                <g transform="translate(550, 150)">
+                                    <circle r="25" fill="#a855f7" opacity="0.8" />
+                                    <text y="-35" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="monospace">Allostatic</text>
+                                </g>
+
+                                <g transform="translate(550, 250)">
+                                    <circle r="35" fill="#ef4444" filter="url(#glow)" />
+                                    <circle r="35" fill="none" stroke="white" stroke-width="2" class="animate-ping" opacity="0.5" />
+                                    <text y="5" fill="white" font-size="10" font-weight="bold" text-anchor="middle">IGNITION</text>
+                                </g>
+
+                                <g transform="translate(650, 350)">
+                                    <rect x="-25" y="-25" width="50" height="50" fill="#3b82f6" opacity="0.8" />
+                                    <text y="45" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="monospace">Workspace</text>
+                                </g>
+
+                                <g transform="translate(700, 250)">
+                                    <circle r="30" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2" />
+                                    <text y="5" fill="white" font-size="10" text-anchor="middle">Access</text>
+                                </g>
+                             </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-1/3 space-y-6">
+                    <h3 class="text-2xl font-bold" style="color: var(--text-primary);">Processing Pipeline</h3>
+                    <p class="text-sm" style="color: var(--text-secondary);">
+                        The architecture illustrates how sensory information flows through precision-weighted filtering to reach conscious access only when allostatic relevance exceeds threshold.
+                    </p>
+                    <ul class="space-y-4 text-sm" style="color: var(--text-secondary);">
+                        <li class="flex gap-3">
+                            <span class="w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                            <span><strong>Precision Weighting</strong> modulates information flow based on confidence estimates and prediction error magnitude.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                            <span><strong>Allostatic Gating</strong> evaluates homeostatic relevance and metabolic cost-benefit for conscious intervention.</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="w-6 h-6 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+                            <span><strong>Global Ignition</strong> triggers phase transition, broadcasting information to workspace for conscious access.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="clinical" class="py-24" style="background: var(--bg-primary);">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Clinical Translation</h2>
+                <div class="h-1 w-20 mx-auto rounded-full" style="background: #6366f1;"></div>
+                <p class="mt-4 max-w-3xl mx-auto" style="color: var(--text-secondary);">
+                    APGI provides mechanistic frameworks for understanding psychiatric conditions as precision-weighting aberrations with specific, testable predictions for treatment interventions
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-panel p-8 rounded-xl border-l-4 border-yellow-500 hover:bg-slate-800/50 transition-all duration-300 fade-in">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="icon-box bg-yellow-500/10 text-yellow-400">
+                            <i data-lucide="alert-triangle" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-yellow-300 mb-2">Anxiety Disorders</h3>
+                            <span class="text-sm font-mono" style="color: var(--text-muted);">Hypersensitive Precision Weighting</span>
+                        </div>
+                    </div>
+                    <p class="leading-relaxed mb-4" style="color: var(--text-secondary);">
+                        Pathologically elevated precision weighting of interoceptive prediction errors leads to excessive conscious intrusion of threat-related signals, creating self-reinforcing worry cycles and hypervigilance to bodily states.
+                    </p>
+                    <div class="text-sm text-indigo-400 font-mono border-t pt-4" style="border-color: var(--border-color);">
+                        Treatment target: Reduce interoceptive precision through exposure-based learning
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-xl border-l-4 border-blue-500 hover:bg-slate-800/50 transition-all duration-300 fade-in">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="icon-box bg-blue-500/10 text-blue-400">
+                            <i data-lucide="cloud-drizzle" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-blue-300 mb-2">Major Depression</h3>
+                            <span class="text-sm font-mono" style="color: var(--text-muted);">Blunted Precision Weighting</span>
+                        </div>
+                    </div>
+                    <p class="leading-relaxed mb-4" style="color: var(--text-secondary);">
+                        Globally reduced precision weighting results in insufficient conscious access to motivationally relevant signals, manifesting as anhedonia, avolition, and diminished emotional responsiveness to typically salient stimuli.
+                    </p>
+                    <div class="text-sm text-indigo-400 font-mono border-t pt-4" style="border-color: var(--border-color);">
+                        Treatment target: Restore precision through behavioral activation and reward processing
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-xl border-l-4 border-purple-500 hover:bg-slate-800/50 transition-all duration-300 fade-in">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="icon-box bg-purple-500/10 text-purple-400">
+                            <i data-lucide="brain-cog" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-purple-300 mb-2">Psychotic Disorders</h3>
+                            <span class="text-sm font-mono" style="color: var(--text-muted);">Aberrant Precision Assignment</span>
+                        </div>
+                    </div>
+                    <p class="leading-relaxed mb-4" style="color: var(--text-secondary);">
+                        Dysregulated precision assignment to internally generated predictions causes inappropriate conscious ignition of top-down models, experienced as hallucinations, delusions, and reality-testing failures.
+                    </p>
+                    <div class="text-sm text-indigo-400 font-mono border-t pt-4" style="border-color: var(--border-color);">
+                        Treatment target: Normalize precision balance between bottom-up and top-down signals
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-xl border-l-4 border-red-500 hover:bg-slate-800/50 transition-all duration-300 fade-in">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="icon-box bg-red-500/10 text-red-400">
+                            <i data-lucide="repeat" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-red-300 mb-2">Substance Addiction</h3>
+                            <span class="text-sm font-mono" style="color: var(--text-muted);">Hijacked Allostatic Set-Points</span>
+                        </div>
+                    </div>
+                    <p class="leading-relaxed mb-4" style="color: var(--text-secondary);">
+                        Drug-induced alterations to allostatic set-points create persistent precision-weighted prediction errors that compulsively drive conscious focus toward substance-seeking behaviors to resolve homeostatic "deficit."
+                    </p>
+                    <div class="text-sm text-indigo-400 font-mono border-t pt-4" style="border-color: var(--border-color);">
+                        Treatment target: Reset allostatic set-points and reduce drug-cue precision
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="predictions" class="py-24" style="background: var(--bg-secondary);">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Testable Predictions</h2>
+                <div class="h-1 w-20 mx-auto rounded-full" style="background: #6366f1;"></div>
+                <p class="mt-4" style="color: var(--text-secondary);">
+                    Falsifiable hypotheses spanning neuroscience and artificial intelligence research
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="glass-panel p-8 rounded-xl">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center text-cyan-400">
+                            <i data-lucide="microscope" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-cyan-300">Neuroscience</h3>
+                    </div>
+                    <ul class="space-y-4" style="color: var(--text-secondary);">
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span>Conscious access correlates with <strong>interoceptive prediction error magnitude</strong> weighted by precision estimates in insula and anterior cingulate cortex</span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span>Global ignition exhibits <strong>phase transition dynamics</strong> with critical slowing near threshold, measurable via EEG coherence patterns</span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span>Metabolic demands (fMRI BOLD, PET glucose uptake) scale with <strong>precision-weighted prediction error integration</strong> rather than raw information content</span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span>Pharmacological manipulation of interoceptive precision (via noradrenergic/serotonergic systems) predictably modulates <strong>conscious access thresholds</strong></span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span>Lesions to allostatic gating regions (hypothalamus, brainstem) impair conscious access to <strong>homeostatic threats</strong> while preserving external perception</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-8 rounded-xl">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-violet-500/20 rounded-lg flex items-center justify-center text-violet-400">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-violet-300">Artificial Intelligence</h3>
+                    </div>
+                    <ul class="space-y-4" style="color: var(--text-secondary);">
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span><strong>Adaptive time constants</strong> outperform fixed architectures on homeostatic control tasks requiring temporal credit assignment</span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span>Precision-gated global broadcast improves <strong>sample efficiency</strong> in embodied RL agents by selectively activating expensive processing</span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span>Allostatic set-point adaptation enables <strong>transfer learning</strong> across environments with different resource constraints</span>
+                        </li>
+                        <li class="flex gap-3 items-start">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+                            <span>Phase transitions in ignition dynamics provide natural <strong>computational phase boundaries</strong> for conscious vs unconscious processing</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="access" class="py-20 bg-gradient-to-br border-t" style="background: linear-gradient(to bottom right, rgba(49, 46, 129, 0.2), var(--bg-primary)); border-color: var(--border-color);">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-6">Access Research Materials</h2>
+            <p class="mb-8 leading-relaxed" style="color: var(--text-secondary);">
+                The complete theoretical framework detailing mathematical formulations, biological implementation principles, and experimental protocols. Supplementary materials include computational models, extended theoretical discussions, and clinical translation matrices.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button class="btn-primary" onclick="handleDownload('paper')">
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                    <span>Download Full Paper</span>
+                    <i data-lucide="download" class="w-4 h-4 group-hover:translate-y-0.5 transition-transform"></i>
+                </button>
+                <button class="btn-secondary" onclick="handleDownload('supplementary')">
+                    <i data-lucide="database" class="w-4 h-4"></i>
+                    Supplementary Materials
+                </button>
+                <button class="btn-secondary" onclick="handleDownload('code')">
+                    <i data-lucide="github" class="w-4 h-4"></i>
+                    Implementation Code
+                </button>
+            </div>
+
+            <div class="mt-12 p-6 rounded-lg border inline-block text-left max-w-2xl w-full relative" style="background: var(--bg-secondary); border-color: var(--border-color);">
+                 <button onclick="copyCitation()" class="absolute top-4 right-4 transition-colors" style="color: var(--text-muted); background: transparent; border: none; cursor: pointer;" title="Copy citation" aria-label="Copy citation">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                </button>
+                <div class="text-xs font-mono mb-2 uppercase tracking-wider" style="color: var(--text-muted);">BibTeX Citation</div>
+                <code class="font-mono text-sm block overflow-x-auto" id="citation-text" style="color: var(--text-secondary);">
+@article{APGI2025,
+  title={Allostatic Precision-Gated Ignition (APGI) Framework of Conscious Access},
+  author={[Author Names]},
+  journal={[Target Journal: Nature Neuroscience / Neural Computation]},
+  year={2025},
+  note={Theoretical framework integrating predictive processing and thermodynamic constraints}
+}
+                </code>
+            </div>
+            <p class="mt-6 text-sm" style="color: var(--text-muted);">
+                For collaboration inquiries and correspondence: <a href="mailto:apgi.framework@institution.edu" class="text-indigo-400 hover:underline">apgi.framework@institution.edu</a>
+            </p>
+        </div>
+    </section>
+
+    <footer class="py-16 border-t" style="background: var(--bg-primary); border-color: var(--border-color);">
+        <div class="container max-w-6xl mx-auto">
+            <div class="flex flex-col items-center gap-12 mb-12">
+                <!-- Brand Section -->
+                <div class="flex flex-col items-center space-y-4 text-center">
+                    <div class="flex items-center gap-3 font-bold text-xl">
+                        <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg">
+                            <i data-lucide="brain" class="w-6 h-6"></i>
+                        </div>
+                        <span style="color: var(--text-primary);">APGI.framework</span>
+                    </div>
+                    <p class="text-sm leading-relaxed max-w-md" style="color: var(--text-muted);">
+                        A novel theoretical framework for understanding consciousness through the lens of precision-weighted allostatic principles.
+                    </p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="https://tiktok.com/@apgi_framework" class="hover:opacity-80 transition-opacity" style="color: var(--text-muted);" title="TikTok" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                        <i data-lucide="music" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://youtube.com/@apgi_framework" class="hover:opacity-80 transition-opacity" style="color: var(--text-muted);" title="YouTube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                        <i data-lucide="youtube" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://facebook.com/apgi_framework" class="hover:opacity-80 transition-opacity" style="color: var(--text-muted);" title="Facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <i data-lucide="facebook" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://instagram.com/apgi_framework" class="hover:opacity-80 transition-opacity" style="color: var(--text-muted);" title="Instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <i data-lucide="instagram" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://t.me/apgi_framework" class="hover:opacity-80 transition-opacity" style="color: var(--text-muted);" title="Telegram" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                        <i data-lucide="send" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://github.com/apgi-framework" class="hover:opacity-80 transition-opacity" style="color: var(--text-muted);" title="GitHub" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                </div>
+                <div class="text-xs" style="color: var(--text-muted);">
+                    2024 APGI Framework. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // ============================================
+        // DOWNLOAD HANDLING
+        // ============================================
+        function handleDownload(type) {
+            const button = event.target.closest('button');
+            button.classList.add('loading');
+            
+            setTimeout(() => {
+                button.classList.remove('loading');
+                
+                const messages = {
+                    paper: 'Full paper download started!',
+                    supplementary: 'Supplementary materials download started!',
+                    code: 'Implementation code download started!'
+                };
+                
+                showToast(messages[type] || 'Download started!');
+            }, 1000);
+        }
+
+        // ============================================
+        // SCROLL ANIMATIONS
+        // ============================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.fade-in, .slide-up');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                animationObserver.observe(el);
+            });
+        });
+
+        // ============================================
+        // NAVBAR SCROLL EFFECT
+        // ============================================
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                window.cancelAnimationFrame(scrollTimeout);
+            }
+            
+            scrollTimeout = window.requestAnimationFrame(() => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+        });
+
+        // ============================================
+        // NEURAL CANVAS ANIMATION
+        // ============================================
+        const canvas = document.getElementById('neuralCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        
+        const particleCount = window.innerWidth < 768 ? 40 : 80;
+        const connectionDistance = 180;
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.size = Math.random() * 2 + 1;
+                this.baseColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color') || '#3b82f6';
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.baseColor + '80';
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.update();
+                p.draw();
+
+                for (let j = i; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dx = p.x - p2.x;
+                    let dy = p.y - p2.y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        let opacity = 1 - (distance / connectionDistance);
+                        ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.15})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        animate();
+
+        // ============================================
+        // CITATION COPY
+        // ============================================
+        function copyCitation() {
+            const text = document.getElementById('citation-text').innerText;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => showToast('Citation copied to clipboard'));
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('Citation copied to clipboard');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            if (toastMessage) toastMessage.textContent = message || 'Citation copied to clipboard';
+            toast.classList.add('show');
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.contains('show');
+            if (isOpen) {
+                mobileMenu.classList.remove('show');
+                mobileBtn.setAttribute('aria-expanded', 'false');
+            } else {
+                mobileMenu.classList.add('show');
+                mobileBtn.setAttribute('aria-expanded', 'true');
+            }
+            lucide.createIcons();
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('show');
+                mobileBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // ============================================
+        // SMOOTH SCROLL
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        const savedTheme = localStorage.getItem('theme') || 
+                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        if (savedTheme === 'dark') {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            // Reinitialize Lucide icons
+            lucide.createIcons();
+        });
+        
+        // Observer for theme changes to update icons
+        const themeObserver = new MutationObserver(() => {
+            lucide.createIcons();
+        });
+        
+        themeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    </script>
+</body>
+</html>

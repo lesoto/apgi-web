@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="js/performance-optimizer.js"></script>
+    <script src="js/accessibility-enhancer.js"></script>
+    <script src="js/navigation.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computational Phenomenology Engine</title>
@@ -13,26 +16,7 @@
     
     <style>
         :root {
-            /* Dark theme colors (default) */
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-tertiary: #334155;
-            --text-primary: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border-color: #334155;
-            --accent-color: #06b6d4;
-            --accent-light: rgba(6, 182, 212, 0.1);
-            --glass-bg: rgba(30, 41, 59, 0.7);
-            --hover-bg: #1e293b;
-            --gradient-start: #0f172a;
-            --gradient-mid: #0f172a;
-            --gradient-end: #1e1b4b;
-            --card-hover: rgba(6, 182, 212, 0.15);
-        }
-
-        [data-theme="light"] {
-            /* Light theme colors */
+            /* Light theme as default */
             --bg-primary: #f8fafc;
             --bg-secondary: #ffffff;
             --bg-tertiary: #e2e8f0;
@@ -48,6 +32,25 @@
             --gradient-mid: #f1f5f9;
             --gradient-end: #e0e7ff;
             --card-hover: rgba(8, 145, 178, 0.1);
+        }
+
+        [data-theme="dark"] {
+            /* Dark theme overrides */
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --accent-color: #06b6d4;
+            --accent-light: rgba(6, 182, 212, 0.1);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --hover-bg: #1e293b;
+            --gradient-start: #0f172a;
+            --gradient-mid: #0f172a;
+            --gradient-end: #1e1b4b;
+            --card-hover: rgba(6, 182, 212, 0.15);
         }
 
         body {

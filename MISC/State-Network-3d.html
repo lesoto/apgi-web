@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="performance-optimizer.js"></script>
+    <script src="accessibility-enhancer.js"></script>
+    <script src="navigation.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="APGI Psychological State Network - Interactive 3D visualization of psychological states and their relationships" />
+    <meta name="keywords" content="psychology, 3D visualization, APGI, state network, mental health" />
+    <meta name="author" content="APGI" />
+    <title>APGI Psychological State Network - 3D Visualization</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #06d6a0;
+            --border-color: #475569;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-tertiary: #64748b;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #06d6a0;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--bg-tertiary);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+
+        .theme-toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle-icon {
+            font-size: 12px;
+            color: white;
+        }
+
+        [data-theme="light"] .theme-toggle-slider {
+            transform: translateX(30px);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 160px);
+        }
+
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Visualization Container */
+        .viz-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .viz-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .viz-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .viz-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .plotly-wrapper {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: var(--bg-primary);
+            box-shadow: inset 0 2px 10px var(--shadow-color);
+        }
+
+        .plotly-graph-div {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Info Cards */
+        .info-section {
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow-color);
+        }
+
+        .info-card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+        }
+
+        .info-card-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-tertiary);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .main-container {
+                margin-top: 120px;
+                padding: 1rem;
+            }
+
+            .viz-title {
+                font-size: 2rem;
+            }
+
+            .plotly-wrapper {
+                height: 50vh;
+                min-height: 400px;
+            }
+
+            .info-section {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* Smooth Transitions */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">APGI</div>
+            <nav class="nav-menu">
+                <a href="#visualization" class="nav-link">Visualization</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#methodology" class="nav-link">Methodology</a>
+                <div class="theme-toggle" onclick="toggleTheme()">
+                    <div class="theme-toggle-slider">
+                        <span class="theme-toggle-icon">🌙</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="content-wrapper">
+            <!-- Visualization Section -->
+            <section id="visualization" class="viz-container">
+                <div class="viz-header">
+                    <h1 class="viz-title">Psychological State Network</h1>
+                    <p class="viz-subtitle">Interactive 3D visualization of psychological states and their dimensional relationships</p>
+                </div>
+                
+                <div class="plotly-wrapper">
+                    <div class="loading-overlay" id="loadingOverlay">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <div id="plotly-container"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 APGI - All rights reserved</p>
+        </div>
+    </footer>
+
+    <!-- Plotly.js Library -->
+    <script src="https://cdn.plot.ly/plotly-3.3.0.min.js"></script>
+    
+    <!-- Original Plotly Content -->
+    <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+    
+    <script type="text/javascript">
+        // Theme toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update theme icon
+            const icon = document.querySelector('.theme-toggle-icon');
+            icon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        }
+
+        // Initialize theme from localStorage or system preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            
+            document.body.setAttribute('data-theme', theme);
+            const icon = document.querySelector('.theme-toggle-icon');
+            icon.textContent = theme === 'dark' ? '🌙' : '☀️';
+            
+            // Show loading state
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.add('active');
+            
+            // Initialize Plotly visualization
+            setTimeout(() => {
+                initializePlotly();
+                loadingOverlay.classList.remove('active');
+            }, 1000);
+        });
+
+        function initializePlotly() {
+            // Create the plotly container div
+            const plotlyContainer = document.getElementById('plotly-container');
+            plotlyContainer.innerHTML = '<div id="apgi-plotly" class="plotly-graph-div" style="height:100%; width:100%;"></div>';
+            
+            // Plotly data and configuration
+            const data = [{"hoverinfo":"text","hovertext":"\u003cb\u003eFlow\u003c\u002fb\u003e\u003cbr\u003eCategory: Optimal Functioning\u003cbr\u003eΠ_e: 6.50\u003cbr\u003eΠ_i_eff: 1.74\u003cbr\u003eθ_t: +1.80\u003cbr\u003eM_ca: +0.30\u003cbr\u003eS_t: 2.95\u003cbr\u003eP(ignition): 75.92%","marker":{"color":"#2E86AB","line":{"color":"white","width":2},"opacity":0.8,"size":20.89710054563697,"symbol":"circle"},"mode":"markers+text","name":"flow","showlegend":false,"text":["Flow"],"textposition":"top center","x":[6.95291674795676],"y":[1.787815297665673],"z":[2.1564297275340185],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eFocus\u003c\u002fb\u003e\u003cbr\u003eCategory: Optimal Functioning\u003cbr\u003eΠ_e: 8.00\u003cbr\u003eΠ_i_eff: 1.36\u003cbr\u003eθ_t: -0.50\u003cbr\u003eM_ca: +0.25\u003cbr\u003eS_t: 6.81\u003cbr\u003eP(ignition): 99.93%","marker":{"color":"#2E86AB","line":{"color":"white","width":2},"opacity":0.8,"size":28.615866886208117,"symbol":"circle"},"mode":"markers+text","name":"focus","showlegend":false,"text":["Focus"],"textposition":"top center","x":[8.559010099477893],"y":[0.9294230410763179],"z":[-0.3430379701832129],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eSerenity\u003c\u002fb\u003e\u003cbr\u003eCategory: Optimal Functioning\u003cbr\u003eΠ_e: 1.50\u003cbr\u003eΠ_i_eff: 2.84\u003cbr\u003eθ_t: +1.50\u003cbr\u003eM_ca: +0.70\u003cbr\u003eS_t: 1.15\u003cbr\u003eP(ignition): 41.37%","marker":{"color":"#2E86AB","line":{"color":"white","width":2},"opacity":0.8,"size":12.690904406943938,"symbol":"circle"},"mode":"markers+text","name":"serenity","showlegend":false,"text":["Serenity"],"textposition":"top center","x":[1.958374939513632],"y":[2.842712426896871],"z":[1.7968719478234185],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eCuriosity\u003c\u002fb\u003e\u003cbr\u003eCategory: Optimal Functioning\u003cbr\u003eΠ_e: 7.50\u003cbr\u003eΠ_i_eff: 2.15\u003cbr\u003eθ_t: +0.80\u003cbr\u003eM_ca: +0.45\u003cbr\u003eS_t: 4.83\u003cbr\u003eP(ignition): 94.15%","marker":{"color":"#2E86AB","line":{"color":"white","width":2},"opacity":0.8,"size":24.256483466028734,"symbol":"circle"},"mode":"markers+text","name":"curiosity","showlegend":false,"text":["Curiosity"],"textposition":"top center","x":[7.558590842534354],"y":[2.154813215632541],"z":[0.958374939513632],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eEngagement\u003c\u002fb\u003e\u003cbr\u003eCategory: Optimal Functioning\u003cbr\u003eΠ_e: 5.50\u003cbr\u003eΠ_i_eff: 1.95\u003cbr\u003eθ_t: +1.20\u003cbr\u003eM_ca: +0.35\u003cbr\u003eS_t: 3.89\u003cbr\u003eP(ignition): 85.64%","marker":{"color":"#2E86AB","line":{"color":"white","width":2},"opacity":0.8,"size":17.537615916208983,"symbol":"circle"},"mode":"markers+text","name":"engagement","showlegend":false,"text":["Engagement"],"textposition":"top center","x":[5.957732653364986],"y":[1.954813215632541],"z":[1.437562409270448],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eAnxiety\u003c\u002fb\u003e\u003cbr\u003eCategory: Suboptimal Functioning\u003cbr\u003eΠ_e: 3.00\u003cbr\u003eΠ_i_eff: 0.85\u003cbr\u003eθ_t: +2.50\u003cbr\u003eM_ca: -0.20\u003cbr\u003eS_t: 1.27\u003cbr\u003eP(ignition): 23.81%","marker":{"color":"#F18F01","line":{"color":"white","width":2},"opacity":0.8,"size":6.931471805599453,"symbol":"circle"},"mode":"markers+text","name":"anxiety","showlegend":false,"text":["Anxiety"],"textposition":"top center","x":[3.0174700957322736],"y":[0.854813215632541],"z":[2.9960946348773046],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eDepression\u003c\u002fb\u003e\u003cbr\u003eCategory: Suboptimal Functioning\u003cbr\u003eΠ_e: 2.00\u003cbr\u003eΠ_i_eff: 0.65\u003cbr\u003eθ_t: +3.00\u003cbr\u003eM_ca: -0.40\u003cbr\u003eS_t: 0.85\u003cbr\u003eP(ignition): 11.92%","marker":{"color":"#F18F01","line":{"color":"white","width":2},"opacity":0.8,"size":4.605170185988091,"symbol":"circle"},"mode":"markers+text","name":"depression","showlegend":false,"text":["Depression"],"textposition":"top center","x":[2.0174700957322736],"y":[0.654813215632541],"z":[3.5960946348773046],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eStress\u003c\u002fb\u003e\u003cbr\u003eCategory: Suboptimal Functioning\u003cbr\u003eΠ_e: 4.00\u003cbr\u003eΠ_i_eff: 1.05\u003cbr\u003eθ_t: +2.00\u003cbr\u003eM_ca: -0.10\u003cbr\u003eS_t: 1.69\u003cbr\u003eP(ignition): 37.95%","marker":{"color":"#F18F01","line":{"color":"white","width":2},"opacity":0.8,"size":9.210340371976184,"symbol":"circle"},"mode":"markers+text","name":"stress","showlegend":false,"text":["Stress"],"textposition":"top center","x":[4.017470095732274],"y":[1.054813215632541],"z":[2.3960946348773046],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eBurnout\u003c\u002fb\u003e\u003cbr\u003eCategory: Suboptimal Functioning\u003cbr\u003eΠ_e: 1.00\u003cbr\u003eΠ_i_eff: 0.45\u003cbr\u003eθ_t: +3.50\u003cbr\u003eM_ca: -0.50\u003cbr\u003eS_t: 0.53\u003cbr\u003eP(ignition): 5.96%","marker":{"color":"#F18F01","line":{"color":"white","width":2},"opacity":0.8,"size":2.3025850929940455,"symbol":"circle"},"mode":"markers+text","name":"burnout","showlegend":false,"text":["Burnout"],"textposition":"top center","x":[1.0174700957322736],"y":[0.454813215632541],"z":[4.196094634877305],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003ePsychosis\u003c\u002fb\u003e\u003cbr\u003eCategory: Pathological/Extreme\u003cbr\u003eΠ_e: 0.50\u003cbr\u003eΠ_i_eff: 0.25\u003cbr\u003eθ_t: +4.00\u003cbr\u003eM_ca: -0.70\u003cbr\u003eS_t: 0.31\u003cbr\u003eP(ignition): 2.98%","marker":{"color":"#7209B7","line":{"color":"white","width":2},"opacity":0.8,"size":1.1512925464970228,"symbol":"circle"},"mode":"markers+text","name":"psychosis","showlegend":false,"text":["Psychosis"],"textposition":"top center","x":[0.5174700957322736],"y":[0.254813215632541],"z":[4.796094634877305],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eMania\u003c\u002fb\u003e\u003cbr\u003eCategory: Pathological/Extreme\u003cbr\u003eΠ_e: 9.00\u003cbr\u003eΠ_i_eff: 0.15\u003cbr\u003eθ_t: -1.50\u003cbr\u003eM_ca: -0.60\u003cbr\u003eS_t: 8.47\u003cbr\u003eP(ignition): 99.99%","marker":{"color":"#7209B7","line":{"color":"white","width":2},"opacity":0.8,"size":32.895833562653486,"symbol":"circle"},"mode":"markers+text","name":"mania","showlegend":false,"text":["Mania"],"textposition":"top center","x":[9.059010099477893],"y":[0.154813215632541],"z":[-1.5430379701832129],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eDissociation\u003c\u002fb\u003e\u003cbr\u003eCategory: Altered/Boundary\u003cbr\u003eΠ_e: 0.00\u003cbr\u003eΠ_i_eff: 0.55\u003cbr\u003eθ_t: +0.00\u003cbr\u003eM_ca: -0.30\u003cbr\u003eS_t: 0.18\u003cbr\u003eP(ignition): 1.49%","marker":{"color":"#8338EC","line":{"color":"white","width":2},"opacity":0.8,"size":0.5756463232485114,"symbol":"circle"},"mode":"markers+text","name":"dissociation","showlegend":false,"text":["Dissociation"],"textposition":"top center","x":[0.0174700957322736],"y":[0.554813215632541],"z":[0.3960946348773046],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eTrance\u003c\u002fb\u003e\u003cbr\u003eCategory: Altered/Boundary\u003cbr\u003eΠ_e: 0.00\u003cbr\u003eΠ_i_eff: 0.35\u003cbr\u003eθ_t: -2.00\u003cbr\u003eM_ca: -0.35\u003cbr\u003eS_t: 0.11\u003cbr\u003eP(ignition): 0.75%","marker":{"color":"#8338EC","line":{"color":"white","width":2},"opacity":0.8,"size":0.2878231616242557,"symbol":"circle"},"mode":"markers+text","name":"trance","showlegend":false,"text":["Trance"],"textposition":"top center","x":[0.0174700957322736],"y":[0.354813215632541],"z":[-2.003962365122695],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eDreaming\u003c\u002fb\u003e\u003cbr\u003eCategory: Transitional/Contextual\u003cbr\u003eΠ_e: 0.00\u003cbr\u003eΠ_i_eff: 1.55\u003cbr\u003eθ_t: -1.00\u003cbr\u003eM_ca: +0.00\u003cbr\u003eS_t: 0.50\u003cbr\u003eP(ignition): 3.73%","marker":{"color":"#06D6A0","line":{"color":"white","width":2},"opacity":0.8,"size":1.4351158081212785,"symbol":"circle"},"mode":"markers+text","name":"dreaming","showlegend":false,"text":["Dreaming"],"textposition":"top center","x":[0.0174700957322736],"y":[1.554813215632541],"z":[-0.803962365122695],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eHypnagogia\u003c\u002fb\u003e\u003cbr\u003eCategory: Transitional/Contextual\u003cbr\u003eΠ_e: 0.00\u003cbr\u003eΠ_i_eff: 1.25\u003cbr\u003eθ_t: -0.50\u003cbr\u003eM_ca: +0.05\u003cbr\u003eS_t: 0.40\u003cbr\u003eP(ignition): 2.98%","marker":{"color":"#06D6A0","line":{"color":"white","width":2},"opacity":0.8,"size":1.1512925464970228,"symbol":"circle"},"mode":"markers+text","name":"hypnagogia","showlegend":false,"text":["Hypnagogia"],"textposition":"top center","x":[0.0174700957322736],"y":[1.254813215632541],"z":[-0.403962365122695],"type":"scatter3d"},{"hoverinfo":"text","hovertext":"\u003cb\u003eNeutral\u003c\u002fb\u003e\u003cbr\u003eCategory: Unelaborated\u003cbr\u003eΠ_e: 0.00\u003cbr\u003eΠ_i_eff: 0.00\u003cbr\u003eθ_t: +0.00\u003cbr\u003eM_ca: +0.00\u003cbr\u003eS_t: 0.00\u003cbr\u003eP(ignition): 0.00%","marker":{"color":"#8D99AE","line":{"color":"white","width":2},"opacity":0.8,"size":0.1,"symbol":"circle"},"mode":"markers+text","name":"neutral","showlegend":false,"text":["Neutral"],"textposition":"top center","x":[0.0174700957322736],"y":[0.0174700957322736],"z":[0.3960946348773046],"type":"scatter3d"},{"marker":{"color":"#7209B7","size":10},"mode":"markers","name":"Pathological/Extreme","showlegend":true,"x":[null],"y":[null],"z":[null],"type":"scatter3d"},{"marker":{"color":"#8338EC","size":10},"mode":"markers","name":"Altered/Boundary","showlegend":true,"x":[null],"y":[null],"z":[null],"type":"scatter3d"},{"marker":{"color":"#06D6A0","size":10},"mode":"markers","name":"Transitional/Contextual","showlegend":true,"x":[null],"y":[null],"z":[null],"type":"scatter3d"},{"marker":{"color":"#8D99AE","size":10},"mode":"markers","name":"Unelaborated","showlegend":true,"x":[null],"y":[null],"z":[null],"type":"scatter3d"}];
+            
+            const layout = {
+                "template": {
+                    "data": {
+                        "scatter3d": [{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}]
+                    },
+                    "layout": {
+                        "annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},
+                        "autotypenumbers":"strict",
+                        "coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},
+                        "colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"hoverlabel":{"align":"left"},"hovermode":"closest","paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","scene":{"xaxis":{"backgroundcolor":"rgba(0,0,0,0)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgba(0,0,0,0)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgba(0,0,0,0)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}
+                    }
+                },
+                "scene": {
+                    "camera": {"eye": {"x": 1.5, "y": 1.5, "z": 1.5}},
+                    "xaxis": {"title": {"text": "Π_e"}},
+                    "yaxis": {"title": {"text": "Π_i_eff"}},
+                    "zaxis": {"title": {"text": "θ_t"}},
+                    "bgcolor": "rgba(0,0,0,0)"
+                },
+                "legend": {"yanchor": "top", "y": 0.99, "xanchor": "left", "x": 0.01},
+                "margin": {"l": 0, "r": 0, "b": 0, "t": 40},
+                "title": {"text": "APGI Psychological State Network"},
+                "showlegend": true,
+                "hovermode": "closest"
+            };
+            
+            const config = {"responsive": true};
+            
+            Plotly.newPlot('apgi-plotly', data, layout, config);
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add parallax effect to header
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const header = document.querySelector('.header');
+            if (scrolled > 50) {
+                header.style.background = 'var(--bg-secondary)';
+                header.style.boxShadow = '0 4px 20px var(--shadow-color)';
+            } else {
+                header.style.background = 'var(--glass-bg)';
+                header.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

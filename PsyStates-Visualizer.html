@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="js/performance-optimizer.js"></script>
+    <script src="js/accessibility-enhancer.js"></script>
+    <script src="js/navigation.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI State Architecture</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/recharts/umd/Recharts.min.js"></script>
     <style>
         /* CSS Custom Properties for Theme Colors */
         :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-tertiary: #64748b;
+            --border-primary: #e2e8f0;
+            --border-secondary: #cbd5e1;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #2563eb;
+            --accent-rose: #f43f5e;
+            --accent-purple: #9333ea;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --scrollbar-thumb: #cbd5e1;
+        }
+
+        /* Dark theme overrides */
+        [data-theme="dark"] {
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
             --bg-tertiary: #334155;
@@ -25,24 +46,6 @@
             --accent-green: #4ade80;
             --accent-red: #f87171;
             --scrollbar-thumb: #475569;
-        }
-
-        [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-tertiary: #e2e8f0;
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --text-tertiary: #64748b;
-            --border-primary: #e2e8f0;
-            --border-secondary: #cbd5e1;
-            --accent-cyan: #06b6d4;
-            --accent-blue: #2563eb;
-            --accent-rose: #e11d48;
-            --accent-purple: #9333ea;
-            --accent-green: #22c55e;
-            --accent-red: #ef4444;
-            --scrollbar-thumb: #cbd5e1;
         }
 
         /* Theme Toggle Switch */
@@ -69,13 +72,13 @@
             height: 22px;
             background: var(--accent-cyan);
             border-radius: 50%;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        [data-theme="light"] .theme-toggle-slider {
+        [data-theme="dark"] .theme-toggle-slider {
             transform: translateX(30px);
         }
 
@@ -632,15 +635,16 @@
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme
             const storedTheme = localStorage.getItem('theme');
-            const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-            const initialTheme = storedTheme || (prefersLight ? 'light' : 'dark');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
             setTheme(initialTheme);
 
             const toggleBtn = document.getElementById('theme-toggle');
             toggleBtn.addEventListener('click', () => {
-                const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-                const next = current === 'light' ? 'dark' : 'light';
+                const current = document.documentElement.hasAttribute('data-theme') ? 'dark' : 'light';
+                const next = current === 'dark' ? 'light' : 'dark';
                 setTheme(next);
             });
 
@@ -661,8 +665,8 @@
         });
 
         function setTheme(theme) {
-            if (theme === 'light') {
-                document.documentElement.setAttribute('data-theme', 'light');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
             } else {
                 document.documentElement.removeAttribute('data-theme');
             }
@@ -673,7 +677,7 @@
         function updateToggleIcon(theme) {
             const icon = document.querySelector('.theme-toggle-slider i');
             if (!icon) return;
-            icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
 
         // Helper function to get color based on valence
