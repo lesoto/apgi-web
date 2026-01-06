@@ -2,17 +2,17 @@
 class APGINavigation {
   constructor() {
     this.pages = {
-      'Home': 'Home.html',
-      'Assessment': 'Assessment.html',
+      Home: 'Home.html',
+      Assessment: 'Assessment.html',
       'Assessment-OnePage': 'Assessment-OnePage.html',
       'Quiz-Short': 'Quiz-Short.html',
-      'Profile': 'Profile.html',
-      'PsyStates': 'PsyStates.html',
+      Profile: 'Profile.html',
+      PsyStates: 'PsyStates.html',
       'PsyStates-Visualizer': 'PsyStates-Visualizer.html',
       'Consciousness-Visualization': 'Consciousness-Visualization.html',
       'Neuromoduratory-Cascade': 'Neuromoduratory-Cascade.html',
       'Book-Outline': 'Book-Outline.html',
-      'Paper': 'Paper.html',
+      Paper: 'Paper.html',
       'Privacy-Policy': 'Privacy-Policy.html',
       'Terms-of-Service': 'Terms-of-Service.html'
     };
@@ -273,7 +273,7 @@ class APGINavigation {
     // Mobile menu toggle
     const toggle = document.querySelector('.nav-toggle');
     const menu = document.querySelector('.nav-menu');
-    
+
     if (toggle && menu) {
       toggle.addEventListener('click', () => {
         toggle.classList.toggle('active');
@@ -282,7 +282,7 @@ class APGINavigation {
     }
 
     // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', e => {
       if (!e.target.closest('.apgi-navigation')) {
         const toggle = document.querySelector('.nav-toggle');
         const menu = document.querySelector('.nav-menu');
@@ -296,7 +296,7 @@ class APGINavigation {
     // Update current page on navigation
     const links = document.querySelectorAll('.nav-item');
     links.forEach(link => {
-      link.addEventListener('click', (e) => {
+      link.addEventListener('click', e => {
         const href = link.getAttribute('href');
         if (href && href !== '#') {
           // Let the browser handle navigation
@@ -313,7 +313,7 @@ class APGINavigation {
     placeholderLinks.forEach(link => {
       const text = link.textContent.trim();
       const pageName = this.findPageByTitle(text);
-      
+
       if (pageName) {
         link.setAttribute('href', this.pages[pageName]);
         link.removeAttribute('onclick');
@@ -323,20 +323,20 @@ class APGINavigation {
 
   findPageByTitle(text) {
     const titleMappings = {
-      'Home': 'Home',
-      'Quiz': 'Quiz-Short',
-      'Assessment': 'Assessment',
-      'Profile': 'Profile',
-      'PsyStates': 'PsyStates',
+      Home: 'Home',
+      Quiz: 'Quiz-Short',
+      Assessment: 'Assessment',
+      Profile: 'Profile',
+      PsyStates: 'PsyStates',
       'PsyStates Visualizer': 'PsyStates-Visualizer',
       'Consciousness Visualization': 'Consciousness-Visualization',
       'Neuromoduratory Cascade': 'Neuromoduratory-Cascade',
       'Book Outline': 'Book-Outline',
-      'Research': 'Paper',
+      Research: 'Paper',
       'APGI Paper': 'Paper',
-      'Privacy': 'Privacy-Policy',
+      Privacy: 'Privacy-Policy',
       'Privacy Policy': 'Privacy-Policy',
-      'Terms': 'Terms-of-Service',
+      Terms: 'Terms-of-Service',
       'Terms of Service': 'Terms-of-Service'
     };
 
@@ -347,8 +347,10 @@ class APGINavigation {
 
     // Check for partial matches
     for (const [title, page] of Object.entries(titleMappings)) {
-      if (text.toLowerCase().includes(title.toLowerCase()) || 
-          title.toLowerCase().includes(text.toLowerCase())) {
+      if (
+        text.toLowerCase().includes(title.toLowerCase()) ||
+        title.toLowerCase().includes(text.toLowerCase())
+      ) {
         return page;
       }
     }
@@ -360,7 +362,7 @@ class APGINavigation {
 // Initialize navigation when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   window.apgiNavigation = new APGINavigation();
-  
+
   // Update placeholder links after initialization
   setTimeout(() => {
     window.apgiNavigation.updatePlaceholderLinks();

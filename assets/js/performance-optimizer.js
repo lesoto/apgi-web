@@ -1,4 +1,16 @@
-// Performance Optimization System for APGI Website
+// Performance Optimizer for APGI Website
+// Ensure logger is available
+if (typeof logger === 'undefined') {
+  // Fallback logger if not loaded
+  window.logger = {
+    error: (...args) => console.error('[ERROR]', ...args),
+    warn: (...args) => console.warn('[WARN]', ...args),
+    info: (...args) => console.info('[INFO]', ...args),
+    debug: (...args) => console.log('[DEBUG]', ...args),
+    performance: (metric, value) => console.log(`[PERF] ${metric}: ${value}ms`)
+  };
+}
+
 class APIPerformanceOptimizer {
   constructor() {
     this.init();
@@ -17,10 +29,11 @@ class APIPerformanceOptimizer {
   registerServiceWorker() {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then((registration) => {
-            console.log('Service Worker registered:', registration);
-            
+        navigator.serviceWorker
+          .register('/assets/js/service-worker.js')
+          .then(registration => {
+            logger.info('Service Worker registered:', registration);
+
             // Check for updates
             registration.addEventListener('updatefound', () => {
               const newWorker = registration.installing;
@@ -32,8 +45,8 @@ class APIPerformanceOptimizer {
               });
             });
           })
-          .catch((error) => {
-            console.log('Service Worker registration failed:', error);
+          .catch(error => {
+            logger.warn('Service Worker registration failed:', error);
           });
       });
     }
@@ -56,8 +69,8 @@ class APIPerformanceOptimizer {
   implementLazyLoading() {
     // Lazy load images
     const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+    const imageObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
           img.src = img.dataset.src;
@@ -67,12 +80,12 @@ class APIPerformanceOptimizer {
       });
     });
 
-    images.forEach((img) => imageObserver.observe(img));
+    images.forEach(img => imageObserver.observe(img));
 
     // Lazy load iframes and heavy content
     const heavyElements = document.querySelectorAll('iframe[data-src], .heavy-content[data-src]');
-    const heavyObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+    const heavyObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           const element = entry.target;
           if (element.tagName === 'IFRAME') {
@@ -86,7 +99,7 @@ class APIPerformanceOptimizer {
       });
     });
 
-    heavyElements.forEach((element) => heavyObserver.observe(element));
+    heavyElements.forEach(element => heavyObserver.observe(element));
   }
 
   loadHeavyContent(element) {
@@ -99,7 +112,7 @@ class APIPerformanceOptimizer {
           element.classList.remove('loading');
         })
         .catch(error => {
-          console.error('Failed to load heavy content:', error);
+          logger.error('Failed to load heavy content:', error);
           element.innerHTML = '<p>Content failed to load</p>';
         });
     }
@@ -108,11 +121,11 @@ class APIPerformanceOptimizer {
   optimizeImages() {
     // Add responsive image attributes
     const images = document.querySelectorAll('img:not([sizes])');
-    images.forEach((img) => {
+    images.forEach(img => {
       if (!img.hasAttribute('sizes')) {
         img.setAttribute('sizes', '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw');
       }
-      
+
       if (!img.hasAttribute('loading')) {
         img.setAttribute('loading', 'lazy');
       }
@@ -133,11 +146,11 @@ class APIPerformanceOptimizer {
 
   convertImagesToWebP() {
     const images = document.querySelectorAll('img[src$=".jpg"], img[src$=".png"]');
-    images.forEach((img) => {
+    images.forEach(img => {
       const src = img.src;
       if (src.includes('.jpg') || src.includes('.png')) {
         const webpSrc = src.replace(/\.(jpg|png)$/, '.webp');
-        
+
         // Test if WebP version exists
         fetch(webpSrc, { method: 'HEAD' })
           .then(response => {
@@ -155,7 +168,7 @@ class APIPerformanceOptimizer {
   implementCodeSplitting() {
     // Dynamic imports for heavy components
     this.setupDynamicImports();
-    
+
     // Split CSS by media queries
     this.splitCSSByMedia();
   }
@@ -163,9 +176,9 @@ class APIPerformanceOptimizer {
   setupDynamicImports() {
     // Quiz components
     const quizContainers = document.querySelectorAll('.quiz-container');
-    quizContainers.forEach((container) => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
+    quizContainers.forEach(container => {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             this.loadQuizComponent(container);
             observer.unobserve(container);
@@ -177,9 +190,9 @@ class APIPerformanceOptimizer {
 
     // Visualization components
     const vizContainers = document.querySelectorAll('.visualization-container');
-    vizContainers.forEach((container) => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
+    vizContainers.forEach(container => {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             this.loadVisualizationComponent(container);
             observer.unobserve(container);
@@ -193,22 +206,22 @@ class APIPerformanceOptimizer {
   loadQuizComponent(container) {
     // Dynamically load quiz functionality
     import('./quiz-components.js')
-      .then((module) => {
+      .then(module => {
         module.initializeQuiz(container);
       })
-      .catch((error) => {
-        console.error('Failed to load quiz component:', error);
+      .catch(error => {
+        logger.error('Failed to load quiz component:', error);
       });
   }
 
   loadVisualizationComponent(container) {
     // Dynamically load visualization functionality
     import('./visualization-components.js')
-      .then((module) => {
+      .then(module => {
         module.initializeVisualization(container);
       })
-      .catch((error) => {
-        console.error('Failed to load visualization component:', error);
+      .catch(error => {
+        logger.error('Failed to load visualization component:', error);
       });
   }
 
@@ -230,7 +243,7 @@ class APIPerformanceOptimizer {
         }
       }
     `;
-    
+
     const printStyle = document.createElement('style');
     printStyle.setAttribute('media', 'print');
     printStyle.textContent = printCSS;
@@ -246,7 +259,7 @@ class APIPerformanceOptimizer {
       'https://cdn.jsdelivr.net'
     ];
 
-    preconnectDomains.forEach((domain) => {
+    preconnectDomains.forEach(domain => {
       const link = document.createElement('link');
       link.rel = 'preconnect';
       link.href = domain;
@@ -254,13 +267,9 @@ class APIPerformanceOptimizer {
     });
 
     // DNS prefetch for likely navigation targets
-    const dnsPrefetchLinks = [
-      '/Dashboard.html',
-      '/Quiz.html',
-      '/Assessment.html'
-    ];
+    const dnsPrefetchLinks = ['/Dashboard.html', '/Quiz.html', '/Assessment.html'];
 
-    dnsPrefetchLinks.forEach((href) => {
+    dnsPrefetchLinks.forEach(href => {
       const link = document.createElement('link');
       link.rel = 'dns-prefetch';
       link.href = href;
@@ -271,43 +280,43 @@ class APIPerformanceOptimizer {
   monitorPerformance() {
     // Monitor Core Web Vitals
     this.monitorCoreWebVitals();
-    
+
     // Track resource loading performance
     this.trackResourcePerformance();
-    
+
     // Monitor user interactions
     this.trackUserInteractions();
   }
 
   monitorCoreWebVitals() {
     // Largest Contentful Paint (LCP)
-    new PerformanceObserver((entryList) => {
+    new PerformanceObserver(entryList => {
       const entries = entryList.getEntries();
       const lastEntry = entries[entries.length - 1];
-      console.log('LCP:', lastEntry.startTime);
-      
+      logger.performance('LCP', lastEntry.startTime);
+
       // Send to analytics if needed
       this.sendPerformanceMetric('LCP', lastEntry.startTime);
     }).observe({ entryTypes: ['largest-contentful-paint'] });
 
     // First Input Delay (FID)
-    new PerformanceObserver((entryList) => {
+    new PerformanceObserver(entryList => {
       const entries = entryList.getEntries();
-      entries.forEach((entry) => {
-        console.log('FID:', entry.processingStart - entry.startTime);
+      entries.forEach(entry => {
+        logger.performance('FID', entry.processingStart - entry.startTime);
         this.sendPerformanceMetric('FID', entry.processingStart - entry.startTime);
       });
     }).observe({ entryTypes: ['first-input'] });
 
     // Cumulative Layout Shift (CLS)
     let clsValue = 0;
-    new PerformanceObserver((entryList) => {
+    new PerformanceObserver(entryList => {
       for (const entry of entryList.getEntries()) {
         if (!entry.hadRecentInput) {
           clsValue += entry.value;
         }
       }
-      console.log('CLS:', clsValue);
+      logger.performance('CLS', clsValue);
       this.sendPerformanceMetric('CLS', clsValue);
     }).observe({ entryTypes: ['layout-shift'] });
   }
@@ -315,10 +324,10 @@ class APIPerformanceOptimizer {
   trackResourcePerformance() {
     window.addEventListener('load', () => {
       const resources = performance.getEntriesByType('resource');
-      
-      resources.forEach((resource) => {
+
+      resources.forEach(resource => {
         if (resource.duration > 1000) {
-          console.log('Slow resource:', {
+          logger.debug('Slow resource:', {
             name: resource.name,
             duration: resource.duration,
             size: resource.transferSize
@@ -332,7 +341,7 @@ class APIPerformanceOptimizer {
     // Track time to interactive
     const measureTTI = () => {
       const tti = performance.now() - performance.timing.navigationStart;
-      console.log('TTI:', tti);
+      logger.performance('TTI', tti);
       this.sendPerformanceMetric('TTI', tti);
     };
 
@@ -359,10 +368,10 @@ class APIPerformanceOptimizer {
   optimizeCriticalRenderingPath() {
     // Inline critical CSS
     this.inlineCriticalCSS();
-    
+
     // Defer non-critical CSS
     this.deferNonCriticalCSS();
-    
+
     // Optimize font loading
     this.optimizeFontLoading();
   }
@@ -373,18 +382,20 @@ class APIPerformanceOptimizer {
       .apgi-navigation { position: fixed; top: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); z-index: 1000; }
       .loading-spinner { display: flex; justify-content: center; align-items: center; }
     `;
-    
+
     const style = document.createElement('style');
     style.textContent = criticalCSS;
     document.head.insertBefore(style, document.head.firstChild);
   }
 
   deferNonCriticalCSS() {
-    const nonCriticalLinks = document.querySelectorAll('link[rel="stylesheet"][href*="font-awesome"]');
-    nonCriticalLinks.forEach((link) => {
+    const nonCriticalLinks = document.querySelectorAll(
+      'link[rel="stylesheet"][href*="font-awesome"]'
+    );
+    nonCriticalLinks.forEach(link => {
       link.rel = 'preload';
       link.as = 'style';
-      link.onload = function() {
+      link.onload = function () {
         this.rel = 'stylesheet';
       };
     });

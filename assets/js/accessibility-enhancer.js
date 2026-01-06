@@ -7,7 +7,7 @@ class APGIAccessibility {
   // Input sanitization utility
   sanitizeInput(input) {
     if (typeof input !== 'string') return input;
-    
+
     return input
       .replace(/[<>]/g, '') // Remove potential HTML tags
       .replace(/javascript:/gi, '') // Remove javascript: protocol
@@ -24,7 +24,7 @@ class APGIAccessibility {
   // Validate form inputs
   validateFormInput(input, type = 'text') {
     const sanitized = this.sanitizeInput(input);
-    
+
     switch (type) {
       case 'email':
         return this.isValidEmail(sanitized) ? sanitized : null;
@@ -69,7 +69,7 @@ class APGIAccessibility {
     links.forEach(link => {
       const text = link.textContent.trim();
       const href = link.getAttribute('href');
-      
+
       if (!text && href) {
         // Handle icon-only links
         const icon = link.querySelector('i, svg');
@@ -100,25 +100,25 @@ class APGIAccessibility {
 
   getIconDescription(className) {
     const iconMap = {
-      'home': 'Home page',
-      'menu': 'Menu',
-      'settings': 'Settings',
-      'user': 'User profile',
-      'search': 'Search',
-      'close': 'Close',
-      'chevron': 'Navigate',
-      'arrow': 'Navigate',
-      'download': 'Download',
-      'upload': 'Upload',
-      'edit': 'Edit',
-      'delete': 'Delete',
-      'share': 'Share',
-      'facebook': 'Facebook',
-      'twitter': 'Twitter',
-      'instagram': 'Instagram',
-      'linkedin': 'LinkedIn',
-      'youtube': 'YouTube',
-      'github': 'GitHub'
+      home: 'Home page',
+      menu: 'Menu',
+      settings: 'Settings',
+      user: 'User profile',
+      search: 'Search',
+      close: 'Close',
+      chevron: 'Navigate',
+      arrow: 'Navigate',
+      download: 'Download',
+      upload: 'Upload',
+      edit: 'Edit',
+      delete: 'Delete',
+      share: 'Share',
+      facebook: 'Facebook',
+      twitter: 'Twitter',
+      instagram: 'Instagram',
+      linkedin: 'LinkedIn',
+      youtube: 'YouTube',
+      github: 'GitHub'
     };
 
     for (const [key, description] of Object.entries(iconMap)) {
@@ -126,13 +126,15 @@ class APGIAccessibility {
         return description;
       }
     }
-    
+
     return 'Interactive element';
   }
 
   improveKeyboardNavigation() {
     // Ensure all interactive elements are focusable
-    const interactiveElements = document.querySelectorAll('button, a, input, select, textarea, [tabindex]');
+    const interactiveElements = document.querySelectorAll(
+      'button, a, input, select, textarea, [tabindex]'
+    );
     interactiveElements.forEach(element => {
       if (!element.hasAttribute('tabindex')) {
         element.setAttribute('tabindex', element.disabled ? '-1' : '0');
@@ -141,7 +143,7 @@ class APGIAccessibility {
 
     // Add keyboard navigation for custom components
     this.addKeyboardNavigationForCustomComponents();
-    
+
     // Focus management for modals and overlays
     this.addFocusManagement();
   }
@@ -150,7 +152,7 @@ class APGIAccessibility {
     // Add keyboard support for quiz navigation
     const quizButtons = document.querySelectorAll('.quiz-nav button, .btn');
     quizButtons.forEach(button => {
-      button.addEventListener('keydown', (e) => {
+      button.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           button.click();
@@ -162,8 +164,8 @@ class APGIAccessibility {
     const buttonGroups = document.querySelectorAll('.controls, .button-group');
     buttonGroups.forEach(group => {
       const buttons = group.querySelectorAll('button');
-      
-      group.addEventListener('keydown', (e) => {
+
+      group.addEventListener('keydown', e => {
         let currentIndex = -1;
         buttons.forEach((btn, index) => {
           if (btn === document.activeElement) {
@@ -200,12 +202,12 @@ class APGIAccessibility {
       const focusableElements = modal.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
-      
+
       if (focusableElements.length > 0) {
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
-        modal.addEventListener('keydown', (e) => {
+        modal.addEventListener('keydown', e => {
           if (e.key === 'Tab') {
             if (e.shiftKey) {
               if (document.activeElement === firstElement) {
@@ -328,10 +330,10 @@ class APGIAccessibility {
   addScreenReaderSupport() {
     // Add live regions for dynamic content
     this.addLiveRegions();
-    
+
     // Add announcements for page changes
     this.addPageAnnouncements();
-    
+
     // Enhance form validation announcements
     this.enhanceFormValidation();
   }
@@ -354,8 +356,8 @@ class APGIAccessibility {
     // Announce loading states
     const loadingElements = document.querySelectorAll('.loading, [id*="loading"]');
     loadingElements.forEach(element => {
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
+      const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
           if (mutation.type === 'childList') {
             const text = element.textContent.trim();
             if (text) {
@@ -364,7 +366,7 @@ class APGIAccessibility {
           }
         });
       });
-      
+
       observer.observe(element, { childList: true, subtree: true });
     });
   }
@@ -377,23 +379,25 @@ class APGIAccessibility {
         this.announceToScreenReader(`Page: ${title}`);
       }
     });
-    
+
     titleObserver.observe(document.querySelector('title'), { childList: true });
   }
 
   enhanceFormValidation() {
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', e => {
         const errors = form.querySelectorAll('.error, [aria-invalid="true"]');
         if (errors.length > 0) {
           e.preventDefault();
-          const errorMessages = Array.from(errors).map(error => 
-            error.textContent || error.getAttribute('aria-describedby')
-          ).filter(Boolean);
-          
+          const errorMessages = Array.from(errors)
+            .map(error => error.textContent || error.getAttribute('aria-describedby'))
+            .filter(Boolean);
+
           if (errorMessages.length > 0) {
-            this.announceToScreenReader(`Form has ${errorMessages.length} error(s): ${errorMessages.join(', ')}`);
+            this.announceToScreenReader(
+              `Form has ${errorMessages.length} error(s): ${errorMessages.join(', ')}`
+            );
           }
         }
       });
@@ -506,19 +510,19 @@ class APGIAccessibility {
       if (!group.querySelector('fieldset')) {
         const fieldset = document.createElement('fieldset');
         const legend = document.createElement('legend');
-        
+
         // Move group content into fieldset
         while (group.firstChild) {
           fieldset.appendChild(group.firstChild);
         }
-        
+
         // Add legend if there's a heading
         const heading = group.querySelector('h3, h4, .group-label');
         if (heading) {
           legend.textContent = heading.textContent;
           heading.remove();
         }
-        
+
         group.appendChild(fieldset);
         if (legend.textContent) {
           fieldset.insertBefore(legend, fieldset.firstChild);

@@ -1,4 +1,15 @@
 // Data Extraction and Optimization for APGI Website
+// Ensure logger is available
+if (typeof logger === 'undefined') {
+    // Fallback logger if not loaded
+    window.logger = {
+        error: (...args) => console.error('[ERROR]', ...args),
+        warn: (...args) => console.warn('[WARN]', ...args),
+        info: (...args) => console.info('[INFO]', ...args),
+        debug: (...args) => console.log('[DEBUG]', ...args)
+    };
+}
+
 class APGIDataOptimizer {
   constructor() {
     this.extractedData = new Map();
@@ -255,7 +266,7 @@ class APGIDataOptimizer {
                 Plotly.newPlot('plot', data, layout);
                 
             } catch (error) {
-                console.error('Error loading visualization:', error);
+                logger.error('Error loading visualization:', error);
                 document.getElementById('loading').innerHTML = 
                     '<div style="color: red;">Error loading visualization. Please refresh the page.</div>';
             }
@@ -413,7 +424,7 @@ class APGIDataOptimizer {
                 Plotly.newPlot('plot', data, layout);
                 
             } catch (error) {
-                console.error('Error loading network flow:', error);
+                logger.error('Error loading network flow:', error);
                 document.getElementById('loading').innerHTML = 
                     '<div style="color: red;">Error loading visualization. Please refresh the page.</div>';
             }

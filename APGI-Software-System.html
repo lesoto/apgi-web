@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI System | Allostatic Precision-Gated Ignition Framework</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" integrity="sha384-J1/3uCQHbgOYWzJUxz9iRJIGsNcuCRbE6yM4Fvt+pwefH+GHSi5Zz7sOCrA0LL/3" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" integrity="sha384-+BtA6NbrkZ1eh8kuyVylOCEebvmRK+hACkrA6LToCK5+FsvX+J6bnBBHslT+noJQ" crossorigin="anonymous"></script></script>
     <style>
         /* Import all the styles from the provided style guide */
         .global-nav {
@@ -604,7 +604,7 @@
     <!-- Global Navigation -->
     <nav class="global-nav" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="index.html" class="brand-logo">
+            <a href="Home.html" class="brand-logo">
                 <div class="logo-icon">A</div>
                 <span>APGI FRAMEWORK</span>
             </a>
@@ -612,13 +612,8 @@
                 <i data-lucide="menu"></i>
             </button>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="Design-System.html">Design System</a></li>
-                <li><a href="Styleguide.html">Styleguide</a></li>
-                <li><a href="UI-Library-Complete.html">UI Library</a></li>
+                <li><a href="Home.html">Home</a></li>
                 <li><a href="Software-1.html" class="active">APGI System</a></li>
-                <li><a href="Content-Dashboard.html">Dashboard</a></li>
-                <li><a href="Content-Templates.html">Templates</a></li>
                 <li><button class="nav-theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
                     <span id="theme-icon" class="theme-icon">🌙</span>
                 </button></li>
@@ -630,7 +625,7 @@
     <nav class="breadcrumbs" aria-label="Breadcrumb navigation">
         <div class="nav-container">
             <ol>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="Home.html">Home</a></li>
                 <li aria-current="page">APGI System</li>
             </ol>
         </div>
@@ -651,7 +646,11 @@
                 human-like cognitive processes through biologically-inspired architectures.
             </p>
             <div class="hero-illustration mb-8">
-                <img src="images/APGI-Software-System.png" alt="APGI Software System Interface" class="hero-image">
+                <picture>
+                    <source srcset="images/APGI-Software-System.webp" type="image/webp">
+                    <source srcset="images/APGI-Software-System.png" type="image/png">
+                    <img src="images/APGI-Software-System.png" alt="APGI Software System Interface" class="hero-image" loading="lazy">
+                </picture>
             </div>
             <div class="flex flex-wrap gap-3 mb-8">
                 <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Active Inference</span>
@@ -1400,5 +1399,7 @@ pytest tests/test_core.py -v</pre>
             }
         });
     </script>
+    <script src="assets/js/service-worker-registration.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
 </body>
 </html>
