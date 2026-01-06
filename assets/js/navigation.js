@@ -3,29 +3,18 @@ class APGINavigation {
   constructor() {
     this.pages = {
       'Home': 'Home.html',
-      'Home-Original': 'Home-original.html', 
-      'Dashboard': 'Dashboard.html',
-      'Dashboard-Acad': 'Dashboard-Acad.html',
-      'Dashboard-Content': 'Dashboard-Content.html',
-      'Dashboard-Content-Short': 'Dashboard-Content-Short.html',
-      'Dashboard-Operations': 'Dashboard-Operations.html',
-      'Quiz': 'Quiz.html',
-      'Quiz-1': 'Quiz-1.html',
-      'Quiz-2': 'Quiz-2.html', 
-      'Quiz-4': 'Quiz-4.html',
       'Assessment': 'Assessment.html',
       'Assessment-OnePage': 'Assessment-OnePage.html',
+      'Quiz-Short': 'Quiz-Short.html',
       'Profile': 'Profile.html',
       'PsyStates': 'PsyStates.html',
       'PsyStates-Visualizer': 'PsyStates-Visualizer.html',
       'Consciousness-Visualization': 'Consciousness-Visualization.html',
-      'State-Network-3d': 'State-Network-3d.html',
-      'State-Network-Flow': 'State-Network-Flow.html',
-      'Ignition-Landscape': 'Ignition-Landscape.html',
       'Neuromoduratory-Cascade': 'Neuromoduratory-Cascade.html',
       'Book-Outline': 'Book-Outline.html',
-      'Book-Available-Now': 'Book-Available-Now.html',
-      'APGI-Paper': 'APGI-Paper.html'
+      'Paper': 'Paper.html',
+      'Privacy-Policy': 'Privacy-Policy.html',
+      'Terms-of-Service': 'Terms-of-Service.html'
     };
 
     this.currentPage = this.getCurrentPage();
@@ -63,19 +52,17 @@ class APGINavigation {
         </div>
         <div class="nav-menu">
           <a href="Home.html" data-page="Home" class="nav-item">Home</a>
-          <a href="Dashboard.html" data-page="Dashboard" class="nav-item">Dashboard</a>
-          <a href="Quiz.html" data-page="Quiz" class="nav-item">Quiz</a>
+          <a href="Quiz-Short.html" data-page="Quiz-Short" class="nav-item">Quiz</a>
           <a href="Assessment.html" data-page="Assessment" class="nav-item">Assessment</a>
           <span class="nav-separator">|</span>
           <a href="PsyStates-Visualizer.html" data-page="PsyStates-Visualizer" class="nav-item">PsyStates Visualizer</a>
           <a href="Consciousness-Visualization.html" data-page="Consciousness-Visualization" class="nav-item">Consciousness</a>
-          <a href="State-Network-3d.html" data-page="State-Network-3d" class="nav-item">State Network 3D</a>
-          <a href="State-Network-Flow.html" data-page="State-Network-Flow" class="nav-item">State Network Flow</a>
-          <a href="Ignition-Landscape.html" data-page="Ignition-Landscape" class="nav-item nav-highlight">Ignition Landscape</a>
-          <span class="nav-separator">|</span>
-          <a href="APGI-Paper.html" data-page="APGI-Paper" class="nav-item">APGI Paper</a>
-          <a href="Book-Outline.html" data-page="Book-Outline" class="nav-item">Book Outline</a>
           <a href="Neuromoduratory-Cascade.html" data-page="Neuromoduratory-Cascade" class="nav-item">Neuromodulatory Cascade</a>
+          <span class="nav-separator">|</span>
+          <a href="Paper.html" data-page="Paper" class="nav-item">Research</a>
+          <a href="Book-Outline.html" data-page="Book-Outline" class="nav-item">Book Outline</a>
+          <a href="Privacy-Policy.html" data-page="Privacy-Policy" class="nav-item">Privacy</a>
+          <a href="Terms-of-Service.html" data-page="Terms-of-Service" class="nav-item">Terms</a>
         </div>
         <button class="nav-toggle" aria-label="Toggle navigation">
           <span></span>
@@ -337,20 +324,20 @@ class APGINavigation {
   findPageByTitle(text) {
     const titleMappings = {
       'Home': 'Home',
-      'Dashboard': 'Dashboard',
-      'Quiz': 'Quiz',
+      'Quiz': 'Quiz-Short',
       'Assessment': 'Assessment',
       'Profile': 'Profile',
       'PsyStates': 'PsyStates',
       'PsyStates Visualizer': 'PsyStates-Visualizer',
       'Consciousness Visualization': 'Consciousness-Visualization',
-      'State Network 3D': 'State-Network-3d',
-      'State Network Flow': 'State-Network-Flow',
-      'Ignition Landscape': 'Ignition-Landscape',
       'Neuromoduratory Cascade': 'Neuromoduratory-Cascade',
       'Book Outline': 'Book-Outline',
-      'Book Available Now': 'Book-Available-Now',
-      'APGI Paper': 'APGI-Paper'
+      'Research': 'Paper',
+      'APGI Paper': 'Paper',
+      'Privacy': 'Privacy-Policy',
+      'Privacy Policy': 'Privacy-Policy',
+      'Terms': 'Terms-of-Service',
+      'Terms of Service': 'Terms-of-Service'
     };
 
     // Check for exact matches first

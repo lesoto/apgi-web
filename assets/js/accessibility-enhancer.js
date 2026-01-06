@@ -4,6 +4,39 @@ class APGIAccessibility {
     this.init();
   }
 
+  // Input sanitization utility
+  sanitizeInput(input) {
+    if (typeof input !== 'string') return input;
+    
+    return input
+      .replace(/[<>]/g, '') // Remove potential HTML tags
+      .replace(/javascript:/gi, '') // Remove javascript: protocol
+      .replace(/on\w+=/gi, '') // Remove event handlers
+      .trim();
+  }
+
+  // Validate email format
+  isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  // Validate form inputs
+  validateFormInput(input, type = 'text') {
+    const sanitized = this.sanitizeInput(input);
+    
+    switch (type) {
+      case 'email':
+        return this.isValidEmail(sanitized) ? sanitized : null;
+      case 'number':
+        const num = parseFloat(sanitized);
+        return !isNaN(num) ? num : null;
+      case 'text':
+      default:
+        return sanitized.length > 0 ? sanitized : null;
+    }
+  }
+
   init() {
     this.addARIALabels();
     this.improveKeyboardNavigation();
@@ -249,6 +282,44 @@ class APGIAccessibility {
         text-decoration: underline;
         text-decoration-thickness: 2px;
         text-underline-offset: 2px;
+      }
+      
+      /* Form field focus improvements */
+      input:focus-visible,
+      textarea:focus-visible,
+      select:focus-visible {
+        border-color: #2563eb !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+      }
+      
+      /* Interactive element focus */
+      [role="button"]:focus-visible,
+      [tabindex="0"]:focus-visible {
+        outline: 2px solid #2563eb !important;
+        outline-offset: 2px !important;
+      }
+      
+      /* High contrast mode improvements */
+      @media (prefers-contrast: high) {
+        .btn, button {
+          border: 2px solid #000000 !important;
+        }
+        
+        a {
+          text-decoration: underline !important;
+        }
+        
+        input, textarea, select {
+          border: 2px solid #000000 !important;
+        }
+      }
+      
+      /* Reduced motion for focus animations */
+      @media (prefers-reduced-motion: reduce) {
+        *:focus-visible {
+          transition: none !important;
+          animation: none !important;
+        }
       }
     `;
     document.head.appendChild(style);

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="js/performance-optimizer.js"></script>
-    <script src="js/accessibility-enhancer.js"></script>
-    <script src="js/navigation.js"></script>
+    <script src="assets/js/performance-optimizer.js"></script>
+    <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/navigation.js"></script>
+    <!-- Shared Navigation -->
+    <link rel="stylesheet" href="assets/css/navigation.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Consciousness Architecture Assessment</title>
@@ -228,37 +230,6 @@
         @keyframes glow {
             0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.3); }
             50% { box-shadow: 0 0 40px rgba(102, 126, 234, 0.6); }
-        }
-
-        .theme-toggle {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            background: rgba(255, 255, 255, 0.18);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 60px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: var(--transition);
-            backdrop-filter: var(--backdrop-blur);
-            font-weight: 500;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.28);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .theme-toggle:active {
-            transform: translateY(0);
         }
 
         h1 {
@@ -1240,13 +1211,6 @@
             header {
                 padding: 32px 24px;
             }
-            
-            .theme-toggle {
-                top: 16px;
-                right: 16px;
-                padding: 10px 16px;
-                font-size: 13px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -1421,11 +1385,10 @@
     </style>
 </head>
 <body>
+    <!-- Include Navigation Component -->
+    <div id="navigation-placeholder"></div>
+    
     <header>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-            <i class="fas fa-moon" id="theme-icon"></i>
-            <span id="theme-text">Dark</span>
-        </button>
         <div class="container">
             <h1>Complete APGI Consciousness Assessment</h1>
             <p class="subtitle">Measure all four APGI parameters, their interactions, temporal stability, and environmental fit</p>
@@ -2441,36 +2404,6 @@
             nextBtn.addEventListener('click', showNextQuestion);
             retakeBtn.addEventListener('click', retakeQuiz);
             downloadBtn.addEventListener('click', downloadReport);
-            
-            // Theme toggle
-            const themeToggle = document.getElementById('theme-toggle');
-            const themeIcon = document.getElementById('theme-icon');
-            const themeText = document.getElementById('theme-text');
-            const html = document.documentElement;
-            
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            html.setAttribute('data-theme', currentTheme);
-            updateThemeButton(currentTheme);
-            
-            themeToggle.addEventListener('click', () => {
-                const theme = html.getAttribute('data-theme');
-                const newTheme = theme === 'light' ? 'dark' : 'light';
-                html.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateThemeButton(newTheme);
-            });
-            
-            function updateThemeButton(theme) {
-                if (theme === 'dark') {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                    themeText.textContent = 'Light';
-                } else {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                    themeText.textContent = 'Dark';
-                }
-            }
             
             // Tab switching
             tabs.forEach(tab => {
@@ -3497,8 +3430,51 @@ ${profile.mechanism}
             URL.revokeObjectURL(url);
         }
 
+        // Load Navigation Component
+        fetch('components/navigation.html')
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('navigation-placeholder').innerHTML = html;
+          })
+          .catch(error => console.error('Failed to load navigation:', error));
+
         // Initialize the quiz
-        document.addEventListener('DOMContentLoaded', initQuiz);
+        document.addEventListener('DOMContentLoaded', () => {
+            initQuiz();
+            
+            // ===== THEME TOGGLE =====
+            // Wait for navigation to load before setting up theme toggle
+            setTimeout(() => {
+                const themeToggle = document.getElementById('theme-toggle');
+                const themeIcon = document.getElementById('theme-icon');
+                const themeText = document.getElementById('theme-text');
+                const html = document.documentElement;
+                
+                const currentTheme = localStorage.getItem('theme') || 'light';
+                html.setAttribute('data-theme', currentTheme);
+                updateThemeButton(currentTheme);
+                
+                if (themeToggle) {
+                    themeToggle.addEventListener('click', () => {
+                        const theme = html.getAttribute('data-theme');
+                        const newTheme = theme === 'light' ? 'dark' : 'light';
+                        html.setAttribute('data-theme', newTheme);
+                        localStorage.setItem('theme', newTheme);
+                        updateThemeButton(newTheme);
+                    });
+                }
+                
+                function updateThemeButton(theme) {
+                    if (theme === 'dark') {
+                        if (themeIcon) themeIcon.textContent = '☀️';
+                        if (themeText) themeText.textContent = 'Light';
+                    } else {
+                        if (themeIcon) themeIcon.textContent = '🌙';
+                        if (themeText) themeText.textContent = 'Dark';
+                    }
+                }
+            }, 100); // Delay to ensure navigation is loaded
+        });
     </script>
 </body>
 </html>

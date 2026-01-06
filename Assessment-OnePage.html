@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="js/performance-optimizer.js"></script>
-    <script src="js/accessibility-enhancer.js"></script>
-    <script src="js/navigation.js"></script>
+    <script src="assets/js/performance-optimizer.js"></script>
+    <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/navigation.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Consciousness Parameter Assessment</title>
@@ -126,6 +126,198 @@
             animation: float 20s ease-in-out infinite;
         }
         
+        /* Main Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .nav-container {
+            max-width: min(100% - 2rem, 1200px);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            gap: 0.5rem;
+            flex-wrap: nowrap;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .nav-link:hover,
+        .nav-link:focus {
+            color: var(--accent);
+            background: rgba(91, 76, 253, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .nav-link.active {
+            color: var(--accent);
+            background: rgba(91, 76, 253, 0.15);
+            font-weight: 600;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        /* Theme Toggle in Navigation */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .theme-toggle:hover,
+        .theme-toggle:focus {
+            color: var(--accent);
+            background: rgba(91, 76, 253, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .theme-toggle:active {
+            transform: translateY(-1px);
+        }
+        
+        .theme-toggle i {
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        
+        /* Skip to main content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--accent);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 8px;
+            z-index: 10000;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Adjust header for navigation */
+        header {
+            margin-top: 60px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+                height: 60px;
+                flex-wrap: nowrap;
+            }
+            
+            .nav-links {
+                order: 2;
+                flex: 1;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                margin-top: 0;
+            }
+            
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.6rem;
+            }
+            
+            .theme-toggle {
+                order: unset;
+                margin-left: 0;
+                margin-right: 0;
+                flex-shrink: 0;
+                font-size: 0.85rem;
+                padding: 0.4rem 0.6rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 0.75rem;
+                height: 60px;
+                flex-wrap: nowrap;
+            }
+            
+            .nav-links {
+                gap: 0.2rem;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .nav-link {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.5rem;
+            }
+            
+            .theme-toggle {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.75rem;
+                min-width: auto;
+                margin-right: 0;
+            }
+        }
+        
+        [data-theme="dark"] .theme-toggle {
+            color: var(--text-secondary);
+        }
+        
+        [data-theme="dark"] .theme-toggle:hover {
+            color: var(--accent);
+            background: rgba(91, 76, 253, 0.1);
+        }
+        
         @keyframes float {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
             33% { transform: translate(30px, -30px) rotate(120deg); }
@@ -210,47 +402,6 @@
                 opacity: 0.95;
                 transform: translateY(0);
             }
-        }
-        
-        .theme-toggle {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            padding: 15px 25px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: var(--transition);
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 10;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-        
-        .theme-toggle:active {
-            transform: translateY(-1px) scale(1.02);
-        }
-        
-        .theme-toggle i {
-            font-size: 16px;
-            transition: var(--transition);
-        }
-        
-        [data-theme="dark"] .theme-toggle {
-            background-color: rgba(0, 0, 0, 0.3);
         }
         
         .warning-box {
@@ -945,12 +1096,29 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Navigation Component -->
+    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+      <div class="nav-container">
+        <div class="nav-links">
+          <a href="Home.html" class="nav-link">APGI Framework</a>
+          <a href="Quiz-Short.html" class="nav-link">Quiz</a>
+          <a href="Assessment.html" class="nav-link">Assessment</a>
+          <a href="PsyStates-Visualizer.html" class="nav-link">PsyStates Visualizer</a>
+          <a href="Consciousness-Visualization.html" class="nav-link">Consciousness</a>
+          <a href="Paper.html" class="nav-link">Research</a>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i>
+            <span>Dark Mode</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="container" id="main-content">
         <header>
-            <div class="theme-toggle" onclick="toggleTheme()">
-                <i class="fas fa-moon"></i>
-                <span>Dark Mode</span>
-            </div>
             <h1>APGI Parameter Assessment</h1>
             <p class="subtitle">Empirical Measurement of Consciousness Architecture Parameters</p>
             

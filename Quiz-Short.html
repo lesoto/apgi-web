@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-    <script src="js/performance-optimizer.js"></script>
-    <script src="js/accessibility-enhancer.js"></script>
-    <script src="js/navigation.js"></script>
+    <script src="assets/js/performance-optimizer.js"></script>
+    <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/navigation.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>APGI Consciousness Signature Assessment</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="assets/css/design-system.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
@@ -193,35 +194,7 @@
       animation: fadeInUp 0.8s ease;
     }
     
-    .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--gradient);
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 12px 18px;
-      border-radius: 12px;
-      z-index: 1000;
-      box-shadow: var(--shadow-md);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(10px);
-    }
-    
-    .theme-toggle:hover {
-      transform: translateY(-2px) scale(1.05);
-      box-shadow: var(--shadow-xl);
-    }
-    
-    .theme-toggle:active {
-      transform: translateY(0) scale(0.98);
-    }
-    
+        
     h1 {
       font-size: 3rem;
       font-weight: 800;
@@ -811,7 +784,7 @@
       transform: translateY(0) scale(0.98);
     }
     
-    button:not(.secondary):not(.theme-toggle) {
+    button:not(.secondary) {
       background: var(--gradient);
       background-size: 200% 200%;
       color: white;
@@ -819,12 +792,12 @@
       animation: gradientShift 5s ease infinite;
     }
     
-    button:not(.secondary):not(.theme-toggle):hover {
+    button:not(.secondary):hover {
       transform: translateY(-3px) scale(1.02);
       box-shadow: var(--shadow-xl);
     }
     
-    button:not(.secondary):not(.theme-toggle):active {
+    button:not(.secondary):active {
       transform: translateY(-1px) scale(0.98);
     }
     
@@ -1334,13 +1307,7 @@
         width: 100%; 
       }
       
-      .theme-toggle { 
-        top: 10px; 
-        right: 10px; 
-        padding: 8px 12px; 
-        font-size: 0.9rem; 
-      }
-      
+            
       .question { 
         padding: 15px; 
       }
@@ -1373,7 +1340,6 @@
         background: white;
       }
       
-      .theme-toggle,
       .actions,
       .quiz-navigation,
       .tabs {
@@ -1393,17 +1359,13 @@
   </style>
   
   <!-- Shared Navigation -->
-  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="assets/css/navigation.css">
 </head>
 <body>
   <!-- Include Navigation Component -->
   <div id="navigation-placeholder"></div>
   
-  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-    <i class="fas fa-moon" id="theme-icon"></i>
-    <span id="theme-text">Dark Mode</span>
-  </button>
-
+  
   <div class="container">
     <header>
       <h1>APGI Consciousness Signature</h1>
@@ -1768,31 +1730,36 @@
       .catch(error => console.error('Failed to load navigation:', error));
 
     // ===== THEME TOGGLE =====
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const themeText = document.getElementById('theme-text');
-    const html = document.documentElement;
-    const savedTheme = localStorage.getItem('apgi-theme') || 'light';
-    html.setAttribute('data-theme', savedTheme);
-    updateThemeButton(savedTheme);
+    // Wait for navigation to load before setting up theme toggle
+    setTimeout(() => {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+      const html = document.documentElement;
+      const savedTheme = localStorage.getItem('apgi-theme') || 'light';
+      html.setAttribute('data-theme', savedTheme);
+      updateThemeButton(savedTheme);
 
-    themeToggle.addEventListener('click', () => {
-      const current = html.getAttribute('data-theme');
-      const next = current === 'light' ? 'dark' : 'light';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('apgi-theme', next);
-      updateThemeButton(next);
-    });
-
-    function updateThemeButton(theme) {
-      if (theme === 'dark') {
-        themeIcon.className = 'fas fa-sun';
-        themeText.textContent = 'Light Mode';
-      } else {
-        themeIcon.className = 'fas fa-moon';
-        themeText.textContent = 'Dark Mode';
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const current = html.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          html.setAttribute('data-theme', next);
+          localStorage.setItem('apgi-theme', next);
+          updateThemeButton(next);
+        });
       }
-    }
+
+      function updateThemeButton(theme) {
+        if (theme === 'dark') {
+          if (themeIcon) themeIcon.textContent = '☀️';
+          if (themeText) themeText.textContent = 'Light';
+        } else {
+          if (themeIcon) themeIcon.textContent = '🌙';
+          if (themeText) themeText.textContent = 'Dark';
+        }
+      }
+    }, 100); // Delay to ensure navigation is loaded
 
     // ===== COMPREHENSIVE QUIZ DATA =====
     const quizData = {

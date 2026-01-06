@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="js/performance-optimizer.js"></script>
-    <script src="js/accessibility-enhancer.js"></script>
-    <script src="js/navigation.js"></script>
+    <script src="assets/js/performance-optimizer.js"></script>
+    <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/navigation.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Understand How Your Consciousness Works—And Learn to Adjust It</title>
@@ -18,6 +18,7 @@
   <link rel="dns-prefetch" href="//unpkg.com">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/design-system.css">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -289,14 +290,15 @@
     /* Hero Section */
     .hero {
       text-align: center;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(124, 58, 237, 0.08) 50%, rgba(139, 92, 246, 0.08) 100%);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(124, 58, 237, 0.12) 50%, rgba(139, 92, 246, 0.12) 100%);
       border-radius: 0 0 var(--radius-xl) var(--radius-xl);
       position: relative;
       overflow: hidden;
-      padding: clamp(4rem, 10vw, 8rem) 1rem;
+      padding: clamp(6rem, 15vw, 10rem) 1rem;
       margin-bottom: 4rem;
       box-shadow: var(--shadow-lg);
       backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .hero::before {
@@ -321,26 +323,44 @@
     .hero .container {
       position: relative;
       z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
     }
     
     .hero h1 {
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       animation: fadeInUp 0.8s ease-out;
+      line-height: 1.1;
+      font-weight: 800;
     }
     
     .hero p {
-      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-      margin-bottom: 2.5rem;
+      font-size: clamp(1.2rem, 3vw, 1.4rem);
+      margin-bottom: 3rem;
       color: var(--text-secondary);
       animation: fadeInUp 0.8s ease-out 0.2s both;
       max-width: 700px;
       margin-left: auto;
       margin-right: auto;
       line-height: 1.6;
+      font-weight: 400;
     }
     
     .hero .btn {
       animation: fadeInUp 0.8s ease-out 0.4s both;
+      padding: 1.25rem 2.5rem;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+    
+    .hero .btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+      border-color: rgba(255, 255, 255, 0.3);
     }
     /* Animations */
     @keyframes fadeInUp {
@@ -461,71 +481,49 @@
     
     /* Section Styles */
     section {
-      margin: 2rem auto;
+      margin: 3rem auto;
       max-width: 1200px;
-      padding: 0 1.5rem;
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: var(--radius-lg);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    
+    section:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
     }
     
     #problem {
       background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-      border-radius: var(--radius-lg);
-      margin: 3rem auto;
-      padding: 4rem 2rem;
-      max-width: 1000px;
-      text-align: center;
     }
     
     #framework {
       background: var(--bg-primary);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-color);
-      margin: 3rem auto;
-      padding: 4rem 2rem;
-      max-width: 1000px;
-      text-align: center;
     }
     
     #author {
       background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-      border-radius: var(--radius-lg);
-      margin: 3rem auto;
-      padding: 4rem 2rem;
-      max-width: 1000px;
-      text-align: center;
     }
     
     #cta {
       background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
-      border-radius: var(--radius-lg);
-      margin: 3rem auto;
-      padding: 4rem 2rem;
-      max-width: 800px;
-      text-align: center;
     }
     
     #quiz {
       background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-      padding: 4rem 2rem;
-      margin: 3rem auto;
-      max-width: 1000px;
-      text-align: center;
-      border-radius: var(--radius-lg);
     }
     
     .testimonials {
       background: linear-gradient(135deg, var(--border-light) 0%, var(--bg-secondary) 100%);
-      border-radius: var(--radius-lg);
-      padding: 4rem 2rem;
-      margin: 3rem auto;
-      max-width: 1000px;
-      text-align: center;
     }
     
     /* Enhanced visual hierarchy */
     .section-content {
-      text-align: center;
-      max-width: 800px;
+      max-width: 100%;
       margin: 0 auto;
     }
     
@@ -541,6 +539,8 @@
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-lg);
       transition: var(--transition);
+      display: block;
+      margin: 0 auto;
     }
     
     .framework-diagram img:hover {
@@ -549,13 +549,6 @@
     }
     
     /* Testimonials */
-    .testimonials {
-      background: linear-gradient(135deg, var(--border-light) 0%, var(--bg-secondary) 100%);
-      border-radius: var(--radius-lg);
-      padding: 4rem 1rem;
-      margin: 3rem 0;
-    }
-    
     .testimonials .container {
       display: grid;
       gap: 2rem;
@@ -666,21 +659,20 @@
     }
     /* Theme Toggle */
     .theme-toggle {
-      position: relative;
-      top: auto;
-      right: auto;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.8rem;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 0.9rem;
       font-weight: 500;
-      color: var(--text-primary);
+      color: var(--text-secondary);
       transition: var(--transition);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 0.25rem;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     
     /* Main Navigation */
@@ -696,15 +688,60 @@
       box-shadow: var(--shadow);
     }
     
-    .theme-toggle:hover {
-      background: var(--bg-secondary);
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--accent);
+    .nav-container {
+      max-width: min(100% - 2rem, 1200px);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      gap: 0.5rem;
+      flex-wrap: nowrap;
+    }
+    
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    
+    .nav-link:hover,
+    .nav-link:focus {
+      color: var(--accent);
+      background: rgba(59, 130, 246, 0.1);
+      transform: translateY(-1px);
+    }
+    
+    .nav-link.active {
+      color: var(--accent);
+      background: rgba(59, 130, 246, 0.15);
+      font-weight: 600;
+    }
+    
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .theme-toggle:hover,
+    .theme-toggle:focus {
+      color: var(--accent);
+      background: rgba(59, 130, 246, 0.1);
+      transform: translateY(-1px);
     }
     
     .theme-toggle:active {
-      transform: translateY(-1px) scale(1.02);
+      transform: translateY(-1px);
     }
     
     .theme-icon {
@@ -890,13 +927,8 @@
         padding: 0 2rem;
       }
       
-      .theme-toggle {
-        top: 30px;
-        right: 30px;
-      }
-      
       .hero {
-        padding: clamp(6rem, 12vw, 10rem) 2rem;
+        padding: clamp(8rem, 15vw, 12rem) 2rem;
       }
     }
     
@@ -910,8 +942,17 @@
       }
       
       .hero {
-        padding: clamp(4rem, 8vw, 6rem) 1rem;
+        padding: clamp(5rem, 12vw, 8rem) 1rem;
         margin-bottom: 3rem;
+      }
+      
+      .hero h1 {
+        margin-bottom: 1.5rem;
+      }
+      
+      .hero p {
+        font-size: clamp(1.1rem, 3vw, 1.3rem);
+        margin-bottom: 2.5rem;
       }
       
       .section-content {
@@ -941,14 +982,25 @@
       }
       
       .hero {
-        padding: clamp(3rem, 10vw, 5rem) 1rem;
+        padding: clamp(4rem, 10vw, 6rem) 1rem;
         margin-bottom: 2rem;
         border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      }
+      
+      .hero h1 {
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
       }
       
       .hero p {
         font-size: clamp(1rem, 3vw, 1.2rem);
         margin-bottom: 2rem;
+        line-height: 1.5;
+      }
+      
+      .hero .btn {
+        padding: 1rem 2rem;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
       }
       
       .btn {
@@ -964,6 +1016,11 @@
       
       body {
         font-size: clamp(0.95rem, 2vw, 1rem);
+      }
+      
+      section {
+        margin: 2rem auto;
+        padding: 3rem 1.5rem;
       }
       
       #quiz-container {
@@ -983,6 +1040,102 @@
         padding: 8px 16px;
         min-width: 100px;
         font-size: 12px;
+      }
+      
+      /* Mobile Navigation */
+      .nav-container {
+        padding: 0 1rem;
+        height: 60px; /* Maintain fixed height */
+        flex-wrap: nowrap; /* Prevent wrapping */
+      }
+      
+      .nav-links {
+        order: 2;
+        flex: 1; /* Take available space */
+        overflow-x: auto; /* Allow horizontal scrolling */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        margin-top: 0; /* Remove margin top */
+      }
+      
+      .nav-links::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .nav-link {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.6rem; /* Slightly smaller padding */
+      }
+      
+      .theme-toggle {
+        order: unset;
+        margin-left: 0;
+        margin-right: 0;
+        flex-shrink: 0;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.6rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+      
+      .container {
+        padding: 0 1rem;
+      }
+      
+      header, section {
+        padding: 2rem 1rem;
+      }
+      
+      h1 {
+        font-size: 1.75rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+      }
+      
+      /* Radar chart mobile improvements */
+      .radar-chart {
+        max-width: 100%;
+        height: auto;
+      }
+      
+      .radar-svg {
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+      }
+      
+      /* Quiz mobile improvements */
+      #quiz-container {
+        margin: 0 0.5rem;
+        padding: 1rem;
+      }
+      
+      .question-option {
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+      }
+      
+      /* Navigation mobile improvements */
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      
+      .nav-link {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
       }
     }
     
@@ -1004,6 +1157,11 @@
         margin-bottom: 1.5rem;
       }
       
+      section {
+        margin: 1.5rem auto;
+        padding: 2.5rem 1rem;
+      }
+      
       #quiz-container {
         padding: 1rem;
         margin: 0 0.5rem;
@@ -1015,6 +1173,37 @@
         padding: 6px 12px;
         min-width: 80px;
         font-size: 11px;
+      }
+      
+      /* Very small screen navigation */
+      .nav-container {
+        padding: 0 0.75rem;
+        height: 60px; /* Maintain fixed height */
+        flex-wrap: nowrap; /* Prevent wrapping */
+      }
+      
+      .nav-links {
+        gap: 0.2rem;
+        overflow-x: auto; /* Allow horizontal scrolling */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      
+      .nav-links::-webkit-scrollbar {
+        display: none;
+      }
+      
+      .nav-link {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem; /* Even smaller padding */
+      }
+      
+      .theme-toggle {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.75rem;
+        min-width: auto;
+        margin-right: 0;
       }
     }
     
@@ -1050,14 +1239,12 @@
     }
     
     [data-theme="dark"] .theme-toggle {
-      color: var(--accent);
-      border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+      color: var(--text-secondary);
     }
     
     [data-theme="dark"] .theme-toggle:hover {
-      background: var(--bg-secondary);
-      box-shadow: var(--shadow-xl), 0 0 20px rgba(96, 165, 250, 0.3);
+      color: var(--accent);
+      background: rgba(59, 130, 246, 0.1);
     }
     
     [data-theme="dark"] #problem,
@@ -1129,20 +1316,20 @@
 <!-- Navigation -->
 <nav class="main-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-container">
-    <a href="Home.html" class="nav-link active">APGI Framework</a>
-    <a href="Dashboard-Acad.html" class="nav-link">Dashboard</a>
-    <a href="Quiz-Short.html" class="nav-link">Quiz</a>
-    <a href="Assessment.html" class="nav-link">Assessment</a>
-    <a href="PsyStates-Visualizer.html" class="nav-link">PsyStates Visualizer</a>
-    <a href="Consciousness-Visualization.html" class="nav-link">Consciousness</a>
-    <a href="State-Network-3d.html" class="nav-link">State Network 3D</a>
-    <a href="State-Network-Flow.html" class="nav-link">State Network</a>
-    
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false">
-      <span class="theme-icon" id="theme-icon" aria-hidden="true">🌙</span>
-      <span class="theme-text" id="theme-text">Dark</span>
-    </button>
+    <div class="nav-links">
+      <a href="Home.html" class="nav-link active">APGI Framework</a>
+      <a href="Quiz-Short.html" class="nav-link">Quiz</a>
+      <a href="Assessment.html" class="nav-link">Assessment</a>
+      <a href="PsyStates-Visualizer.html" class="nav-link">PsyStates Visualizer</a>
+      <a href="Consciousness-Visualization.html" class="nav-link">Consciousness</a>
+      <a href="Paper.html" class="nav-link">Research</a>
+      
+      <!-- Theme Toggle -->
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false">
+        <span class="theme-icon" id="theme-icon" aria-hidden="true">🌙</span>
+        <span class="theme-text" id="theme-text">Dark</span>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -1199,7 +1386,7 @@
     <p class="lead animate-slide-in"><strong>The result?</strong> You stop wondering why you think the way you do—and start working <em>with</em> your consciousness architecture instead of against it.</p>
 
     <div class="framework-diagram animate-fade-in" role="img" aria-label="APGI Framework Diagram">
-      <img src="images/APGI-Framework-Diagram.svg" alt="APGI Framework Diagram showing the three dimensions of consciousness: Threshold Sensitivity, Interoceptive Accuracy, and Somatic Bias" loading="lazy" width="800" height="600">
+      <img src="assets/images/APGI-Framework-Diagram.svg" alt="APGI Framework Diagram showing the three dimensions of consciousness: Threshold Sensitivity, Interoceptive Accuracy, and Somatic Bias" loading="lazy" width="800" height="600">
     </div>
   </div>
 </section>
@@ -1730,22 +1917,36 @@
     const somaticX = 150 + (somaticPercent / 100) * 120 * Math.cos(11 * Math.PI / 6);
     const somaticY = 150 - (somaticPercent / 100) * 120 * Math.sin(11 * Math.PI / 6);
     
-    // Update polygon
+    // Update polygon with error handling
     const polygon = document.getElementById('data-polygon');
-    polygon.setAttribute('points', `${thresholdX},${thresholdY} ${interoceptionX},${interoceptionY} ${somaticX},${somaticY}`);
+    if (polygon) {
+      polygon.setAttribute('points', `${thresholdX},${thresholdY} ${interoceptionX},${interoceptionY} ${somaticX},${somaticY}`);
+    }
     
-    // Update points
-    document.getElementById('point-threshold').setAttribute('cx', thresholdX);
-    document.getElementById('point-threshold').setAttribute('cy', thresholdY);
-    document.getElementById('point-interoception').setAttribute('cx', interoceptionX);
-    document.getElementById('point-interoception').setAttribute('cy', interoceptionY);
-    document.getElementById('point-somatic').setAttribute('cx', somaticX);
-    document.getElementById('point-somatic').setAttribute('cy', somaticY);
+    // Update points with error handling
+    const updatePoint = (id, x, y) => {
+      const point = document.getElementById(id);
+      if (point) {
+        point.setAttribute('cx', x);
+        point.setAttribute('cy', y);
+      }
+    };
     
-    // Update labels
-    document.getElementById('threshold-value').textContent = `${thresholdPercent.toFixed(0)}%`;
-    document.getElementById('interoception-value').textContent = `${interoceptionPercent.toFixed(0)}%`;
-    document.getElementById('somatic-value').textContent = `${somaticPercent.toFixed(0)}%`;
+    updatePoint('point-threshold', thresholdX, thresholdY);
+    updatePoint('point-interoception', interoceptionX, interoceptionY);
+    updatePoint('point-somatic', somaticX, somaticY);
+    
+    // Update labels with error handling
+    const updateLabel = (id, value) => {
+      const label = document.getElementById(id);
+      if (label) {
+        label.textContent = `${value.toFixed(0)}%`;
+      }
+    };
+    
+    updateLabel('threshold-value', thresholdPercent);
+    updateLabel('interoception-value', interoceptionPercent);
+    updateLabel('somatic-value', somaticPercent);
   }
   
   // Theme toggle functionality
