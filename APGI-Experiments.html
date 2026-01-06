@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Framework | Computational Consciousness Modeling</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --electric-blue: #00B4FF;
+            --vibrant-red: #FF3366;
+            --emerald-green: #00CC99;
+            --amber-yellow: #FFCC00;
+            --purple: #9966FF;
+            --dark-slate: #2C3E50;
+            --deep-navy: #1a1a2e;
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(44, 62, 80, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--deep-navy) 0%, var(--dark-slate) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Particle Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--electric-blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--electric-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--electric-blue) 0%, var(--purple) 50%, var(--vibrant-red) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--electric-blue), var(--purple));
+            color: white;
+            box-shadow: 0 0 30px rgba(0, 180, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(0, 180, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--electric-blue);
+            color: var(--electric-blue);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 180, 255, 0.1);
+        }
+
+        /* Section */
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .glass-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--electric-blue);
+            box-shadow: 0 10px 40px rgba(0, 180, 255, 0.2);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .feature-card:nth-child(1) .feature-icon {
+            background: linear-gradient(135deg, var(--electric-blue), rgba(0, 180, 255, 0.3));
+            box-shadow: 0 0 20px rgba(0, 180, 255, 0.4);
+        }
+
+        .feature-card:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, var(--vibrant-red), rgba(255, 51, 102, 0.3));
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+        }
+
+        .feature-card:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, var(--emerald-green), rgba(0, 204, 153, 0.3));
+            box-shadow: 0 0 20px rgba(0, 204, 153, 0.4);
+        }
+
+        .feature-card:nth-child(4) .feature-icon {
+            background: linear-gradient(135deg, var(--amber-yellow), rgba(255, 204, 0, 0.3));
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+        }
+
+        .feature-card:nth-child(5) .feature-icon {
+            background: linear-gradient(135deg, var(--purple), rgba(153, 102, 255, 0.3));
+            box-shadow: 0 0 20px rgba(153, 102, 255, 0.4);
+        }
+
+        .feature-card:nth-child(6) .feature-icon {
+            background: linear-gradient(135deg, var(--electric-blue), var(--emerald-green));
+            box-shadow: 0 0 20px rgba(0, 180, 255, 0.4);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Parameters Section */
+        .parameters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .parameter-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .parameter-symbol {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .parameter-card:nth-child(1) .parameter-symbol {
+            color: var(--electric-blue);
+            text-shadow: 0 0 30px rgba(0, 180, 255, 0.6);
+        }
+
+        .parameter-card:nth-child(2) .parameter-symbol {
+            color: var(--vibrant-red);
+            text-shadow: 0 0 30px rgba(255, 51, 102, 0.6);
+        }
+
+        .parameter-card:nth-child(3) .parameter-symbol {
+            color: var(--emerald-green);
+            text-shadow: 0 0 30px rgba(0, 204, 153, 0.6);
+        }
+
+        .parameter-card:nth-child(4) .parameter-symbol {
+            color: var(--amber-yellow);
+            text-shadow: 0 0 30px rgba(255, 204, 0, 0.6);
+        }
+
+        .parameter-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .parameter-card p {
+            color: var(--text-secondary);
+        }
+
+        /* Experiments Section */
+        .experiments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .experiment-card {
+            border-left: 4px solid var(--electric-blue);
+        }
+
+        .experiment-card:nth-child(2) {
+            border-left-color: var(--vibrant-red);
+        }
+
+        .experiment-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .experiment-features {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .experiment-features li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .experiment-features li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--electric-blue);
+        }
+
+        /* Technical Grid */
+        .technical-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .tech-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--purple), rgba(153, 102, 255, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .tech-content h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .tech-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Privacy Section */
+        .privacy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .privacy-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .privacy-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--emerald-green), rgba(0, 204, 153, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.5rem;
+        }
+
+        .privacy-content h4 {
+            margin-bottom: 0.5rem;
+            color: var(--emerald-green);
+        }
+
+        .privacy-content p {
+            color: var(--text-secondary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 180, 255, 0.1), rgba(153, 102, 255, 0.1));
+            border-radius: 30px;
+            margin: 4rem 0;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .platform-badges {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .badge {
+            padding: 0.8rem 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            border-color: var(--electric-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--electric-blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            color: var(--emerald-green);
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero {
+                padding: 4rem 0 3rem;
+            }
+
+            section {
+                padding: 4rem 0;
+            }
+
+            .features-grid,
+            .parameters-grid,
+            .experiments-grid,
+            .technical-grid,
+            .privacy-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">APGI Framework</div>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#experiments">Experiments</a></li>
+                <li><a href="#docs">Documentation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Computational Consciousness Modeling</h1>
+            <p class="subtitle">A rigorous framework implementing Allostatic Precision-Gated Ignition theory through computational models and experimental validation</p>
+            <div class="hero-illustrations">
+                <div class="illustration-row">
+                    <img src="images/APGI-Experiments-1.png" alt="APGI Experiments Interface 1" class="hero-image">
+                    <img src="images/APGI-Experiments-2.png" alt="APGI Experiments Interface 2" class="hero-image">
+                </div>
+            </div>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Get Started</a>
+                <a href="https://github.com/your-repo/apgi-framework" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Core Capabilities</h2>
+                <p>Comprehensive computational toolkit for consciousness research</p>
+            </div>
+            <div class="features-grid">
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>APGI Agent</h3>
+                    <p>Full implementation of the Allostatic Precision-Gated Ignition framework with dynamic threshold mechanisms, precision-weighted prediction errors, and somatic marker integration.</p>
+                </div>
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Phase Transitions</h3>
+                    <p>Somatic marker-based decision making with conscious vs unconscious processing modes and expected free energy calculations.</p>
+                </div>
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Experimental Framework</h3>
+                    <p>Standardized base classes for all experiments with automated data collection, analysis pipelines, and visualization tools.</p>
+                </div>
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-Time Analysis</h3>
+                    <p>Comprehensive data analysis utilities with threshold tracking, detection rate analysis, and performance metrics computation.</p>
+                </div>
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>AI Benchmarking</h3>
+                    <p>Compare different agent architectures in survival environments. Test Random, Reactive, DQN, and APGI agents across multiple scenarios.</p>
+                </div>
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">🖥️</div>
+                    <h3>Multiple Interfaces</h3>
+                    <p>Access via command-line, GUI, or programmatic API. Tkinter-based interface with parameter configuration and real-time logging.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Models Architecture -->
+    <section id="architecture" style="background: rgba(0, 0, 0, 0.2);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Core Architecture</h2>
+                <p>Four fundamental computational models driving consciousness research</p>
+            </div>
+            <div class="parameters-grid">
+                <div class="glass-card parameter-card">
+                    <span class="parameter-symbol">θₜ</span>
+                    <h3>Dynamic Threshold</h3>
+                    <p>Adaptive ignition threshold mechanism for conscious access. Gates information flow based on interoceptive precision and prediction error magnitude.</p>
+                </div>
+                <div class="glass-card parameter-card">
+                    <span class="parameter-symbol">π</span>
+                    <h3>Precision Weighting</h3>
+                    <p>Precision-weighted prediction errors that modulate sensory processing. Determines confidence in interoceptive vs exteroceptive signals.</p>
+                </div>
+                <div class="glass-card parameter-card">
+                    <span class="parameter-symbol">ε</span>
+                    <h3>Prediction Errors</h3>
+                    <p>Hierarchical prediction error signals across multiple timescales. Drives learning and conscious awareness through surprise minimization.</p>
+                </div>
+                <div class="glass-card parameter-card">
+                    <span class="parameter-symbol">F</span>
+                    <h3>Free Energy</h3>
+                    <p>Expected free energy calculations for decision making. Balances epistemic value (information gain) with pragmatic value (goal achievement).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Implemented Experiments -->
+    <section id="experiments">
+        <div class="container">
+            <div class="section-header">
+                <h2>Validated Experiments</h2>
+                <p>Rigorous experimental paradigms with empirical grounding</p>
+            </div>
+            <div class="experiments-grid">
+                <div class="glass-card experiment-card">
+                    <h3>Interoceptive Gating Paradigm</h3>
+                    <p>Tests how interoceptive precision gates conscious access through cardiac discrimination tasks.</p>
+                    <ul class="experiment-features">
+                        <li>Three conditions: interoceptive focus, exteroceptive focus, control</li>
+                        <li>Threshold tracking and detection rate analysis</li>
+                        <li>Simulates heartbeat detection accuracy</li>
+                        <li>Validates precision-gating hypothesis</li>
+                    </ul>
+                    <div class="code-block">
+                        <code>python run_experiments.py interoceptive_gating \<br>  --n_participants 20 --n_trials 100</code>
+                    </div>
+                </div>
+                <div class="glass-card experiment-card">
+                    <h3>AI Agent Benchmarking</h3>
+                    <p>Compares different agent architectures in survival environments with multiple performance metrics.</p>
+                    <ul class="experiment-features">
+                        <li>Tests Random, Reactive, DQN, and APGI agents</li>
+                        <li>Grid world with food, obstacles, and predators</li>
+                        <li>Metrics: survival time, energy efficiency, food consumption</li>
+                        <li>Demonstrates APGI advantages in complex environments</li>
+                    </ul>
+                    <div class="code-block">
+                        <code>python run_experiments.py ai_benchmarking \<br>  --n_episodes 100 --n_agents_per_type 3</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Features -->
+    <section style="background: rgba(0, 0, 0, 0.2);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technical Implementation</h2>
+                <p>Built with modern Python ecosystem and best practices</p>
+            </div>
+            <div class="technical-grid">
+                <div class="glass-card tech-item">
+                    <div class="tech-icon">🐍</div>
+                    <div class="tech-content">
+                        <h4>Python 3.9+</h4>
+                        <p>Modern Python with type hints, async support, and comprehensive standard library</p>
+                    </div>
+                </div>
+                <div class="glass-card tech-item">
+                    <div class="tech-icon">🔢</div>
+                    <div class="tech-content">
+                        <h4>NumPy & SciPy</h4>
+                        <p>High-performance numerical computing for computational neuroscience models</p>
+                    </div>
+                </div>
+                <div class="glass-card tech-item">
+                    <div class="tech-icon">📈</div>
+                    <div class="tech-content">
+                        <h4>Matplotlib & Seaborn</h4>
+                        <p>Rich visualization toolkit for experimental results and data analysis</p>
+                    </div>
+                </div>
+                <div class="glass-card tech-item">
+                    <div class="tech-icon">🖼️</div>
+                    <div class="tech-content">
+                        <h4>Tkinter GUI</h4>
+                        <p>Cross-platform interface for experiment configuration and monitoring</p>
+                    </div>
+                </div>
+                <div class="glass-card tech-item">
+                    <div class="tech-icon">⚙️</div>
+                    <div class="tech-content">
+                        <h4>Modular Architecture</h4>
+                        <p>Clean separation between models, experiments, and utilities for extensibility</p>
+                    </div>
+                </div>
+                <div class="glass-card tech-item">
+                    <div class="tech-icon">💾</div>
+                    <div class="tech-content">
+                        <h4>Data Management</h4>
+                        <p>Automatic data saving, versioning, and organization for reproducible research</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation & Resources -->
+    <section id="docs">
+        <div class="container">
+            <div class="section-header">
+                <h2>Comprehensive Documentation</h2>
+                <p>Everything you need to get started and contribute</p>
+            </div>
+            <div class="privacy-grid">
+                <div class="glass-card privacy-item">
+                    <div class="privacy-icon">📘</div>
+                    <div class="privacy-content">
+                        <h4>Quick Start Guide</h4>
+                        <p>Get up and running in 5 minutes with installation, validation, and first experiments</p>
+                    </div>
+                </div>
+                <div class="glass-card privacy-item">
+                    <div class="privacy-icon">🎨</div>
+                    <div class="privacy-content">
+                        <h4>GUI Visual Guide</h4>
+                        <p>Complete visual walkthrough of the graphical interface with screenshots</p>
+                    </div>
+                </div>
+                <div class="glass-card privacy-item">
+                    <div class="privacy-icon">📖</div>
+                    <div class="privacy-content">
+                        <h4>User Manual</h4>
+                        <p>Complete reference covering all features, commands, and use cases</p>
+                    </div>
+                </div>
+                <div class="glass-card privacy-item">
+                    <div class="privacy-icon">⌨️</div>
+                    <div class="privacy-content">
+                        <h4>CLI Reference</h4>
+                        <p>Command-line interface documentation with examples and parameter descriptions</p>
+                    </div>
+                </div>
+                <div class="glass-card privacy-item">
+                    <div class="privacy-icon">📊</div>
+                    <div class="privacy-content">
+                        <h4>Results Interpretation</h4>
+                        <p>Guide to understanding test results, statistical metrics, and falsification criteria</p>
+                    </div>
+                </div>
+                <div class="glass-card privacy-item">
+                    <div class="privacy-icon">🔧</div>
+                    <div class="privacy-content">
+                        <h4>Troubleshooting</h4>
+                        <p>Common issues, solutions, and debugging strategies for smooth operation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section>
+        <div class="container">
+            <div class="cta-section">
+                <h2>Start Building with APGI</h2>
+                <p>Clone the repository and run your first consciousness model in minutes</p>
+                <div class="code-block" style="max-width: 600px; margin: 2rem auto;">
+                    <code>git clone https://github.com/your-repo/apgi-framework.git<br>
+cd apgi-framework<br>
+python -m venv venv<br>
+source venv/bin/activate<br>
+pip install -r requirements.txt<br>
+python -m apgi_framework.cli validate-system</code>
+                </div>
+                <div class="platform-badges">
+                    <div class="badge">
+                        <span>🐍</span>
+                        <span>Python 3.9+</span>
+                    </div>
+                    <div class="badge">
+                        <span>🪟</span>
+                        <span>Windows</span>
+                    </div>
+                    <div class="badge">
+                        <span>🍎</span>
+                        <span>macOS</span>
+                    </div>
+                    <div class="badge">
+                        <span>🐧</span>
+                        <span>Linux</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 APGI Framework. Open source under MIT License.</p>
+            <p>Computational models for consciousness research | <a href="https://github.com/your-repo/apgi-framework">GitHub</a> | <a href="#">Documentation</a></p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Particle System
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+        const colors = ['#00B4FF', '#FF3366', '#00CC99', '#FFCC00', '#9966FF'];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let particle of particles) {
+                particle.update();
+                particle.draw();
+            }
+
+            // Draw connections
+            ctx.globalAlpha = 0.1;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.strokeStyle = '#00B4FF';
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initParticles();
+            animateParticles();
+
+            // Observe all glass cards
+            document.querySelectorAll('.glass-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>

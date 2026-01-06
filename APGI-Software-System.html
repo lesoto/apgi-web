@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI System | Allostatic Precision-Gated Ignition Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Import all the styles from the provided style guide */
+        .global-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .global-nav .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        
+        .global-nav .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+        }
+        
+        .global-nav .brand-logo:hover {
+            color: #3b82f6;
+        }
+        
+        .global-nav .brand-logo .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .global-nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 0.5rem;
+        }
+        
+        .global-nav ul li {
+            margin: 0;
+        }
+        
+        .global-nav ul li a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        
+        .global-nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .global-nav ul li a.active {
+            background: rgba(0, 180, 255, 0.2);
+            color: #3b82f6;
+            border-color: rgba(0, 180, 255, 0.3);
+        }
+        
+        .global-nav ul li .nav-theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .global-nav ul li .nav-theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .global-nav ul li .nav-theme-toggle .theme-icon {
+            font-size: 1rem;
+        }
+        
+        .global-nav ul li .nav-theme-toggle.switching {
+            animation: themeSwitch 0.6s ease-in-out;
+        }        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }        
+        body {
+            padding-top: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            .global-nav .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .global-nav ul {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+            
+            .global-nav ul.mobile-open {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .global-nav ul li a {
+                padding: 0.75rem 1rem;
+                border-radius: 0;
+            }
+            
+            .global-nav ul li .nav-theme-toggle {
+                padding: 0.75rem 1rem;
+                border-radius: 0;
+                justify-content: flex-start;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+        
+        /* Breadcrumbs Styles */
+        .breadcrumbs {
+            background: rgba(248, 250, 252, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 0;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+        
+        .breadcrumbs .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .breadcrumbs ol {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .breadcrumbs li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .breadcrumbs li:not(:last-child)::after {
+            content: '/';
+            color: rgba(0, 0, 0, 0.4);
+            font-size: 0.75rem;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(0, 0, 0, 0.6);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #3b82f6;
+        }
+        
+        .breadcrumbs li[aria-current="page"] {
+            color: rgba(0, 0, 0, 0.8);
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .breadcrumbs .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .breadcrumbs ol {
+                font-size: 0.8rem;
+            }
+        }
+        
+        :root {
+            /* Modern Typography */
+            --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Modern Color Palette */
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            
+            /* Semantic Colors */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            
+            /* Neutral Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            
+            /* Effects & Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* Transitions */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s ease;
+            
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            /* Legacy Colors for compatibility */
+            --primary-blue: #00B4FF;
+            --secondary-red: #FF3366;
+            --tertiary-green: #00CC99;
+            --quaternary-yellow: #FFCC00;
+            --quinary-purple: #9966FF;
+            --neutral-dark: #2C3E50;
+            --neutral-light: #ECF0F1;
+            --caption-gray: #7F8C8D;
+        }
+        
+        [data-theme="dark"] {
+            /* Primary Colors - Enhanced for dark mode */
+            --primary-blue: #00D4FF;
+            --secondary-red: #FF4488;
+            --tertiary-green: #00FFAA;
+            --quaternary-yellow: #FFDD33;
+            --quinary-purple: #AA77FF;
+            --neutral-dark: #F0F4F8;
+            --neutral-light: #2C3E50;
+            --caption-gray: #B8C5D6;
+            
+            /* Extended Color Palette - Dark optimized */
+            --primary: #6b9ac4;
+            --primary-light: #8bb4d8;
+            --accent: #8bb4d8;
+            --secondary: #a47bff;
+            
+            /* Semantic Colors - Enhanced contrast */
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            
+            /* Extended Neutrals - Dark theme specific */
+            --dark: #f0f4f8;
+            --light: #2d3748;
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-tertiary: #4a5568;
+            --text-primary: #f7fafc;
+            --text-secondary: #cbd5e0;
+            --text-tertiary: #a0aec0;
+            --border-color: #4a5568;
+            --border-light: #718096;
+            --card-bg: #2d3748;
+            --card-hover: #374151;
+            --overlay-bg: rgba(26, 32, 44, 0.9);
+            
+            /* Effects - Dark optimized */
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
+            --shadow-active: 0 16px 40px rgba(0, 0, 0, 0.6);
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            --glow: 0 0 20px rgba(0, 212, 255, 0.3);
+            
+            /* Gradients - Dark enhanced */
+            --gradient-primary: linear-gradient(135deg, #00D4FF 0%, #0099CC 100%);
+            --gradient-secondary: linear-gradient(135deg, #FF4488 0%, #CC3366 100%);
+            --gradient-accent: linear-gradient(135deg, #00FFAA 0%, #00CC88 100%);
+            --gradient-warm: linear-gradient(135deg, #FFDD33 0%, #FFAA00 100%);
+            --gradient-cool: linear-gradient(135deg, #AA77FF 0%, #8855DD 100%);
+            
+            /* Interactive States */
+            --hover-bg: rgba(0, 212, 255, 0.1);
+            --active-bg: rgba(0, 212, 255, 0.2);
+            --focus-ring: rgba(0, 212, 255, 0.5);
+            --selection-bg: rgba(0, 212, 255, 0.3);
+            
+            /* Component Specific */
+            --skeleton-base: #4a5568;
+            --skeleton-shimmer: #718096;
+            --disabled-bg: #2d3748;
+            --disabled-text: #718096;
+            --code-bg: #1a202c;
+            --code-border: #4a5568;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 1rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            scroll-behavior: smooth;
+            transition: var(--transition);
+            min-height: 100vh;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        [data-theme="dark"] body::before {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain-dark" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain-dark)"/></svg>');
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 16px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-red));
+            border-radius: 2px;
+        }
+
+        .heading-xl {
+            font-family: var(--font-display);
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--info) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subheading-lg {
+            font-family: var(--font-display);
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        .body-md {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .accent-text {
+            font-family: var(--font-display);
+            font-size: 36px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--danger) 0%, var(--warning) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .caption-sm {
+            font-size: 16px;
+            font-weight: 300;
+            color: var(--caption-gray);
+        }
+
+        .section-padding {
+            padding: 80px 5%;
+            position: relative;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.3; }
+        }
+        
+        .icon-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .icon-hover:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+        
+        .architecture-node {
+            background: linear-gradient(135deg, var(--accent), var(--info));
+            color: white;
+            padding: 24px;
+            border-radius: var(--radius);
+            margin: 8px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        
+        .architecture-node:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .subsystem-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        
+        .subsystem-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--accent), var(--info));
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 4px;
+            transition: var(--transition);
+        }
+        
+        .feature-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .code-block {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            color: var(--text-primary);
+        }
+        
+        .brain-bg-overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .hero-illustration {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .hero-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .hero-image:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+<body>
+    <!-- Global Navigation -->
+    <nav class="global-nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">A</div>
+                <span>APGI FRAMEWORK</span>
+            </a>
+            <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                <i data-lucide="menu"></i>
+            </button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Design-System.html">Design System</a></li>
+                <li><a href="Styleguide.html">Styleguide</a></li>
+                <li><a href="UI-Library-Complete.html">UI Library</a></li>
+                <li><a href="Software-1.html" class="active">APGI System</a></li>
+                <li><a href="Content-Dashboard.html">Dashboard</a></li>
+                <li><a href="Content-Templates.html">Templates</a></li>
+                <li><button class="nav-theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <span id="theme-icon" class="theme-icon">🌙</span>
+                </button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+        <div class="nav-container">
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li aria-current="page">APGI System</li>
+            </ol>
+        </div>
+    </nav>
+
+    <!-- Header / Hero -->
+    <header class="relative section-padding bg-gradient-to-br from-slate-50 to-blue-50 border-b border-slate-200" style="padding-top: 7rem;">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex items-center gap-2 mb-4">
+                <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                <p class="caption-sm tracking-widest uppercase text-slate-600">Computational Neuroscience Framework</p>
+            </div>
+            <h1 class="heading-xl mb-6">APGI SYSTEM</h1>
+            <p class="accent-text mt-4 mb-8">Allostatic Precision-Gated Ignition</p>
+            <p class="body-md text-slate-600 max-w-3xl mb-8">
+                A computational implementation of consciousness based on active inference, 
+                predictive processing, and allostatic regulation. Designed to model 
+                human-like cognitive processes through biologically-inspired architectures.
+            </p>
+            <div class="hero-illustration mb-8">
+                <img src="images/APGI-Software-System.png" alt="APGI Software System Interface" class="hero-image">
+            </div>
+            <div class="flex flex-wrap gap-3 mb-8">
+                <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">Active Inference</span>
+                <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">Predictive Processing</span>
+                <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">Allostatic Regulation</span>
+                <span class="px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">Global Workspace</span>
+                <span class="px-4 py-2 bg-pink-100 text-pink-800 rounded-full text-sm font-medium">Self-Modeling</span>
+            </div>
+        </div>
+        <!-- Abstract Brain Visualization -->
+        <div class="brain-bg-overlay flex items-center justify-center pulse-animation">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-blue-500 fill-current">
+                <path d="M100 20C60 20 30 50 30 90C30 110 40 130 55 145C55 160 45 175 35 180C50 180 70 170 80 160C85 163 92 165 100 165C140 165 170 135 170 95C170 55 140 20 100 20Z" />
+                <circle cx="70" cy="80" r="8" fill="currentColor" opacity="0.6"/>
+                <circle cx="130" cy="80" r="8" fill="currentColor" opacity="0.6"/>
+                <path d="M60 120 L140 120" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- 1. Overview Section -->
+    <section class="section-padding bg-gradient-to-br from-slate-50 to-blue-50 fade-in-section">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="subheading-lg mb-8 gradient-text section-title">Framework Overview</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-panel p-6">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="brain" class="text-blue-500"></i> Core Concept
+                    </h3>
+                    <p class="body-md text-gray-700">
+                        APGI integrates multiple theoretical frameworks to create a comprehensive 
+                        model of consciousness and cognitive processing. It implements biologically 
+                        plausible mechanisms for perception, attention, decision-making, and 
+                        self-awareness.
+                    </p>
+                </div>
+                <div class="glass-panel p-6">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="target" class="text-red-500"></i> Research Applications
+                    </h3>
+                    <ul class="space-y-3 caption-sm text-lg text-gray-700">
+                        <li>• <strong>Attentional blink</strong> and perceptual limitations</li>
+                        <li>• <strong>Change blindness</strong> and visual awareness</li>
+                        <li>• <strong>Decision-making</strong> under uncertainty (Iowa Gambling)</li>
+                        <li>• <strong>Binocular rivalry</strong> and competitive perception</li>
+                        <li>• <strong>Somatic marker hypothesis</strong> validation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Architecture Section -->
+    <section class="section-padding bg-gradient-to-br from-white to-slate-50 fade-in-section">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="subheading-lg mb-12 gradient-text section-title">System Architecture</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="architecture-node">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i data-lucide="cpu" class="w-8 h-8"></i>
+                        <h3 class="text-xl font-bold">Core Systems</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Active Inference Engine</li>
+                        <li>• Hierarchical Predictor</li>
+                        <li>• Precision Weighting</li>
+                        <li>• Free Energy Calculator</li>
+                    </ul>
+                </div>
+                <div class="architecture-node">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i data-lucide="activity" class="w-8 h-8"></i>
+                        <h3 class="text-xl font-bold">Neural Systems</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Microscale Networks</li>
+                        <li>• Mesoscale Columns</li>
+                        <li>• Macroscale Networks</li>
+                        <li>• Neural Oscillations</li>
+                    </ul>
+                </div>
+                <div class="architecture-node">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i data-lucide="heart" class="w-8 h-8"></i>
+                        <h3 class="text-xl font-bold">Interoception</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Body Model</li>
+                        <li>• Allostatic Regulator</li>
+                        <li>• Somatic Marker System</li>
+                        <li>• Physiological States</li>
+                    </ul>
+                </div>
+                <div class="architecture-node">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i data-lucide="zap" class="w-8 h-8"></i>
+                        <h3 class="text-xl font-bold">Ignition Dynamics</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Ignition Threshold</li>
+                        <li>• Global Workspace</li>
+                        <li>• Temporal Dynamics</li>
+                        <li>• Information Broadcasting</li>
+                    </ul>
+                </div>
+                <div class="architecture-node">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i data-lucide="user" class="w-8 h-8"></i>
+                        <h3 class="text-xl font-bold">Self-Model</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Minimal Self</li>
+                        <li>• Narrative Self</li>
+                        <li>• Coherence Maintenance</li>
+                        <li>• Autobiographical Memory</li>
+                    </ul>
+                </div>
+                <div class="architecture-node">
+                    <div class="flex items-center gap-3 mb-3">
+                        <i data-lucide="thermometer" class="w-8 h-8"></i>
+                        <h3 class="text-xl font-bold">Thermodynamic</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li>• Metabolic Budget</li>
+                        <li>• Energy Constraints</li>
+                        <li>• Entropy Tracking</li>
+                        <li>• Thermodynamic Costs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Subsystems Detailed -->
+    <section class="section-padding fade-in-section">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="subheading-lg mb-12 gradient-text section-title">Core Subsystems</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="subsystem-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#00B4FF] to-[#9966FF] flex items-center justify-center">
+                            <i data-lucide="cpu" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Active Inference Engine</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Implements variational free energy minimization and Bayesian inference 
+                        through hierarchical predictive coding across 4 levels.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">256→128→64→32 nodes</span>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">10ms→50ms→200ms→500ms</span>
+                    </div>
+                </div>
+                <div class="subsystem-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#FF3366] to-[#FFCC00] flex items-center justify-center">
+                            <i data-lucide="activity" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Allostatic Regulation</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Models physiological states and maintains homeostatic balance through 
+                        interoceptive predictive processing.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Heart Rate</span>
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">Cortisol</span>
+                        <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Glucose</span>
+                    </div>
+                </div>
+                <div class="subsystem-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#00CC99] to-[#00B4FF] flex items-center justify-center">
+                            <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Ignition Dynamics</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Implements global workspace broadcasting with threshold-based ignition 
+                        events following the 300-500ms timeline of consciousness.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Dynamic Threshold</span>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Global Workspace</span>
+                    </div>
+                </div>
+                <div class="subsystem-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#9966FF] to-[#FF3366] flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Self-Model System</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Maintains minimal and narrative self-representations with coherence 
+                        tracking and integrity monitoring.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Minimal Self</span>
+                        <span class="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm">Narrative Self</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Experimental Tasks -->
+    <section class="section-padding bg-gradient-to-br from-slate-50 to-blue-50 fade-in-section">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="subheading-lg mb-12 gradient-text section-title">Experimental Tasks</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="eye" class="w-8 h-8 text-blue-500"></i>
+                        <h3 class="text-xl font-bold">Attentional Blink</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Tests temporal attention limitations and consciousness timing 
+                        through rapid serial visual presentation.
+                    </p>
+                    <div class="text-sm text-gray-500">Temporal resolution: ~200ms</div>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="eye-off" class="w-8 h-8 text-red-500"></i>
+                        <h3 class="text-xl font-bold">Change Blindness</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Examines visual perception failures when changes occur during 
+                        saccades or brief interruptions.
+                    </p>
+                    <div class="text-sm text-gray-500">Spatial attention modeling</div>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="git-merge" class="w-8 h-8 text-[#00CC99]"></i>
+                        <h3 class="text-xl font-bold">Binocular Rivalry</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Studies competitive perception when different images are presented 
+                        to each eye simultaneously.
+                    </p>
+                    <div class="text-sm text-gray-500">Competitive neural dynamics</div>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="trending-up" class="w-8 h-8 text-[#FFCC00]"></i>
+                        <h3 class="text-xl font-bold">Iowa Gambling Task</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Assesses decision-making under uncertainty and somatic marker 
+                        hypothesis in risky choices.
+                    </p>
+                    <div class="text-sm text-gray-500">Somatic marker learning</div>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="shield" class="w-8 h-8 text-[#9966FF]"></i>
+                        <h3 class="text-xl font-bold">Masking Paradigm</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Tests subliminal processing and threshold detection for 
+                        conscious vs. unconscious perception.
+                    </p>
+                    <div class="text-sm text-gray-500">Threshold dynamics</div>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="bar-chart" class="w-8 h-8 text-[#2C3E50]"></i>
+                        <h3 class="text-xl font-bold">Validation Metrics</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Comprehensive metrics including Phi integration, PCI complexity, 
+                        and coherence tracking.
+                    </p>
+                    <div class="text-sm text-gray-500">Phi, PCI, ERP matching</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Technical Implementation -->
+    <section class="section-padding fade-in-section">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="subheading-lg mb-12 gradient-text section-title">Technical Implementation</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-panel p-6">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="code" class="text-blue-500"></i> Core Dependencies
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">NumPy & SciPy</span>
+                            <span class="text-sm text-gray-500">Numerical computing</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">JAX & PyTorch</span>
+                            <span class="text-sm text-gray-500">Neural networks & gradients</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">Matplotlib</span>
+                            <span class="text-sm text-gray-500">Visualization</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">Pandas</span>
+                            <span class="text-sm text-gray-500">Data analysis</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">FastAPI</span>
+                            <span class="text-sm text-gray-500">REST API</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="terminal" class="text-red-500"></i> Usage Examples
+                    </h3>
+                    <div class="code-block">
+                        <pre class="text-sm">
+<span class="text-blue-400"># Initialize the system</span>
+<span class="text-green-400">from</span> apgi_system.system <span class="text-green-400">import</span> APGISystem
+
+<span class="text-blue-400"># Create instance</span>
+system = APGISystem(config_path=<span class="text-yellow-300">"config/default.yaml"</span>)
+
+<span class="text-blue-400"># Run simulation</span>
+results = system.run(duration_ms=<span class="text-orange-400">10000.0</span>)
+
+<span class="text-blue-400"># Access results</span>
+<span class="text-green-400">print</span>(<span class="text-yellow-300">f</span><span class="text-yellow-300">"Ignition events: {results['ignition_count']}"</span>)
+<span class="text-green-400">print</span>(<span class="text-yellow-300">f</span><span class="text-yellow-300">"Final state: {results['final_state']}"</span>)</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 grid md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6">
+                    <h3 class="text-xl font-bold mb-4">Installation</h3>
+                    <div class="code-block">
+                        <pre class="text-sm">
+<span class="text-blue-400"># Clone repository</span>
+git clone https://github.com/apgi-framework/apgi-system.git
+cd apgi-system
+
+<span class="text-blue-400"># Install dependencies</span>
+pip install -e .
+
+<span class="text-blue-400"># Launch GUI application</span>
+python apgi_gui.py
+<span class="text-gray-500"># or</span>
+python run_gui.py</pre>
+                    </div>
+                </div>
+                <div class="glass-panel p-6">
+                    <h3 class="text-xl font-bold mb-4">Command Line Examples</h3>
+                    <div class="code-block">
+                        <pre class="text-sm">
+<span class="text-blue-400"># Run basic simulation</span>
+python examples/basic_simulation.py
+
+<span class="text-blue-400"># Run experimental tasks</span>
+python apgi_system/experiments/test_iowa_gambling.py
+python apgi_system/experiments/test_masking.py
+
+<span class="text-blue-400"># Run tests</span>
+pytest tests/test_core.py -v</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. GUI Features -->
+    <section class="section-padding bg-white fade-in-section">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="subheading-lg mb-12 gradient-text section-title">GUI Interface</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-[#00B4FF] flex items-center justify-center">
+                            <i data-lucide="sliders" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">Control Panel</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• Start/Pause/Stop/Reset controls</li>
+                        <li>• Speed control (0.1x - 10x)</li>
+                        <li>• System status display</li>
+                        <li>• Quick parameter adjustments</li>
+                        <li>• Event log with timestamps</li>
+                    </ul>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-[#FF3366] flex items-center justify-center">
+                            <i data-lucide="layout" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">Visualization Tabs</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>1. Neural Activity</li>
+                        <li>2. Interoception</li>
+                        <li>3. System Metrics</li>
+                        <li>4. Self-Model</li>
+                        <li>5. Oscillations</li>
+                        <li>6. State Space (3D)</li>
+                    </ul>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-[#00CC99] flex items-center justify-center">
+                            <i data-lucide="menu" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-bold">Menu System</h3>
+                    </div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• File Menu (8 items)</li>
+                        <li>• Edit Menu (4 items)</li>
+                        <li>• Simulation Menu (5 items)</li>
+                        <li>• View Menu (7 items)</li>
+                        <li>• Tools Menu (6 items)</li>
+                        <li>• Analysis Menu (5 items)</li>
+                        <li>• Help Menu (3 items)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 grid md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6">
+                    <h3 class="text-xl font-bold mb-4">Keyboard Shortcuts</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="font-medium">Ctrl+N</div>
+                            <div class="text-sm text-gray-600">New Session</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">Ctrl+O</div>
+                            <div class="text-sm text-gray-600">Load Configuration</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">Ctrl+S</div>
+                            <div class="text-sm text-gray-600">Save Configuration</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">Ctrl+E</div>
+                            <div class="text-sm text-gray-600">Export Data</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">F5</div>
+                            <div class="text-sm text-gray-600">Start Simulation</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">F6</div>
+                            <div class="text-sm text-gray-600">Pause/Resume</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">F7</div>
+                            <div class="text-sm text-gray-600">Stop Simulation</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">F8</div>
+                            <div class="text-sm text-gray-600">Reset System</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6">
+                    <h3 class="text-xl font-bold mb-4">Data Export</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="font-medium">CSV Export</div>
+                            <div class="text-sm text-gray-600">Tabular data with all metrics</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">JSON Export</div>
+                            <div class="text-sm text-gray-600">Structured system state</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">Analysis Reports</div>
+                            <div class="text-sm text-gray-600">Generated automatically</div>
+                        </div>
+                        <div>
+                            <div class="font-medium">Visualization Exports</div>
+                            <div class="text-sm text-gray-600">PNG/PDF/SVG formats</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Performance Metrics -->
+    <section class="section-padding fade-in-section">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="subheading-lg mb-12 gradient-text section-title">Performance & Validation</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass-panel p-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-[#00B4FF] mb-2">1ms</div>
+                        <div class="text-lg font-semibold">Timestep Resolution</div>
+                        <div class="text-sm text-gray-600 mt-2">Microscale temporal precision</div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-[#FF3366] mb-2">~1000 Hz</div>
+                        <div class="text-lg font-semibold">System Update Rate</div>
+                        <div class="text-sm text-gray-600 mt-2">Real-time simulation speed</div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-[#00CC99] mb-2">10 Hz</div>
+                        <div class="text-lg font-semibold">GUI Refresh Rate</div>
+                        <div class="text-sm text-gray-600 mt-2">Visualization update frequency</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 grid md:grid-cols-2 gap-8">
+                <div class="glass-panel p-6">
+                    <h3 class="text-xl font-bold mb-4">Success Criteria</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="font-semibold">Minimal Requirements</div>
+                            <ul class="mt-2 space-y-2 text-sm text-gray-600">
+                                <li>• Ignition dynamics match 300-500ms timeline</li>
+                                <li>• Metabolic costs align with 5-10% overhead</li>
+                                <li>• Reproduces attentional blink phenomena</li>
+                                <li>• Reproduces masking paradigm effects</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="font-semibold">Target Requirements</div>
+                            <ul class="mt-2 space-y-2 text-sm text-gray-600">
+                                <li>• Human-comparable task performance</li>
+                                <li>• Neural signatures match empirical data</li>
+                                <li>• Pathology models reproduce clinical phenotypes</li>
+                                <li>• Scalable to large-scale brain simulations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel p-6">
+                    <h3 class="text-xl font-bold mb-4">Consciousness Metrics</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="font-semibold">Phi Integration (Φ)</div>
+                            <div class="text-sm text-gray-600">Integrated information theory measure</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold">PCI Complexity</div>
+                            <div class="text-sm text-gray-600">Perturbational complexity index</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold">Ignition Events</div>
+                            <div class="text-sm text-gray-600">Global workspace broadcasting frequency</div>
+                        </div>
+                        <div>
+                            <div class="font-semibold">Coherence Tracking</div>
+                            <div class="text-sm text-gray-600">Self-model integrity monitoring</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span id="theme-icon-main" class="theme-icon">🌙</span>
+        <span id="theme-text" class="theme-text">Dark Mode</span>
+    </button>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+        
+        // Enhanced scroll reveal effect for sections
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe all fade-in sections
+        document.querySelectorAll('.fade-in-section').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Enhanced Theme Toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeIconMain = document.getElementById('theme-icon-main');
+            const themeText = document.getElementById('theme-text');
+            const themeToggle = document.querySelector('.theme-toggle');
+            const navThemeToggle = document.querySelector('.nav-theme-toggle');
+            
+            // Add switching animation
+            themeToggle.classList.add('switching');
+            if (navThemeToggle) navThemeToggle.classList.add('switching');
+            
+            setTimeout(() => {
+                if (html.getAttribute('data-theme') === 'dark') {
+                    html.removeAttribute('data-theme');
+                    themeIcon.textContent = '🌙';
+                    themeIcon.className = 'theme-icon moon-icon';
+                    themeIconMain.textContent = '🌙';
+                    themeIconMain.className = 'theme-icon moon-icon';
+                    themeText.textContent = 'Dark Mode';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.setAttribute('data-theme', 'dark');
+                    themeIcon.textContent = '☀️';
+                    themeIcon.className = 'theme-icon sun-icon';
+                    themeIconMain.textContent = '☀️';
+                    themeIconMain.className = 'theme-icon sun-icon';
+                    themeText.textContent = 'Light Mode';
+                    localStorage.setItem('theme', 'dark');
+                }
+                
+                // Remove switching animation
+                setTimeout(() => {
+                    themeToggle.classList.remove('switching');
+                    if (navThemeToggle) navThemeToggle.classList.remove('switching');
+                }, 100);
+            }, 300);
+        }
+
+        // Enhanced theme initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeIconMain = document.getElementById('theme-icon-main');
+            const themeText = document.getElementById('theme-text');
+            
+            // Check for saved theme or system preference
+            if (savedTheme) {
+                // Use saved theme
+                if (savedTheme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    themeIcon.textContent = '☀️';
+                    themeIcon.className = 'theme-icon sun-icon';
+                    themeIconMain.textContent = '☀️';
+                    themeIconMain.className = 'theme-icon sun-icon';
+                    themeText.textContent = 'Light Mode';
+                } else {
+                    themeIcon.textContent = '🌙';
+                    themeIcon.className = 'theme-icon moon-icon';
+                    themeIconMain.textContent = '🌙';
+                    themeIconMain.className = 'theme-icon moon-icon';
+                    themeText.textContent = 'Dark Mode';
+                }
+            } else {
+                // Check system preference
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    themeIcon.textContent = '☀️';
+                    themeIcon.className = 'theme-icon sun-icon';
+                    themeIconMain.textContent = '☀️';
+                    themeIconMain.className = 'theme-icon sun-icon';
+                    themeText.textContent = 'Light Mode';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeIcon.textContent = '🌙';
+                    themeIcon.className = 'theme-icon moon-icon';
+                    themeIconMain.textContent = '🌙';
+                    themeIconMain.className = 'theme-icon moon-icon';
+                    themeText.textContent = 'Dark Mode';
+                }
+            }
+            
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    const themeToggle = document.querySelector('.theme-toggle');
+                    const navThemeToggle = document.querySelector('.nav-theme-toggle');
+                    themeToggle.classList.add('switching');
+                    if (navThemeToggle) navThemeToggle.classList.add('switching');
+                    
+                    setTimeout(() => {
+                        if (e.matches) {
+                            document.documentElement.setAttribute('data-theme', 'dark');
+                            themeIcon.textContent = '☀️';
+                            themeIcon.className = 'theme-icon sun-icon';
+                            themeIconMain.textContent = '☀️';
+                            themeIconMain.className = 'theme-icon sun-icon';
+                            themeText.textContent = 'Light Mode';
+                        } else {
+                            document.documentElement.removeAttribute('data-theme');
+                            themeIcon.textContent = '🌙';
+                            themeIcon.className = 'theme-icon moon-icon';
+                            themeIconMain.textContent = '🌙';
+                            themeIconMain.className = 'theme-icon moon-icon';
+                            themeText.textContent = 'Dark Mode';
+                        }
+                        
+                        setTimeout(() => {
+                            themeToggle.classList.remove('switching');
+                            if (navThemeToggle) navThemeToggle.classList.remove('switching');
+                        }, 100);
+                    }, 300);
+                }
+            });
+            
+            // Mobile menu functionality
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileMenu = document.querySelector('.global-nav ul');
+            
+            if (mobileToggle && mobileMenu) {
+                mobileToggle.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('mobile-open');
+                    const icon = this.querySelector('i');
+                    if (icon) {
+                        // Toggle between menu and x icons
+                        const menuIcon = document.createElement('i');
+                        menuIcon.setAttribute('data-lucide', 'menu');
+                        
+                        const xIcon = document.createElement('i');
+                        xIcon.setAttribute('data-lucide', 'x');
+                        
+                        if (icon.getAttribute('data-lucide') === 'menu') {
+                            icon.replaceWith(xIcon);
+                            lucide.createIcons();
+                        } else {
+                            icon.replaceWith(menuIcon);
+                            lucide.createIcons();
+                        }
+                    }
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.global-nav')) {
+                        mobileMenu.classList.remove('mobile-open');
+                        const icon = mobileToggle.querySelector('i');
+                        if (icon && icon.getAttribute('data-lucide') === 'x') {
+                            const menuIcon = document.createElement('i');
+                            menuIcon.setAttribute('data-lucide', 'menu');
+                            icon.replaceWith(menuIcon);
+                            lucide.createIcons();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
