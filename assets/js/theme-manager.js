@@ -5,6 +5,11 @@ class ThemeManager {
   constructor() {
     this.storageKey = 'theme';
     this.darkClass = 'data-theme';
+    
+    // Bind methods to maintain context
+    this.toggleHandler = this.toggleHandler.bind(this);
+    this.keyHandler = this.keyHandler.bind(this);
+    
     this.init();
   }
 
@@ -30,62 +35,143 @@ class ThemeManager {
   applyTheme(theme) {
     const html = document.documentElement;
 
+    // Handle both data-theme attribute and dark class for compatibility
     if (theme === 'dark') {
       html.setAttribute(this.darkClass, 'dark');
+      html.classList.add('dark');
     } else {
       html.removeAttribute(this.darkClass);
+      html.classList.remove('dark');
     }
 
     this.updateThemeUI(theme);
+    
+    // Reinitialize Lucide icons if available (for Paper.html)
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      setTimeout(() => lucide.createIcons(), 100);
+    }
   }
 
   updateThemeUI(theme) {
-    // Update theme toggle button if it exists
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const themeText = document.getElementById('theme-text');
-
-    if (themeToggle) {
+    // Update all theme toggle buttons
+    const themeToggles = document.querySelectorAll('.theme-toggle');
+    
+    themeToggles.forEach(toggle => {
+      const toggleId = toggle.id;
+      const themeIcon = toggle.querySelector('.theme-icon-sun, .theme-icon-moon, [data-lucide="sun"], [data-lucide="moon"], .theme-icon');
+      const themeText = toggle.querySelector('.theme-text');
+      
       // Update button state
-      themeToggle.setAttribute('aria-expanded', theme === 'dark');
-
-      // Update icon
-      if (themeIcon) {
-        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-        themeIcon.setAttribute(
-          'aria-label',
-          theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-        );
-      }
+      toggle.setAttribute('aria-expanded', theme === 'dark');
 
       // Update text
       if (themeText) {
         themeText.textContent = theme === 'dark' ? 'Light' : 'Dark';
       }
-    }
+      
+      // Update Lucide icons (like in Paper.html)
+      const moonIcon = toggle.querySelector('[data-lucide="moon"]');
+      const sunIcon = toggle.querySelector('[data-lucide="sun"]');
+      if (moonIcon && sunIcon) {
+        if (theme === 'dark') {
+          moonIcon.classList.remove('hidden');
+          sunIcon.classList.add('hidden');
+        } else {
+          moonIcon.classList.add('hidden');
+          sunIcon.classList.remove('hidden');
+        }
+      }
+      
+      // Update icon classes for theme-icon-sun/moon
+      const sunIconClass = toggle.querySelector('.theme-icon-sun');
+      const moonIconClass = toggle.querySelector('.theme-icon-moon');
+      if (sunIconClass && moonIconClass) {
+        if (theme === 'dark') {
+          sunIconClass.classList.add('hidden');
+          moonIconClass.classList.remove('hidden');
+        } else {
+          sunIconClass.classList.remove('hidden');
+          moonIconClass.classList.add('hidden');
+        }
+      }
+      
+      // Update emoji icons for main pages (Home, Assessment, etc.)
+      if (themeIcon && themeIcon.classList.contains('theme-icon')) {
+        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+      }
+    });
 
+    // Reinitialize Lucide icons to ensure proper display
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      setTimeout(() => lucide.createIcons(), 50);
+    }
+    
     // Update slider-style toggles (like in PsyStates-Visualizer)
     const sliderIcon = document.querySelector('.theme-toggle-slider i');
     if (sliderIcon) {
       sliderIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     }
+    
+    // Update slider-style toggles with span icons (like in State-Network)
+    const sliderSpanIcon = document.querySelector('.theme-toggle-icon');
+    if (sliderSpanIcon) {
+      sliderSpanIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+    
+    // Update inline theme toggle buttons (like in Assessment-OnePage)
+    const inlineToggle = document.querySelector('.theme-toggle i');
+    const inlineText = document.querySelector('.theme-toggle span');
+    if (inlineToggle && inlineText) {
+      if (theme === 'dark') {
+        inlineToggle.className = 'fas fa-sun';
+        inlineText.textContent = 'Light Mode';
+      } else {
+        inlineToggle.className = 'fas fa-moon';
+        inlineText.textContent = 'Dark Mode';
+      }
+    }
   }
 
   setupThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (!themeToggle) return;
+    const setupToggles = () => {
+      const themeToggles = document.querySelectorAll('.theme-toggle');
+      
+      themeToggles.forEach((toggle, index) => {
+        if (!toggle) return;
+        
+        // Remove existing listeners to prevent duplicates
+        toggle.removeEventListener('click', this.toggleHandler);
+        toggle.removeEventListener('keydown', this.keyHandler);
+        
+        // Add new listeners
+        toggle.addEventListener('click', this.toggleHandler);
+        toggle.addEventListener('keydown', this.keyHandler);
+      });
+    };
 
-    themeToggle.addEventListener('click', () => {
+    // Setup immediately if DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupToggles);
+    } else {
+      setupToggles();
+    }
+
+    // Also setup after a delay to catch dynamically loaded content
+    setTimeout(setupToggles, 100);
+    setTimeout(setupToggles, 500);
+  }
+
+  // Bind handlers to maintain context
+  toggleHandler(e) {
+    e.preventDefault();
+    this.toggleTheme();
+  }
+
+  keyHandler(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
       this.toggleTheme();
-    });
-
-    // Also handle keyboard navigation
-    themeToggle.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        this.toggleTheme();
-      }
-    });
+    }
   }
 
   toggleTheme() {

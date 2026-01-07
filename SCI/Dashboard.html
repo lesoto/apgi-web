@@ -4,10 +4,12 @@
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Framework - Academic Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
     <style>
@@ -953,6 +955,17 @@
     </style>
   </head>
   <body>
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      fetch('../components/navigation.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+    </script>
+    
     <div class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
         <span>Dark Mode</span>
@@ -2257,6 +2270,5 @@
             });
         }
     </script>
-    <script src="assets/js/service-worker-registration.js"></script>
   </body>
 </html>

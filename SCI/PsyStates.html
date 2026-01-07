@@ -4,6 +4,8 @@
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computational Phenomenology Engine</title>
@@ -13,6 +15,7 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind-fallback.css">
     
     <style>
         :root {
@@ -117,7 +120,7 @@
             justify-content: center;
         }
 
-        [data-theme="light"] .theme-toggle-slider {
+        [data-theme="dark"] .theme-toggle-slider {
             transform: translateX(30px);
         }
 
@@ -468,34 +471,6 @@
         const statsGridEl = document.getElementById('statsGrid');
         const statesListEl = document.getElementById('statesList');
         const searchInput = document.getElementById('searchInput');
-        const themeToggle = document.getElementById('themeToggle');
-
-        // --- THEME FUNCTIONS ---
-        function setTheme(theme) {
-            currentTheme = theme;
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            
-            const moonIcon = themeToggle.querySelector('.icon-moon');
-            const sunIcon = themeToggle.querySelector('.icon-sun');
-            
-            if (theme === 'light') {
-                moonIcon.style.display = 'none';
-                sunIcon.style.display = 'block';
-            } else {
-                moonIcon.style.display = 'block';
-                sunIcon.style.display = 'none';
-            }
-            
-            // Update chart if it exists
-            if (radarChart) {
-                createRadarChart();
-            }
-        }
-
-        function toggleTheme() {
-            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-        }
 
         // --- CHART FUNCTIONS ---
         function getChartColors() {
@@ -672,7 +647,7 @@
 
             statesListEl.innerHTML = filtered.map(state => `
                 <button
-                    onclick="selectState('${state.name.replace(/'/g, "\\'")}')"
+                    data-state="${state.name.replace(/'/g, "\\'")}"
                     class="w-full text-left px-4 py-3 rounded-lg text-sm transition-all border state-button ${
                         currentState.name === state.name ? 'active' : ''
                     } fade-in"
@@ -681,6 +656,14 @@
                     <div class="text-[10px] opacity-60 truncate" style="color: var(--text-secondary)">${state.signature}</div>
                 </button>
             `).join('');
+
+            // Add event listeners to state buttons
+            statesListEl.querySelectorAll('.state-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const stateName = this.getAttribute('data-state');
+                    selectState(stateName);
+                });
+            });
         }
 
         function selectState(stateName) {
@@ -698,14 +681,16 @@
 
         // --- INITIALIZATION ---
         function init() {
-            // Set initial theme
-            setTheme(currentTheme);
+            // Initialize theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeToggle(savedTheme);
+            
+            // Theme toggle is now handled by theme-manager.js
+            // This prevents conflicts with the centralized ThemeManager
             
             // Set initial state
             selectState('Flow state');
-            
-            // Setup theme toggle
-            themeToggle.addEventListener('click', toggleTheme);
             
             // Setup search
             searchInput.addEventListener('input', (e) => {
@@ -718,14 +703,23 @@
                     e.preventDefault();
                     searchInput.focus();
                 }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-                    e.preventDefault();
-                    toggleTheme();
-                }
             });
             
             // Initial render of state list
             renderStateList();
+        }
+
+        function updateThemeToggle(theme) {
+            const sunIcon = document.querySelector('.icon-sun');
+            const moonIcon = document.querySelector('.icon-moon');
+            
+            if (theme === 'light') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
         }
 
         // Make selectState globally accessible

@@ -4,6 +4,8 @@
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="APGI Psychological State Network - Interactive 3D visualization of psychological states and their relationships" />
@@ -368,15 +370,23 @@
     </style>
 </head>
 <body data-theme="dark">
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      fetch('../components/navigation.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+    </script>
+    
     <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo">APGI</div>
             <nav class="nav-menu">
-                <a href="#visualization" class="nav-link">Visualization</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#methodology" class="nav-link">Methodology</a>
-                <div class="theme-toggle" onclick="toggleTheme()">
+                <div class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
                     <div class="theme-toggle-slider">
                         <span class="theme-toggle-icon">🌙</span>
                     </div>
@@ -419,30 +429,16 @@
     <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
     
     <script type="text/javascript">
-        // Theme toggle functionality
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Update theme icon
-            const icon = document.querySelector('.theme-toggle-icon');
-            icon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
-        }
-
-        // Initialize theme from localStorage or system preference
+        // Initialize theme functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            // Initialize theme from localStorage or system preference
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeToggle(savedTheme);
             
-            document.body.setAttribute('data-theme', theme);
-            const icon = document.querySelector('.theme-toggle-icon');
-            icon.textContent = theme === 'dark' ? '🌙' : '☀️';
+            // Theme toggle is now handled by theme-manager.js
+            // This prevents conflicts with the centralized ThemeManager
             
-            // Show loading state
             const loadingOverlay = document.getElementById('loadingOverlay');
             loadingOverlay.classList.add('active');
             
@@ -452,6 +448,18 @@
                 loadingOverlay.classList.remove('active');
             }, 1000);
         });
+
+        function updateThemeToggle(theme) {
+            const themeIcon = document.querySelector('.theme-toggle-icon');
+            
+            if (themeIcon) {
+                if (theme === 'light') {
+                    themeIcon.textContent = '🌙';
+                } else {
+                    themeIcon.textContent = '☀️';
+                }
+            }
+        }
 
         function initializePlotly() {
             // Create the plotly container div

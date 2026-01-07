@@ -4,15 +4,38 @@
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/offline-quiz-manager.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Consciousness Parameter Assessment</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" integrity="sha384-J1/3uCQHbgOYWzJUxz9iRJIGsNcuCRbE6yM4Fvt+pwefH+GHSi5Zz7sOCrA0LL/3" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/fonts-fallback.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script></script>
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script>
+        // Verify external libraries loaded properly
+        window.addEventListener('DOMContentLoaded', function() {
+            if (typeof Chart === 'undefined') {
+                // Fallback: disable chart generation
+                window.generateProfileChart = function() {
+                    document.getElementById('profileChart').innerHTML = '<p class="error">Chart library unavailable. Please refresh the page.</p>';
+                };
+            }
+            
+            if (typeof Plotly === 'undefined') {
+                // Fallback: disable plotly generation
+                window.generateIgnitionPlot = function() {
+                    document.getElementById('ignitionPlot').innerHTML = '<p class="error">Plot library unavailable. Please refresh the page.</p>';
+                };
+            }
+        });
+    </script>
     <style>
         * {
             margin: 0;
@@ -126,98 +149,6 @@
             animation: float 20s ease-in-out infinite;
         }
         
-        /* Main Navigation */
-        .main-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-primary);
-            border-bottom: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        
-        .nav-container {
-            max-width: min(100% - 2rem, 1200px);
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 60px;
-            gap: 0.5rem;
-            flex-wrap: nowrap;
-        }
-        
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 0.9rem;
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            transition: var(--transition);
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        
-        .nav-link:hover,
-        .nav-link:focus {
-            color: var(--accent);
-            background: rgba(91, 76, 253, 0.1);
-            transform: translateY(-1px);
-        }
-        
-        .nav-link.active {
-            color: var(--accent);
-            background: rgba(91, 76, 253, 0.15);
-            font-weight: 600;
-        }
-        
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        
-        /* Theme Toggle in Navigation */
-        .theme-toggle {
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            padding: 0.4rem 0.8rem;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        
-        .theme-toggle:hover,
-        .theme-toggle:focus {
-            color: var(--accent);
-            background: rgba(91, 76, 253, 0.1);
-            transform: translateY(-1px);
-        }
-        
-        .theme-toggle:active {
-            transform: translateY(-1px);
-        }
-        
-        .theme-toggle i {
-            font-size: 14px;
-            transition: var(--transition);
-        }
-        
         /* Skip to main content link */
         .skip-link {
             position: absolute;
@@ -238,75 +169,7 @@
         
         /* Adjust header for navigation */
         header {
-            margin-top: 60px !important;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-container {
-                padding: 0 1rem;
-                height: 60px;
-                flex-wrap: nowrap;
-            }
-            
-            .nav-links {
-                order: 2;
-                flex: 1;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-                margin-top: 0;
-            }
-            
-            .nav-links::-webkit-scrollbar {
-                display: none;
-            }
-            
-            .nav-link {
-                font-size: 0.85rem;
-                padding: 0.4rem 0.6rem;
-            }
-            
-            .theme-toggle {
-                order: unset;
-                margin-left: 0;
-                margin-right: 0;
-                flex-shrink: 0;
-                font-size: 0.85rem;
-                padding: 0.4rem 0.6rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .nav-container {
-                padding: 0 0.75rem;
-                height: 60px;
-                flex-wrap: nowrap;
-            }
-            
-            .nav-links {
-                gap: 0.2rem;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-            }
-            
-            .nav-links::-webkit-scrollbar {
-                display: none;
-            }
-            
-            .nav-link {
-                font-size: 0.75rem;
-                padding: 0.3rem 0.5rem;
-            }
-            
-            .theme-toggle {
-                padding: 0.3rem 0.5rem;
-                font-size: 0.75rem;
-                min-width: auto;
-                margin-right: 0;
-            }
+            margin-top: 64px !important;
         }
         
         [data-theme="dark"] .theme-toggle {
@@ -1093,26 +956,376 @@
                 font-size: 1rem;
             }
         }
+
+        /* ============================================
+           PRINT-OPTIMIZED STYLES
+           ============================================ */
+        @media print {
+            /* Page setup */
+            @page {
+                margin: 0.5in;
+                size: A4;
+            }
+
+            body {
+                font-size: 12pt;
+                line-height: 1.4;
+                color: #000;
+                background: #fff !important;
+            }
+
+            /* Hide unnecessary elements */
+            .nav-container,
+            .global-nav,
+            .navigation-placeholder,
+            .theme-toggle,
+            .btn-group,
+            .progress-container,
+            .question,
+            .slider-container,
+            .state-option,
+            .loading-spinner,
+            button,
+            .btn,
+            .btn-secondary {
+                display: none !important;
+            }
+
+            /* Show only results section */
+            #results {
+                display: block !important;
+                visibility: visible !important;
+            }
+
+            /* Results header */
+            .results-summary {
+                page-break-after: avoid;
+                margin-bottom: 20pt;
+                border-bottom: 2pt solid #333;
+                padding-bottom: 10pt;
+            }
+
+            .results-summary h2 {
+                font-size: 18pt;
+                color: #000 !important;
+                margin-bottom: 8pt;
+            }
+
+            .results-summary p {
+                font-size: 11pt;
+                color: #333;
+                margin-bottom: 0;
+            }
+
+            /* Metrics grid - make it linear for print */
+            .metrics-grid {
+                display: block !important;
+                margin: 20pt 0;
+                page-break-inside: avoid;
+            }
+
+            .metric-card {
+                display: block !important;
+                margin-bottom: 15pt;
+                padding: 10pt;
+                border: 1pt solid #ccc;
+                background: #f9f9f9 !important;
+                page-break-inside: avoid;
+            }
+
+            .metric-label {
+                font-size: 11pt;
+                font-weight: bold;
+                color: #000 !important;
+                margin-bottom: 3pt;
+            }
+
+            .metric-value {
+                font-size: 16pt;
+                font-weight: bold;
+                color: #000 !important;
+                margin-bottom: 5pt;
+            }
+
+            .metric-description {
+                font-size: 9pt;
+                color: #666;
+                line-height: 1.3;
+            }
+
+            /* Charts and visualizations */
+            .chart-container,
+            .section-card {
+                margin: 20pt 0;
+                padding: 15pt;
+                border: 1pt solid #ccc;
+                page-break-inside: avoid;
+            }
+
+            .chart-container h3,
+            .section-card h3 {
+                font-size: 14pt;
+                color: #000 !important;
+                margin-bottom: 10pt;
+                border-bottom: 1pt solid #ccc;
+                padding-bottom: 5pt;
+            }
+
+            /* Canvas and plot styling */
+            canvas,
+            #ignitionPlot {
+                max-width: 100% !important;
+                height: auto !important;
+                page-break-inside: avoid;
+            }
+
+            /* Tables */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 10pt 0;
+                font-size: 10pt;
+            }
+
+            th, td {
+                border: 1pt solid #ccc;
+                padding: 5pt;
+                text-align: left;
+            }
+
+            th {
+                background: #f0f0f0;
+                font-weight: bold;
+            }
+
+            /* Interpretation and recommendations */
+            #interpretation,
+            #interactions-analysis,
+            #recommendations-grid {
+                font-size: 10pt;
+                line-height: 1.4;
+                color: #333;
+            }
+
+            #interpretation p,
+            #interactions-analysis p {
+                margin-bottom: 8pt;
+            }
+
+            /* Recommendation cards */
+            #recommendations-grid > div {
+                display: block !important;
+                margin-bottom: 10pt;
+                padding: 8pt;
+                border: 1pt solid #ddd;
+                background: #f9f9f9 !important;
+            }
+
+            /* Ensure text readability */
+            * {
+                color: #000 !important;
+                text-shadow: none !important;
+            }
+
+            /* Links */
+            a {
+                color: #000 !important;
+                text-decoration: underline;
+            }
+
+            a::after {
+                content: " (" attr(href) ")";
+                font-size: 9pt;
+                color: #666;
+            }
+
+            /* Page breaks */
+            .chart-container,
+            .section-card {
+                page-break-inside: avoid;
+            }
+
+            .chart-container:nth-child(2n),
+            .section-card:nth-child(3n) {
+                page-break-before: auto;
+            }
+
+            /* Header and footer */
+            @page {
+                @top-center {
+                    content: "APGI Consciousness Assessment Results";
+                    font-size: 10pt;
+                    color: #666;
+                }
+                
+                @bottom-center {
+                    content: "Page " counter(page);
+                    font-size: 10pt;
+                    color: #666;
+                }
+            }
+
+            /* Special handling for dark mode */
+            [data-theme="dark"] * {
+                color: #000 !important;
+                background: #fff !important;
+            }
+
+            /* Hide any remaining interactive elements */
+            [onclick],
+            [role="button"],
+            input[type="range"],
+            .slider {
+                display: none !important;
+            }
+
+            /* Ensure proper spacing */
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            img {
+                max-width: 100% !important;
+                height: auto !important;
+                page-break-inside: avoid;
+            }
+
+            /* Print-specific metadata */
+            body::before {
+                content: "Generated: " attr(data-date) " | Assessment ID: " attr(data-assessment-id);
+                position: fixed;
+                top: 0;
+                left: 0;
+                font-size: 8pt;
+                color: #666;
+                background: #fff;
+                padding: 2pt 5pt;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Navigation Component -->
-    <nav class="main-nav" role="navigation" aria-label="Main navigation">
-      <div class="nav-container">
-        <div class="nav-links">
-          <a href="Home.html" class="nav-link">APGI Framework</a>
-          <a href="Quiz-Short.html" class="nav-link">Quiz</a>
-          <a href="Assessment.html" class="nav-link">Assessment</a>
-          <a href="PsyStates-Visualizer.html" class="nav-link">PsyStates Visualizer</a>
-          <a href="Consciousness-Visualization.html" class="nav-link">Consciousness</a>
-          <a href="Paper.html" class="nav-link">Research</a>
-          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false" onclick="toggleTheme()">
-            <i class="fas fa-moon"></i>
-            <span>Dark Mode</span>
-          </button>
-        </div>
-      </div>
-    </nav>
+    <link rel="stylesheet" href="assets/css/navigation.css">
+
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      // Load navigation with fallback
+      fetch('components/navigation.html')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+          // Initialize dropdown functionality after navigation is loaded
+          const dropdowns = document.querySelectorAll('.nav-dropdown');
+          dropdowns.forEach(dropdown => {
+            const button = dropdown.querySelector('.nav-dropdown-btn');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            
+            if (button && menu) {
+              button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                dropdowns.forEach(otherDropdown => {
+                  if (otherDropdown !== dropdown) {
+                    otherDropdown.classList.remove('active');
+                    const otherButton = otherDropdown.querySelector('.nav-dropdown-btn');
+                    if (otherButton) {
+                      otherButton.setAttribute('aria-expanded', 'false');
+                    }
+                  }
+                });
+                
+                const isActive = dropdown.classList.contains('active');
+                dropdown.classList.toggle('active');
+                button.setAttribute('aria-expanded', !isActive);
+              });
+            }
+          });
+          
+          document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav-dropdown')) {
+              dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+                const button = dropdown.querySelector('.nav-dropdown-btn');
+                if (button) {
+                  button.setAttribute('aria-expanded', 'false');
+                }
+              });
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error loading navigation:', error);
+          // Fallback navigation if component fails to load
+          document.getElementById('navigation-container').innerHTML = `
+            <nav class="main-nav" role="navigation" aria-label="Main navigation">
+              <div class="nav-container">
+                <div class="nav-links">
+                  <a href="Home.html" class="nav-link nav-brand">APGI Framework</a>
+                  <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Assessment ▼</button>
+                    <div class="dropdown-menu">
+                      <a href="Quiz.html" class="dropdown-link">Quiz (Short)</a>
+                      <a href="Assessment.html" class="dropdown-link">Assessment (Full)</a>
+                      <a href="Assessment-OnePage.html" class="dropdown-link active">Assessment (One Page)</a>
+                    </div>
+                  </div>
+                  <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Visualizations ▼</button>
+                    <div class="dropdown-menu">
+                      <a href="SCI/PsyStates-Visualizer.html" class="dropdown-link">PsyStates Visualizer</a>
+                      <a href="SCI/Consciousness-Visualization.html" class="dropdown-link">Consciousness Visualization</a>
+                      <a href="SCI/State-Network.html" class="dropdown-link">3D Network</a>
+                      <a href="SCI/Neuromoduratory-Cascade.html" class="dropdown-link">Neuromodulatory Cascade</a>
+                    </div>
+                  </div>
+                  <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Research ▼</button>
+                    <div class="dropdown-menu">
+                      <a href="Paper.html" class="dropdown-link">Research Paper</a>
+                      <a href="App-Appendix.html" class="dropdown-link">Appendix App</a>
+                      <a href="App-Explorer.html" class="dropdown-link">App Explorer</a>
+                      <a href="APGI-Experiments.html" class="dropdown-link">Experiments App</a>
+                      <a href="API.html" class="dropdown-link">API Documentation</a>
+                      <a href="APGI-Software-System.html" class="dropdown-link active">APGI Software System</a>
+                      <a href="SCI/Dashboard.html" class="dropdown-link">Dashboard</a>
+                      <a href="Book-Available-Now.html" class="dropdown-link">Book (Available Now)</a>
+                      <a href="Book-Outline.html" class="dropdown-link">Book Outline</a>
+                    </div>
+                  </div>
+                  <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Resources ▼</button>
+                    <div class="dropdown-menu">
+                      <a href="Profile.html" class="dropdown-link">Profile</a>
+                      <a href="Privacy-Policy.html" class="dropdown-link">Privacy Policy</a>
+                      <a href="Terms-of-Service.html" class="dropdown-link">Terms of Service</a>
+                    </div>
+                  </div>
+                  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false">
+                    <span class="theme-icon" aria-hidden="true">🌙</span>
+                    <span class="theme-text">Dark</span>
+                  </button>
+                </div>
+              </div>
+            </nav>
+          `;
+        })
+        .finally(() => {
+          // Reinitialize theme toggle after navigation loads (both success and fallback)
+          if (window.themeManager) {
+            window.themeManager.setupThemeToggle();
+            window.themeManager.updateThemeUI(window.themeManager.getTheme());
+          }
+        });
+    </script>
 
     <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -1283,17 +1496,17 @@
                 <div class="question-text">8. Response to Novelty</div>
                 <div class="question-context">When encountering unexpected situations, how do you typically respond?</div>
                 <div class="state-selector">
-                    <div class="state-option" onclick="selectOption('q8', 'freeze')">
+                    <div class="state-option" data-action="select-option" data-question="q8" data-value="freeze">>
                         <i class="fas fa-pause-circle"></i>
                         <div class="state-name">Freeze/Analyze</div>
                         <div class="state-desc">High error, high precision</div>
                     </div>
-                    <div class="state-option" onclick="selectOption('q8', 'explore')">
+                    <div class="state-option" data-action="select-option" data-question="q8" data-value="explore">
                         <i class="fas fa-search"></i>
                         <div class="state-name">Explore/Update</div>
                         <div class="state-desc">High error, low threshold</div>
                     </div>
-                    <div class="state-option" onclick="selectOption('q8', 'dismiss')">
+                    <div class="state-option" data-action="select-option" data-question="q8" data-value="dismiss">>
                         <i class="fas fa-times-circle"></i>
                         <div class="state-name">Dismiss/Continue</div>
                         <div class="state-desc">Low precision, high threshold</div>
@@ -1402,11 +1615,11 @@
             </div>
 
             <div class="btn-group">
-                <button class="btn" onclick="exportResults()">
+                <button class="btn" data-action="export-results">
                     <i class="fas fa-download"></i>
                     Export Results (JSON)
                 </button>
-                <button class="btn btn-secondary" onclick="retakeAssessment()">
+                <button class="btn btn-secondary" data-action="retake-assessment">>
                     <i class="fas fa-redo"></i>
                     Retake Assessment
                 </button>
@@ -1437,33 +1650,17 @@
             multitaskingCapacity: 0
         };
 
-        // ==================== THEME TOGGLE ====================
-        
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            
-            const toggle = document.querySelector('.theme-toggle');
-            const icon = toggle.querySelector('i');
-            const text = toggle.querySelector('span');
-            
-            if (newTheme === 'dark') {
-                icon.className = 'fas fa-sun';
-                text.textContent = 'Light Mode';
-            } else {
-                icon.className = 'fas fa-moon';
-                text.textContent = 'Dark Mode';
-            }
-        }
-
         // ==================== UI HELPERS ====================
         
         function updateSliderValue(id) {
             const slider = document.getElementById(id);
-            const value = slider.value;
             const display = document.getElementById(`${id}-value`);
+            
+            if (!slider || !display) {
+                return;
+            }
+            
+            const value = slider.value;
             display.textContent = value;
             responses[id] = parseInt(value);
             updateProgress();
@@ -1471,17 +1668,29 @@
         
         function selectOption(questionId, value) {
             // Remove selection from all options in this question
-            const question = document.getElementById(questionId + '-value').closest('.question');
+            const hiddenInput = document.getElementById(questionId + '-value');
+            if (!hiddenInput) {
+                return;
+            }
+            
+            const question = hiddenInput.closest('.question');
+            if (!question) {
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    console.error(`Could not find question container for ${questionId}`);
+                }
+                return;
+            }
+            
             question.querySelectorAll('.state-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
             
             // Add selection to clicked option
-            event.currentTarget.classList.add('selected');
+            event.target.closest('.state-option').classList.add('selected');
             
-            // Store value
-            document.getElementById(questionId + '-value').value = value;
+            // Store response
             responses[questionId] = value;
+            hiddenInput.value = value;
             updateProgress();
         }
         
@@ -1490,8 +1699,16 @@
             const answeredQuestions = Object.keys(responses).length;
             const percentage = (answeredQuestions / totalQuestions) * 100;
             
-            document.getElementById('progress-fill').style.width = percentage + '%';
-            document.getElementById('progress-text').textContent = Math.round(percentage) + '% Complete';
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+            }
+            
+            if (progressText) {
+                progressText.textContent = Math.round(percentage) + '% Complete';
+            }
         }
 
         // ==================== PARAMETER CALCULATION ====================
@@ -1543,14 +1760,28 @@
 
         function displayResults() {
             // Show results section
-            document.getElementById('results').style.display = 'block';
-            document.getElementById('results').classList.add('fade-in');
+            const resultsElement = document.getElementById('results');
+            if (resultsElement) {
+                resultsElement.style.display = 'block';
+                resultsElement.classList.add('fade-in');
+            }
             
-            // Populate metric cards
-            document.getElementById('result-error').textContent = parameters.predictionError.toFixed(1);
-            document.getElementById('result-precision').textContent = parameters.precision.toFixed(1);
-            document.getElementById('result-threshold').textContent = parameters.threshold.toFixed(1);
-            document.getElementById('result-somatic').textContent = parameters.somaticBias.toFixed(1);
+            // Populate metric cards with error handling
+            const resultElements = {
+                'result-error': parameters.predictionError.toFixed(1),
+                'result-precision': parameters.precision.toFixed(1),
+                'result-threshold': parameters.threshold.toFixed(1),
+                'result-somatic': parameters.somaticBias.toFixed(1)
+            };
+            
+            Object.entries(resultElements).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value;
+                } else {
+                    element.textContent = value;
+                }
+            });
             
             // Generate visualizations
             generateProfileChart();
@@ -1561,13 +1792,25 @@
             generateRecommendations();
             
             // Scroll to results
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            if (resultsElement) {
+                resultsElement.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         // ==================== VISUALIZATIONS ====================
         
         function generateProfileChart() {
-            const ctx = document.getElementById('profileChart').getContext('2d');
+            const canvas = document.getElementById('profileChart');
+            if (!canvas) {
+                return;
+            }
+            
+            if (typeof Chart === 'undefined') {
+                canvas.innerHTML = '<p class="error">Chart library unavailable. Please refresh the page.</p>';
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
             
             new Chart(ctx, {
                 type: 'radar',
@@ -1919,16 +2162,22 @@
                 }
             };
             
-            const dataStr = JSON.stringify(results, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(dataBlob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `APGI_Assessment_${new Date().toISOString().slice(0,10)}.json`;
-            link.click();
-            
-            URL.revokeObjectURL(url);
+            // Use offline quiz manager for enhanced export functionality
+            if (window.offlineQuizManager) {
+                window.offlineQuizManager.exportResults(results);
+            } else {
+                // Fallback to basic export
+                const dataStr = JSON.stringify(results, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `APGI_Assessment_${new Date().toISOString().slice(0,10)}.json`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+            }
         }
 
         function retakeAssessment() {
@@ -1936,6 +2185,39 @@
                 location.reload();
             }
         }
+        
+        // ==================== INITIALIZATION ====================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listeners for data-action elements
+            document.querySelectorAll('[data-action]').forEach(element => {
+                element.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    const question = this.getAttribute('data-question');
+                    const value = this.getAttribute('data-value');
+                    
+                    switch(action) {
+                        case 'select-option':
+                            if (question && value) {
+                                selectOption(question, value);
+                            }
+                            break;
+                        case 'calculate-results':
+                            calculateResults();
+                            break;
+                        case 'export-results':
+                            exportResults();
+                            break;
+                        case 'retake-assessment':
+                            retakeAssessment();
+                            break;
+                        case 'toggle-theme':
+                            toggleTheme();
+                            break;
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

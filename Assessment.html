@@ -4,15 +4,19 @@
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <!-- Shared Navigation -->
     <link rel="stylesheet" href="assets/css/navigation.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Consciousness Architecture Assessment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" integrity="sha384-J1/3uCQHbgOYWzJUxz9iRJIGsNcuCRbE6yM4Fvt+pwefH+GHSi5Zz7sOCrA0LL/3" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/fonts-fallback.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
@@ -162,8 +166,56 @@
             background: var(--gradient-primary);
             color: white;
             padding: clamp(40px, 6vw, 60px) clamp(30px, 5vw, 50px);
-            border-radius: var(--border-radius-lg);
-            margin-bottom: var(--spacing-xl);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content > div:first-child {
+            flex: 1;
+        }
+
+        /* Theme Toggle Styles */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .theme-icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .theme-text {
+            font-weight: 500;
+        }
+
+        header {
             box-shadow: var(--box-shadow-lg);
             position: relative;
             overflow: hidden;
@@ -1382,16 +1434,570 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* ============================================
+           PRINT-OPTIMIZED STYLES
+           ============================================ */
+        @media print {
+            /* Page setup */
+            @page {
+                margin: 0.5in;
+                size: A4;
+            }
+
+            body {
+                font-size: 12pt;
+                line-height: 1.4;
+                color: #000;
+                background: #fff !important;
+            }
+
+            /* Hide unnecessary elements */
+            .main-nav,
+            .navigation-placeholder,
+            .theme-toggle,
+            .btn,
+            .progress-bar,
+            .question-card,
+            .option-card,
+            button,
+            .quiz-controls {
+                display: none !important;
+            }
+
+            /* Show only results section */
+            .quiz-results,
+            .results-section {
+                display: block !important;
+                visibility: visible !important;
+            }
+
+            /* Results styling */
+            .results-header {
+                page-break-after: avoid;
+                margin-bottom: 20pt;
+                border-bottom: 2pt solid #333;
+                padding-bottom: 10pt;
+            }
+
+            .results-header h2 {
+                font-size: 18pt;
+                color: #000 !important;
+                margin-bottom: 8pt;
+            }
+
+            /* Score displays */
+            .parameter-score,
+            .score-display {
+                font-size: 16pt;
+                font-weight: bold;
+                color: #000 !important;
+                margin-bottom: 5pt;
+            }
+
+            .parameter-label {
+                font-size: 11pt;
+                font-weight: bold;
+                color: #000 !important;
+                margin-bottom: 3pt;
+            }
+
+            .parameter-description {
+                font-size: 9pt;
+                color: #666;
+                line-height: 1.3;
+                margin-bottom: 10pt;
+            }
+
+            /* Charts and visualizations */
+            .chart-container,
+            .visualization {
+                margin: 20pt 0;
+                padding: 15pt;
+                border: 1pt solid #ccc;
+                page-break-inside: avoid;
+            }
+
+            .chart-container h3,
+            .visualization h3 {
+                font-size: 14pt;
+                color: #000 !important;
+                margin-bottom: 10pt;
+                border-bottom: 1pt solid #ccc;
+                padding-bottom: 5pt;
+            }
+
+            /* Canvas styling */
+            canvas {
+                max-width: 100% !important;
+                height: auto !important;
+                page-break-inside: avoid;
+            }
+
+            /* Tables */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 10pt 0;
+                font-size: 10pt;
+            }
+
+            th, td {
+                border: 1pt solid #ccc;
+                padding: 5pt;
+                text-align: left;
+            }
+
+            th {
+                background: #f0f0f0;
+                font-weight: bold;
+            }
+
+            /* Ensure text readability */
+            * {
+                color: #000 !important;
+                text-shadow: none !important;
+            }
+
+            /* Links */
+            a {
+                color: #000 !important;
+                text-decoration: underline;
+            }
+
+            a::after {
+                content: " (" attr(href) ")";
+                font-size: 9pt;
+                color: #666;
+            }
+
+            /* Page breaks */
+            .chart-container,
+            .visualization,
+            .results-section {
+                page-break-inside: avoid;
+            }
+
+            .chart-container:nth-child(2n) {
+                page-break-before: auto;
+            }
+
+            /* Header and footer */
+            @page {
+                @top-center {
+                    content: "APGI Assessment Results";
+                    font-size: 10pt;
+                    color: #666;
+                }
+                
+                @bottom-center {
+                    content: "Page " counter(page);
+                    font-size: 10pt;
+                    color: #666;
+                }
+            }
+
+            /* Special handling for dark mode */
+            [data-theme="dark"] * {
+                color: #000 !important;
+                background: #fff !important;
+            }
+
+            /* Hide any remaining interactive elements */
+            [onclick],
+            [role="button"],
+            input,
+            select,
+            .slider {
+                display: none !important;
+            }
+
+            /* Ensure proper spacing */
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            img {
+                max-width: 100% !important;
+                height: auto !important;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+    
+    <!-- Enhanced Navigation Styles with Dropdown Support -->
+    <style>
+    /* Dropdown Navigation Styles */
+    .nav-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .nav-dropdown-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary, #64748b);
+      font-weight: 500;
+      font-family: var(--font-body, -apple-system, BlinkMacSystemFont, sans-serif);
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm, 8px);
+      cursor: pointer;
+      transition: var(--transition, all 0.3s ease);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      white-space: nowrap;
+    }
+
+    .nav-dropdown-btn:hover,
+    .nav-dropdown-btn:focus {
+      color: var(--accent, #3b82f6);
+      background: rgba(59, 130, 246, 0.1);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .dropdown-arrow {
+      font-size: 0.7rem;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-dropdown.active .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-primary, #ffffff);
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: var(--radius, 12px);
+      box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+      min-width: 200px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: var(--transition, all 0.3s ease);
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+      margin-top: 0.5rem;
+    }
+
+    .nav-dropdown.active .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary, #64748b);
+      text-decoration: none;
+      font-weight: 500;
+      font-family: var(--font-body, -apple-system, BlinkMacSystemFont, sans-serif);
+      font-size: 0.9rem;
+      transition: var(--transition, all 0.2s ease);
+      border-bottom: 1px solid var(--border-light, #f1f5f9);
+    }
+
+    .dropdown-link:first-child {
+      border-radius: var(--radius, 12px) var(--radius, 12px) 0 0;
+    }
+
+    .dropdown-link:last-child {
+      border-bottom: none;
+      border-radius: 0 0 var(--radius, 12px) var(--radius, 12px);
+    }
+
+    .dropdown-link:hover,
+    .dropdown-link:focus {
+      color: var(--accent, #3b82f6);
+      background: rgba(59, 130, 246, 0.1);
+      transform: translateX(4px);
+      outline: none;
+    }
+
+    /* Dark theme support for dropdowns */
+    [data-theme="dark"] .dropdown-menu {
+      background: var(--bg-primary, #0f172a);
+      border-color: var(--border-color, #334155);
+    }
+
+    [data-theme="dark"] .dropdown-link {
+      color: var(--text-secondary, #cbd5e1);
+      border-bottom-color: var(--border-light, #1e293b);
+    }
+
+    [data-theme="dark"] .dropdown-link:hover,
+    [data-theme="dark"] .dropdown-link:focus {
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--accent-light, #60a5fa);
+    }
+
+    /* Mobile responsive dropdown styles */
+    @media (max-width: 768px) {
+      .dropdown-menu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        border-radius: 0 0 var(--radius-lg, 16px) var(--radius-lg, 16px);
+        min-width: auto;
+        margin-top: 0;
+        box-shadow: var(--shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
+      }
+      
+      .nav-dropdown.active .dropdown-menu {
+        transform: translateY(0);
+      }
+      
+      .dropdown-link {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+
+    /* Ensure dropdowns don't interfere with theme toggle */
+    .nav-dropdown:last-of-type {
+      margin-right: 1rem;
+    }
+    </style>
+    
+    <!-- Standardized Theme Toggle Styles -->
+    <style>
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text-secondary, #64748b);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .theme-toggle:hover,
+    .theme-toggle:focus {
+      color: var(--accent, #3b82f6);
+      background: rgba(59, 130, 246, 0.1);
+      border-color: var(--accent, #3b82f6);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .theme-toggle:active {
+      transform: translateY(0);
+    }
+
+    .theme-icon {
+      font-size: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    .theme-toggle:hover .theme-icon {
+      transform: scale(1.1);
+    }
+
+    /* Dark theme styles */
+    [data-theme="dark"] .theme-toggle {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: var(--border-color, #334155);
+      color: var(--text-secondary, #cbd5e1);
+    }
+
+    [data-theme="dark"] .theme-toggle:hover,
+    [data-theme="dark"] .theme-toggle:focus {
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--accent, #60a5fa);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .theme-toggle {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+      }
+      
+      .theme-text {
+        display: none;
+      }
+    }
     </style>
 </head>
 <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Include Navigation Component -->
-    <div id="navigation-placeholder"></div>
+    <div id="navigation-container">
+      <!-- Navigation Component -->
+      <nav class="main-nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+          <div class="nav-links">
+            <a href="Home.html" class="nav-link nav-brand">APGI Framework</a>
+            
+            <!-- Assessment Tools Dropdown -->
+            <div class="nav-dropdown">
+              <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+                Assessment ▼
+              </button>
+              <div class="dropdown-menu">
+                <a href="Quiz.html" class="dropdown-link">Quiz (Short)</a>
+                <a href="Assessment.html" class="dropdown-link active">Assessment (Full)</a>
+                <a href="Assessment-OnePage.html" class="dropdown-link">Assessment (One Page)</a>
+                <a href="APGI-Software-System.html" class="dropdown-link">APGI Software System</a>
+              </div>
+            </div>
+            
+            <!-- Visualizations & Tools Dropdown -->
+            <div class="nav-dropdown">
+              <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+                Visualizations ▼
+              </button>
+              <div class="dropdown-menu">
+                <a href="SCI/PsyStates-Visualizer.html" class="dropdown-link">PsyStates Visualizer</a>
+                <a href="SCI/Consciousness-Visualization.html" class="dropdown-link">Consciousness Visualization</a>
+                <a href="SCI/State-Network.html" class="dropdown-link">3D Network</a>
+                <a href="SCI/Neuromoduratory-Cascade.html" class="dropdown-link">Neuromodulatory Cascade</a>
+                <a href="APGI-Software-System.html" class="dropdown-link">APGI Software System</a>
+              </div>
+            </div>
+            
+            <div class="nav-dropdown">
+              <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+                Research ▼
+              </button>
+              <div class="dropdown-menu">
+                <a href="Paper.html" class="dropdown-link">Research Paper</a>
+                <a href="App-Appendix.html" class="dropdown-link">Appendix App</a>
+                <a href="App-Explorer.html" class="dropdown-link">App Explorer</a>
+                <a href="APGI-Experiments.html" class="dropdown-link">Experiments App</a>
+                <a href="API.html" class="dropdown-link">API Documentation</a>
+                <a href="APGI-Software-System.html" class="dropdown-link active">APGI Software System</a>
+                <a href="SCI/Dashboard.html" class="dropdown-link">Dashboard</a>
+                <a href="Book-Available-Now.html" class="dropdown-link">Book (Available Now)</a>
+                <a href="Book-Outline.html" class="dropdown-link">Book Outline</a>
+              </div>
+            </div>
+            
+            <div class="nav-dropdown">
+              <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+                Resources ▼
+              </button>
+              <div class="dropdown-menu">
+                <a href="Profile.html" class="dropdown-link">Profile</a>
+                <a href="APGI-Software-System.html" class="dropdown-link">APGI Software System</a>
+                <a href="Privacy-Policy.html" class="dropdown-link">Privacy Policy</a>
+                <a href="Terms-of-Service.html" class="dropdown-link">Terms of Service</a>
+              </div>
+            </div>
+            
+            <!-- Theme Toggle -->
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false">
+              <span class="theme-icon" id="theme-icon" aria-hidden="true">🌙</span>
+              <span class="theme-text" id="theme-text">Dark</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <script>
+      // Initialize dropdown functionality after navigation is loaded
+      const dropdowns = document.querySelectorAll('.nav-dropdown');
+      dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('.nav-dropdown-btn');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        
+        if (button && menu) {
+              // Toggle dropdown on button click
+          button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Close all other dropdowns
+            dropdowns.forEach(otherDropdown => {
+              if (otherDropdown !== dropdown) {
+                otherDropdown.classList.remove('active');
+                const otherButton = otherDropdown.querySelector('.nav-dropdown-btn');
+                if (otherButton) {
+                  otherButton.setAttribute('aria-expanded', 'false');
+                }
+              }
+            });
+            
+            // Toggle current dropdown
+            const isActive = dropdown.classList.contains('active');
+            dropdown.classList.toggle('active');
+            button.setAttribute('aria-expanded', !isActive);
+          });
+          
+          // Close dropdown when clicking outside
+          document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target)) {
+              dropdown.classList.remove('active');
+              button.setAttribute('aria-expanded', 'false');
+            }
+          });
+          
+          // Handle keyboard navigation
+          button.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              button.click();
+            } else if (e.key === 'Escape') {
+              dropdown.classList.remove('active');
+              button.setAttribute('aria-expanded', 'false');
+              button.focus();
+            }
+          });
+          
+          // Handle keyboard navigation within dropdown
+          const links = menu.querySelectorAll('.dropdown-link');
+          links.forEach((link, index) => {
+            link.addEventListener('keydown', function(e) {
+              if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const nextLink = links[index + 1] || links[0];
+                nextLink.focus();
+              } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                const prevLink = links[index - 1] || links[links.length - 1];
+                prevLink.focus();
+              } else if (e.key === 'Escape') {
+                dropdown.classList.remove('active');
+                button.setAttribute('aria-expanded', 'false');
+                button.focus();
+              }
+            });
+          });
+        }
+      });
+      
+      // Reinitialize theme toggle after navigation loads
+      if (window.themeManager) {
+        window.themeManager.setupThemeToggle();
+        window.themeManager.updateThemeUI(window.themeManager.getTheme());
+      }
+    </script>
     
-    <header>
+    <header id="main-content">
         <div class="container">
-            <h1>Complete APGI Consciousness Assessment</h1>
-            <p class="subtitle">Measure all four APGI parameters, their interactions, temporal stability, and environmental fit</p>
+            <div class="header-content">
+                <div>
+                    <h1>Complete APGI Consciousness Assessment</h1>
+                    <p class="subtitle">Measure all four APGI parameters, their interactions, temporal stability, and environmental fit</p>
+                </div>
+            </div>
         </div>
     </header>
     

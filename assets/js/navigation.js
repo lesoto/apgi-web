@@ -5,7 +5,7 @@ class APGINavigation {
       Home: 'Home.html',
       Assessment: 'Assessment.html',
       'Assessment-OnePage': 'Assessment-OnePage.html',
-      'Quiz-Short': 'Quiz-Short.html',
+      'Quiz-Short': 'Quiz.html',
       Profile: 'Profile.html',
       PsyStates: 'PsyStates.html',
       'PsyStates-Visualizer': 'PsyStates-Visualizer.html',
@@ -35,268 +35,205 @@ class APGINavigation {
 
   createNavigation() {
     // Check if navigation already exists
-    if (document.getElementById('apgi-navigation')) {
+    if (document.querySelector('.main-nav')) {
       return;
     }
 
-    const nav = document.createElement('nav');
-    nav.id = 'apgi-navigation';
-    nav.className = 'apgi-navigation';
+    // Create and inject the navigation component
+    fetch('components/navigation.html')
+      .then(response => response.text())
+      .then(html => {
+        const navContainer = document.createElement('div');
+        navContainer.innerHTML = html;
+        
+        // Insert at the beginning of body
+        const body = document.body;
+        if (body.firstChild) {
+          body.insertBefore(navContainer.firstChild, body.firstChild);
+        } else {
+          body.appendChild(navContainer.firstChild);
+        }
+        
+        // Initialize dropdown functionality
+        this.initializeDropdowns();
+        
+        // Update current page highlighting
+        this.updateCurrentPage();
+        
+        // Setup event listeners
+        this.setupEventListeners();
+      })
+      .catch(error => {
+        console.error('Failed to load navigation component:', error);
+        // Fallback to basic navigation
+        this.createFallbackNavigation();
+      });
+  }
 
-    const navHTML = `
+  initializeDropdowns() {
+    // Dropdown functionality is already included in the navigation.html component
+    // This method can be used for additional initialization if needed
+  }
+
+  createFallbackNavigation() {
+    // Create a simple fallback navigation if the component fails to load
+    const nav = document.createElement('nav');
+    nav.className = 'main-nav';
+    nav.innerHTML = `
       <div class="nav-container">
-        <div class="nav-brand">
-          <a href="Home.html" class="brand-link">
-            <span class="brand-text">APGI Framework</span>
-          </a>
+        <div class="nav-links">
+          <a href="Home.html" class="nav-link">APGI Framework</a>
+          <a href="Quiz.html" class="nav-link">Quiz</a>
+          <a href="Assessment.html" class="nav-link">Assessment</a>
+          <a href="Paper.html" class="nav-link">Research</a>
+          <a href="Book-Outline.html" class="nav-link">Book</a>
         </div>
-        <div class="nav-menu">
-          <a href="Home.html" data-page="Home" class="nav-item">Home</a>
-          <a href="Quiz-Short.html" data-page="Quiz-Short" class="nav-item">Quiz</a>
-          <a href="Assessment.html" data-page="Assessment" class="nav-item">Assessment</a>
-          <span class="nav-separator">|</span>
-          <a href="PsyStates-Visualizer.html" data-page="PsyStates-Visualizer" class="nav-item">PsyStates Visualizer</a>
-          <a href="Consciousness-Visualization.html" data-page="Consciousness-Visualization" class="nav-item">Consciousness</a>
-          <a href="Neuromoduratory-Cascade.html" data-page="Neuromoduratory-Cascade" class="nav-item">Neuromodulatory Cascade</a>
-          <span class="nav-separator">|</span>
-          <a href="Paper.html" data-page="Paper" class="nav-item">Research</a>
-          <a href="Book-Outline.html" data-page="Book-Outline" class="nav-item">Book Outline</a>
-          <a href="Privacy-Policy.html" data-page="Privacy-Policy" class="nav-item">Privacy</a>
-          <a href="Terms-of-Service.html" data-page="Terms-of-Service" class="nav-item">Terms</a>
-        </div>
-        <button class="nav-toggle" aria-label="Toggle navigation">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
       </div>
     `;
-
-    nav.innerHTML = navHTML;
-
-    // Insert at the beginning of body
+    
     const body = document.body;
     if (body.firstChild) {
       body.insertBefore(nav, body.firstChild);
     } else {
       body.appendChild(nav);
     }
-
-    // Add styles
-    this.addNavigationStyles();
-  }
-
-  addNavigationStyles() {
-    if (document.getElementById('apgi-nav-styles')) {
-      return;
-    }
-
-    const style = document.createElement('style');
-    style.id = 'apgi-nav-styles';
-    style.textContent = `
-      .apgi-navigation {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .nav-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 60px;
-      }
-
-      .nav-brand .brand-link {
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 18px;
-        color: #2563eb;
-      }
-
-      .nav-menu {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        flex-wrap: nowrap;
-      }
-
-      .nav-item {
-        text-decoration: none;
-        color: #475569;
-        padding: 8px 16px;
-        border-radius: 6px;
-        transition: all 0.2s ease;
-        font-size: 14px;
-        font-weight: 500;
-        white-space: nowrap;
-      }
-
-      .nav-item:hover {
-        background: rgba(37, 99, 235, 0.1);
-        color: #2563eb;
-      }
-
-      .nav-item.current {
-        background: #2563eb;
-        color: white;
-      }
-
-      .nav-item.nav-highlight {
-        background: #2563eb;
-        color: white;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-      }
-
-      .nav-item.nav-highlight:hover {
-        background: #1d4ed8;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-      }
-
-      .nav-separator {
-        color: #cbd5e1;
-        font-size: 16px;
-        font-weight: 300;
-        margin: 0 8px;
-      }
-
-      .nav-toggle {
-        display: none;
-        flex-direction: column;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-      }
-
-      .nav-toggle span {
-        width: 25px;
-        height: 2px;
-        background: #2563eb;
-        margin: 3px 0;
-        transition: 0.3s;
-      }
-
-      /* Add top margin to body content to account for fixed nav */
-      body {
-        padding-top: 60px !important;
-      }
-
-      @media (max-width: 768px) {
-        .nav-menu {
-          display: none;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
-          background: rgba(255, 255, 255, 0.98);
-          backdrop-filter: blur(10px);
-          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-          padding: 20px;
-          flex-direction: column;
-          gap: 15px;
-          align-items: flex-start;
-        }
-
-        .nav-menu.active {
-          display: flex;
-        }
-
-        .nav-separator {
-          display: none;
-        }
-
-        .nav-item {
-          width: 100%;
-          padding: 12px 16px;
-        }
-
-        .nav-toggle {
-          display: flex;
-        }
-
-        .nav-toggle.active span:nth-child(1) {
-          transform: rotate(-45deg) translate(-5px, 6px);
-        }
-
-        .nav-toggle.active span:nth-child(2) {
-          opacity: 0;
-        }
-
-        .nav-toggle.active span:nth-child(3) {
-          transform: rotate(45deg) translate(-5px, -6px);
-        }
-      }
-
-      @media (max-width: 1200px) {
-        .nav-menu {
-          gap: 12px;
-        }
-        
-        .nav-item {
-          padding: 6px 12px;
-          font-size: 13px;
-        }
-        
-        .nav-separator {
-          margin: 0 4px;
-        }
-      }
-    `;
-
-    document.head.appendChild(style);
   }
 
   updateCurrentPage() {
-    const links = document.querySelectorAll('.nav-item[data-page]');
-    links.forEach(link => {
-      const page = link.getAttribute('data-page');
-      if (page === this.currentPage) {
-        link.classList.add('current');
-      } else {
-        link.classList.remove('current');
+    const currentPage = this.getCurrentPage();
+    const navLinks = document.querySelectorAll('.nav-link, .dropdown-link');
+    
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href) {
+        // Remove existing active/current classes
+        link.classList.remove('active', 'current');
+        
+        // Check if this link matches the current page
+        const linkPage = href.replace('.html', '').replace(/^.*\//, '');
+        const currentPageClean = currentPage.replace(/^.*\//, '');
+        
+        if (linkPage === currentPageClean || 
+            (currentPageClean === '' && linkPage === 'Home')) {
+          link.classList.add('current');
+        }
       }
     });
   }
 
   setupEventListeners() {
-    // Mobile menu toggle
-    const toggle = document.querySelector('.nav-toggle');
-    const menu = document.querySelector('.nav-menu');
-
-    if (toggle && menu) {
-      toggle.addEventListener('click', () => {
-        toggle.classList.toggle('active');
-        menu.classList.toggle('active');
+    // Handle dropdown functionality
+    const dropdowns = document.querySelectorAll('.nav-dropdown');
+    
+    dropdowns.forEach(dropdown => {
+      const button = dropdown.querySelector('.nav-dropdown-btn');
+      const menu = dropdown.querySelector('.dropdown-menu');
+      
+      if (button && menu) {
+        // Toggle dropdown on button click
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Close all other dropdowns
+          dropdowns.forEach(otherDropdown => {
+            if (otherDropdown !== dropdown) {
+              otherDropdown.classList.remove('active');
+              const otherButton = otherDropdown.querySelector('.nav-dropdown-btn');
+              if (otherButton) {
+                otherButton.setAttribute('aria-expanded', 'false');
+              }
+            }
+          });
+          
+          // Toggle current dropdown
+          const isActive = dropdown.classList.contains('active');
+          dropdown.classList.toggle('active');
+          button.setAttribute('aria-expanded', !isActive);
+        });
+        
+        // Handle keyboard navigation
+        button.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            button.click();
+          } else if (e.key === 'Escape') {
+            dropdown.classList.remove('active');
+            button.setAttribute('aria-expanded', 'false');
+            button.focus();
+          }
+        });
+        
+        // Handle keyboard navigation within dropdown
+        const links = menu.querySelectorAll('.dropdown-link');
+        links.forEach((link, index) => {
+          link.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              const nextLink = links[index + 1] || links[0];
+              nextLink.focus();
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              const prevLink = links[index - 1] || links[links.length - 1];
+              prevLink.focus();
+            } else if (e.key === 'Escape') {
+              dropdown.classList.remove('active');
+              button.setAttribute('aria-expanded', 'false');
+              button.focus();
+            }
+          });
+        });
+      }
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        dropdowns.forEach(dropdown => {
+          dropdown.classList.remove('active');
+          const button = dropdown.querySelector('.nav-dropdown-btn');
+          if (button) {
+            button.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+    
+    // Close dropdowns when window is resized (for mobile responsiveness)
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        dropdowns.forEach(dropdown => {
+          dropdown.classList.remove('active');
+          const button = dropdown.querySelector('.nav-dropdown-btn');
+          if (button) {
+            button.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }, 250);
+    });
+    
+    // Handle touch events for mobile
+    if ('ontouchstart' in window) {
+      dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('.nav-dropdown-btn');
+        if (button) {
+          button.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            button.click();
+          });
+        }
       });
     }
 
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.apgi-navigation')) {
-        const toggle = document.querySelector('.nav-toggle');
-        const menu = document.querySelector('.nav-menu');
-        if (toggle && menu) {
-          toggle.classList.remove('active');
-          menu.classList.remove('active');
-        }
-      }
-    });
+    // Theme toggle functionality is now handled by theme-manager.js
+    // This prevents conflicts with the centralized ThemeManager
 
-    // Update current page on navigation
-    const links = document.querySelectorAll('.nav-item');
-    links.forEach(link => {
-      link.addEventListener('click', e => {
+    // Handle navigation clicks
+    const navLinks = document.querySelectorAll('.nav-link, .dropdown-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
         const href = link.getAttribute('href');
         if (href && href !== '#') {
           // Let the browser handle navigation
@@ -306,67 +243,11 @@ class APGINavigation {
       });
     });
   }
-
-  // Method to update all placeholder links in the page
-  updatePlaceholderLinks() {
-    const placeholderLinks = document.querySelectorAll('a[href="#"]');
-    placeholderLinks.forEach(link => {
-      const text = link.textContent.trim();
-      const pageName = this.findPageByTitle(text);
-
-      if (pageName) {
-        link.setAttribute('href', this.pages[pageName]);
-        link.removeAttribute('onclick');
-      }
-    });
-  }
-
-  findPageByTitle(text) {
-    const titleMappings = {
-      Home: 'Home',
-      Quiz: 'Quiz-Short',
-      Assessment: 'Assessment',
-      Profile: 'Profile',
-      PsyStates: 'PsyStates',
-      'PsyStates Visualizer': 'PsyStates-Visualizer',
-      'Consciousness Visualization': 'Consciousness-Visualization',
-      'Neuromoduratory Cascade': 'Neuromoduratory-Cascade',
-      'Book Outline': 'Book-Outline',
-      Research: 'Paper',
-      'APGI Paper': 'Paper',
-      Privacy: 'Privacy-Policy',
-      'Privacy Policy': 'Privacy-Policy',
-      Terms: 'Terms-of-Service',
-      'Terms of Service': 'Terms-of-Service'
-    };
-
-    // Check for exact matches first
-    if (titleMappings[text]) {
-      return titleMappings[text];
-    }
-
-    // Check for partial matches
-    for (const [title, page] of Object.entries(titleMappings)) {
-      if (
-        text.toLowerCase().includes(title.toLowerCase()) ||
-        title.toLowerCase().includes(text.toLowerCase())
-      ) {
-        return page;
-      }
-    }
-
-    return null;
-  }
 }
 
 // Initialize navigation when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   window.apgiNavigation = new APGINavigation();
-
-  // Update placeholder links after initialization
-  setTimeout(() => {
-    window.apgiNavigation.updatePlaceholderLinks();
-  }, 100);
 });
 
 // Also initialize if DOM is already loaded
@@ -376,8 +257,5 @@ if (document.readyState === 'loading') {
   // DOM is already loaded
   if (!window.apgiNavigation) {
     window.apgiNavigation = new APGINavigation();
-    setTimeout(() => {
-      window.apgiNavigation.updatePlaceholderLinks();
-    }, 100);
   }
 }

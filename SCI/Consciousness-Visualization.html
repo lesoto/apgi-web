@@ -3,6 +3,7 @@
 <head>
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consciousness Ignition Visualization</title>
@@ -586,6 +587,17 @@
     </style>
 </head>
 <body>
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      fetch('../components/navigation.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+    </script>
+    
     <div class="container">
         <header>
             <h1>Consciousness Ignition - Neural Processing Phases</h1>
@@ -1387,10 +1399,7 @@
             link.click();
         }
 
-        function toggleTheme() {
-            document.body.classList.toggle('light-theme');
-            drawAll();
-        }
+        // Theme toggle is now handled by theme-manager.js
 
         // =============================================
         // Event Listeners
@@ -1420,7 +1429,6 @@
         pngBtn.addEventListener('click', exportPNG);
         svgBtn.addEventListener('click', exportSVG);
         csvBtn.addEventListener('click', exportCSV);
-        themeBtn.addEventListener('click', toggleTheme);
 
         speedButtons.forEach(button => {
             button.addEventListener('click', () => applySpeedPreset(button.id));

@@ -1,0 +1,137 @@
+/* Font Fallback CSS - Local Font Stack */
+/* This provides fallback fonts when Google Fonts fail to load */
+
+/* Font Face Definitions for Local Fallbacks */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: local('Space Grotesk'), local('Arial'), local('Helvetica'), local('sans-serif');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: local('Space Grotesk Medium'), local('Arial'), local('Helvetica'), local('sans-serif');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: local('Space Grotesk Bold'), local('Arial Bold'), local('Helvetica Bold'), local('sans-serif');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: local('IBM Plex Sans'), local('Arial'), local('Helvetica'), local('sans-serif');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: local('IBM Plex Sans Medium'), local('Arial'), local('Helvetica'), local('sans-serif');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: local('IBM Plex Sans Bold'), local('Arial Bold'), local('Helvetica Bold'), local('sans-serif');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter'), local('Arial'), local('Helvetica'), local('sans-serif');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter Medium'), local('Arial'), local('Helvetica'), local('sans-serif');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter Bold'), local('Arial Bold'), local('Helvetica Bold'), local('sans-serif');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Font Loading Classes */
+.font-loading {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.font-loaded {
+  opacity: 1;
+}
+
+.font-failed {
+  opacity: 1;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* System Font Stack as Final Fallback */
+.system-font-stack {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Indicators for font loading status */
+.font-indicator {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: #10b981;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.font-indicator.loading {
+  background: #f59e0b;
+  opacity: 1;
+}
+
+.font-indicator.fallback {
+  background: #ef4444;
+  opacity: 1;
+}
+
+/* Prevent Flash of Invisible Text (FOUT) */
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* When fonts load successfully */
+.fonts-loaded body {
+  font-family: 'Space Grotesk', 'IBM Plex Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Custom font classes for different weights */
+.font-light { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }

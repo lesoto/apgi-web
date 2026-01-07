@@ -418,6 +418,17 @@
     </style>
 </head>
 <body>
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      fetch('components/navigation.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+    </script>
+    
     <div class="container">
         <div class="header">
             <div class="book-cover">
@@ -619,7 +630,7 @@
                         <button type="submit">Send Me the Chapter</button>
                     </div>
                 </form>
-                <p style="font-size: 13px; margin-top: 15px; margin-bottom: 0; opacity: 0.85;">We respect your inbox. One email per week, unsubscribe anytime. <span style="color: white; text-decoration: underline; cursor: pointer;" onclick="alert('Privacy: Your email is only used for chapter delivery and weekly updates. You can unsubscribe anytime.')">Privacy Policy</span></p>
+                <p style="font-size: 13px; margin-top: 15px; margin-bottom: 0; opacity: 0.85;">We respect your inbox. One email per week, unsubscribe anytime. <span id="privacy-policy-link" style="color: white; text-decoration: underline; cursor: pointer;">Privacy Policy</span></p>
             </div>
         </div>
 
@@ -651,6 +662,14 @@
                     }
                 });
             });
+
+            // Privacy policy link handler
+            const privacyLink = document.getElementById('privacy-policy-link');
+            if (privacyLink) {
+                privacyLink.addEventListener('click', function() {
+                    alert('Privacy: Your email is only used for chapter delivery and weekly updates. You can unsubscribe anytime.');
+                });
+            }
 
             // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {

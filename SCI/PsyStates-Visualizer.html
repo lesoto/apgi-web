@@ -4,11 +4,14 @@
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI State Architecture</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind-fallback.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
     <!-- Recharts for interactive visualizations -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -169,6 +172,16 @@
     </style>
 </head>
 <body class="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-cyan-900 selection:text-cyan-100 p-4 lg:p-8">
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      fetch('../components/navigation.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+    </script>
     
     <!-- Header -->
     <header class="mb-8 border-b border-slate-700 pb-4 relative">

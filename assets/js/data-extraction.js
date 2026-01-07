@@ -1,12 +1,19 @@
 // Data Extraction and Optimization for APGI Website
 // Ensure logger is available
 if (typeof logger === 'undefined') {
-    // Fallback logger if not loaded
+    // Fallback logger if not loaded - only logs in development
+    const isDev = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' ||
+                  window.location.hostname.includes('.local') ||
+                  window.location.hostname.includes('.dev') ||
+                  window.location.hostname.includes('.test') ||
+                  window.location.protocol === 'file:';
+    
     window.logger = {
-        error: (...args) => console.error('[ERROR]', ...args),
-        warn: (...args) => console.warn('[WARN]', ...args),
-        info: (...args) => console.info('[INFO]', ...args),
-        debug: (...args) => console.log('[DEBUG]', ...args)
+        error: (...args) => isDev && console.error('[ERROR]', ...args),
+        warn: (...args) => isDev && console.warn('[WARN]', ...args),
+        info: (...args) => isDev && console.info('[INFO]', ...args),
+        debug: (...args) => isDev && console.log('[DEBUG]', ...args)
     };
 }
 
@@ -63,9 +70,11 @@ class APGIDataOptimizer {
               }
             });
           })
-          .catch(error => 
+          .catch(error => {
+            // Handle fetch error silently in production
+          });
       } catch (error) {
-        
+        // Handle general error silently in production
       }
     });
   }

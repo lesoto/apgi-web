@@ -1140,16 +1140,27 @@
     </style>
 </head>
 <body>
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      fetch('../components/navigation.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+    </script>
+    
     <div class="container">
         <h1>APGI: Morning Waking Neuromodulatory Cascade</h1>
         <p class="subtitle">Transition from Sleep to High-Performance Focus</p>
         
         <div class="controls">
             <div class="time-control">
-                <button class="play" id="playBtn" onclick="toggleAnimation()">▶ Play</button>
-                <button class="reset" onclick="resetAnimation()">↺ Reset</button>
+                <button class="play" id="playBtn" data-action="toggle-animation">▶ Play</button>
+                <button class="reset" id="resetBtn" data-action="reset-animation">↺ Reset</button>
                 <label for="timeSlider" class="visually-hidden">Time Slider</label>
-                <input type="range" id="timeSlider" min="0" max="60" value="0" step="0.1" oninput="updateTime(this.value)" title="Adjust time to see changes in neuromodulator levels">
+                <input type="range" id="timeSlider" min="0" max="60" value="0" step="0.1" data-action="update-time" title="Adjust time to see changes in neuromodulator levels">
                 <div class="time-display" id="timeDisplay">T = 0 min</div>
             </div>
         </div>
@@ -1938,6 +1949,27 @@
             updateDisplay(currentTime);
             updateCharts();
         }
+        
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animation control listeners
+            document.querySelectorAll('[data-action]').forEach(element => {
+                element.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    switch(action) {
+                        case 'toggle-animation':
+                            toggleAnimation();
+                            break;
+                        case 'reset-animation':
+                            resetAnimation();
+                            break;
+                        case 'update-time':
+                            updateTime(this.value);
+                            break;
+                    }
+                });
+            });
+        });
         
         // Initialize
         updateTime(0);

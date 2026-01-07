@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Framework | Computational Consciousness Modeling</title>
@@ -202,8 +205,8 @@
             border-radius: 20px;
             padding: 2rem;
             transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(30px);
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .glass-card.visible {
@@ -552,13 +555,97 @@
         .animate-in {
             animation: fadeInUp 0.6s ease-out forwards;
         }
+
+        /* Hero Illustrations */
+        .hero-illustrations {
+            margin: 3rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .illustration-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            max-width: 45%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            background: var(--glass-bg);
+        }
+
+        .hero-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 180, 255, 0.3);
+            border-color: var(--electric-blue);
+        }
+
+        @media (max-width: 768px) {
+            .illustration-row {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .hero-image {
+                max-width: 45%;
+                height: auto;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--glass-border);
+                transition: all 0.3s ease;
+                background: var(--glass-bg);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Particle Canvas -->
-    <canvas id="particle-canvas"></canvas>
-
-    <!-- Navigation -->
+    <!-- Neural Background Canvas -->
+    <canvas id="neural-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+    <script>
+      // Get the canvas element
+      var canvas = document.getElementById('neural-background');
+      // Set the canvas dimensions
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      // Get the canvas context
+      var ctx = canvas.getContext('2d');
+      // Set the background color
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Draw the neural network
+      function drawNeuralNetwork() {
+        // Draw the nodes
+        for (var i = 0; i < 100; i++) {
+          var x = Math.random() * canvas.width;
+          var y = Math.random() * canvas.height;
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+        // Draw the connections
+        for (var i = 0; i < 100; i++) {
+          var x1 = Math.random() * canvas.width;
+          var y1 = Math.random() * canvas.height;
+          var x2 = Math.random() * canvas.width;
+          var y2 = Math.random() * canvas.height;
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+      }
+      drawNeuralNetwork();
+    </script>
     <nav>
         <div class="container">
             <div class="logo">APGI Framework</div>
@@ -578,8 +665,8 @@
             <p class="subtitle">A rigorous framework implementing Allostatic Precision-Gated Ignition theory through computational models and experimental validation</p>
             <div class="hero-illustrations">
                 <div class="illustration-row">
-                    <img src="images/APGI-Experiments-1.png" alt="APGI Experiments Interface 1" class="hero-image">
-                    <img src="images/APGI-Experiments-2.png" alt="APGI Experiments Interface 2" class="hero-image">
+                    <img src="assets/images/APGI-Experiments-1.png" alt="APGI Experiments Interface 1" class="hero-image">
+                    <img src="assets/images/APGI-Experiments-2.png" alt="APGI Experiments Interface 2" class="hero-image">
                 </div>
             </div>
             <div class="cta-buttons">
@@ -695,60 +782,6 @@
                     </ul>
                     <div class="code-block">
                         <code>python run_experiments.py ai_benchmarking \<br>  --n_episodes 100 --n_agents_per_type 3</code>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technical Features -->
-    <section style="background: rgba(0, 0, 0, 0.2);">
-        <div class="container">
-            <div class="section-header">
-                <h2>Technical Implementation</h2>
-                <p>Built with modern Python ecosystem and best practices</p>
-            </div>
-            <div class="technical-grid">
-                <div class="glass-card tech-item">
-                    <div class="tech-icon">🐍</div>
-                    <div class="tech-content">
-                        <h4>Python 3.9+</h4>
-                        <p>Modern Python with type hints, async support, and comprehensive standard library</p>
-                    </div>
-                </div>
-                <div class="glass-card tech-item">
-                    <div class="tech-icon">🔢</div>
-                    <div class="tech-content">
-                        <h4>NumPy & SciPy</h4>
-                        <p>High-performance numerical computing for computational neuroscience models</p>
-                    </div>
-                </div>
-                <div class="glass-card tech-item">
-                    <div class="tech-icon">📈</div>
-                    <div class="tech-content">
-                        <h4>Matplotlib & Seaborn</h4>
-                        <p>Rich visualization toolkit for experimental results and data analysis</p>
-                    </div>
-                </div>
-                <div class="glass-card tech-item">
-                    <div class="tech-icon">🖼️</div>
-                    <div class="tech-content">
-                        <h4>Tkinter GUI</h4>
-                        <p>Cross-platform interface for experiment configuration and monitoring</p>
-                    </div>
-                </div>
-                <div class="glass-card tech-item">
-                    <div class="tech-icon">⚙️</div>
-                    <div class="tech-content">
-                        <h4>Modular Architecture</h4>
-                        <p>Clean separation between models, experiments, and utilities for extensibility</p>
-                    </div>
-                </div>
-                <div class="glass-card tech-item">
-                    <div class="tech-icon">💾</div>
-                    <div class="tech-content">
-                        <h4>Data Management</h4>
-                        <p>Automatic data saving, versioning, and organization for reproducible research</p>
                     </div>
                 </div>
             </div>

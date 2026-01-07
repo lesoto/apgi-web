@@ -7,6 +7,17 @@ class PerformanceOptimizer {
     this.init();
   }
 
+  isDevelopment() {
+    return (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.includes('.local') ||
+      window.location.hostname.includes('.dev') ||
+      window.location.hostname.includes('.test') ||
+      window.location.protocol === 'file:'
+    );
+  }
+
   init() {
     // Preload critical resources
     this.preloadCriticalResources();
@@ -132,12 +143,16 @@ class PerformanceOptimizer {
           const perfData = performance.getEntriesByType('navigation');
           if (perfData.length > 0) {
             const navigation = perfData[0];
-            console.log('Page Load Performance:', {
-              domContentLoaded:
-                navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
-              loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
-              totalLoadTime: navigation.loadEventEnd - navigation.navigationStart
-            });
+            if (this.isDevelopment()) {
+              console.log('Page Load Performance:', {
+                domContentLoaded:
+                  navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
+                loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
+              });
+            }
+            if (this.isDevelopment()) {
+              console.log('Total Load Time:', navigation.loadEventEnd - navigation.navigationStart);
+            }
           }
         }, 0);
       });
@@ -190,12 +205,14 @@ class PerformanceOptimizer {
     const reduction = originalSize - optimizedSize;
     const percentageReduction = ((reduction / originalSize) * 100).toFixed(1);
 
-    console.log(`File Size Optimization:`, {
-      original: `${(originalSize / 1024 / 1024).toFixed(2)} MB`,
-      optimized: `${(optimizedSize / 1024 / 1024).toFixed(2)} MB`,
-      reduction: `${(reduction / 1024 / 1024).toFixed(2)} MB`,
-      percentageReduction: `${percentageReduction}%`
-    });
+    if (this.isDevelopment()) {
+      console.log(`File Size Optimization:`, {
+        original: `${(originalSize / 1024 / 1024).toFixed(2)} MB`,
+        optimized: `${(optimizedSize / 1024 / 1024).toFixed(2)} MB`,
+        reduction: `${(reduction / 1024 / 1024).toFixed(2)} MB`,
+        percentageReduction: `${percentageReduction}%`
+      });
+    }
   }
 }
 

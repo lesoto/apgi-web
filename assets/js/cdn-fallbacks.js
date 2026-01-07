@@ -6,38 +6,56 @@ class CDNFallbackManager {
     this.fallbacks = {
       tailwindcss: {
         cdn: 'https://cdn.tailwindcss.com',
-        local: '/assets/css/tailwind-fallback.css',
+        local: 'assets/css/tailwind-fallback.css',
         loaded: false,
         element: null
       },
       lucide: {
         cdn: 'https://unpkg.com/lucide@latest',
-        local: '/assets/js/lucide-fallback.js',
+        local: 'assets/js/lucide-fallback.js',
         loaded: false,
         element: null
       },
       fontawesome: {
         cdn: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
-        local: '/assets/css/fontawesome-fallback.css',
+        local: 'assets/css/fontawesome-fallback.css',
         loaded: false,
         element: null
       },
       chartjs: {
         cdn: 'https://cdn.jsdelivr.net/npm/chart.js',
-        local: '/assets/js/chartjs-fallback.js',
+        local: 'assets/js/chartjs-fallback.js',
         loaded: false,
         element: null
       },
       plotly: {
         cdn: 'https://cdn.plot.ly/plotly-3.3.0.min.js',
-        local: '/assets/js/plotly-fallback.js',
+        local: 'assets/js/plotly-fallback.js',
         loaded: false,
         element: null
       },
       fonts: {
         google:
           'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap',
-        local: '/assets/css/fonts-fallback.css',
+        local: 'assets/css/fonts-fallback.css',
+        loaded: false,
+        element: null
+      },
+      react: {
+        cdn: 'https://unpkg.com/react@18',
+        local: 'assets/js/react-fallback.js',
+        loaded: false,
+        element: null
+      },
+      reactdom: {
+        cdn: 'https://unpkg.com/react-dom@18',
+        local: 'assets/js/react-dom-fallback.js',
+        loaded: false,
+        element: null
+      },
+      recharts: {
+        cdn: 'https://unpkg.com/recharts@2.8.0',
+        local: 'assets/js/recharts-fallback.js',
         loaded: false,
         element: null
       }
@@ -90,7 +108,7 @@ class CDNFallbackManager {
 
       setTimeout(() => {
         if (!this.fallbacks[key].loaded) {
-          logger.warn(`CDN timeout for ${key}, loading fallback`);
+          console.warn(`CDN timeout for ${key}, loading fallback`);
           this.loadFallback(key);
         }
       }, this.getTimeout(key));
@@ -103,7 +121,10 @@ class CDNFallbackManager {
       lucide: 3000,
       fontawesome: 4000,
       chartjs: 4000,
-      plotly: 6000
+      plotly: 6000,
+      react: 3000,
+      reactdom: 3000,
+      recharts: 4000
     };
     return timeouts[key] || 5000;
   }
@@ -135,10 +156,10 @@ class CDNFallbackManager {
         link.onload = () => {
           fallback.loaded = true;
           fallback.element = link;
-          logger.info(`Fallback loaded for ${key}`);
+          console.info(`Fallback loaded for ${key}`);
         };
         link.onerror = () => {
-          logger.error(`Failed to load fallback for ${key}`);
+          console.error(`Failed to load fallback for ${key}`);
         };
         document.head.appendChild(link);
       } else if (fallback.local.endsWith('.css')) {
@@ -149,10 +170,10 @@ class CDNFallbackManager {
         link.onload = () => {
           fallback.loaded = true;
           fallback.element = link;
-          logger.info(`Fallback loaded for ${key}`);
+          console.info(`Fallback loaded for ${key}`);
         };
         link.onerror = () => {
-          logger.error(`Failed to load fallback for ${key}`);
+          console.error(`Failed to load fallback for ${key}`);
         };
         document.head.appendChild(link);
       } else {
@@ -162,18 +183,18 @@ class CDNFallbackManager {
         script.onload = () => {
           fallback.loaded = true;
           fallback.element = script;
-          logger.info(`Fallback loaded for ${key}`);
+          console.info(`Fallback loaded for ${key}`);
 
           // Initialize library if needed
           this.initializeFallback(key);
         };
         script.onerror = () => {
-          logger.error(`Failed to load fallback for ${key}`);
+          console.error(`Failed to load fallback for ${key}`);
         };
         document.head.appendChild(script);
       }
     } catch (error) {
-      logger.error(`Error loading fallback for ${key}:`, error);
+      console.error(`Error loading fallback for ${key}:`, error);
     }
   }
 
@@ -190,6 +211,13 @@ class CDNFallbackManager {
         break;
       case 'plotly':
         // Plotly will initialize automatically
+        break;
+      case 'react':
+      case 'reactdom':
+        // React components will initialize automatically
+        break;
+      case 'recharts':
+        // Recharts will initialize automatically
         break;
     }
   }
@@ -233,7 +261,7 @@ class CDNFallbackManager {
       }
     }, 5000);
 
-    logger.warn(`Using fallback for ${key} due to CDN failure`);
+    console.warn(`Using fallback for ${key} due to CDN failure`);
   }
 
   // Public methods

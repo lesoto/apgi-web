@@ -467,8 +467,8 @@
 
         /* Scroll reveal */
         .reveal {
-            opacity: 0;
-            transform: translateY(30px);
+            opacity: 1;
+            transform: translateY(0);
             transition: all 0.6s ease-out;
         }
 
@@ -479,6 +479,17 @@
     </style>
 </head>
 <body>
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      fetch('components/navigation.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+    </script>
+    
     <!-- Neural Background Animation -->
     <div class="neural-background" id="neuralBg"></div>
 
@@ -507,9 +518,94 @@
     <!-- Hero Screenshot -->
     <div class="container">
         <div class="hero-screenshot animate-in">
-            <img src="images/App-Appendix.png" alt="APGI Appendix Interface">
+            <img src="assets/images/App-Appendix.png" alt="APGI Appendix Interface">
         </div>
     </div>
+
+
+    <!-- Interactive Demo Section -->
+    <section class="demo-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Watch Consciousness Emerge</h2>
+                <p>The APGI ignition sequence visualized in real-time</p>
+            </div>
+
+            <div class="demo-container reveal">
+                <div class="ignition-visualization" id="ignitionDemo">
+                    <div class="ignition-stage" data-stage="1">
+                        <div class="stage-icon" style="color: var(--error-yellow);">⚠️</div>
+                        <div class="stage-label">Prediction Error</div>
+                    </div>
+                    <div class="ignition-stage" data-stage="2">
+                        <div class="stage-icon" style="color: var(--precision-red);">💓</div>
+                        <div class="stage-label">Precision Weighting</div>
+                    </div>
+                    <div class="ignition-stage" data-stage="3">
+                        <div class="stage-icon" style="color: var(--threshold-blue);">⚡</div>
+                        <div class="stage-label">Threshold Crossing</div>
+                    </div>
+                    <div class="ignition-stage" data-stage="4">
+                        <div class="stage-icon" style="color: var(--workspace-purple);">🧠</div>
+                        <div class="stage-label">Global Broadcast</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- APGI Parameters Section -->
+    <section class="parameters-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>The APGI Color Spectrum</h2>
+                <p>Each parameter has semantic meaning, encoded in our consistent visual language</p>
+            </div>
+
+            <div class="parameters-grid">
+                <div class="parameter-card param-threshold reveal">
+                    <h4>
+                        <span class="param-color-dot" style="background: var(--threshold-blue);"></span>
+                        Threshold (Bₜ)
+                    </h4>
+                    <p style="color: var(--threshold-blue);">The "gate" that must be crossed for ignition. Controls thalamic gating mechanisms.</p>
+                </div>
+
+                <div class="parameter-card param-precision reveal">
+                    <h4>
+                        <span class="param-color-dot" style="background: var(--precision-red);"></span>
+                        Interoceptive Precision (Π)
+                    </h4>
+                    <p style="color: var(--precision-red);">Bodily urgency and precision weighting. Maps to insula and ACC activity.</p>
+                </div>
+
+                <div class="parameter-card param-neuro reveal">
+                    <h4>
+                        <span class="param-color-dot" style="background: var(--neuromodulator-green);"></span>
+                        Neuromodulator Tone
+                    </h4>
+                    <p style="color: var(--neuromodulator-green);">Chemical balance and adaptability. Brainstem projections and modulatory waves.</p>
+                </div>
+
+                <div class="parameter-card param-error reveal">
+                    <h4>
+                        <span class="param-color-dot" style="background: var(--error-yellow);"></span>
+                        Prediction Error (|ε|)
+                    </h4>
+                    <p style="color: var(--error-yellow);">Mismatch between expectation and reality. Surprise responses and conflict detection.</p>
+                </div>
+
+                <div class="parameter-card param-workspace reveal">
+                    <h4>
+                        <span class="param-color-dot" style="background: var(--workspace-purple);"></span>
+                        Global Workspace
+                    </h4>
+                    <p style="color: var(--workspace-purple);">Higher-order integration and broadcasting. Frontoparietal network activation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Features Section -->
     <section class="features-section" id="features">
@@ -572,89 +668,6 @@
                     <div class="feature-icon">📚</div>
                     <h3>Comprehensive Bibliography</h3>
                     <p>Academic rigor at your fingertips. Full reference materials with source citations and further reading suggestions.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- APGI Parameters Section -->
-    <section class="parameters-section">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>The APGI Color Spectrum</h2>
-                <p>Each parameter has semantic meaning, encoded in our consistent visual language</p>
-            </div>
-
-            <div class="parameters-grid">
-                <div class="parameter-card param-threshold reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--threshold-blue);"></span>
-                        Threshold (Bₜ)
-                    </h4>
-                    <p style="color: var(--threshold-blue);">The "gate" that must be crossed for ignition. Controls thalamic gating mechanisms.</p>
-                </div>
-
-                <div class="parameter-card param-precision reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--precision-red);"></span>
-                        Interoceptive Precision (Π)
-                    </h4>
-                    <p style="color: var(--precision-red);">Bodily urgency and precision weighting. Maps to insula and ACC activity.</p>
-                </div>
-
-                <div class="parameter-card param-neuro reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--neuromodulator-green);"></span>
-                        Neuromodulator Tone
-                    </h4>
-                    <p style="color: var(--neuromodulator-green);">Chemical balance and adaptability. Brainstem projections and modulatory waves.</p>
-                </div>
-
-                <div class="parameter-card param-error reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--error-yellow);"></span>
-                        Prediction Error (|ε|)
-                    </h4>
-                    <p style="color: var(--error-yellow);">Mismatch between expectation and reality. Surprise responses and conflict detection.</p>
-                </div>
-
-                <div class="parameter-card param-workspace reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--workspace-purple);"></span>
-                        Global Workspace
-                    </h4>
-                    <p style="color: var(--workspace-purple);">Higher-order integration and broadcasting. Frontoparietal network activation.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Demo Section -->
-    <section class="demo-section">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>Watch Consciousness Emerge</h2>
-                <p>The APGI ignition sequence visualized in real-time</p>
-            </div>
-
-            <div class="demo-container reveal">
-                <div class="ignition-visualization" id="ignitionDemo">
-                    <div class="ignition-stage" data-stage="1">
-                        <div class="stage-icon" style="color: var(--error-yellow);">⚠️</div>
-                        <div class="stage-label">Prediction Error</div>
-                    </div>
-                    <div class="ignition-stage" data-stage="2">
-                        <div class="stage-icon" style="color: var(--precision-red);">💓</div>
-                        <div class="stage-label">Precision Weighting</div>
-                    </div>
-                    <div class="ignition-stage" data-stage="3">
-                        <div class="stage-icon" style="color: var(--threshold-blue);">⚡</div>
-                        <div class="stage-label">Threshold Crossing</div>
-                    </div>
-                    <div class="ignition-stage" data-stage="4">
-                        <div class="stage-icon" style="color: var(--workspace-purple);">🧠</div>
-                        <div class="stage-label">Global Broadcast</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -731,13 +744,6 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-links">
-                <a href="Paper.html">Documentation</a>
-                <a href="Home.html">User Guide</a>
-                <a href="mailto:michael@apgiframework.com">Support</a>
-                <a href="https://github.com/lesoto/apgi-framework">GitHub</a>
-                <a href="Profile.html">Contact</a>
-            </div>
             <p class="copyright">© 2026 APGI Appendix. Built for consciousness researchers and curious minds.</p>
         </div>
     </footer>

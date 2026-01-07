@@ -33,7 +33,7 @@ class SiteSearch {
       },
       {
         title: 'Quick Quiz',
-        url: 'Quiz-Short.html',
+        url: 'Quiz.html',
         description: 'Quick APGI consciousness assessment',
         keywords: ['quiz', 'short', 'quick', 'assessment', 'test']
       },
@@ -57,13 +57,13 @@ class SiteSearch {
       },
       {
         title: '3D State Network',
-        url: 'State-Network-3d.html',
+        url: 'State-Network.html',
         description: '3D visualization of consciousness networks',
         keywords: ['3d', 'network', 'visualization', 'states', 'interactive']
       },
       {
         title: 'Academic Dashboard',
-        url: 'Dashboard-Acad.html',
+        url: 'Dashboard.html',
         description: 'Academic analysis dashboard for researchers',
         keywords: ['dashboard', 'academic', 'research', 'analysis', 'data']
       },
@@ -92,7 +92,7 @@ class SiteSearch {
         keywords: ['software', 'system', 'architecture', 'development']
       },
       {
-        title: 'Book',
+        title: 'Book-Available-Now.',
         url: 'Book-Available-Now.html',
         description: 'When Consciousness Turns On - APGI Book',
         keywords: ['book', 'consciousness', 'publication', 'reading']

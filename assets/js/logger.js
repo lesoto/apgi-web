@@ -86,14 +86,6 @@ class Logger {
     }
   }
 
-  // Service Worker specific logging
-  sw(message, level = 'info') {
-    if (this.shouldLog(level)) {
-      const formatted = this.formatMessage(`SW-${level}`, message);
-      console[level](...formatted);
-    }
-  }
-
   // Performance logging
   performance(metric, value) {
     if (this.shouldLog('debug') && this.isDevelopment) {
@@ -167,17 +159,6 @@ class Logger {
 
 // Create global logger instance
 window.logger = new Logger();
-
-// Create service worker logger for SW context
-if (typeof self !== 'undefined' && typeof importScripts === 'function') {
-  // Service Worker context
-  self.logger = {
-    error: (...args) => console.error('[SW-ERROR]', ...args),
-    warn: (...args) => console.warn('[SW-WARN]', ...args),
-    info: (...args) => console.info('[SW-INFO]', ...args),
-    debug: (...args) => console.log('[SW-DEBUG]', ...args)
-  };
-}
 
 // Export for potential module usage
 if (typeof module !== 'undefined' && module.exports) {

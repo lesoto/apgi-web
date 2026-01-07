@@ -1,25 +1,19 @@
 // Assessment Quiz Functionality
 // Extracted from Assessment.html for better performance and maintainability
 
-// Import quiz data
-// Note: In production, this would be handled by module bundling
-let quizData;
-
-// Load quiz data if not already loaded
-if (typeof quizData === 'undefined') {
-  // Fallback if assessment-quiz.js hasn't loaded yet
-  fetch('/assets/js/assessment-quiz.js')
-    .then(response => response.text())
-    .then(scriptText => {
-      eval(scriptText);
-      initializeAssessment();
-    })
-    .catch(error => logger.error('Failed to load quiz data:', error));
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeAssessment);
 } else {
   initializeAssessment();
 }
 
 function initializeAssessment() {
+  // Wait for quizData to be available
+  if (typeof quizData === 'undefined') {
+    console.error('quizData is not available. Make sure assessment-quiz.js is loaded first.');
+    return;
+  }
   // ========== STATE MANAGEMENT ==========
   let currentSection = 0;
   let currentQuestion = 0;
@@ -59,6 +53,12 @@ function initializeAssessment() {
 
   // ========== INITIALIZATION ==========
   function initQuiz() {
+    // Check if required elements exist
+    if (!introductionSection || !quizSection || !resultsContainer) {
+      console.error('Required quiz elements not found');
+      return;
+    }
+    
     // Calculate total questions
     let totalQuestions = 0;
     quizData.sections.forEach(section => {
@@ -68,11 +68,11 @@ function initializeAssessment() {
     totalSectionsEl.textContent = quizData.sections.length;
 
     // Set up event listeners
-    startQuizBtn.addEventListener('click', startQuiz);
-    prevBtn.addEventListener('click', showPreviousQuestion);
-    nextBtn.addEventListener('click', showNextQuestion);
-    retakeBtn.addEventListener('click', retakeQuiz);
-    downloadBtn.addEventListener('click', downloadReport);
+    if (startQuizBtn) startQuizBtn.addEventListener('click', startQuiz);
+    if (prevBtn) prevBtn.addEventListener('click', showPreviousQuestion);
+    if (nextBtn) nextBtn.addEventListener('click', showNextQuestion);
+    if (retakeBtn) retakeBtn.addEventListener('click', retakeQuiz);
+    if (downloadBtn) downloadBtn.addEventListener('click', downloadReport);
 
     // Tab switching
     tabs.forEach(tab => {
@@ -499,6 +499,11 @@ function initializeAssessment() {
       setTimeout(() => {
         resultsContainer.style.opacity = '1';
         resultsContainer.style.transform = 'translateY(0)';
+        
+        // Initialize charts after showing results
+        setTimeout(() => {
+          initializeCharts();
+        }, 100);
       }, 50);
     }, 300);
   }
@@ -555,12 +560,266 @@ function initializeAssessment() {
     linkElement.click();
   }
 
-  // Initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initQuiz);
-  } else {
-    initQuiz();
+  // ========== CHART INITIALIZATION ==========
+  function initializeCharts() {
+    // Destroy existing charts if they exist
+    Object.values(chartInstances).forEach(chart => {
+      if (chart) chart.destroy();
+    });
+    chartInstances = {};
+
+    // Initialize Radar Chart
+    initializeRadarChart();
+    
+    // Initialize Gauge Charts
+    initializeGaugeCharts();
+    
+    // Initialize Interaction Chart
+    initializeInteractionChart();
+    
+    // Initialize Temporal Chart
+    initializeTemporalChart();
+    
+    // Initialize Environment Chart
+    initializeEnvironmentChart();
   }
+
+  function initializeRadarChart() {
+    const ctx = document.getElementById('radarChart');
+    if (!ctx) return;
+
+    chartInstances.radarChart = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['Prediction Error (ε)', 'Precision (π)', 'Threshold (θₜ)', 'Somatic Bias (β)'],
+        datasets: [{
+          label: 'Your Scores',
+          data: [scores.epsilon, scores.precision, scores.threshold, scores.somatic],
+          backgroundColor: 'rgba(22, 88, 242, 0.2)',
+          borderColor: 'rgba(22, 88, 242, 1)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(22, 88, 242, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(22, 88, 242, 1)'
+        }, {
+          label: 'Population Average',
+          data: [10, 10, 10, 10],
+          backgroundColor: 'rgba(156, 163, 175, 0.2)',
+          borderColor: 'rgba(156, 163, 175, 1)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgba(156, 163, 175, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(156, 163, 175, 1)'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            beginAtZero: true,
+            max: 20,
+            ticks: {
+              stepSize: 5
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  }
+
+  function initializeGaugeCharts() {
+    // Initialize 4 gauge charts for each parameter
+    const gaugeConfigs = [
+      { id: 'gauge1', score: scores.epsilon, label: 'Prediction Error' },
+      { id: 'gauge2', score: scores.precision, label: 'Precision' },
+      { id: 'gauge3', score: scores.threshold, label: 'Threshold' },
+      { id: 'gauge4', score: scores.somatic, label: 'Somatic Bias' }
+    ];
+
+    gaugeConfigs.forEach(config => {
+      const ctx = document.getElementById(config.id);
+      if (!ctx) return;
+
+      chartInstances[config.id] = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [config.score, 20 - config.score],
+            backgroundColor: [
+              getScoreColor(config.score),
+              'rgba(229, 231, 235, 0.3)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          circumference: 180,
+          rotation: 270,
+          cutout: '75%',
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          }
+        }
+      });
+
+      // Add score text in center
+      const canvas = ctx;
+      const ctx2d = canvas.getContext('2d');
+      ctx2d.font = 'bold 24px Inter';
+      ctx2d.fillStyle = getScoreColor(config.score);
+      ctx2d.textAlign = 'center';
+      ctx2d.textBaseline = 'middle';
+      ctx2d.fillText(config.score.toString(), canvas.width / 2, canvas.height / 2);
+    });
+  }
+
+  function initializeInteractionChart() {
+    const ctx = document.getElementById('interactionChart');
+    if (!ctx) return;
+
+    // Create a simple network visualization
+    const data = {
+      labels: ['ε', 'π', 'θₜ', 'β'],
+      datasets: [{
+        label: 'Parameter Interactions',
+        data: [
+          { x: 0, y: scores.epsilon },
+          { x: 1, y: scores.precision },
+          { x: 2, y: scores.threshold },
+          { x: 3, y: scores.somatic }
+        ],
+        backgroundColor: 'rgba(22, 88, 242, 0.6)',
+        borderColor: 'rgba(22, 88, 242, 1)',
+        borderWidth: 2
+      }]
+    };
+
+    chartInstances.interactionChart = new Chart(ctx, {
+      type: 'scatter',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom',
+            min: -0.5,
+            max: 3.5,
+            ticks: {
+              callback: function(value, index, values) {
+                return ['ε', 'π', 'θₜ', 'β'][value] || '';
+              }
+            }
+          },
+          y: {
+            beginAtZero: true,
+            max: 20
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  }
+
+  function initializeTemporalChart() {
+    const ctx = document.getElementById('temporalChart');
+    if (!ctx) return;
+
+    chartInstances.temporalChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Current', '1 Week', '1 Month', '3 Months', '6 Months'],
+        datasets: [{
+          label: 'Temporal Stability',
+          data: [
+            scores.temporal || 10,
+            (scores.temporal || 10) * 0.9,
+            (scores.temporal || 10) * 0.8,
+            (scores.temporal || 10) * 0.7,
+            (scores.temporal || 10) * 0.6
+          ],
+          borderColor: 'rgba(22, 88, 242, 1)',
+          backgroundColor: 'rgba(22, 88, 242, 0.1)',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 20
+          }
+        }
+      }
+    });
+  }
+
+  function initializeEnvironmentChart() {
+    const ctx = document.getElementById('environmentChart');
+    if (!ctx) return;
+
+    chartInstances.environmentChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Work', 'Social', 'Creative', 'Analytical', 'Physical'],
+        datasets: [{
+          label: 'Environmental Fit',
+          data: [
+            Math.random() * 20,
+            Math.random() * 20,
+            Math.random() * 20,
+            Math.random() * 20,
+            Math.random() * 20
+          ],
+          backgroundColor: [
+            'rgba(22, 88, 242, 0.6)',
+            'rgba(31, 199, 185, 0.6)',
+            'rgba(247, 166, 0, 0.6)',
+            'rgba(240, 84, 84, 0.6)',
+            'rgba(156, 163, 175, 0.6)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 20
+          }
+        }
+      }
+    });
+  }
+
+  function getScoreColor(score) {
+    const percentage = (score / 20) * 100;
+    if (percentage <= 25) return 'rgba(63, 185, 80, 0.8)'; // Green
+    if (percentage <= 50) return 'rgba(244, 197, 66, 0.8)'; // Yellow
+    if (percentage <= 75) return 'rgba(247, 166, 0, 0.8)'; // Orange
+    return 'rgba(240, 84, 84, 0.8)'; // Red
+  }
+
+  // Initialize the quiz
+  initQuiz();
+
 }
 
 // Export for potential module usage

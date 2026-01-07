@@ -1,13 +1,20 @@
 // Performance Optimizer for APGI Website
 // Ensure logger is available
 if (typeof logger === 'undefined') {
-  // Fallback logger if not loaded
+  // Fallback logger if not loaded - only logs in development
+  const isDev = window.location.hostname === 'localhost' || 
+                window.location.hostname === '127.0.0.1' ||
+                window.location.hostname.includes('.local') ||
+                window.location.hostname.includes('.dev') ||
+                window.location.hostname.includes('.test') ||
+                window.location.protocol === 'file:';
+  
   window.logger = {
-    error: (...args) => console.error('[ERROR]', ...args),
-    warn: (...args) => console.warn('[WARN]', ...args),
-    info: (...args) => console.info('[INFO]', ...args),
-    debug: (...args) => console.log('[DEBUG]', ...args),
-    performance: (metric, value) => console.log(`[PERF] ${metric}: ${value}ms`)
+    error: (...args) => isDev && console.error('[ERROR]', ...args),
+    warn: (...args) => isDev && console.warn('[WARN]', ...args),
+    info: (...args) => isDev && console.info('[INFO]', ...args),
+    debug: (...args) => isDev && console.log('[DEBUG]', ...args),
+    performance: (metric, value) => isDev && console.log(`[PERF] ${metric}: ${value}ms`)
   };
 }
 
@@ -17,53 +24,12 @@ class APIPerformanceOptimizer {
   }
 
   init() {
-    this.registerServiceWorker();
     this.implementLazyLoading();
     this.optimizeImages();
     this.implementCodeSplitting();
     this.addResourceHints();
     this.monitorPerformance();
     this.optimizeCriticalRenderingPath();
-  }
-
-  registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/assets/js/service-worker.js')
-          .then(registration => {
-            logger.info('Service Worker registered:', registration);
-
-            // Check for updates
-            registration.addEventListener('updatefound', () => {
-              const newWorker = registration.installing;
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  // New version available
-                  this.showUpdateNotification();
-                }
-              });
-            });
-          })
-          .catch(error => {
-            logger.warn('Service Worker registration failed:', error);
-          });
-      });
-    }
-  }
-
-  showUpdateNotification() {
-    // Create update notification
-    const notification = document.createElement('div');
-    notification.id = 'update-notification';
-    notification.innerHTML = `
-      <div style="position: fixed; top: 80px; right: 20px; background: #2563eb; color: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10001; max-width: 300px;">
-        <p style="margin: 0 0 10px 0; font-size: 14px;">A new version of the APGI Framework is available!</p>
-        <button onclick="this.parentElement.parentElement.remove(); location.reload();" style="background: white; color: #2563eb; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px;">Update Now</button>
-        <button onclick="this.parentElement.parentElement.remove();" style="background: transparent; color: white; border: 1px solid white; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; margin-left: 8px;">Later</button>
-      </div>
-    `;
-    document.body.appendChild(notification);
   }
 
   implementLazyLoading() {
@@ -130,40 +96,8 @@ class APIPerformanceOptimizer {
         img.setAttribute('loading', 'lazy');
       }
     });
-
-    // Convert images to WebP format if supported
-    if (this.supportsWebP()) {
-      this.convertImagesToWebP();
-    }
   }
 
-  supportsWebP() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1;
-    canvas.height = 1;
-    return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
-  }
-
-  convertImagesToWebP() {
-    const images = document.querySelectorAll('img[src$=".jpg"], img[src$=".png"]');
-    images.forEach(img => {
-      const src = img.src;
-      if (src.includes('.jpg') || src.includes('.png')) {
-        const webpSrc = src.replace(/\.(jpg|png)$/, '.webp');
-
-        // Test if WebP version exists
-        fetch(webpSrc, { method: 'HEAD' })
-          .then(response => {
-            if (response.ok) {
-              img.src = webpSrc;
-            }
-          })
-          .catch(() => {
-            // WebP version not available, keep original
-          });
-      }
-    });
-  }
 
   implementCodeSplitting() {
     // Dynamic imports for heavy components

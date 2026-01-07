@@ -15,10 +15,23 @@ class AnalyticsManager {
     this.init();
   }
 
+  isDevelopment() {
+    return (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.includes('.local') ||
+      window.location.hostname.includes('.dev') ||
+      window.location.hostname.includes('.test') ||
+      window.location.protocol === 'file:'
+    );
+  }
+
   init() {
     // Check for Do Not Track preference
     if (this.config.respectDoNotTrack && navigator.doNotTrack === '1') {
-      console.log('Analytics disabled due to Do Not Track preference');
+      if (this.isDevelopment()) {
+        console.log('Analytics disabled due to Do Not Track preference');
+      }
       return;
     }
 
@@ -307,7 +320,9 @@ class AnalyticsManager {
 document.addEventListener('DOMContentLoaded', () => {
   // Only initialize on production domains
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    console.log('Analytics disabled in development');
+    if (this.isDevelopment()) {
+      console.log('Analytics disabled in development');
+    }
     return;
   }
 

@@ -1,26 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="assets/js/performance-optimizer.js"></script>
-    <script src="assets/js/accessibility-enhancer.js"></script>
-    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>When Consciousness Turns On - Available Now</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/tailwind-fallback.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/fonts-fallback.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        :root {
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f97316 100%);
+            --accent-color: #f97316;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
         
         * {
             box-sizing: border-box;
         }
         
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f97316 100%);
+            font-family: var(--font-body);
+            background: var(--primary-gradient);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
         
         body::before {
@@ -55,8 +70,8 @@
         }
         
         .title {
-            font-family: 'Playfair Display', serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f97316 100%);
+            font-family: var(--font-display);
+            background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -121,7 +136,7 @@
         }
         
         .format-title {
-            color: #f97316;
+            color: var(--accent-color);
             font-weight: 600;
             letter-spacing: 0.025em;
         }
@@ -219,14 +234,14 @@
         }
         
         .description-text {
-            color: #64748b;
+            color: var(--text-secondary);
             line-height: 1.7;
             font-size: 15px;
             text-align: center;
         }
         
         .highlight-link {
-            color: #f97316;
+            color: var(--accent-color);
             text-decoration: none;
             font-weight: 600;
             transition: all 0.2s ease;
@@ -240,7 +255,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #f97316;
+            background: var(--accent-color);
             transition: width 0.3s ease;
         }
         
@@ -249,14 +264,6 @@
         }
         
         @media (max-width: 768px) {
-            .grid-cols-2 {
-                grid-template-columns: 1fr;
-            }
-            
-            .platform-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .main-container {
                 padding: 24px 16px;
                 margin: 8px;
@@ -269,10 +276,16 @@
             .format-card {
                 padding: 24px 20px;
             }
+            
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-<body class="flex justify-center items-center min-h-screen p-4">
+<body class="min-h-screen">
+    <!-- Main Content -->
+    <main class="flex justify-center items-center min-h-screen p-4">
     <div class="main-container rounded-xl p-8 max-w-4xl w-full">
         <div class="text-center mb-10">
             <h1 class="title text-4xl md:text-5xl mb-4">WHEN CONSCIOUSNESS TURNS ON</h1>
@@ -353,6 +366,16 @@
                 </p>
             </div>
         </div>
-    </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
 </body>
 </html>

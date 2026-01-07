@@ -3,11 +3,14 @@
 <head>
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/tailwind-fallback.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
     <style>
         .form-input {
             transition: all 0.3s ease;
@@ -47,6 +50,17 @@
     </style>
 </head>
 <body class="font-sans">
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script>
+      fetch('components/navigation.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navigation-container').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading navigation:', error));
+    </script>
+    
     <div class="container mx-auto p-6">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     <div class="form-section p-8 md:col-span-2">
@@ -145,10 +159,7 @@
         <a href="Home.html" class="action-button block bg-white text-purple-600 hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg text-center shadow-lg">
           <i class="fas fa-globe mr-2"></i>Website
         </a>
-        <a href="Dashboard.html" class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center">
-          <i class="fas fa-graduation-cap mr-2"></i>App
-        </a>
-        <a href="Book-Available-Now.html" class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center">
+                <a href="Book-Available-Now.html" class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center">
           <i class="fab fa-amazon mr-2"></i>Amazon book
         </a>
         <a href="Book-Outline.html" class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center">
