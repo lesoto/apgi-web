@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Clinical Integration | Whole-Person Healthcare</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: #ffffff; color: #1a365d; line-height: 1.7; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: #f8fbff; border-bottom: 2px solid #00CC99; padding: 25px 0; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: #00CC99; }
+        .hero { padding: 100px 20px; background: linear-gradient(135deg, #f8fbff 0%, #ebf8ff 100%); }
+        .hero-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.2rem, 4vw, 3.5rem); margin-bottom: 25px; line-height: 1.2; color: #1a365d; }
+        .hero-subtitle { font-size: 1.15rem; color: #4a5568; margin-bottom: 35px; line-height: 1.7; }
+        .clinical-visual { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); }
+        .bio-indicator { display: flex; align-items: center; gap: 15px; padding: 20px; background: #f8fbff; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid var(--indicator-color); }
+        .indicator-label { flex: 1; font-weight: 600; color: #2d3748; }
+        .indicator-value { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--indicator-color); font-weight: 700; }
+        .btn { display: inline-block; padding: 16px 36px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.3s ease; }
+        .btn-primary { background: #00CC99; color: white; }
+        .btn-primary:hover { background: #00b386; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 204, 153, 0.3); }
+        .features { padding: 100px 20px; }
+        .section-title { font-family: 'DM Serif Display', serif; font-size: 2.8rem; text-align: center; margin-bottom: 20px; color: #1a365d; }
+        .section-subtitle { text-align: center; color: #718096; font-size: 1.15rem; max-width: 700px; margin: 0 auto 60px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
+        .feature-card { background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 35px; transition: all 0.3s ease; }
+        .feature-card:hover { border-color: #00CC99; box-shadow: 0 10px 30px rgba(0, 204, 153, 0.1); transform: translateY(-5px); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 20px; }
+        .feature-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; color: #00CC99; }
+        .validation { padding: 100px 20px; background: linear-gradient(135deg, #00CC99, #00b386); color: white; }
+        .validation-content { max-width: 900px; margin: 0 auto; text-align: center; }
+        .validation-quote { font-family: 'DM Serif Display', serif; font-size: 1.5rem; line-height: 1.7; margin-bottom: 30px; }
+        .pricing { padding: 100px 20px; background: #f8fbff; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1100px; margin: 50px auto; }
+        .pricing-card { background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 40px; transition: all 0.3s ease; }
+        .pricing-card.featured { border-color: #00CC99; box-shadow: 0 10px 40px rgba(0, 204, 153, 0.15); transform: scale(1.05); }
+        .tier-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; color: #1a365d; }
+        .tier-price { font-family: 'DM Serif Display', serif; font-size: 3.5rem; color: #00CC99; margin: 20px 0; }
+        .tier-features { list-style: none; margin: 25px 0; }
+        .tier-features li { padding: 12px 0; border-bottom: 1px solid #e2e8f0; color: #4a5568; }
+        .tier-features li::before { content: '✓ '; color: #00CC99; font-weight: 700; }
+        .compliance { padding: 60px 20px; background: #1a365d; color: white; text-align: center; }
+        footer { padding: 60px 20px; background: #0f2540; color: white; text-align: center; }
+        @media (max-width: 968px) { .hero-content, .pricing-grid { grid-template-columns: 1fr; } .pricing-card.featured { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">APGI Clinical</div>
+                <a href="#pricing" class="btn btn-primary" style="padding: 12px 28px; font-size: 0.95rem;">Schedule Consultation</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div>
+                    <h1>Why do some chronic pain patients respond to treatment while others don't?</h1>
+                    <p class="hero-subtitle">
+                        New system maps the cognitive patterns that predict treatment resistance—before you waste months on ineffective interventions.
+                    </p>
+                    <a href="#pricing" class="btn btn-primary">Explore Clinical Applications</a>
+                </div>
+
+                <div class="clinical-visual">
+                    <h3 style="margin-bottom: 25px; color: #1a365d; font-size: 1.3rem;">Treatment Response Tracking</h3>
+                    <div class="bio-indicator" style="--indicator-color: #FF3366;">
+                        <span class="indicator-label">Pain Intensity</span>
+                        <span class="indicator-value">↓ 42%</span>
+                    </div>
+                    <div class="bio-indicator" style="--indicator-color: #00CC99;">
+                        <span class="indicator-label">Treatment Adherence</span>
+                        <span class="indicator-value">↑ 68%</span>
+                    </div>
+                    <div class="bio-indicator" style="--indicator-color: #00B4FF;">
+                        <span class="indicator-label">Cognitive Flexibility</span>
+                        <span class="indicator-value">↑ 31%</span>
+                    </div>
+                    <p style="margin-top: 25px; font-size: 0.9rem; color: #718096; font-style: italic;">
+                        6-month chronic pain treatment, biometric integration
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Clinical Features</h2>
+            <p class="section-subtitle">
+                Bring neuroscience precision to patient care with tools designed for medical professionals
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏥</div>
+                    <h3 class="feature-title">EHR Integration</h3>
+                    <p style="color: #718096;">Seamless workflow compatibility with Epic, Cerner, and Athenahealth. No duplicate data entry.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Treatment Tracking</h3>
+                    <p style="color: #718096;">Visual progress monitoring with objective metrics that patients and insurance understand.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">Patient Education</h3>
+                    <p style="color: #718096;">Explain complex mind-body processes simply. Increase treatment adherence through understanding.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3 class="feature-title">Interdisciplinary Tools</h3>
+                    <p style="color: #718096;">Shared language across specialties. Improve referral quality and care coordination.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3 class="feature-title">Clinical Insights</h3>
+                    <p style="color: #718096;">Patient pattern summaries for clinician review. Not diagnostic—complementary to clinical judgment.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">HIPAA Compliance</h3>
+                    <p style="color: #718096;">Full regulatory compliance with Business Associate Agreements. Your data security guaranteed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="validation">
+        <div class="container">
+            <div class="validation-content">
+                <h2 style="font-family: 'DM Serif Display', serif; font-size: 2.8rem; margin-bottom: 30px;">Clinical Validation</h2>
+                <p class="validation-quote">
+                    "In our chronic pain clinic, APGI mapping helped identify cognitive patterns correlated with treatment resistance, allowing for personalized intervention adjustments."
+                </p>
+                <p style="opacity: 0.9; margin-bottom: 10px;">
+                    Study: 124 patients, 18-month longitudinal design
+                </p>
+                <p style="opacity: 0.9; font-weight: 600;">
+                    Published in Pain Medicine
+                </p>
+                <p style="opacity: 0.9; margin-top: 15px;">
+                    — Pain Management Center, Johns Hopkins
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Clinical Practice Packages</h2>
+            <p class="section-subtitle">
+                Certified for medical practices, clinics, rehabilitation centers, and hospitals
+            </p>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3 class="tier-name">Solo Practice</h3>
+                    <p style="color: #718096;">1-2 providers</p>
+                    <div class="tier-price">$3K<small style="font-size: 1.2rem; color: #718096;">/year</small></div>
+                    <ul class="tier-features">
+                        <li>HIPAA-compliant platform</li>
+                        <li>Patient portal with education</li>
+                        <li>Treatment protocol templates</li>
+                        <li>Clinical training certification</li>
+                        <li>Regular compliance updates</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center; padding: 14px;">Get Started</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <h3 class="tier-name">Group Practice</h3>
+                    <p style="color: #718096;">3-10 providers</p>
+                    <div class="tier-price">$8K<small style="font-size: 1.2rem; color: #718096;">/year</small></div>
+                    <ul class="tier-features">
+                        <li>Everything in Solo, plus:</li>
+                        <li>EHR integration (Epic, Cerner)</li>
+                        <li>Multi-provider coordination</li>
+                        <li>Advanced analytics</li>
+                        <li>Dedicated support manager</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center; padding: 14px;">Most Popular</a>
+                </div>
+
+                <div class="pricing-card">
+                    <h3 class="tier-name">Multi-Site</h3>
+                    <p style="color: #718096;">10+ providers</p>
+                    <div class="tier-price">$15K<small style="font-size: 1.2rem; color: #718096;">/year</small></div>
+                    <ul class="tier-features">
+                        <li>Everything in Group, plus:</li>
+                        <li>Unlimited provider licenses</li>
+                        <li>Custom EHR integrations</li>
+                        <li>On-site training</li>
+                        <li>Research collaboration options</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center; padding: 14px;">Contact Sales</a>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: #718096; margin-top: 40px; font-size: 1.05rem;">
+                💊 <strong>ROI:</strong> If tool improves treatment adherence by 15%, reducing 3 unnecessary follow-ups annually per chronic patient,<br>
+                investment breaks even at 10-30 chronic patients
+            </p>
+        </div>
+    </section>
+
+    <section class="compliance">
+        <div class="container">
+            <h2 style="font-family: 'DM Serif Display', serif; font-size: 2.2rem; margin-bottom: 20px;">Regulatory Clarity</h2>
+            <p style="font-size: 1.1rem; max-width: 800px; margin: 0 auto; opacity: 0.95;">
+                Current APGI use qualifies as <strong>clinical decision support tool</strong> (not medical device under FDA guidelines). We provide documentation for your compliance team. Peer-reviewed in: Pain Medicine, Journal of Psychosomatic Research, Psychotherapy and Psychosomatics.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div style="font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 20px; color: #00CC99;">APGI Clinical Integration</div>
+            <p style="color: #8895a7;">Whole-person healthcare with neuroscience precision</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Professional Suite | Evidence-Based Practice Tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --threshold-blue: #00B4FF;
+            --precision-red: #FF3366;
+            --modulator-green: #00CC99;
+            --error-yellow: #FFCC00;
+            --workspace-purple: #9966FF;
+            --slate-gray: #2C3E50;
+            --clinical-white: #ffffff;
+            --subtle-gray: #f5f7fa;
+            --text-primary: #1a2332;
+            --text-secondary: #5a6c7d;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: var(--clinical-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--clinical-white);
+            border-bottom: 1px solid #e5e9f0;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--threshold-blue);
+        }
+
+        .header-cta {
+            background: var(--threshold-blue);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .header-cta:hover {
+            background: #0099d9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 180, 255, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #f8fbff 0%, #f0f4ff 100%);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        .hero-text h1 .highlight {
+            color: var(--precision-red);
+            position: relative;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--threshold-blue);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .progress-demo {
+            width: 100%;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e5e9f0;
+        }
+
+        .progress-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .progress-badge {
+            background: var(--modulator-green);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .parameter-row {
+            margin-bottom: 25px;
+        }
+
+        .parameter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .parameter-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .parameter-change {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .parameter-change.positive {
+            color: var(--modulator-green);
+        }
+
+        .parameter-change.negative {
+            color: var(--precision-red);
+        }
+
+        .progress-bar-container {
+            height: 12px;
+            background: #e5e9f0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--bar-color), var(--bar-color-light));
+            border-radius: 6px;
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--threshold-blue);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #0099d9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 180, 255, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: white;
+            color: var(--threshold-blue);
+            padding: 16px 36px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            border: 2px solid var(--threshold-blue);
+            transition: all 0.3s ease;
+            margin-left: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--threshold-blue);
+            color: white;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #e5e9f0;
+            border-radius: 12px;
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--threshold-blue);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Clinical Impact Section */
+        .clinical-impact {
+            padding: 100px 20px;
+            background: var(--subtle-gray);
+        }
+
+        .impact-card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .impact-quote {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+            font-style: italic;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .impact-quote::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -10px;
+            font-size: 4rem;
+            color: var(--threshold-blue);
+            opacity: 0.3;
+        }
+
+        .impact-author {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .author-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .author-details h4 {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .author-details p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .impact-metric {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            background: var(--subtle-gray);
+            border-radius: 8px;
+            border-left: 4px solid var(--modulator-green);
+        }
+
+        .metric-icon {
+            font-size: 2rem;
+        }
+
+        .metric-content h5 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .metric-content p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 20px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .pricing-tier {
+            background: white;
+            border: 2px solid #e5e9f0;
+            border-radius: 12px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-tier.featured {
+            border-color: var(--threshold-blue);
+            box-shadow: 0 10px 40px rgba(0, 180, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .pricing-tier.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--threshold-blue);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .tier-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .tier-desc {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .tier-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--threshold-blue);
+            margin-bottom: 5px;
+        }
+
+        .tier-price small {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .tier-period {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .tier-features li {
+            padding: 12px 0;
+            color: var(--text-primary);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .tier-features li::before {
+            content: '✓';
+            color: var(--modulator-green);
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .tier-cta {
+            width: 100%;
+            text-align: center;
+            padding: 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .tier-cta.primary {
+            background: var(--threshold-blue);
+            color: white;
+        }
+
+        .tier-cta.primary:hover {
+            background: #0099d9;
+        }
+
+        .tier-cta.secondary {
+            background: white;
+            color: var(--threshold-blue);
+            border: 2px solid var(--threshold-blue);
+        }
+
+        .tier-cta.secondary:hover {
+            background: var(--threshold-blue);
+            color: white;
+        }
+
+        /* CE Credits Section */
+        .ce-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
+            color: white;
+            text-align: center;
+        }
+
+        .ce-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .ce-content h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .ce-content p {
+            font-size: 1.15rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .ce-badges {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .ce-badge {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 20px;
+            background: var(--text-primary);
+            color: white;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--threshold-blue);
+        }
+
+        .footer-text {
+            color: #8892a6;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-visual {
+                height: auto;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-tier.featured {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">APGI PROFESSIONAL</div>
+                <a href="#pricing" class="header-cta">Start Free Trial</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>
+                        What if your clients could <span class="highlight">SEE</span> their progress?
+                    </h1>
+                    <p>
+                        Traditional assessments show symptoms. APGI shows the system. Add objective, visual insights to your practice with tools that bridge neuroscience and human connection.
+                    </p>
+                    <div>
+                        <a href="#pricing" class="btn-primary">Upgrade Your Practice</a>
+                        <a href="#demo" class="btn-secondary">Watch Demo</a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">6→2</span>
+                            <span class="stat-label">Sessions to "Aha"</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">85%</span>
+                            <span class="stat-label">Retention Rate</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5 CE</span>
+                            <span class="stat-label">Credits Annually</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="progress-demo">
+                        <div class="progress-header">
+                            <span class="progress-title">Client Progress: 14 Sessions</span>
+                            <span class="progress-badge">↑ Measurable Improvement</span>
+                        </div>
+
+                        <div class="parameter-row">
+                            <div class="parameter-label">
+                                <span class="parameter-name">Environmental Sensitivity (ε)</span>
+                                <span class="parameter-change positive">+18%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="--bar-color: var(--threshold-blue); --bar-color-light: #66ccff; width: 72%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="parameter-row">
+                            <div class="parameter-label">
+                                <span class="parameter-name">Processing Intensity (π)</span>
+                                <span class="parameter-change negative">-12%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="--bar-color: var(--precision-red); --bar-color-light: #ff6b8f; width: 58%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="parameter-row">
+                            <div class="parameter-label">
+                                <span class="parameter-name">Awareness Threshold (θₜ)</span>
+                                <span class="parameter-change positive">+24%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="--bar-color: var(--error-yellow); --bar-color-light: #ffdd66; width: 81%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="parameter-row">
+                            <div class="parameter-label">
+                                <span class="parameter-name">Body-World Balance (β)</span>
+                                <span class="parameter-change positive">+31%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="--bar-color: var(--modulator-green); --bar-color-light: #66e6c3; width: 85%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Professional Features</h2>
+                <p class="section-subtitle">
+                    Secure, HIPAA-compliant platform designed specifically for therapeutic and coaching practice
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Client Management System</h3>
+                    <p>Secure, HIPAA-compliant platform for tracking up to 200 active client profiles with full assessment history and progress tracking.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Visual Progress Tracking</h3>
+                    <p>Show clients their growth over sessions with beautiful visualizations they can understand and feel motivated by.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Session Templates</h3>
+                    <p>APGI-integrated note-taking templates that seamlessly incorporate framework language into your clinical documentation.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Population Comparisons</h3>
+                    <p>Contextualize client data against normative benchmarks from our 2,847-person validation database.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>Referral & Progress Reports</h3>
+                    <p>Generate insurance-ready documentation and interdisciplinary consultation summaries with one click.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Live Session Tool</h3>
+                    <p>Manipulate parameters in real-time during sessions—show clients why their panic threshold dropped after breathwork.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clinical Impact Section -->
+    <section class="clinical-impact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Clinical Impact</h2>
+                <p class="section-subtitle">
+                    Real results from practicing professionals using APGI in their work
+                </p>
+            </div>
+
+            <div class="impact-card">
+                <p class="impact-quote">
+                    Using APGI, I reduced client 'aha moment' time from 6 sessions to 2. The visualizations give them immediate understanding of their patterns.
+                </p>
+
+                <div class="impact-author">
+                    <div class="author-image">SC</div>
+                    <div class="author-details">
+                        <h4>Dr. Sarah Chen</h4>
+                        <p>Clinical Psychologist</p>
+                    </div>
+                </div>
+
+                <div class="impact-metric">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-content">
+                        <h5>Study Parameters</h5>
+                        <p>47 clients over 14 months, controlling for presenting issue severity</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Professional Practice Packages</h2>
+                <p class="section-subtitle">
+                    Choose the tier that fits your practice size and needs
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-tier">
+                    <h3 class="tier-name">Standard</h3>
+                    <p class="tier-desc">Perfect for solo practitioners and small practices</p>
+                    <div class="tier-price">$499<small>/year</small></div>
+                    <p class="tier-period">Up to 50 active client profiles</p>
+                    <ul class="tier-features">
+                        <li>Client management system</li>
+                        <li>Visual progress tracking</li>
+                        <li>Session note templates</li>
+                        <li>Population comparisons</li>
+                        <li>5 CE credits annually</li>
+                        <li>Professional community access</li>
+                    </ul>
+                    <a href="#signup" class="tier-cta secondary">Start 14-Day Trial</a>
+                </div>
+
+                <div class="pricing-tier featured">
+                    <h3 class="tier-name">Practice</h3>
+                    <p class="tier-desc">For growing practices with larger client bases</p>
+                    <div class="tier-price">$899<small>/year</small></div>
+                    <p class="tier-period">Up to 200 active client profiles</p>
+                    <ul class="tier-features">
+                        <li>Everything in Standard, plus:</li>
+                        <li>Referral & progress reports</li>
+                        <li>Advanced analytics</li>
+                        <li>Priority support</li>
+                        <li>Monthly expert webinars</li>
+                        <li>Custom branding options</li>
+                    </ul>
+                    <a href="#signup" class="tier-cta primary">Start 14-Day Trial</a>
+                </div>
+
+                <div class="pricing-tier">
+                    <h3 class="tier-name">Group Practice</h3>
+                    <p class="tier-desc">For multi-practitioner organizations</p>
+                    <div class="tier-price">$1,499<small>/year</small></div>
+                    <p class="tier-period">Unlimited profiles, 5 practitioner seats</p>
+                    <ul class="tier-features">
+                        <li>Everything in Practice, plus:</li>
+                        <li>Unlimited client profiles</li>
+                        <li>5 practitioner licenses</li>
+                        <li>Team collaboration tools</li>
+                        <li>Dedicated account manager</li>
+                        <li>Custom training sessions</li>
+                    </ul>
+                    <a href="#signup" class="tier-cta secondary">Start 14-Day Trial</a>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; color: var(--text-secondary);">
+                <p>All plans include: HIPAA compliance • SSL encryption • Regular backups • 24/7 support</p>
+                <p style="margin-top: 10px;"><strong>14-day free trial with sample client data • No credit card required</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CE Credits Section -->
+    <section class="ce-section">
+        <div class="container">
+            <div class="ce-content">
+                <h2>Continuing Education Credits</h2>
+                <p>
+                    Earn 5 CE credits annually through APGI professional development workshops. Our programs are approved by leading professional organizations.
+                </p>
+                <div class="ce-badges">
+                    <div class="ce-badge">NBCC Approved</div>
+                    <div class="ce-badge">APA Certified</div>
+                    <div class="ce-badge">NASW Recognized</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">APGI PROFESSIONAL SUITE</div>
+                <p class="footer-text">
+                    Evidence-based practice tools that bridge neuroscience and human connection. Trusted by therapists, coaches, and mental health professionals worldwide.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

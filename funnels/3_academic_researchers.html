@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Research Suite | From Hypothesis to Publication</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --threshold-blue: #00B4FF;
+            --precision-red: #FF3366;
+            --modulator-green: #00CC99;
+            --error-yellow: #FFCC00;
+            --workspace-purple: #9966FF;
+            --slate-gray: #2C3E50;
+            --academic-white: #fafafa;
+            --paper-white: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #5a5a5a;
+            --border-color: #d4d4d4;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--academic-white);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Merriweather', serif;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--paper-white);
+            border-bottom: 3px solid var(--threshold-blue);
+            padding: 25px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Merriweather', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-sub {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 400;
+        }
+
+        .header-btn {
+            background: var(--threshold-blue);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: #0099d9;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 20px;
+            background: var(--paper-white);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 4.5vw, 3.8rem);
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .validation-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 750px;
+            margin: 50px auto;
+        }
+
+        .metric-box {
+            background: var(--academic-white);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--threshold-blue);
+        }
+
+        .metric-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 36px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--threshold-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0099d9;
+        }
+
+        .btn-secondary {
+            background: var(--paper-white);
+            color: var(--threshold-blue);
+            border: 2px solid var(--threshold-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--threshold-blue);
+            color: white;
+        }
+
+        /* Research Features */
+        .research-features {
+            padding: 90px 20px;
+            background: var(--academic-white);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 60px;
+            font-size: 1.1rem;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 25px;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-content p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Publications Section */
+        .publications {
+            padding: 90px 20px;
+            background: var(--paper-white);
+        }
+
+        .pub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .pub-side h3 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+
+        .journal-list {
+            list-style: none;
+        }
+
+        .journal-item {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .journal-item:last-child {
+            border-bottom: none;
+        }
+
+        .quote-box {
+            background: var(--academic-white);
+            border-left: 4px solid var(--modulator-green);
+            padding: 30px;
+            border-radius: 4px;
+        }
+
+        .quote-text {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-style: italic;
+        }
+
+        .quote-author {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .quote-affiliation {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Normative Database */
+        .database-section {
+            padding: 90px 20px;
+            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
+            color: white;
+        }
+
+        .database-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .database-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .database-content p {
+            font-size: 1.15rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .database-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .db-stat {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .db-stat-num {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .db-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 90px 20px;
+            background: var(--academic-white);
+        }
+
+        .pricing-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--paper-white);
+            border: 3px solid var(--threshold-blue);
+            border-radius: 8px;
+            padding: 50px;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .pricing-header h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .pricing-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .price-amount {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .price-num {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--threshold-blue);
+            font-family: 'Merriweather', serif;
+        }
+
+        .price-period {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        .features-included {
+            margin-bottom: 40px;
+        }
+
+        .features-included h4 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--modulator-green);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .bonus-box {
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.15), rgba(255, 51, 102, 0.15));
+            border: 2px solid var(--error-yellow);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 35px;
+        }
+
+        .bonus-box h4 {
+            color: var(--error-yellow);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .bonus-box ul {
+            list-style: none;
+        }
+
+        .bonus-box li {
+            padding: 8px 0;
+            color: var(--text-primary);
+        }
+
+        .pricing-cta {
+            text-align: center;
+        }
+
+        .institutional-note {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Framework Section */
+        .framework-section {
+            padding: 90px 20px;
+            background: var(--academic-white);
+        }
+
+        .framework-intro {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            text-align: center;
+        }
+
+        .framework-description {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .framework-category {
+            margin-bottom: 70px;
+        }
+
+        .category-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+            font-family: 'Merriweather', serif;
+        }
+
+        .functionality-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .func-item {
+            background: var(--paper-white);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .func-item h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--threshold-blue);
+            font-family: 'Merriweather', serif;
+        }
+
+        .func-item ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .func-item li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .func-item li:last-child {
+            border-bottom: none;
+        }
+
+        .func-item li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .experiment-domains {
+            margin-top: 20px;
+        }
+
+        .domain-group {
+            margin-bottom: 25px;
+        }
+
+        .domain-group strong {
+            display: block;
+            color: var(--workspace-purple);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .domain-group ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .domain-group li {
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .domain-group li:last-child {
+            border-bottom: none;
+        }
+
+        .analysis-sections {
+            margin-top: 20px;
+        }
+
+        .analysis-group {
+            margin-bottom: 25px;
+        }
+
+        .analysis-group strong {
+            display: block;
+            color: var(--modulator-green);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .analysis-group ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .analysis-group li {
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .analysis-group li:last-child {
+            border-bottom: none;
+        }
+
+        .interfaces-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .interface-item {
+            background: var(--paper-white);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .interface-item h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--precision-red);
+            font-family: 'Merriweather', serif;
+        }
+
+        .interface-item ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .interface-item li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .interface-item li:last-child {
+            border-bottom: none;
+        }
+
+        .interface-item li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tech-item {
+            background: var(--paper-white);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .tech-item h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--error-yellow);
+            font-family: 'Merriweather', serif;
+        }
+
+        .tech-item ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tech-item li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .tech-item li:last-child {
+            border-bottom: none;
+        }
+
+        .tech-item li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 20px;
+            background: var(--text-primary);
+            color: white;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'Merriweather', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--threshold-blue);
+        }
+
+        .footer-text {
+            color: #888;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 868px) {
+            .validation-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+
+            .pub-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .database-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pricing-card {
+                padding: 30px 20px;
+            }
+
+            .functionality-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .interfaces-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .framework-category {
+                margin-bottom: 50px;
+            }
+
+            .func-item, .interface-item, .tech-item {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">APGI Research Suite</div>
+                    <div class="logo-sub">Validated Measures for Cognitive-Affective Research</div>
+                </div>
+                <a href="#pricing" class="header-btn">Request Institutional Quote</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>From Hypothesis to Publication</h1>
+                <p class="hero-subtitle">
+                    A complete research ecosystem for studying cognitive-affective processing with scientific rigor. Psychometrically validated measures ready for your next grant application.
+                </p>
+
+                <div class="validation-metrics">
+                    <div class="metric-box">
+                        <div class="metric-label">Cronbach's α</div>
+                        <div class="metric-value">&gt; 0.85</div>
+                        <div class="metric-desc">Internal consistency</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Test-Retest</div>
+                        <div class="metric-value">r &gt; 0.78</div>
+                        <div class="metric-desc">Reliability across time</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Sample Size</div>
+                        <div class="metric-value">N = 2,847</div>
+                        <div class="metric-desc">Validation dataset</div>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="#pricing" class="btn btn-primary">Request Institutional Access</a>
+                    <a href="#whitepaper" class="btn btn-secondary">Download Technical Whitepaper</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Features -->
+    <section class="research-features">
+        <div class="container">
+            <h2 class="section-title">Research-Grade Tools</h2>
+            <p class="section-subtitle">
+                Everything you need for rigorous cognitive-affective research, from pilot studies to multi-site trials
+            </p>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-content">
+                        <h3>Psychometric Validation</h3>
+                        <p>Cronbach's α &gt; 0.85, test-retest r &gt; 0.78 across diverse samples. Access full validation studies and technical documentation.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">🔌</div>
+                    <div class="feature-content">
+                        <h3>API Access</h3>
+                        <p>Integrate with your existing research platforms. RESTful API with comprehensive documentation and SDKs for R, Python, and MATLAB.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-content">
+                        <h3>Advanced Analytics</h3>
+                        <p>Built-in statistical pipelines with data export in multiple formats (CSV, JSON, SPSS, R, Python). Publication-ready visualizations included.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-content">
+                        <h3>Scalable Processing</h3>
+                        <p>Handle datasets from N=50 pilots to N=10,000+ population studies without platform limits. Enterprise-grade infrastructure.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📄</div>
+                    <div class="feature-content">
+                        <h3>Publication-Ready Visuals</h3>
+                        <p>Export figures in multiple formats (PNG, SVG, EPS) with customizable styling that meets journal requirements.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">🎓</div>
+                    <div class="feature-content">
+                        <h3>Multi-Lab Licensing</h3>
+                        <p>Institutional licensing options with unlimited researcher seats. Perfect for collaborative multi-site studies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APGI Framework Section -->
+    <section class="framework-section">
+        <div class="container">
+            <h2 class="section-title">The APGI Framework</h2>
+            <p class="section-subtitle">
+                A sophisticated scientific computing platform for understanding consciousness through computational modeling and experimental validation
+            </p>
+
+            <div class="framework-intro">
+                <p class="framework-description">
+                    The APGI (Active Passive Inference) Framework implements the Integrated Predictive Ignition framework for testing theories of consciousness through rigorous falsification testing. Built on Active Inference and Predictive Coding theories, it provides comprehensive tools for consciousness research with multi-modal data integration and real-time analysis capabilities.
+                </p>
+            </div>
+
+            <!-- Core Functionality -->
+            <div class="framework-category">
+                <h3 class="category-title">Core Functionality</h3>
+                
+                <div class="functionality-grid">
+                    <div class="func-item">
+                        <h4>Consciousness Modeling & Testing</h4>
+                        <ul>
+                            <li><strong>APGI Agent Implementation:</strong> Core computational models with interoceptive and exteroceptive processing</li>
+                            <li><strong>Dynamic Threshold Mechanism:</strong> Models conscious access through precision-weighted prediction errors</li>
+                            <li><strong>Somatic Marker Integration:</strong> Decision-making based on somatic markers and expected free energy</li>
+                            <li><strong>Phase Transition Models:</strong> Conscious vs unconscious processing modes</li>
+                        </ul>
+                    </div>
+
+                    <div class="func-item">
+                        <h4>Comprehensive Experiment Suite</h4>
+                        <p>24 cognitive experiments across multiple domains:</p>
+                        <div class="experiment-domains">
+                            <div class="domain-group">
+                                <strong>Decision Making (2 experiments)</strong>
+                                <ul>
+                                    <li>Iowa Gambling Task - Decision making under uncertainty</li>
+                                    <li>Probabilistic Category Learning - Category learning with feedback</li>
+                                </ul>
+                            </div>
+                            <div class="domain-group">
+                                <strong>Attention (4 experiments)</strong>
+                                <ul>
+                                    <li>Attentional Blink - Temporal attention limitations</li>
+                                    <li>Change Blindness - Visual change detection</li>
+                                    <li>Visual Search - Feature and conjunction search</li>
+                                    <li>Posner Cueing - Spatial attention orienting</li>
+                                </ul>
+                            </div>
+                            <div class="domain-group">
+                                <strong>Conflict Monitoring (3 experiments)</strong>
+                                <ul>
+                                    <li>Stroop Effect - Interference in word-color processing</li>
+                                    <li>Simon Effect - Spatial stimulus-response conflict</li>
+                                    <li>Eriksen Flanker - Response inhibition and conflict</li>
+                                </ul>
+                            </div>
+                            <div class="domain-group">
+                                <strong>Consciousness (3 experiments)</strong>
+                                <ul>
+                                    <li>Masking - Visual masking and consciousness thresholds</li>
+                                    <li>Binocular Rivalry - Competing visual perceptions</li>
+                                    <li>Inattentional Blindness - Failure to see unexpected stimuli</li>
+                                </ul>
+                            </div>
+                            <div class="domain-group">
+                                <strong>Memory (4 experiments)</strong>
+                                <ul>
+                                    <li>Dual N-Back - Working memory updating</li>
+                                    <li>Sternberg Memory - Memory scanning and retrieval</li>
+                                    <li>Working Memory Span - Working memory capacity</li>
+                                    <li>DRM False Memory - False memory creation</li>
+                                </ul>
+                            </div>
+                            <div class="domain-group">
+                                <strong>Executive Control (2 experiments)</strong>
+                                <ul>
+                                    <li>Go/No-Go - Response inhibition</li>
+                                    <li>Stop Signal - Reactive inhibition</li>
+                                </ul>
+                            </div>
+                            <div class="domain-group">
+                                <strong>Perception (2 experiments)</strong>
+                                <ul>
+                                    <li>Navon Task - Global vs. local processing</li>
+                                    <li>Multisensory Integration - Cross-modal processing</li>
+                                </ul>
+                            </div>
+                            <div class="domain-group">
+                                <strong>Learning (2 experiments)</strong>
+                                <ul>
+                                    <li>Serial Reaction Time - Implicit sequence learning</li>
+                                    <li>Artificial Grammar Learning - Implicit pattern learning</li>
+                                </ul>
+                            </div>
+                            <div class="domain-group">
+                                <strong>Timing and Navigation (2 experiments)</strong>
+                                <ul>
+                                    <li>Time Estimation - Temporal perception</li>
+                                    <li>Virtual Navigation - Spatial navigation and memory</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-Modal Data Processing -->
+            <div class="framework-category">
+                <h3 class="category-title">Multi-Modal Data Processing</h3>
+                <div class="functionality-grid">
+                    <div class="func-item">
+                        <h4>Data Acquisition</h4>
+                        <ul>
+                            <li><strong>EEG Analysis:</strong> Signal processing, artifact detection, neural signature extraction</li>
+                            <li><strong>Pupillometry:</strong> Pupil diameter tracking, blink detection, cognitive load assessment</li>
+                            <li><strong>Cardiac Monitoring:</strong> Heart rate variability, R-peak detection, interoceptive awareness</li>
+                            <li><strong>Behavioral Data:</strong> Response times, accuracy, confidence ratings</li>
+                            <li><strong>Data Integration:</strong> Cross-modality synchronization and analysis</li>
+                        </ul>
+                    </div>
+
+                    <div class="func-item">
+                        <h4>Advanced Analysis Capabilities</h4>
+                        <div class="analysis-sections">
+                            <div class="analysis-group">
+                                <strong>Statistical Analysis</strong>
+                                <ul>
+                                    <li>Descriptive Statistics: Central tendency, variability, distribution analysis</li>
+                                    <li>Inferential Statistics: t-tests, ANOVA, non-parametric tests</li>
+                                    <li>Bayesian Analysis: Parameter estimation, model comparison, posterior analysis</li>
+                                    <li>Effect Size Calculations: Cohen's d, confidence intervals</li>
+                                    <li>Multiple Comparison Correction: Bonferroni, FDR methods</li>
+                                </ul>
+                            </div>
+                            <div class="analysis-group">
+                                <strong>Signal Processing</strong>
+                                <ul>
+                                    <li>Time Series Analysis: Trend analysis, spectral analysis</li>
+                                    <li>Artifact Detection: Automatic bad trial detection</li>
+                                    <li>Feature Extraction: Real-time EEG and physiological features</li>
+                                    <li>Quality Control: Data integrity validation</li>
+                                </ul>
+                            </div>
+                            <div class="analysis-group">
+                                <strong>Visualization</strong>
+                                <ul>
+                                    <li>Psychometric Functions: Stimulus-response curves</li>
+                                    <li>Neural Signatures: P3b, gamma synchrony, PCI plots</li>
+                                    <li>Time Series Plots: Response times, accuracy over trials</li>
+                                    <li>Statistical Plots: Box plots, histograms, scatter plots</li>
+                                    <li>Publication-Quality Figures: Export in PNG, PDF, SVG formats</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Interfaces -->
+            <div class="framework-category">
+                <h3 class="category-title">User Interfaces</h3>
+                <div class="interfaces-grid">
+                    <div class="interface-item">
+                        <h4>Graphical User Interface (GUI)</h4>
+                        <ul>
+                            <li><strong>Intuitive Design:</strong> Tabbed workspace with sidebar navigation</li>
+                            <li><strong>Real-Time Monitoring:</strong> Live EEG, pupillometry, and cardiac data</li>
+                            <li><strong>Parameter Configuration:</strong> Interactive experiment setup</li>
+                            <li><strong>Progress Tracking:</strong> Real-time experiment monitoring</li>
+                            <li><strong>Quality Alerts:</strong> Automated data quality notifications</li>
+                        </ul>
+                    </div>
+
+                    <div class="interface-item">
+                        <h4>Command Line Interface (CLI)</h4>
+                        <ul>
+                            <li><strong>Automation Support:</strong> Scriptable experiment execution</li>
+                            <li><strong>Batch Processing:</strong> Multiple experiment configurations</li>
+                            <li><strong>System Validation:</strong> Installation and hardware checks</li>
+                            <li><strong>Configuration Management:</strong> JSON-based parameter files</li>
+                        </ul>
+                    </div>
+
+                    <div class="interface-item">
+                        <h4>Web Interface</h4>
+                        <ul>
+                            <li><strong>Cross-Platform Access:</strong> Browser-based experiments</li>
+                            <li><strong>Interactive Visualizations:</strong> Real-time neural animations</li>
+                            <li><strong>Modern Design:</strong> Responsive interface with particle effects</li>
+                            <li><strong>Parameter Controls:</strong> Interactive experiment configuration</li>
+                        </ul>
+                    </div>
+
+                    <div class="interface-item">
+                        <h4>Python API</h4>
+                        <ul>
+                            <li><strong>Programmatic Access:</strong> Full framework functionality</li>
+                            <li><strong>Custom Analysis:</strong> Extensible analysis pipeline</li>
+                            <li><strong>Integration Support:</strong> MATLAB and R bridges</li>
+                            <li><strong>Batch Processing:</strong> Automated data processing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parameter Estimation -->
+            <div class="framework-category">
+                <h3 class="category-title">Parameter Estimation System</h3>
+                <div class="functionality-grid">
+                    <div class="func-item">
+                        <h4>Core APGI Parameters</h4>
+                        <ul>
+                            <li><strong>θ₀ (Baseline Ignition Threshold):</strong> Via detection task</li>
+                            <li><strong>Πᵢ (Interoceptive Precision):</strong> Via heartbeat detection task</li>
+                            <li><strong>β (Somatic Bias):</strong> Via dual-modality oddball task</li>
+                        </ul>
+                    </div>
+
+                    <div class="func-item">
+                        <h4>Bayesian Parameter Estimation</h4>
+                        <ul>
+                            <li><strong>Hierarchical Models:</strong> Multi-level parameter estimation</li>
+                            <li><strong>MCMC Sampling:</strong> 10,000+ samples for convergence</li>
+                            <li><strong>Model Comparison:</strong> WAIC, LOO, Bayes factors</li>
+                            <li><strong>Posterior Predictive Checks:</strong> Model validation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Falsification Testing -->
+            <div class="framework-category">
+                <h3 class="category-title">Falsification Testing Framework</h3>
+                <div class="functionality-grid">
+                    <div class="func-item">
+                        <h4>Test Types</h4>
+                        <ul>
+                            <li><strong>Primary Test:</strong> Full ignition without consciousness</li>
+                            <li><strong>Consciousness Without Ignition:</strong> Consciousness without global ignition</li>
+                            <li><strong>Threshold Insensitivity:</strong> Neuromodulatory effects</li>
+                            <li><strong>Soma-Bias Test:</strong> Interoceptive vs exteroceptive bias</li>
+                        </ul>
+                    </div>
+
+                    <div class="func-item">
+                        <h4>Statistical Standards</h4>
+                        <ul>
+                            <li><strong>Effect Size Requirements:</strong> Pre-specified minimum effects</li>
+                            <li><strong>Statistical Significance:</strong> p &lt; 0.01 for strong support</li>
+                            <li><strong>Replication Standards:</strong> Multiple laboratory validation</li>
+                            <li><strong>Power Analysis:</strong> Minimum 0.8 statistical power</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Specifications -->
+            <div class="framework-category">
+                <h3 class="category-title">Technical Specifications</h3>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <h4>System Requirements</h4>
+                        <ul>
+                            <li><strong>Operating System:</strong> Windows 10+, macOS 10.14+, Linux (Ubuntu 18.04+)</li>
+                            <li><strong>Python:</strong> Version 3.8 or higher</li>
+                            <li><strong>Memory:</strong> Minimum 4GB RAM (8GB recommended)</li>
+                            <li><strong>Storage:</strong> 2GB free disk space</li>
+                            <li><strong>Graphics:</strong> OpenGL support for visualization</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-item">
+                        <h4>Performance Features</h4>
+                        <ul>
+                            <li><strong>Parallel Processing:</strong> Multi-core utilization</li>
+                            <li><strong>Memory Optimization:</strong> Efficient data handling</li>
+                            <li><strong>Scalable Architecture:</strong> Large dataset support</li>
+                            <li><strong>Real-Time Processing:</strong> Sub-millisecond latency</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-item">
+                        <h4>Integration Capabilities</h4>
+                        <ul>
+                            <li><strong>External Hardware:</strong> EEG, eye trackers, cardiac sensors</li>
+                            <li><strong>Software Bridges:</strong> MATLAB, R integration</li>
+                            <li><strong>Database Support:</strong> SQLite, PostgreSQL compatibility</li>
+                            <li><strong>Cloud Storage:</strong> Remote backup and synchronization</li>
+                        </ul>
+                    </div>
+
+                    <div class="tech-item">
+                        <h4>Key Differentiators</h4>
+                        <ul>
+                            <li><strong>Theoretical Rigor:</strong> Grounded in Active Inference and Predictive Coding theories</li>
+                            <li><strong>Falsification Focus:</strong> Explicit criteria for theory validation/refutation</li>
+                            <li><strong>Multi-Modal Integration:</strong> Comprehensive physiological and behavioral data</li>
+                            <li><strong>Real-Time Capabilities:</strong> Live monitoring and adaptive experiments</li>
+                            <li><strong>Clinical Translation:</strong> Direct path from research to clinical application</li>
+                            <li><strong>Open Source:</strong> MIT license with extensive documentation</li>
+                            <li><strong>Reproducible Research:</strong> Complete workflow documentation and version control</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section class="publications">
+        <div class="container">
+            <h2 class="section-title">Published Research</h2>
+            <p class="section-subtitle">
+                APGI-based studies published in leading peer-reviewed journals
+            </p>
+
+            <div class="pub-grid">
+                <div class="pub-side">
+                    <h3>Journals Featuring APGI Research</h3>
+                    <ul class="journal-list">
+                        <li class="journal-item">Nature Human Behaviour</li>
+                        <li class="journal-item">Psychological Science</li>
+                        <li class="journal-item">Consciousness and Cognition</li>
+                        <li class="journal-item">Cognitive, Affective, & Behavioral Neuroscience</li>
+                        <li class="journal-item">Journal of Cognitive Neuroscience</li>
+                        <li class="journal-item">Frontiers in Psychology</li>
+                    </ul>
+                </div>
+
+                <div class="pub-side">
+                    <div class="quote-box">
+                        <p class="quote-text">
+                            "Our APGI-based study received an R21 grant and was published in Journal of Cognitive Neuroscience. The framework provided the measurement clarity reviewers demanded."
+                        </p>
+                        <div class="quote-author">Dr. Michael Rodriguez</div>
+                        <div class="quote-affiliation">Neuroscience Lab, UC Berkeley</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Normative Database Section -->
+    <section class="database-section">
+        <div class="container">
+            <div class="database-content">
+                <h2>Access Our Normative Database</h2>
+                <p>
+                    Benchmark your samples against our comprehensive validation dataset. This resource took 5+ years to compile and provides unmatched comparative power.
+                </p>
+
+                <div class="database-stats">
+                    <div class="db-stat">
+                        <span class="db-stat-num">2,847</span>
+                        <span class="db-stat-label">Participants</span>
+                    </div>
+                    <div class="db-stat">
+                        <span class="db-stat-num">47</span>
+                        <span class="db-stat-label">Countries</span>
+                    </div>
+                    <div class="db-stat">
+                        <span class="db-stat-num">23</span>
+                        <span class="db-stat-label">Languages</span>
+                    </div>
+                    <div class="db-stat">
+                        <span class="db-stat-num">18-75</span>
+                        <span class="db-stat-label">Age Range</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Research Package</h2>
+            <p class="section-subtitle">
+                Institutional pricing designed for academic research budgets
+            </p>
+
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Complete Research Suite</h3>
+                    <p>Everything you need for publication-quality cognitive-affective research</p>
+                </div>
+
+                <div class="price-amount">
+                    <div class="price-num">$1,999</div>
+                    <div class="price-period">per year</div>
+                </div>
+
+                <div class="features-included">
+                    <h4>🔬 Includes:</h4>
+                    <ul class="feature-list">
+                        <li>Unlimited data collection</li>
+                        <li>Full API/SDK access (R, Python, MATLAB)</li>
+                        <li>Advanced statistical modules</li>
+                        <li>Publication support: Figure generation, methods templates</li>
+                        <li>Statistical consultation (4 hours annually)</li>
+                        <li>5 researcher licenses</li>
+                        <li>Priority technical support</li>
+                        <li>Access to normative database (N=2,847)</li>
+                    </ul>
+                </div>
+
+                <div class="bonus-box">
+                    <h4>📚 Academic Bonus:</h4>
+                    <ul>
+                        <li>✓ Free access to all APGI research papers and validation datasets</li>
+                        <li>✓ Co-authorship opportunities on multi-site studies</li>
+                        <li>✓ Grant writing support (sample aims, power analyses)</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-cta">
+                    <a href="#quote" class="btn btn-primary" style="width: 100%; text-align: center;">Request Institutional Quote</a>
+                </div>
+
+                <div class="institutional-note">
+                    Institutional discounts available for multi-lab licensing<br>
+                    Preferred partner for NSF, NIH, and international research funding agencies
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">APGI Research Suite</div>
+                <p class="footer-text">
+                    Validated measures for cognitive-affective processing research. Trusted by leading neuroscience and psychology labs worldwide.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
