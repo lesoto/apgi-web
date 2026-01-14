@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Framework - Understand Why Your Mind Works The Way It Does</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: rgba(20, 20, 40, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --accent-blue: #00B4FF;
+            --accent-purple: #9966FF;
+            --accent-red: #FF3366;
+            --accent-emerald: #00CC99;
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: rgba(240, 240, 245, 0.95);
+            --text-primary: #0a0a0a;
+            --text-secondary: #1a1a1a;
+            --text-muted: #444444;
+            --border-color: rgba(0, 0, 0, 0.25);
+            --accent-blue: #0066CC;
+            --accent-purple: #6600CC;
+            --accent-red: #CC0033;
+            --accent-emerald: #008855;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-red) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; stroke-width: 2; }
+            50% { opacity: 1; stroke-width: 3; }
+        }
+        
+        @keyframes flow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes expand {
+            0%, 100% { r: 20; opacity: 0.6; }
+            50% { r: 28; opacity: 0.3; }
+        }
+        
+        .glass-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+        
+        .segment-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .segment-card:hover {
+            border-color: var(--accent-blue);
+            background: linear-gradient(135deg, rgba(0, 180, 255, 0.15) 0%, rgba(153, 102, 255, 0.15) 100%);
+            transform: scale(1.05);
+        }
+        
+        .testimonial-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .testimonial-card:hover {
+            border-color: var(--accent-purple);
+        }
+        
+        .testimonial-card:hover::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(153, 102, 255, 0.05) 0%, rgba(0, 180, 255, 0.05) 100%);
+            opacity: 1;
+        }
+        
+        .brain-visual {
+            filter: drop-shadow(0 0 40px rgba(0, 180, 255, 0.3));
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .feature-border {
+            border-left: 4px solid var(--accent-blue);
+            transition: border-color 0.3s ease;
+        }
+        
+        .feature-border:hover {
+            border-color: var(--accent-blue);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 10px 25px rgba(0, 180, 255, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .btn-secondary {
+            border: 2px solid var(--accent-blue);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent-blue);
+            background: rgba(0, 180, 255, 0.1);
+        }
+        
+        .icon-bg {
+            background: linear-gradient(135deg, rgba(0, 180, 255, 0.2) 0%, rgba(153, 102, 255, 0.2) 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .segment-card:hover .icon-bg {
+            background: linear-gradient(135deg, rgba(0, 180, 255, 0.4) 0%, rgba(153, 102, 255, 0.4) 100%);
+        }
+        
+        .segment-btn {
+            background: linear-gradient(135deg, rgba(0, 180, 255, 0.2) 0%, rgba(153, 102, 255, 0.2) 100%);
+            border: 1px solid rgba(0, 180, 255, 0.3);
+            color: var(--accent-blue);
+            transition: all 0.3s ease;
+        }
+        
+        .segment-card:hover .segment-btn {
+            background: linear-gradient(135deg, rgba(0, 180, 255, 0.4) 0%, rgba(153, 102, 255, 0.4) 100%);
+            border-color: rgba(0, 180, 255, 0.5);
+        }
+        
+        .footer-link {
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--accent-blue);
+        }
+        
+        /* Theme Toggle Styles */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        .theme-toggle-slider {
+            width: 50px;
+            height: 26px;
+            background: var(--border-color);
+            border-radius: 13px;
+            position: relative;
+            transition: background 0.3s ease;
+        }
+        
+        .theme-toggle-slider::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        
+        [data-theme="light"] .theme-toggle-slider::after {
+            transform: translateX(24px);
+        }
+        
+        [data-theme="light"] .theme-toggle-slider {
+            background: var(--accent-blue);
+        }
+        
+        .theme-icon {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        /* Improved contrast for light mode text colors */
+        [data-theme="light"] .text-gray-300 { color: var(--text-secondary) !important; }
+        [data-theme="light"] .text-gray-400 { color: var(--text-muted) !important; }
+        [data-theme="light"] .text-blue-400 { color: var(--accent-blue) !important; }
+        [data-theme="light"] .text-purple-400 { color: var(--accent-purple) !important; }
+        [data-theme="light"] .text-red-400 { color: var(--accent-red) !important; }
+        [data-theme="light"] .text-emerald-400 { color: var(--accent-emerald) !important; }
+        [data-theme="light"] .text-blue-300 { color: var(--accent-blue) !important; }
+        [data-theme="light"] .text-red-300 { color: var(--accent-red) !important; }
+        [data-theme="light"] .text-emerald-300 { color: var(--accent-emerald) !important; }
+        [data-theme="light"] .text-purple-300 { color: var(--accent-purple) !important; }
+        [data-theme="light"] .text-yellow-400 { color: #b8860b !important; }
+        [data-theme="light"] .border-gray-700 { border-color: var(--border-color) !important; }
+        [data-theme="light"] .border-gray-800 { border-color: var(--border-color) !important; }
+        [data-theme="light"] .bg-black { background: var(--bg-primary) !important; }
+        [data-theme="light"] .bg-gradient-to-br { opacity: 0.8; }
+        
+        /* Enhanced contrast for all text elements */
+        .text-high-contrast {
+            color: var(--text-primary);
+        }
+        
+        .text-medium-contrast {
+            color: var(--text-secondary);
+        }
+        
+        .text-low-contrast {
+            color: var(--text-muted);
+        }
+        
+        /* Ensure proper contrast for specific elements */
+        [data-theme="light"] .segment-card p,
+        [data-theme="light"] .testimonial-card p,
+        [data-theme="light"] .glass-card p {
+            color: var(--text-secondary);
+        }
+        
+        /* Fix for gradient text in light mode */
+        [data-theme="light"] .gradient-text {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-red) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon theme-icon" id="themeIcon"></i>
+        <div class="theme-toggle-slider"></div>
+        <i class="fas fa-sun theme-icon"></i>
+    </div>
+    
+    <!-- Animated gradient background -->
+    <div class="fixed inset-0 pointer-events-none opacity-40">
+        <div id="gradientBg" class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20"></div>
+    </div>
+
+      <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 pb-32 overflow-hidden">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        
+        <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left: Headline & Copy -->
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <p class="text-sm font-semibold tracking-widest text-blue-400 uppercase">
+                            The Neuroscience Framework
+                        </p>
+                        <h1 class="text-5xl lg:text-7xl font-black leading-tight tracking-tight gradient-text">
+                            Understand Why Your Mind Works The Way It Does
+                        </h1>
+                    </div>
+
+                    <p class="text-xl text-gray-300 leading-relaxed max-w-md">
+                        Move beyond personality labels to measurable cognitive architecture. Used by 1,200+ professionals across psychology, neuroscience, and organizational development.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <button class="btn-primary px-8 py-4 rounded-lg font-semibold">
+                            Get Your 5-Min Snapshot
+                            <i class="fas fa-chevron-right ml-2"></i>
+                        </button>
+                        <button class="btn-secondary px-8 py-4 rounded-lg font-semibold">
+                            Explore All Paths
+                        </button>
+                    </div>
+
+                    <!-- Social Proof Bar -->
+                    <div class="pt-8 border-t border-gray-700">
+                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-4">Featured & Validated</p>
+                        <div class="space-y-3">
+                            <p class="text-sm text-gray-300">
+                                <span class="text-blue-400 font-semibold">Educational Psychology Review</span> • 
+                                <span class="text-red-400 font-semibold"> Journal of Psychosomatic Research</span> • 
+                                <span class="text-purple-400 font-semibold"> Organizational Science</span>
+                            </p>
+                            <div class="grid grid-cols-3 gap-4 text-sm">
+                                <div><p class="text-emerald-400 font-bold text-lg">2,847</p><p class="text-gray-400">Participants Validated</p></div>
+                                <div><p class="text-blue-400 font-bold text-lg">40%</p><p class="text-gray-400">Faster Client Insight</p></div>
+                                <div><p class="text-purple-400 font-bold text-lg">28%</p><p class="text-gray-400">Lower Probation Rate</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Animated Brain Visual -->
+                <div class="relative h-96 lg:h-full flex items-center justify-center">
+                    <div class="relative w-full h-96">
+                        <!-- Animated SVG Brain -->
+                        <svg viewBox="0 0 200 280" class="w-full h-full mx-auto brain-visual">
+                            <!-- Brain outline -->
+                            <defs>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                                <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color: '#1a1a2e'; stop-opacity: 0.8" />
+                                    <stop offset="100%" style="stop-color: '#2c3e50'; stop-opacity: 0.8" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Brain shape (simplified) -->
+                            <ellipse cx="100" cy="100" rx="65" ry="80" fill="url(#brainGrad)" filter="url(#glow)" opacity="0.9"/>
+
+                            <!-- Neural pathways with different colors -->
+                            <!-- Blue threshold pathways -->
+                            <path d="M 100 50 Q 90 80 100 110" stroke="#00B4FF" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.7" style="animation: pulse 3s ease-in-out infinite"/>
+                            <path d="M 100 50 Q 110 80 100 110" stroke="#00B4FF" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.5" style="animation: pulse 3s ease-in-out infinite 0.5s"/>
+
+                            <!-- Red interoceptive pathways -->
+                            <path d="M 70 120 Q 85 140 100 160" stroke="#FF3366" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.7" style="animation: pulse 2.5s ease-in-out infinite 1s"/>
+                            <path d="M 130 120 Q 115 140 100 160" stroke="#FF3366" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.5" style="animation: pulse 2.5s ease-in-out infinite 1.5s"/>
+
+                            <!-- Green modulatory pathways -->
+                            <path d="M 100 160 Q 100 190 100 220" stroke="#00CC99" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.6" style="animation: flow 4s ease-in-out infinite"/>
+
+                            <!-- Purple global workspace -->
+                            <circle cx="100" cy="100" r="20" fill="none" stroke="#9966FF" stroke-width="1.5" filter="url(#glow)" opacity="0.8" style="animation: expand 4s ease-in-out infinite"/>
+                            <circle cx="100" cy="100" r="12" fill="#9966FF" opacity="0.3" filter="url(#glow)"/>
+
+                            <!-- Accent points -->
+                            <circle cx="100" cy="60" r="3" fill="#00B4FF" filter="url(#glow)"/>
+                            <circle cx="75" cy="130" r="3" fill="#FF3366" filter="url(#glow)"/>
+                            <circle cx="125" cy="130" r="3" fill="#FF3366" filter="url(#glow)"/>
+                            <circle cx="100" cy="220" r="3" fill="#00CC99" filter="url(#glow)"/>
+                        </svg>
+
+                        <!-- Floating labels -->
+                        <div class="absolute inset-0 pointer-events-none">
+                            <div class="absolute top-12 left-8 text-xs font-semibold text-blue-300 tracking-widest">THRESHOLD</div>
+                            <div class="absolute bottom-20 left-4 text-xs font-semibold text-red-300 tracking-widest">PRECISION</div>
+                            <div class="absolute bottom-8 right-8 text-xs font-semibold text-emerald-300 tracking-widest">MODULATION</div>
+                            <div class="absolute top-1/3 right-6 text-xs font-semibold text-purple-300 tracking-widest">BROADCAST</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Segment Paths Section -->
+    <section class="relative py-24 px-6 lg:px-12 bg-gradient-to-b from-black via-blue-950/5 to-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20">
+                <h2 class="text-5xl lg:text-6xl font-black mb-4 tracking-tight">Choose Your Path</h2>
+                <p class="text-xl text-gray-400 max-w-2xl">One framework. Seven applications. Infinite possibilities for understanding.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Segment 1 -->
+                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-bg p-3 rounded-lg">
+                            <i class="fas fa-bullseye w-6 h-6 text-blue-300"></i>
+                        </div>
+                        <span class="text-lg font-bold text-blue-400">$199</span>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Self-Discovery</h3>
+                    <p class="text-medium-contrast mb-6">Track your growth beyond labels</p>
+
+                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                        Map Yourself
+                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Segment 2 -->
+                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-bg p-3 rounded-lg">
+                            <i class="fas fa-users w-6 h-6 text-blue-300"></i>
+                        </div>
+                        <span class="text-lg font-bold text-blue-400">$599/yr</span>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Professional Tools</h3>
+                    <p class="text-medium-contrast mb-6">Breakthroughs 3x faster</p>
+
+                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                        Elevate Practice
+                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Segment 3 -->
+                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-bg p-3 rounded-lg">
+                            <i class="fas fa-microscope w-6 h-6 text-blue-300"></i>
+                        </div>
+                        <span class="text-lg font-bold text-blue-400">$1,999/yr</span>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Research Suite</h3>
+                    <p class="text-medium-contrast mb-6">Publish with validated measures</p>
+
+                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                        Access API
+                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Segment 4 -->
+                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-bg p-3 rounded-lg">
+                            <i class="fas fa-building w-6 h-6 text-blue-300"></i>
+                        </div>
+                        <span class="text-lg font-bold text-blue-400">$10K+/yr</span>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Enterprise Solutions</h3>
+                    <p class="text-medium-contrast mb-6">Quantify team dynamics</p>
+
+                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                        Request Demo
+                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Segment 5 -->
+                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-bg p-3 rounded-lg">
+                            <i class="fas fa-graduation-cap w-6 h-6 text-blue-300"></i>
+                        </div>
+                        <span class="text-lg font-bold text-blue-400">$5K/yr</span>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Educational Tools</h3>
+                    <p class="text-medium-contrast mb-6">Reduce probation by 28%</p>
+
+                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                        Transform Schools
+                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Segment 6 -->
+                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-bg p-3 rounded-lg">
+                            <i class="fas fa-stethoscope w-6 h-6 text-blue-300"></i>
+                        </div>
+                        <span class="text-lg font-bold text-blue-400">$3K/yr</span>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Clinical Integration</h3>
+                    <p class="text-medium-contrast mb-6">Bridge mind-body connections</p>
+
+                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                        See Clinical
+                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Segment 7 -->
+                <div class="segment-card p-8 rounded-2xl cursor-pointer lg:col-span-3" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="icon-bg p-3 rounded-lg">
+                            <i class="fas fa-code w-6 h-6 text-blue-300"></i>
+                        </div>
+                        <span class="text-lg font-bold text-blue-400">$500/mo</span>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Developer Tools</h3>
+                    <p class="text-medium-contrast mb-6">Ethical personalization</p>
+
+                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                        Build Smarter
+                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+            <!-- Why APGI Is Different -->
+    <section class="relative py-24 px-6 lg:px-12">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-5xl font-black mb-8 tracking-tight leading-tight">
+                        Not Another Personality Test
+                    </h2>
+                    <div class="space-y-6">
+                        <div class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300">
+                            <h3 class="text-xl font-bold mb-2">Dynamic, Not Static</h3>
+                            <p class="text-medium-contrast">Parameters shift with sleep, stress, and growth. Track real change.</p>
+                        </div>
+                        <div class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300">
+                            <h3 class="text-xl font-bold mb-2">Falsifiable Science</h3>
+                            <p class="text-medium-contrast">Grounded in predictive processing, interoception, and global workspace theory.</p>
+                        </div>
+                        <div class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300">
+                            <h3 class="text-xl font-bold mb-2">Validated Across Populations</h3>
+                            <p class="text-medium-contrast">2,847 people across 47 countries, continuously evolving.</p>
+                        </div>
+                        <div class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300">
+                            <h3 class="text-xl font-bold mb-2">Actionable Insights</h3>
+                            <p class="text-medium-contrast">Shows patterns AND mechanisms you can measurably influence.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl blur-3xl"></div>
+                    <div class="relative glass-card rounded-3xl p-8">
+                        <div class="space-y-6">
+                            <div>
+                                <p class="text-sm text-gray-400 uppercase tracking-widest mb-2">The APGI Parameters</p>
+                                <h4 class="text-lg font-bold text-blue-400 mb-2">ε (Epsilon): Environmental Sensitivity</h4>
+                                <p class="text-medium-contrast">"How deeply do you feel the world?"</p>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-red-400 mb-2">π (Pi): Processing Intensity</h4>
+                                <p class="text-medium-contrast">"How complex are your thought patterns?"</p>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-yellow-400 mb-2">θₜ (Theta-t): Awareness Threshold</h4>
+                                <p class="text-medium-contrast">"How much stimulus before you notice?"</p>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-emerald-400 mb-2">β (Beta): Body-World Balance</h4>
+                                <p class="text-medium-contrast">"Where do you focus—internal or external?"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories -->
+    <section class="relative py-24 px-6 lg:px-12 bg-gradient-to-b from-black via-purple-950/5 to-black">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl font-black mb-16 tracking-tight">Success Across Sectors</h2>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="testimonial-card group p-8 rounded-2xl">
+                    <div class="relative z-10">
+                        <p class="text-lg text-medium-contrast mb-6 italic">"Understand why meditation feels impossible some days."</p>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="font-bold text-high-contrast">Jamie L.</p>
+                                <p class="text-sm text-gray-400">Software Engineer</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-blue-400">3x</p>
+                                <p class="text-xs text-gray-400">faster insight</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card group p-8 rounded-2xl">
+                    <div class="relative z-10">
+                        <p class="text-lg text-medium-contrast mb-6 italic">"Reduced client aha-moment time from 6 sessions to 2."</p>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="font-bold text-high-contrast">Dr. Sarah Chen</p>
+                                <p class="text-sm text-gray-400">Clinical Psychologist</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-blue-400">47</p>
+                                <p class="text-xs text-gray-400">clients tracked</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card group p-8 rounded-2xl">
+                    <div class="relative z-10">
+                        <p class="text-lg text-medium-contrast mb-6 italic">"Published in 3 months instead of 12."</p>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="font-bold text-high-contrast">Prof. James Wright</p>
+                                <p class="text-sm text-gray-400">Neuroscience Lab</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-blue-400">2,847</p>
+                                <p class="text-xs text-gray-400">validation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card group p-8 rounded-2xl">
+                    <div class="relative z-10">
+                        <p class="text-lg text-medium-contrast mb-6 italic">"Academic probation dropped 28% in one year."</p>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="font-bold text-high-contrast">Dr. Robert Kim</p>
+                                <p class="text-sm text-gray-400">Dean of Students</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-blue-400">1,847</p>
+                                <p class="text-xs text-gray-400">students</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="relative py-24 px-6 lg:px-12">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-block mb-6 px-4 py-2 bg-blue-500/10 border border-blue-400/50 rounded-full">
+                <p class="text-sm font-semibold text-blue-400">LIMITED TIME OFFER</p>
+            </div>
+
+            <h2 class="text-5xl lg:text-6xl font-black mb-8 tracking-tight leading-tight">
+                Join the Cognitive Revolution
+            </h2>
+
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                Start with a 5-minute snapshot. Use APGI fully for 90 days. If it doesn't deliver measurable insights, get 100% refund + $50 for your time.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="btn-primary px-10 py-5 rounded-lg font-bold text-lg">
+                    Get 5-Minute Snapshot
+                </button>
+                <button class="btn-secondary px-10 py-5 rounded-lg font-bold text-lg">
+                    Schedule Consultation
+                </button>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-8">
+                No credit card required. 90-day prove-it guarantee. GDPR, CCPA, HIPAA compliant.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 py-12 px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h3 class="font-bold mb-4 text-blue-400">Product</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="footer-link">Features</a></li>
+                        <li><a href="#" class="footer-link">Pricing</a></li>
+                        <li><a href="#" class="footer-link">Research</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4 text-blue-400">Company</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="footer-link">About</a></li>
+                        <li><a href="#" class="footer-link">Blog</a></li>
+                        <li><a href="#" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4 text-blue-400">Legal</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="footer-link">Privacy</a></li>
+                        <li><a href="#" class="footer-link">Terms</a></li>
+                        <li><a href="#" class="footer-link">Compliance</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4 text-blue-400">Follow</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="footer-link">Twitter</a></li>
+                        <li><a href="#" class="footer-link">LinkedIn</a></li>
+                        <li><a href="#" class="footer-link">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>© 2026 APGI Framework. All research conducted under IRB approval.</p>
+                <p>Privacy-first • GDPR • CCPA • HIPAA • FERPA compliant</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Parallax effect for gradient background
+        let scrollY = 0;
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+            const gradientBg = document.getElementById('gradientBg');
+            if (gradientBg) {
+                gradientBg.style.transform = `translateY(${scrollY * 0.5}px)`;
+            }
+        });
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add intersection observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animation
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('themeIcon');
+            if (theme === 'light') {
+                icon.className = 'fas fa-sun theme-icon';
+            } else {
+                icon.className = 'fas fa-moon theme-icon';
+            }
+        }
+
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        });
+    </script>
+</body>
+</html>

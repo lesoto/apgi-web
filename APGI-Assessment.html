@@ -1,0 +1,2882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Cognitive Processing Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono&display=swap');
+        
+        :root {
+            --bg-primary: linear-gradient(135deg, #0a0a0c 0%, #1a1a2e 100%);
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --glass-bg: rgba(23, 23, 27, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            --text-primary: #0f172a;
+            --text-secondary: #1e293b;
+            --text-muted: #475569;
+            --glass-bg: rgba(255, 255, 255, 0.98);
+            --glass-border: rgba(0, 0, 0, 0.2);
+            --card-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .glass {
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #ec4899 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .progress-bar { transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hidden-step { display: none; }
+        
+        .pulse {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(96, 165, 250, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); }
+        }
+
+        .stimulus {
+            font-size: 5rem;
+            font-weight: 700;
+            transition: all 0.1s ease-out;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal.active { display: flex; }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(16px);
+        }
+
+        .warning-banner {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-banner {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        [data-theme="light"] .text-zinc-300,
+        [data-theme="light"] .text-zinc-400,
+        [data-theme="light"] .text-zinc-500 { color: #374151 !important; }
+        [data-theme="light"] .bg-zinc-900 { background: #f9fafb !important; }
+        [data-theme="light"] .border-zinc-800 { border-color: #d1d5db !important; }
+
+        /* Enhanced light theme contrast overrides */
+        [data-theme="light"] .text-zinc-300 { color: #374151 !important; }
+        [data-theme="light"] .text-zinc-400 { color: #4b5563 !important; }
+        [data-theme="light"] .text-zinc-500 { color: #6b7280 !important; }
+        [data-theme="light"] .text-zinc-600 { color: #374151 !important; }
+        [data-theme="light"] .text-zinc-700 { color: #1f2937 !important; }
+        [data-theme="light"] .text-zinc-800 { color: #111827 !important; }
+        
+        [data-theme="light"] .bg-zinc-900 { background: #ffffff !important; }
+        [data-theme="light"] .bg-zinc-800 { background: #f9fafb !important; }
+        [data-theme="light"] .bg-zinc-700 { background: #f3f4f6 !important; }
+        [data-theme="light"] .bg-zinc-900\/50 { background: rgba(255, 255, 255, 0.5) !important; }
+        [data-theme="light"] .bg-zinc-900\/10 { background: rgba(255, 255, 255, 0.1) !important; }
+        
+        [data-theme="light"] .border-zinc-800 { border-color: #d1d5db !important; }
+        [data-theme="light"] .border-zinc-700 { border-color: #e5e7eb !important; }
+        
+        /* Enhance colored backgrounds for light theme */
+        [data-theme="light"] .bg-blue-900\/30 { background: rgba(59, 130, 246, 0.15) !important; }
+        [data-theme="light"] .bg-blue-900\/10 { background: rgba(59, 130, 246, 0.05) !important; }
+        [data-theme="light"] .bg-purple-900\/30 { background: rgba(147, 51, 234, 0.15) !important; }
+        [data-theme="light"] .bg-purple-900\/10 { background: rgba(147, 51, 234, 0.05) !important; }
+        [data-theme="light"] .bg-emerald-900\/30 { background: rgba(16, 185, 129, 0.15) !important; }
+        [data-theme="light"] .bg-emerald-900\/10 { background: rgba(16, 185, 129, 0.05) !important; }
+        [data-theme="light"] .bg-orange-900\/30 { background: rgba(251, 146, 60, 0.15) !important; }
+        [data-theme="light"] .bg-orange-900\/10 { background: rgba(251, 146, 60, 0.05) !important; }
+        
+        /* Enhance colored borders for light theme */
+        [data-theme="light"] .border-blue-500\/20 { border-color: rgba(59, 130, 246, 0.3) !important; }
+        [data-theme="light"] .border-purple-500\/20 { border-color: rgba(147, 51, 234, 0.3) !important; }
+        [data-theme="light"] .border-emerald-500\/20 { border-color: rgba(16, 185, 129, 0.3) !important; }
+        [data-theme="light"] .border-orange-500\/20 { border-color: rgba(251, 146, 60, 0.3) !important; }
+        
+        /* Enhance colored text for light theme */
+        [data-theme="light"] .text-blue-400 { color: #1d4ed8 !important; }
+        [data-theme="light"] .text-purple-400 { color: #7c3aed !important; }
+        [data-theme="light"] .text-emerald-400 { color: #059669 !important; }
+        [data-theme="light"] .text-orange-400 { color: #ea580c !important; }
+        
+        /* Button backgrounds for light theme */
+        [data-theme="light"] .bg-blue-600 { background: #2563eb !important; }
+        [data-theme="light"] .bg-blue-500 { background: #3b82f6 !important; }
+        [data-theme="light"] .bg-purple-600 { background: #7c3aed !important; }
+        [data-theme="light"] .bg-purple-500 { background: #8b5cf6 !important; }
+        [data-theme="light"] .bg-emerald-600 { background: #059669 !important; }
+        [data-theme="light"] .bg-emerald-500 { background: #10b981 !important; }
+        [data-theme="light"] .bg-orange-600 { background: #ea580c !important; }
+        [data-theme="light"] .bg-orange-500 { background: #f97316 !important; }
+        
+        /* Hover states for light theme */
+        [data-theme="light"] .hover\:bg-blue-500:hover { background: #3b82f6 !important; }
+        [data-theme="light"] .hover\:bg-purple-500:hover { background: #8b5cf6 !important; }
+        [data-theme="light"] .hover\:bg-emerald-500:hover { background: #10b981 !important; }
+        [data-theme="light"] .hover\:bg-orange-500:hover { background: #f97316 !important; }
+        [data-theme="light"] .hover\:bg-zinc-700:hover { background: #e5e7eb !important; }
+        [data-theme="light"] .hover\:bg-zinc-600:hover { background: #d1d5db !important; }
+        
+        /* Progress bar and UI elements */
+        [data-theme="light"] .bg-zinc-800 { background: #e5e7eb !important; }
+        [data-theme="light"] .text-zinc-500 { color: #6b7280 !important; }
+
+        kbd {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+
+        [data-theme="light"] kbd {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .attention-check {
+            border: 3px solid #f59e0b;
+            animation: attention-pulse 1s ease infinite;
+        }
+
+        @keyframes attention-pulse {
+            0%, 100% { border-color: #f59e0b; }
+            50% { border-color: #fbbf24; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <div style="width: 60px; height: 30px; position: relative;">
+            <div style="position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%); border-radius: 25px;"></div>
+            <div id="theme-indicator" style="position: absolute; width: 26px; height: 26px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: transform 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"></div>
+        </div>
+    </button>
+
+    <!-- Progress Indicator -->
+    <div id="test-nav" class="fixed top-0 left-0 w-full p-4 glass z-50 hidden">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <span class="text-xs uppercase tracking-widest text-zinc-500 font-bold mono">APGI Assessment</span>
+                <div class="h-1 w-64 bg-zinc-800 rounded-full overflow-hidden">
+                    <div id="main-progress" class="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 progress-bar" style="width: 0%"></div>
+                </div>
+                <span id="progress-text" class="text-xs text-zinc-400 mono">0/160</span>
+            </div>
+            <div class="flex gap-3">
+                <span id="module-title" class="text-sm font-semibold text-zinc-300 mono uppercase">Initialization</span>
+                <button onclick="pauseAssessment()" id="pause-btn" class="text-xs bg-zinc-800 hover:bg-zinc-700 px-3 py-1 rounded transition-colors">⏸ Pause</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Intro Screen with Disclaimer -->
+    <div id="step-0" class="max-w-4xl w-full glass p-12 rounded-3xl text-center space-y-8">
+        <h1 class="text-5xl font-black gradient-text mb-4">APGI Cognitive Processing Assessment</h1>
+        
+   
+
+        <p class="text-xl text-zinc-300 leading-relaxed max-w-2xl mx-auto">
+            Explore your unique cognitive architecture across four fundamental dimensions of information processing
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left max-w-3xl mx-auto">
+            <div class="p-6 bg-gradient-to-br from-blue-900/30 to-blue-900/10 rounded-2xl border border-blue-500/20">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                        <span class="text-2xl">ε</span>
+                    </div>
+                    <h3 class="font-bold text-blue-400">Prediction Sensitivity</h3>
+                </div>
+                <p class="text-sm text-zinc-400">How readily you detect deviations from expected patterns</p>
+            </div>
+            
+            <div class="p-6 bg-gradient-to-br from-purple-900/30 to-purple-900/10 rounded-2xl border border-purple-500/20">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                        <span class="text-2xl">π</span>
+                    </div>
+                    <h3 class="font-bold text-purple-400">Metacognitive Precision</h3>
+                </div>
+                <p class="text-sm text-zinc-400">Your awareness and calibration of confidence judgments</p>
+            </div>
+            
+            <div class="p-6 bg-gradient-to-br from-emerald-900/30 to-emerald-900/10 rounded-2xl border border-emerald-500/20">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                        <span class="text-2xl">β</span>
+                    </div>
+                    <h3 class="font-bold text-emerald-400">Somatic Integration</h3>
+                </div>
+                <p class="text-sm text-zinc-400">The role of bodily signals in your decision processes</p>
+            </div>
+            
+            <div class="p-6 bg-gradient-to-br from-orange-900/30 to-orange-900/10 rounded-2xl border border-orange-500/20">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
+                        <span class="text-2xl">θ</span>
+                    </div>
+                    <h3 class="font-bold text-orange-400">Perceptual Threshold</h3>
+                </div>
+                <p class="text-sm text-zinc-400">The minimum signal strength you require for detection</p>
+            </div>
+        </div>
+
+        <div class="info-banner text-left text-sm">
+            <strong>Assessment Details:</strong>
+            <div class="grid grid-cols-3 gap-4 mt-2">
+                <div>Duration: 25-30 minutes</div>
+                <div>Total Trials: ~160</div>
+                <div>Includes practice + attention checks</div>
+            </div>
+        </div>
+     <!-- PROMINENT DISCLAIMER -->
+        <div class="warning-banner text-left">
+            <div class="flex items-start gap-3">
+                <span class="text-3xl">⚠️</span>
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Important: Non-Clinical Research Tool</h3>
+                    <ul class="text-sm space-y-1 opacity-90">
+                        <li>• This assessment measures <strong>cognitive processing styles</strong>, not psychiatric conditions</li>
+                        <li>• Results describe <strong>HOW you process information</strong>, not diagnoses</li>
+                        <li>• All parameter ranges are normal variations in human cognition</li>
+                        <li>• <strong>Do not use for self-diagnosis or clinical decisions</strong></li>
+                        <li>• Consult licensed professionals for mental health concerns</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="space-y-3">
+            <label class="flex items-center justify-center gap-2 text-sm">
+                <input type="checkbox" id="consent-checkbox" class="w-4 h-4">
+                <span>I understand this is a research tool, not a clinical diagnostic instrument</span>
+            </label>
+            
+            <button onclick="startTest()" id="start-btn" disabled class="w-full max-w-md mx-auto block py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold rounded-2xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                Begin Assessment →
+            </button>
+        </div>
+        
+        <p class="text-xs text-zinc-600 mt-4">Results contribute to anonymous normative database (N = <span id="norm-n">1,247</span>)</p>
+    </div>
+
+    <!-- Practice Instructions Modal -->
+    <div id="practice-modal" class="modal">
+        <div class="glass p-8 rounded-3xl max-w-2xl w-full mx-4">
+            <h3 class="text-2xl font-bold mb-4" id="practice-title">Practice Trials</h3>
+            <div id="practice-content" class="text-zinc-300 space-y-4 mb-6"></div>
+            <button onclick="closePractice()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold">
+                Start Module
+            </button>
+        </div>
+    </div>
+
+    <!-- Pause Modal -->
+    <div id="pause-modal" class="modal">
+        <div class="glass p-8 rounded-3xl max-w-md w-full mx-4 text-center space-y-6">
+            <h3 class="text-2xl font-bold">Assessment Paused</h3>
+            <p class="text-zinc-400">Your progress has been saved. You can resume anytime within the next 24 hours.</p>
+            <div class="space-y-3">
+                <button onclick="resumeAssessment()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-bold">
+                    Resume Assessment
+                </button>
+                <button onclick="location.reload()" class="w-full py-3 text-zinc-500 hover:text-white transition-colors">
+                    Exit (Progress Lost)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 1: Prediction Error Sensitivity (60 trials) -->
+    <div id="step-1" class="hidden-step max-w-3xl w-full text-center space-y-6">
+        <div class="glass p-8 rounded-3xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Module 1: Prediction Sensitivity</h2>
+                <span id="epsilon-counter" class="text-sm text-zinc-500 mono">Trial 1/60</span>
+            </div>
+            
+            <p class="text-zinc-400 mb-8">Press <kbd>SPACE</kbd> when you see a letter. Patterns will emerge—stay alert for changes.</p>
+            
+            <div id="sequence-display" class="h-64 flex items-center justify-center stimulus mono text-white">
+                <div class="w-4 h-4 rounded-full bg-zinc-700 animate-pulse"></div>
+            </div>
+            
+            <div class="mt-6 p-4 bg-zinc-900/50 rounded-xl">
+                <div class="flex justify-between text-xs text-zinc-500">
+                    <span>Measuring: Pattern violation detection</span>
+                    <span id="epsilon-progress">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 2: Precision Weighting (30 trials) -->
+    <div id="step-2" class="hidden-step max-w-3xl w-full space-y-6">
+        <div class="glass p-8 rounded-3xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Module 2: Metacognitive Precision</h2>
+                <span id="pi-counter" class="text-sm text-zinc-500 mono">Trial 1/30</span>
+            </div>
+            
+            <p class="text-zinc-400 mb-6">Compare stimuli and rate your confidence in each judgment.</p>
+            
+            <div id="pi-task-container"></div>
+        </div>
+    </div>
+
+    <!-- Module 3: Somatic Bias (6 tasks) -->
+    <div id="step-3" class="hidden-step max-w-3xl w-full space-y-6">
+        <div class="glass p-8 rounded-3xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Module 3: Somatic Integration</h2>
+                <span id="beta-counter" class="text-sm text-zinc-500 mono">Task 1/6</span>
+            </div>
+            
+            <div id="beta-task-container"></div>
+        </div>
+    </div>
+
+    <!-- Module 4: Activation Threshold (60 trials, adaptive) -->
+    <div id="step-4" class="hidden-step max-w-3xl w-full space-y-6">
+        <div class="glass p-8 rounded-3xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Module 4: Perceptual Threshold</h2>
+                <span id="theta-counter" class="text-sm text-zinc-500 mono">Trial 1/60</span>
+            </div>
+            
+            <p class="text-zinc-400 mb-8">Detect weak signals. Press <kbd>ENTER</kbd> the instant you see anything appear.</p>
+            
+            <div id="threshold-field" class="h-80 bg-black rounded-2xl relative overflow-hidden flex items-center justify-center">
+                <div id="threshold-stimulus" class="w-2 h-2 rounded-full bg-white opacity-0 transition-opacity duration-100"></div>
+            </div>
+            
+            <div class="mt-6 grid grid-cols-3 gap-4 text-xs">
+                <div class="p-3 bg-zinc-900/50 rounded-xl">
+                    <span class="text-zinc-500">Detected:</span>
+                    <span id="theta-detected" class="block text-2xl font-bold text-emerald-400 mt-1">0</span>
+                </div>
+                <div class="p-3 bg-zinc-900/50 rounded-xl">
+                    <span class="text-zinc-500">Missed:</span>
+                    <span id="theta-missed" class="block text-2xl font-bold text-red-400 mt-1">0</span>
+                </div>
+                <div class="p-3 bg-zinc-900/50 rounded-xl">
+                    <span class="text-zinc-500">False Alarms:</span>
+                    <span id="theta-false" class="block text-2xl font-bold text-orange-400 mt-1">0</span>
+                </div>
+            </div>
+            
+            <div class="mt-4 p-3 bg-blue-900/20 rounded-xl border border-blue-500/30">
+                <p class="text-xs text-blue-300">Adaptive algorithm adjusting difficulty based on your responses</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results" class="hidden-step max-w-7xl w-full space-y-8">
+        <!-- Header -->
+        <div class="glass p-8 rounded-3xl text-center">
+            <h2 class="text-4xl font-black gradient-text mb-4">Your Cognitive Processing Profile</h2>
+            <p class="text-zinc-400 text-lg">Comprehensive APGI Analysis with Confidence Intervals</p>
+            <div class="mt-4 inline-block px-4 py-2 bg-emerald-900/30 border border-emerald-500/30 rounded-lg">
+                <span class="text-sm text-emerald-300">✓ Data Quality Score: <strong id="quality-score">0%</strong></span>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left: Parameter Cards -->
+            <div class="lg:col-span-2 space-y-4">
+                <!-- Epsilon Card -->
+                <div class="glass p-6 rounded-2xl border-l-4 border-l-blue-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-400 flex items-center gap-2">
+                                <span class="text-3xl">ε</span> Prediction Sensitivity
+                            </h3>
+                            <p class="text-sm text-zinc-500 mt-1">Pattern detection & violation response</p>
+                        </div>
+                        <div class="text-right">
+                            <div id="res-e" class="text-4xl font-black text-blue-400">0</div>
+                            <div id="res-e-ci" class="text-xs text-zinc-500 mono">CI: [0-0]</div>
+                            <div id="res-e-percentile" class="text-xs text-zinc-500">0th percentile</div>
+                        </div>
+                    </div>
+                    <div class="h-2 bg-zinc-900 rounded-full overflow-hidden mb-3">
+                        <div id="bar-e-linear" class="h-full bg-gradient-to-r from-blue-600 to-blue-400 transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <div id="epsilon-interpretation" class="text-sm text-zinc-400 leading-relaxed"></div>
+                    <div id="epsilon-breakdown" class="mt-4 grid grid-cols-3 gap-3 text-xs"></div>
+                </div>
+
+                <!-- Pi Card -->
+                <div class="glass p-6 rounded-2xl border-l-4 border-l-purple-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-purple-400 flex items-center gap-2">
+                                <span class="text-3xl">π</span> Metacognitive Precision
+                            </h3>
+                            <p class="text-sm text-zinc-500 mt-1">Confidence calibration & awareness</p>
+                        </div>
+                        <div class="text-right">
+                            <div id="res-p" class="text-4xl font-black text-purple-400">0</div>
+                            <div id="res-p-ci" class="text-xs text-zinc-500 mono">CI: [0-0]</div>
+                            <div id="res-p-percentile" class="text-xs text-zinc-500">0th percentile</div>
+                        </div>
+                    </div>
+                    <div class="h-2 bg-zinc-900 rounded-full overflow-hidden mb-3">
+                        <div id="bar-p-linear" class="h-full bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <div id="pi-interpretation" class="text-sm text-zinc-400 leading-relaxed"></div>
+                    <div id="pi-breakdown" class="mt-4 grid grid-cols-3 gap-3 text-xs"></div>
+                </div>
+
+                <!-- Beta Card -->
+                <div class="glass p-6 rounded-2xl border-l-4 border-l-emerald-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-emerald-400 flex items-center gap-2">
+                                <span class="text-3xl">β</span> Somatic Integration
+                            </h3>
+                            <p class="text-sm text-zinc-500 mt-1">Body-mind connection strength</p>
+                        </div>
+                        <div class="text-right">
+                            <div id="res-b" class="text-4xl font-black text-emerald-400">0</div>
+                            <div id="res-b-ci" class="text-xs text-zinc-500 mono">CI: [0-0]</div>
+                            <div id="res-b-percentile" class="text-xs text-zinc-500">0th percentile</div>
+                        </div>
+                    </div>
+                    <div class="h-2 bg-zinc-900 rounded-full overflow-hidden mb-3">
+                        <div id="bar-b-linear" class="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <div id="beta-interpretation" class="text-sm text-zinc-400 leading-relaxed"></div>
+                    <div id="beta-breakdown" class="mt-4 grid grid-cols-3 gap-3 text-xs"></div>
+                </div>
+
+                <!-- Theta Card -->
+                <div class="glass p-6 rounded-2xl border-l-4 border-l-orange-500">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-orange-400 flex items-center gap-2">
+                                <span class="text-3xl">θ</span> Perceptual Threshold
+                            </h3>
+                            <p class="text-sm text-zinc-500 mt-1">Detection sensitivity level</p>
+                        </div>
+                        <div class="text-right">
+                            <div id="res-t" class="text-4xl font-black text-orange-400">0</div>
+                            <div id="res-t-ci" class="text-xs text-zinc-500 mono">CI: [0-0]</div>
+                            <div id="res-t-percentile" class="text-xs text-zinc-500">0th percentile</div>
+                        </div>
+                    </div>
+                    <div class="h-2 bg-zinc-900 rounded-full overflow-hidden mb-3">
+                        <div id="bar-t-linear" class="h-full bg-gradient-to-r from-orange-600 to-orange-400 transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <div id="theta-interpretation" class="text-sm text-zinc-400 leading-relaxed"></div>
+                    <div id="theta-breakdown" class="mt-4 grid grid-cols-3 gap-3 text-xs"></div>
+                </div>
+            </div>
+
+            <!-- Right: Visualizations -->
+            <div class="space-y-4">
+                <!-- Radar Chart -->
+                <div class="glass p-6 rounded-2xl">
+                    <h3 class="text-sm font-bold uppercase text-zinc-500 mb-4 text-center">Profile Visualization</h3>
+                    <div style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Processing Style -->
+                <div id="style-match" class="glass p-6 rounded-2xl">
+                    <h3 class="text-sm font-bold uppercase text-zinc-500 mb-4">Processing Style</h3>
+                    <div id="style-content" class="space-y-3"></div>
+                </div>
+
+                <!-- Data Quality Report -->
+                <div class="glass p-6 rounded-2xl">
+                    <h3 class="text-sm font-bold uppercase text-zinc-500 mb-4">Quality Metrics</h3>
+                    <div id="quality-metrics" class="space-y-2 text-xs"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="glass p-8 rounded-2xl">
+            <h3 class="text-2xl font-bold mb-6">Personalized Insights</h3>
+            <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+
+        <!-- Download -->
+        <div class="text-center space-y-4">
+            <button onclick="downloadDetailedReport()" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-bold transition-all transform hover:scale-[1.02]">
+                Download Detailed Report (PDF)
+            </button>
+            <button onclick="location.reload()" class="block w-full py-3 text-zinc-500 hover:text-white transition-colors">
+                Restart Assessment
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ===================================
+        // NORMATIVE DATABASE (Simulated)
+        // ===================================
+        const NORMATIVE_DATA = {
+            epsilon: { mean: 55.2, sd: 14.8, n: 1247, reliability: 0.82 },
+            pi: { mean: 61.7, sd: 17.3, n: 1247, reliability: 0.78 },
+            beta: { mean: 57.9, sd: 19.2, n: 1247, reliability: 0.71 },
+            theta: { mean: 52.3, sd: 16.5, n: 1247, reliability: 0.84 }
+        };
+
+        // ===================================
+        // STATE MANAGEMENT
+        // ===================================
+        const state = {
+            currentStep: 0,
+            totalTrials: 160, // ε:60 + π:30 + β:6 + θ:60 + attention:4
+            completedTrials: 0,
+            isPaused: false,
+            startTime: null,
+            data: {
+                epsilon: {
+                    trials: [],
+                    violations: [],
+                    standards: [],
+                    attentionChecks: []
+                },
+                pi: {
+                    trials: [],
+                    attentionChecks: []
+                },
+                beta: {
+                    heartbeat: [],
+                    emotionBody: [],
+                    decisionSomatic: [],
+                    attentionChecks: []
+                },
+                theta: {
+                    trials: [],
+                    staircase: null
+                }
+            },
+            results: {},
+            qualityMetrics: {}
+        };
+
+        // ===================================
+        // UTILITY FUNCTIONS
+        // ===================================
+        function normalCDF(z) {
+            const t = 1 / (1 + 0.2316419 * Math.abs(z));
+            const d = 0.3989423 * Math.exp(-z * z / 2);
+            const prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            return z > 0 ? 1 - prob : prob;
+        }
+
+        function zScore(p) {
+            // Inverse normal CDF approximation
+            p = Math.max(0.001, Math.min(0.999, p));
+            if (p < 0.5) {
+                const t = Math.sqrt(-2 * Math.log(p));
+                return -(t - ((2.515517 + 0.802853 * t + 0.010328 * t * t) / 
+                    (1 + 1.432788 * t + 0.189269 * t * t + 0.001308 * t * t * t)));
+            } else {
+                const t = Math.sqrt(-2 * Math.log(1 - p));
+                return t - ((2.515517 + 0.802853 * t + 0.010328 * t * t) / 
+                    (1 + 1.432788 * t + 0.189269 * t * t + 0.001308 * t * t * t));
+            }
+        }
+
+        function calculatePercentile(score, normData) {
+            const z = (score - normData.mean) / normData.sd;
+            return Math.round(normalCDF(z) * 100);
+        }
+
+        function calculateConfidenceInterval(score, normData) {
+            const sem = normData.sd * Math.sqrt(1 - normData.reliability);
+            const margin = 1.96 * sem;
+            return {
+                lower: Math.max(0, Math.round(score - margin)),
+                upper: Math.min(100, Math.round(score + margin))
+            };
+        }
+
+        // ===================================
+        // MODALITY ALIGNMENT (Antialiasing Filters)
+        // ===================================
+        
+        // Lanczos kernel for high-quality interpolation
+        function lanczosKernel(x, a = 3) {
+            if (x === 0) return 1;
+            if (Math.abs(x) >= a) return 0;
+            
+            const pix = Math.PI * x;
+            return (Math.sin(pix) / pix) * (Math.sin(pix / a) / (pix / a));
+        }
+        
+        // High-quality resampling with antialiasing
+        function resampleWithAntialiasing(data, fromRate, toRate, method = 'lanczos') {
+            if (!data || data.length === 0) return [];
+            if (fromRate === toRate) return [...data];
+            
+            const ratio = fromRate / toRate;
+            const outputLength = Math.ceil(data.length / ratio);
+            const result = new Array(outputLength);
+            
+            if (method === 'lanczos') {
+                // Lanczos resampling with antialiasing
+                const a = 3; // Lanczos kernel size
+                
+                for (let i = 0; i < outputLength; i++) {
+                    const sourcePos = i * ratio;
+                    const startIdx = Math.floor(sourcePos - a);
+                    const endIdx = Math.ceil(sourcePos + a);
+                    
+                    let sum = 0;
+                    let weightSum = 0;
+                    
+                    for (let j = startIdx; j <= endIdx; j++) {
+                        if (j >= 0 && j < data.length) {
+                            const weight = lanczosKernel(sourcePos - j, a);
+                            sum += data[j] * weight;
+                            weightSum += weight;
+                        }
+                    }
+                    
+                    result[i] = weightSum > 0 ? sum / weightSum : 0;
+                }
+            } else if (method === 'cubic') {
+                // Cubic spline interpolation
+                for (let i = 0; i < outputLength; i++) {
+                    const sourcePos = i * ratio;
+                    const idx = Math.floor(sourcePos);
+                    const frac = sourcePos - idx;
+                    
+                    if (idx >= 1 && idx < data.length - 2) {
+                        // Cubic interpolation using 4 points
+                        const p0 = data[idx - 1];
+                        const p1 = data[idx];
+                        const p2 = data[idx + 1];
+                        const p3 = data[idx + 2];
+                        
+                        result[i] = p1 + 
+                            0.5 * frac * (p2 - p0 + frac * (2*p0 - 5*p1 + 4*p2 - p3 + frac * (-p0 + 3*p1 - 3*p2 + p3)));
+                    } else {
+                        // Linear interpolation at boundaries
+                        result[i] = idx < data.length - 1 ? 
+                            data[idx] + frac * (data[idx + 1] - data[idx]) : 
+                            data[data.length - 1];
+                    }
+                }
+            } else {
+                // Linear interpolation as fallback
+                for (let i = 0; i < outputLength; i++) {
+                    const sourcePos = i * ratio;
+                    const idx = Math.floor(sourcePos);
+                    const frac = sourcePos - idx;
+                    
+                    if (idx < data.length - 1) {
+                        result[i] = data[idx] + frac * (data[idx + 1] - data[idx]);
+                    } else {
+                        result[i] = data[data.length - 1];
+                    }
+                }
+            }
+            
+            return result;
+        }
+        
+        // Apply low-pass filter before downsampling (antialiasing)
+        function applyLowPassFilter(data, cutoffFreq, sampleRate) {
+            if (!data || data.length === 0) return data;
+            
+            const nyquist = sampleRate / 2;
+            const normalizedCutoff = Math.min(cutoffFreq / nyquist, 0.9);
+            
+            // Simple Butterworth low-pass filter (2nd order)
+            const omega = 2 * Math.PI * normalizedCutoff;
+            const cosOmega = Math.cos(omega);
+            const sinOmega = Math.sin(omega);
+            const alpha = sinOmega / 2;
+            const a0 = 1 + alpha;
+            const a1 = -2 * cosOmega;
+            const a2 = 1 - alpha;
+            const b0 = (1 - cosOmega) / 2;
+            const b1 = 1 - cosOmega;
+            const b2 = (1 - cosOmega) / 2;
+            
+            const filtered = new Array(data.length);
+            let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+            
+            for (let i = 0; i < data.length; i++) {
+                const x0 = data[i];
+                const y0 = (b0 * x0 + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2) / a0;
+                
+                filtered[i] = y0;
+                
+                x2 = x1;
+                x1 = x0;
+                y2 = y1;
+                y1 = y0;
+            }
+            
+            return filtered;
+        }
+        
+        // Enhanced modality alignment with antialiasing
+        function alignModalities(sourceData, targetRate, sourceRate, quality = 'high') {
+            if (!sourceData || sourceData.length === 0) return [];
+            
+            // Apply antialiasing filter if downsampling
+            if (sourceRate > targetRate && quality === 'high') {
+                const cutoffFreq = targetRate * 0.4; // Nyquist of target rate
+                sourceData = applyLowPassFilter(sourceData, cutoffFreq, sourceRate);
+            }
+            
+            // Choose interpolation method based on quality
+            const method = quality === 'high' ? 'lanczos' : quality === 'medium' ? 'cubic' : 'linear';
+            
+            return resampleWithAntialiasing(sourceData, sourceRate, targetRate, method);
+        }
+
+        // ===================================
+        // MULTI-CHANNEL HANDLING (PCA Implementation)
+        // ===================================
+        
+        // Simple PCA implementation for dimensionality reduction
+        function performPCA(data, numComponents = 1) {
+            if (!data || data.length === 0 || data[0].length === 0) {
+                return { components: [], explainedVariance: [], transformed: [] };
+            }
+            
+            const n = data.length;
+            const m = data[0].length;
+            
+            // Center the data
+            const means = new Array(m).fill(0);
+            for (let j = 0; j < m; j++) {
+                for (let i = 0; i < n; i++) {
+                    means[j] += data[i][j];
+                }
+                means[j] /= n;
+            }
+            
+            const centered = data.map(row => 
+                row.map((val, j) => val - means[j])
+            );
+            
+            // Compute covariance matrix
+            const cov = new Array(m).fill(0).map(() => new Array(m).fill(0));
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < m; j++) {
+                    for (let k = 0; k < n; k++) {
+                        cov[i][j] += centered[k][i] * centered[k][j];
+                    }
+                    cov[i][j] /= (n - 1);
+                }
+            }
+            
+            // Power iteration for dominant eigenvector
+            const eigenvalues = [];
+            const eigenvectors = [];
+            
+            for (let comp = 0; comp < Math.min(numComponents, m); comp++) {
+                let vector = new Array(m).fill(0);
+                vector[comp] = 1; // Initial guess
+                
+                // Power iteration
+                for (let iter = 0; iter < 50; iter++) {
+                    const newVector = new Array(m).fill(0);
+                    for (let i = 0; i < m; i++) {
+                        for (let j = 0; j < m; j++) {
+                            newVector[i] += cov[i][j] * vector[j];
+                        }
+                    }
+                    
+                    // Normalize
+                    let norm = 0;
+                    for (let i = 0; i < m; i++) {
+                        norm += newVector[i] * newVector[i];
+                    }
+                    norm = Math.sqrt(norm);
+                    
+                    if (norm > 0) {
+                        for (let i = 0; i < m; i++) {
+                            newVector[i] /= norm;
+                        }
+                    }
+                    
+                    vector = newVector;
+                }
+                
+                // Calculate eigenvalue
+                let eigenvalue = 0;
+                for (let i = 0; i < m; i++) {
+                    let rowSum = 0;
+                    for (let j = 0; j < m; j++) {
+                        rowSum += cov[i][j] * vector[j];
+                    }
+                    eigenvalue += vector[i] * rowSum;
+                }
+                
+                eigenvalues.push(eigenvalue);
+                eigenvectors.push([...vector]);
+                
+                // Deflate matrix for next component
+                for (let i = 0; i < m; i++) {
+                    for (let j = 0; j < m; j++) {
+                        cov[i][j] -= eigenvalue * vector[i] * vector[j];
+                    }
+                }
+            }
+            
+            // Transform data
+            const transformed = centered.map(row => 
+                eigenvectors.map(vec => 
+                    row.reduce((sum, val, idx) => sum + val * vec[idx], 0)
+                )
+            );
+            
+            const totalVariance = eigenvalues.reduce((sum, val) => sum + val, 0);
+            const explainedVariance = eigenvalues.map(val => 
+                totalVariance > 0 ? val / totalVariance : 0
+            );
+            
+            return {
+                components: eigenvectors,
+                explainedVariance,
+                transformed,
+                means
+            };
+        }
+        
+        // Enhanced multi-channel aggregation with PCA fallback
+        function aggregateMultiChannel(data, method = 'pca') {
+            if (!data || data.length === 0) return 50;
+            
+            // Handle single channel
+            if (data.length === 1 && Array.isArray(data[0])) {
+                return mean(data[0]);
+            }
+            
+            // Handle multi-channel data
+            if (Array.isArray(data[0])) {
+                if (method === 'pca' && data.length > 1 && data[0].length > 1) {
+                    const pca = performPCA(data, 1);
+                    if (pca.transformed.length > 0 && pca.transformed[0].length > 0) {
+                        // Use first principal component, normalized to 0-100 scale
+                        const pc1Values = pca.transformed.map(row => row[0]);
+                        const pc1Mean = mean(pc1Values);
+                        const pc1SD = sd(pc1Values);
+                        
+                        // Z-score normalization to 0-100 scale (assuming normal distribution)
+                        return Math.max(0, Math.min(100, 50 + (pc1Mean / (pc1SD || 1)) * 10));
+                    }
+                }
+                
+                // Fallback to channel-wise averaging
+                const channelMeans = data.map(channel => mean(channel));
+                return mean(channelMeans);
+            }
+            
+            // Handle simple array
+            return mean(data);
+        }
+
+        function mean(arr) {
+            if (!arr || arr.length === 0) return 0;
+            return arr.reduce((a, b) => a + b, 0) / arr.length;
+        }
+
+        function sd(arr) {
+            if (!arr || arr.length <= 1) return 0;
+            const m = mean(arr);
+            return Math.sqrt(arr.reduce((sq, n) => sq + Math.pow(n - m, 2), 0) / (arr.length - 1));
+        }
+
+        // ===================================
+        // NAVIGATION & INITIALIZATION
+        // ===================================
+        document.getElementById('consent-checkbox').addEventListener('change', (e) => {
+            document.getElementById('start-btn').disabled = !e.target.checked;
+        });
+
+        function startTest() {
+            state.startTime = Date.now();
+            document.getElementById('test-nav').classList.remove('hidden');
+            document.getElementById('norm-n').innerText = NORMATIVE_DATA.epsilon.n.toLocaleString();
+            saveProgress();
+            nextStep();
+        }
+
+        function nextStep() {
+            if (state.isPaused) return;
+            
+            const current = document.getElementById(`step-${state.currentStep}`);
+            if (current) current.classList.add('hidden-step');
+            
+            state.currentStep++;
+            const next = document.getElementById(`step-${state.currentStep}`);
+            
+            if (next) {
+                next.classList.remove('hidden-step');
+                updateProgress();
+                showPracticeIfNeeded();
+            } else {
+                calculateResults();
+            }
+        }
+
+        function updateProgress() {
+            const percent = (state.completedTrials / state.totalTrials) * 100;
+            document.getElementById('main-progress').style.width = `${percent}%`;
+            document.getElementById('progress-text').innerText = `${state.completedTrials}/${state.totalTrials}`;
+            
+            const titles = ["", "Prediction Sensitivity", "Metacognitive Precision", "Somatic Integration", "Perceptual Threshold"];
+            document.getElementById('module-title').innerText = titles[state.currentStep] || "";
+        }
+
+        function showPracticeIfNeeded() {
+            const practiceContent = {
+                1: {
+                    title: "Practice: Prediction Sensitivity",
+                    content: `
+                        <p><strong>Instructions:</strong></p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>You'll see letters appear one at a time</li>
+                            <li>Press <kbd class="px-2 py-1 bg-zinc-800 rounded">SPACE</kbd> as quickly as possible when you see each letter</li>
+                            <li>Patterns will emerge—most letters will be the same, but occasionally something different appears</li>
+                            <li>Stay focused throughout all 60 trials</li>
+                            <li><strong>Attention check:</strong> Occasionally you'll see a different task—follow those instructions carefully</li>
+                        </ul>
+                        <p class="mt-4 text-sm text-zinc-500">The practice will start after you close this window.</p>
+                    `
+                },
+                2: {
+                    title: "Practice: Metacognitive Precision",
+                    content: `
+                        <p><strong>Instructions:</strong></p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Compare two stimuli (lines, dots, durations, or weights)</li>
+                            <li>Choose which one is larger/longer/more</li>
+                            <li>Rate your confidence in each judgment (0-100%)</li>
+                            <li><strong>Be honest about your confidence</strong>—we're measuring calibration, not just accuracy</li>
+                            <li>Complete all 30 trials with full attention</li>
+                        </ul>
+                    `
+                },
+                3: {
+                    title: "Practice: Somatic Integration",
+                    content: `
+                        <p><strong>Instructions:</strong></p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>This module measures your awareness of bodily signals</li>
+                            <li>You'll complete tasks involving heartbeat detection, emotional body mapping, and decision-making</li>
+                            <li>Trust your immediate impressions—there are no right or wrong answers</li>
+                            <li>6 tasks total, each measuring different aspects of body-mind integration</li>
+                        </ul>
+                    `
+                },
+                4: {
+                    title: "Practice: Perceptual Threshold",
+                    content: `
+                        <p><strong>Instructions:</strong></p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Fixate on the center of the black screen</li>
+                            <li>Press <kbd class="px-2 py-1 bg-zinc-800 rounded">ENTER</kbd> the instant you detect ANY appearance</li>
+                            <li>Signals will be very weak—trust your perception</li>
+                            <li>The difficulty adapts to your performance (gets easier or harder)</li>
+                            <li>60 trials with adaptive algorithm</li>
+                        </ul>
+                    `
+                }
+            };
+
+            const content = practiceContent[state.currentStep];
+            if (content) {
+                document.getElementById('practice-title').innerText = content.title;
+                document.getElementById('practice-content').innerHTML = content.content;
+                document.getElementById('practice-modal').classList.add('active');
+            } else {
+                initializeModule();
+            }
+        }
+
+        function closePractice() {
+            document.getElementById('practice-modal').classList.remove('active');
+            initializeModule();
+        }
+
+        function initializeModule() {
+            if (state.currentStep === 1) initEpsilonModule();
+            else if (state.currentStep === 2) initPiModule();
+            else if (state.currentStep === 3) initBetaModule();
+            else if (state.currentStep === 4) initThetaModule();
+        }
+
+        // ===================================
+        // PAUSE/RESUME FUNCTIONALITY
+        // ===================================
+        function pauseAssessment() {
+            state.isPaused = true;
+            saveProgress();
+            document.getElementById('pause-modal').classList.add('active');
+        }
+
+        function resumeAssessment() {
+            state.isPaused = false;
+            document.getElementById('pause-modal').classList.remove('active');
+        }
+
+        function saveProgress() {
+            try {
+                localStorage.setItem('apgi_progress', JSON.stringify({
+                    state: state,
+                    timestamp: Date.now()
+                }));
+            } catch (e) {
+                console.warn('Could not save progress:', e);
+            }
+        }
+
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('apgi_progress');
+                if (saved) {
+                    const { state: savedState, timestamp } = JSON.parse(saved);
+                    const ageHours = (Date.now() - timestamp) / (1000 * 60 * 60);
+                    if (ageHours < 24) {
+                        return savedState;
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not load progress:', e);
+            }
+            return null;
+        }
+
+        // ===================================
+        // MODULE 1: EPSILON (60 trials + 3 attention checks)
+        // ===================================
+        let epsilonTrial = 0;
+        let epsilonSequence = [];
+        let epsilonAttentionCheckIndices = [];
+        let lastStimTime = 0;
+        let epsilonAttentionCheckTypes = ['reverse', 'math', 'count'];
+        let epsilonActive = false;
+
+        function initEpsilonModule() {
+            // Generate adaptive sequence with multiple violation types
+            epsilonSequence = generateEpsilonSequence();
+            epsilonTrial = 0;
+            epsilonActive = true;
+            document.addEventListener('keydown', handleEpsilonKey);
+            runEpsilonTrial();
+        }
+
+        function generateEpsilonSequence() {
+            const sequence = [];
+            const patterns = ['A', 'B', 'X', 'Y'];
+            let currentPattern = 'A';
+            
+            // Insert 3 attention checks at trials 15, 35, 55 with different types
+            epsilonAttentionCheckIndices = [15, 35, 55];
+            
+            for (let i = 0; i < 60; i++) {
+                if (epsilonAttentionCheckIndices.includes(i)) {
+                    sequence.push({ type: 'attention', instruction: 'Press D instead' });
+                } else if (i < 8 || Math.random() < 0.7) {
+                    sequence.push({ type: 'standard', char: currentPattern });
+                } else {
+                    // Violation
+                    const otherPatterns = patterns.filter(p => p !== currentPattern);
+                    const violationChar = otherPatterns[Math.floor(Math.random() * otherPatterns.length)];
+                    sequence.push({ type: 'violation', char: violationChar });
+                    // 30% chance to switch pattern after violation
+                    if (Math.random() < 0.3) currentPattern = violationChar;
+                }
+            }
+            
+            return sequence;
+        }
+
+        function runEpsilonTrial() {
+            if (epsilonTrial >= epsilonSequence.length) {
+                epsilonActive = false;
+                document.removeEventListener('keydown', handleEpsilonKey);
+                nextStep();
+                return;
+            }
+
+            const display = document.getElementById('sequence-display');
+            const counter = document.getElementById('epsilon-counter');
+            const progress = document.getElementById('epsilon-progress');
+            
+            counter.innerText = `Trial ${epsilonTrial + 1}/60`;
+            progress.innerText = `${Math.round((epsilonTrial / 60) * 100)}%`;
+            
+            const trial = epsilonSequence[epsilonTrial];
+            
+            if (trial.type === 'attention') {
+                // Attention check with varied tasks
+                const checkType = epsilonAttentionCheckTypes[epsilonAttentionCheckIndices.indexOf(epsilonTrial)];
+                
+                if (checkType === 'reverse') {
+                    display.innerHTML = `<div class="attention-check p-8 rounded-xl bg-orange-900/30">
+                        <p class="text-2xl font-bold text-orange-400 mb-4">⚠️ ATTENTION CHECK</p>
+                        <p class="text-lg mb-2">Read this sequence backwards:</p>
+                        <p class="text-3xl font-mono text-white mb-4">T - R - I - A - L</p>
+                        <p class="text-sm text-zinc-400">Press <kbd class="px-3 py-2 bg-zinc-800 rounded text-xl">L</kbd> for the first letter backwards</p>
+                    </div>`;
+                } else if (checkType === 'math') {
+                    display.innerHTML = `<div class="attention-check p-8 rounded-xl bg-orange-900/30">
+                        <p class="text-2xl font-bold text-orange-400 mb-4">⚠️ ATTENTION CHECK</p>
+                        <p class="text-lg mb-2">Solve: 47 + 28 = ?</p>
+                        <p class="text-2xl font-mono text-white mb-4">75</p>
+                        <p class="text-sm text-zinc-400">If correct, press <kbd class="px-3 py-2 bg-zinc-800 rounded text-xl">C</kbd></p>
+                    </div>`;
+                } else {
+                    display.innerHTML = `<div class="attention-check p-8 rounded-xl bg-orange-900/30">
+                        <p class="text-2xl font-bold text-orange-400 mb-4">⚠️ ATTENTION CHECK</p>
+                        <p class="text-lg mb-2">Count the vowels:</p>
+                        <p class="text-2xl font-mono text-white mb-4">COGNITIVE ASSESSMENT</p>
+                        <p class="text-sm text-zinc-400">Press <kbd class="px-3 py-2 bg-zinc-800 rounded text-xl">7</kbd> for the answer</p>
+                    </div>`;
+                }
+                lastStimTime = performance.now();
+            } else {
+                display.innerHTML = '<div class="w-4 h-4 rounded-full bg-zinc-700"></div>';
+                
+                setTimeout(() => {
+                    if (!epsilonActive) return;
+                    display.innerHTML = `<span class="text-white">${trial.char}</span>`;
+                    lastStimTime = performance.now();
+                    
+                    display.classList.add('scale-110');
+                    setTimeout(() => display.classList.remove('scale-110'), 100);
+                }, 800 + Math.random() * 600);
+            }
+        }
+
+        function handleEpsilonKey(e) {
+            if (!epsilonActive || lastStimTime === 0) return;
+            
+            const rt = performance.now() - lastStimTime;
+            const trial = epsilonSequence[epsilonTrial];
+            
+            // RT validation
+            if (rt < 100) {
+                // Too fast - anticipatory
+                state.data.epsilon.trials.push({ trial: epsilonTrial, rt, valid: false, reason: 'too_fast' });
+            } else if (rt > 5000) {
+                // Too slow - distracted
+                state.data.epsilon.trials.push({ trial: epsilonTrial, rt, valid: false, reason: 'too_slow' });
+            } else {
+                if (trial.type === 'attention') {
+                    // Attention check with varied validation
+                    const checkType = epsilonAttentionCheckTypes[epsilonAttentionCheckIndices.indexOf(epsilonTrial)];
+                    let passed = false;
+                    
+                    if (checkType === 'reverse') {
+                        passed = e.key === 'l' || e.key === 'L';
+                    } else if (checkType === 'math') {
+                        passed = e.key === 'c' || e.key === 'C';
+                    } else {
+                        passed = e.key === '7';
+                    }
+                    
+                    state.data.epsilon.attentionChecks.push({ trial: epsilonTrial, passed, rt, type: checkType });
+                } else if (e.code === 'Space') {
+                    state.data.epsilon.trials.push({
+                        trial: epsilonTrial,
+                        type: trial.type,
+                        char: trial.char,
+                        rt,
+                        valid: true
+                    });
+                    
+                    if (trial.type === 'violation') {
+                        state.data.epsilon.violations.push({ trial: epsilonTrial, char: trial.char, rt });
+                    } else {
+                        state.data.epsilon.standards.push({ trial: epsilonTrial, rt });
+                    }
+                }
+            }
+            
+            lastStimTime = 0;
+            epsilonTrial++;
+            state.completedTrials++;
+            updateProgress();
+            saveProgress();
+            
+            setTimeout(runEpsilonTrial, 200);
+        }
+
+        // ===================================
+        // MODULE 2: PI (30 trials + 2 attention checks)
+        // ===================================
+        let piTrial = 0;
+        let piMaxTrials = 30;
+        let currentPiAnswer = null;
+        let piTaskTypes = ['line', 'dots', 'duration', 'pattern'];
+        let piAttentionCheckIndices = [10, 25];
+
+        function initPiModule() {
+            piTrial = 0;
+            setupPiTrial();
+        }
+
+        function setupPiTrial() {
+            if (piTrial >= piMaxTrials) {
+                nextStep();
+                return;
+            }
+
+            document.getElementById('pi-counter').innerText = `Trial ${piTrial + 1}/${piMaxTrials}`;
+            
+            if (piAttentionCheckIndices.includes(piTrial)) {
+                renderPiAttentionCheck();
+            } else {
+                const taskType = piTaskTypes[piTrial % piTaskTypes.length];
+                const container = document.getElementById('pi-task-container');
+                
+                if (taskType === 'line') renderLineComparison(container);
+                else if (taskType === 'dots') renderDotComparison(container);
+                else if (taskType === 'duration') renderDurationTask(container);
+                else renderPatternCompletion(container);
+            }
+        }
+
+        function renderPiAttentionCheck() {
+            const container = document.getElementById('pi-task-container');
+            const attentionTasks = [
+                {
+                    question: "Which number is missing?",
+                    sequence: "2, 4, 6, 8, ?",
+                    answer: "10",
+                    key: "1"
+                },
+                {
+                    question: "Complete the pattern:",
+                    sequence: "🌞, 🌙, 🌞, 🌙, ?",
+                    answer: "🌞",
+                    key: "2"
+                }
+            ];
+            
+            const task = attentionTasks[Math.floor(Math.random() * attentionTasks.length)];
+            
+            container.innerHTML = `
+                <div class="attention-check p-8 rounded-xl bg-orange-900/30 space-y-6">
+                    <p class="text-2xl font-bold text-orange-400">⚠️ ATTENTION CHECK</p>
+                    <p class="text-lg">${task.question}</p>
+                    <p class="text-2xl font-mono text-white">${task.sequence}</p>
+                    <p class="text-lg">Answer: <strong>${task.answer}</strong></p>
+                    <div class="space-y-4">
+                        <p class="text-center text-sm text-zinc-400">If this is correct, set confidence to exactly <strong>75%</strong></p>
+                        <p class="text-center text-sm text-zinc-400">Confidence: <span id="conf-display" class="text-white font-bold">50%</span></p>
+                        <input type="range" id="conf-slider" min="0" max="100" value="50" class="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-orange-500" oninput="document.getElementById('conf-display').innerText = this.value + '%'">
+                        <button onclick="submitPiAttentionCheck()" class="w-full py-4 bg-orange-600 hover:bg-orange-500 rounded-xl font-bold">Submit</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitPiAttentionCheck() {
+            const confidence = parseInt(document.getElementById('conf-slider').value);
+            const passed = Math.abs(confidence - 75) <= 5; // Allow ±5% tolerance
+            state.data.pi.attentionChecks.push({ trial: piTrial, passed, confidence });
+            
+            piTrial++;
+            state.completedTrials++;
+            updateProgress();
+            saveProgress();
+            setupPiTrial();
+        }
+
+        function renderLineComparison(container) {
+            const hA = 40 + Math.random() * 120;
+            const diff = (Math.random() > 0.5 ? 1 : -1) * (8 + Math.random() * 25);
+            const hB = hA + diff;
+            
+            container.innerHTML = `
+                <div class="bg-zinc-900/50 p-12 rounded-2xl flex justify-around items-end h-80 mb-6">
+                    <div class="w-8 bg-blue-500 rounded-t-lg" style="height: ${hA}px"></div>
+                    <div class="w-8 bg-purple-500 rounded-t-lg" style="height: ${hB}px"></div>
+                </div>
+                <p class="text-center font-medium mb-4">Which line is longer?</p>
+                <div class="flex gap-4 mb-6">
+                    <button onclick="recordPiChoice('A', ${hA}, ${hB}, ${Math.abs(diff)})" class="flex-1 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold">Left</button>
+                    <button onclick="recordPiChoice('B', ${hB}, ${hA}, ${Math.abs(diff)})" class="flex-1 py-4 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold">Right</button>
+                </div>
+                <div id="confidence-input" class="hidden space-y-4">
+                    <p class="text-center text-sm text-zinc-400">Confidence: <span id="conf-display" class="text-white font-bold">50%</span></p>
+                    <input type="range" id="conf-slider" min="0" max="100" value="50" class="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" oninput="document.getElementById('conf-display').innerText = this.value + '%'">
+                    <button onclick="submitPiTrial()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold">Confirm</button>
+                </div>
+            `;
+        }
+
+        function renderDotComparison(container) {
+            const countA = 20 + Math.floor(Math.random() * 30);
+            const diff = (Math.random() > 0.5 ? 1 : -1) * (3 + Math.floor(Math.random() * 10));
+            const countB = countA + diff;
+            
+            const dotsA = generateRandomDots(countA, 'blue');
+            const dotsB = generateRandomDots(countB, 'purple');
+            
+            container.innerHTML = `
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-zinc-900/50 p-8 rounded-2xl h-80 relative overflow-hidden">${dotsA}</div>
+                    <div class="bg-zinc-900/50 p-8 rounded-2xl h-80 relative overflow-hidden">${dotsB}</div>
+                </div>
+                <p class="text-center font-medium mb-4">Which side has more dots?</p>
+                <div class="flex gap-4 mb-6">
+                    <button onclick="recordPiChoice('A', ${countA}, ${countB}, ${Math.abs(diff)})" class="flex-1 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold">Left</button>
+                    <button onclick="recordPiChoice('B', ${countB}, ${countA}, ${Math.abs(diff)})" class="flex-1 py-4 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold">Right</button>
+                </div>
+                <div id="confidence-input" class="hidden space-y-4">
+                    <p class="text-center text-sm text-zinc-400">Confidence: <span id="conf-display" class="text-white font-bold">50%</span></p>
+                    <input type="range" id="conf-slider" min="0" max="100" value="50" class="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" oninput="document.getElementById('conf-display').innerText = this.value + '%'">
+                    <button onclick="submitPiTrial()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold">Confirm</button>
+                </div>
+            `;
+        }
+
+        function renderDurationTask(container) {
+            const durationA = 1000 + Math.random() * 2000;
+            const diff = (Math.random() > 0.5 ? 1 : -1) * (200 + Math.random() * 700);
+            const durationB = durationA + diff;
+            
+            container.innerHTML = `
+                <div class="mb-6 text-center">
+                    <p class="text-zinc-400 mb-6">Watch two flashes. Which one lasted longer?</p>
+                    <div id="flash-display" class="h-32 bg-black rounded-2xl flex items-center justify-center">
+                        <div id="flash-indicator" class="w-24 h-24 rounded-full opacity-0 transition-opacity"></div>
+                    </div>
+                </div>
+                <div id="duration-buttons" class="hidden space-y-4">
+                    <p class="text-center font-medium mb-4">Which flash lasted longer?</p>
+                    <div class="flex gap-4 mb-6">
+                        <button onclick="recordPiChoice('A', ${durationA}, ${durationB}, ${Math.abs(diff)})" class="flex-1 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold">First</button>
+                        <button onclick="recordPiChoice('B', ${durationB}, ${durationA}, ${Math.abs(diff)})" class="flex-1 py-4 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold">Second</button>
+                    </div>
+                    <div id="confidence-input" class="hidden space-y-4">
+                        <p class="text-center text-sm text-zinc-400">Confidence: <span id="conf-display" class="text-white font-bold">50%</span></p>
+                        <input type="range" id="conf-slider" min="0" max="100" value="50" class="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" oninput="document.getElementById('conf-display').innerText = this.value + '%'">
+                        <button onclick="submitPiTrial()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold">Confirm</button>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                showFlash('blue', durationA);
+                setTimeout(() => {
+                    showFlash('purple', durationB);
+                    setTimeout(() => {
+                        document.getElementById('duration-buttons').classList.remove('hidden');
+                    }, durationB + 500);
+                }, durationA + 1000);
+            }, 1000);
+        }
+
+        function renderPatternCompletion(container) {
+            const patterns = [
+                // 2x2 grid pattern completion
+                {
+                    question: "Complete the pattern:",
+                    grid: [
+                        ['🔵', '🔴'],
+                        ['🔴', '?']
+                    ],
+                    options: ['🔵', '🔴', '🟡', '🟢'],
+                    correct: 0
+                },
+                {
+                    question: "What comes next?",
+                    grid: [
+                        ['⬜', '⬜'],
+                        ['⬛', '?']
+                    ],
+                    options: ['⬜', '⬛', '🟦', '🟨'],
+                    correct: 1
+                },
+                {
+                    question: "Complete the sequence:",
+                    grid: [
+                        ['🔺', '🔻'],
+                        ['🔺', '?']
+                    ],
+                    options: ['🔺', '🔻', '⬜', '⬛'],
+                    correct: 1
+                }
+            ];
+            
+            const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+            
+            container.innerHTML = `
+                <div class="mb-6 text-center">
+                    <p class="text-zinc-400 mb-6">${pattern.question}</p>
+                    <div class="h-40 flex items-center justify-center">
+                        <div class="grid grid-cols-2 gap-2 bg-zinc-800 p-4 rounded-xl">
+                            ${pattern.grid.map((row, i) => 
+                                row.map((cell, j) => 
+                                    `<div class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl bg-zinc-700">
+                                        ${cell === '?' ? '<span class="text-zinc-500">?</span>' : cell}
+                                    </div>`
+                                ).join('')
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm text-zinc-400 mb-2">Choose the missing element:</label>
+                        <div class="grid grid-cols-4 gap-3">
+                            ${pattern.options.map((option, i) => 
+                                `<button onclick="selectPatternOption(${i}, ${pattern.correct})" class="pattern-option h-16 rounded-lg bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-2xl transition-colors">
+                                    ${option}
+                                </button>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    <div id="confidence-input" class="hidden space-y-4">
+                        <p class="text-center text-sm text-zinc-400">Confidence: <span id="conf-display" class="text-white font-bold">50%</span></p>
+                        <input type="range" id="conf-slider" min="0" max="100" value="50" class="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500" oninput="document.getElementById('conf-display').innerText = this.value + '%'">
+                        <button onclick="submitPiTrial()" class="w-full py-4 bg-purple-600 rounded-xl font-bold">Confirm</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateRandomDots(count, color) {
+            let html = '';
+            for (let i = 0; i < count; i++) {
+                const x = Math.random() * 90;
+                const y = Math.random() * 90;
+                const size = 8 + Math.random() * 8;
+                html += `<div class="absolute rounded-full bg-${color}-500" style="left: ${x}%; top: ${y}%; width: ${size}px; height: ${size}px;"></div>`;
+            }
+            return html;
+        }
+
+        function showFlash(color, duration) {
+            const indicator = document.getElementById('flash-indicator');
+            indicator.className = `w-24 h-24 rounded-full bg-${color}-500`;
+            indicator.style.opacity = '1';
+            setTimeout(() => indicator.style.opacity = '0', duration);
+        }
+
+        function recordPiChoice(choice, valueChosen, valueOther, difficulty) {
+            currentPiAnswer = {
+                choice,
+                correct: valueChosen > valueOther,
+                difficulty,
+                responseTime: performance.now()
+            };
+            document.getElementById('confidence-input').classList.remove('hidden');
+        }
+
+        function selectPatternOption(selected, correct) {
+            // Remove previous selection
+            document.querySelectorAll('.pattern-option').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'border-2', 'border-purple-400');
+                btn.classList.add('bg-zinc-800');
+            });
+            
+            // Highlight selected option
+            document.querySelectorAll('.pattern-option')[selected].classList.remove('bg-zinc-800');
+            document.querySelectorAll('.pattern-option')[selected].classList.add('bg-purple-600', 'border-2', 'border-purple-400');
+            
+            currentPiAnswer = {
+                choice: 'pattern',
+                correct: selected === correct,
+                difficulty: selected === correct ? 0.3 : 0.8, // Lower difficulty = easier
+                responseTime: performance.now()
+            };
+            
+            document.getElementById('confidence-input').classList.remove('hidden');
+        }
+
+        function submitPiTrial() {
+            const confidence = parseInt(document.getElementById('conf-slider').value);
+            
+            state.data.pi.trials.push({
+                trial: piTrial,
+                correct: currentPiAnswer.correct,
+                confidence: confidence / 100,
+                difficulty: currentPiAnswer.difficulty
+            });
+            
+            piTrial++;
+            state.completedTrials++;
+            updateProgress();
+            saveProgress();
+            setupPiTrial();
+        }
+
+        // ===================================
+        // MODULE 3: BETA (6 tasks + 1 attention check)
+        // ===================================
+        let betaTaskIndex = 0;
+        let betaTasks = ['heartbeat1', 'emotion1', 'decision1', 'heartbeat2', 'emotion2', 'decision2'];
+
+        function initBetaModule() {
+            betaTaskIndex = 0;
+            runBetaTask();
+        }
+
+        function runBetaTask() {
+            if (betaTaskIndex >= betaTasks.length) {
+                nextStep();
+                return;
+            }
+
+            document.getElementById('beta-counter').innerText = `Task ${betaTaskIndex + 1}/${betaTasks.length}`;
+            const container = document.getElementById('beta-task-container');
+            
+            if (betaTaskIndex === 3) {
+                renderBetaAttentionCheck(container);
+            } else if (betaTasks[betaTaskIndex].startsWith('heartbeat')) {
+                renderHeartbeatTask(container);
+            } else if (betaTasks[betaTaskIndex].startsWith('emotion')) {
+                renderEmotionBodyTask(container);
+            } else {
+                renderDecisionSomaticTask(container);
+            }
+        }
+
+        function renderBetaAttentionCheck(container) {
+            const attentionTasks = [
+                {
+                    question: "Follow the instruction carefully:",
+                    instruction: "Touch your nose, then select the option below",
+                    options: ["I completed the instruction", "I skipped the instruction"],
+                    correct: 0
+                },
+                {
+                    question: "Memory check:",
+                    instruction: "Remember this number: 7-3-9-2",
+                    options: ["7-3-9-2", "7-2-9-3", "9-3-7-2", "2-3-7-9"],
+                    correct: 0
+                }
+            ];
+            
+            const task = attentionTasks[Math.floor(Math.random() * attentionTasks.length)];
+            
+            container.innerHTML = `
+                <div class="attention-check p-8 rounded-xl bg-orange-900/30 space-y-6">
+                    <p class="text-2xl font-bold text-orange-400">⚠️ ATTENTION CHECK</p>
+                    <p class="text-lg">${task.question}</p>
+                    <p class="text-xl text-white mb-4">${task.instruction}</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        ${task.options.map((option, i) => 
+                            `<button onclick="submitBetaAttentionCheck(${i}, ${task.correct})" class="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-xl text-left transition-colors">
+                                ${option}
+                            </button>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitBetaAttentionCheck(selected, correct) {
+            const passed = selected === correct;
+            state.data.beta.attentionChecks.push({ task: betaTaskIndex, passed, selected, correct });
+            betaTaskIndex++;
+            state.completedTrials++;
+            updateProgress();
+            saveProgress();
+            runBetaTask();
+        }
+
+        function renderHeartbeatTask(container) {
+            const duration = betaTaskIndex === 0 ? 30 : 45; // Vary duration
+            container.innerHTML = `
+                <p class="text-zinc-400 mb-8">Without checking your pulse, count your heartbeats silently for ${duration} seconds.</p>
+                <div class="relative py-12">
+                    <div id="timer-ring" class="w-40 h-40 border-4 border-emerald-500/20 rounded-full mx-auto flex items-center justify-center">
+                        <span id="heart-timer" class="text-4xl font-bold mono text-emerald-400">${duration}</span>
+                    </div>
+                </div>
+                <div id="heart-input" class="hidden space-y-6">
+                    <p class="text-zinc-300 font-medium">How many beats did you count?</p>
+                    <input type="number" id="heart-count" class="bg-zinc-900 border border-zinc-700 rounded-xl p-4 w-40 text-center text-3xl mono focus:outline-none focus:border-emerald-500 mx-auto block">
+                    <button onclick="submitHeartbeat(${duration})" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-bold">Submit</button>
+                </div>
+                <button id="start-heart" onclick="startHeartbeat(${duration})" class="w-full py-4 bg-zinc-800 hover:bg-zinc-700 rounded-xl font-bold">Start</button>
+            `;
+        }
+
+        function startHeartbeat(duration) {
+            document.getElementById('start-heart').classList.add('hidden');
+            let timeLeft = duration;
+            const timerEl = document.getElementById('heart-timer');
+            const ring = document.getElementById('timer-ring');
+            ring.classList.add('pulse');
+
+            const interval = setInterval(() => {
+                timeLeft--;
+                timerEl.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    ring.classList.remove('pulse');
+                    document.getElementById('heart-input').classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        function submitHeartbeat(duration) {
+            const count = parseInt(document.getElementById('heart-count').value) || 0;
+            const expectedRate = 72; // BPM
+            const expectedCount = Math.round((expectedRate * duration) / 60);
+            const accuracy = Math.max(0, 1 - Math.abs(expectedCount - count) / expectedCount);
+            
+            state.data.beta.heartbeat.push({
+                task: betaTaskIndex,
+                reported: count,
+                expected: expectedCount,
+                accuracy: accuracy * 100,
+                duration
+            });
+            
+            betaTaskIndex++;
+            state.completedTrials++;
+            updateProgress();
+            saveProgress();
+            runBetaTask();
+        }
+
+        function renderEmotionBodyTask(container) {
+            const emotions = [
+                { name: 'Alertness', body: 'chest tightness, racing heart, shallow breathing' },
+                { name: 'Elation', body: 'warmth in chest, lightness, energy surge' },
+                { name: 'Melancholy', body: 'heaviness in chest, fatigue, slowed movement' },
+                { name: 'Irritation', body: 'heat in face, tension in jaw, clenched fists' },
+                { name: 'Arousal', body: 'stomach tension, cold extremities, rapid pulse' },
+                { name: 'Aversion', body: 'nausea, throat tightness, facial grimacing' }
+            ];
+            
+            const emotion = emotions[Math.floor(Math.random() * emotions.length)];
+            
+            container.innerHTML = `
+                <p class="text-zinc-400 mb-6">Read the emotion word, then rate how strongly you feel it in your body RIGHT NOW.</p>
+                <div class="bg-zinc-900/50 p-12 rounded-2xl mb-8">
+                    <h3 class="text-4xl font-bold text-center mb-4">${emotion.name}</h3>
+                    <p class="text-sm text-zinc-500 text-center italic">(${emotion.body})</p>
+                </div>
+                <div class="space-y-6">
+                    <p class="text-center text-sm text-zinc-400">Bodily sensation strength: <span id="body-strength" class="text-white font-bold">0</span>/100</p>
+                    <input type="range" id="body-slider" min="0" max="100" value="0" class="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-emerald-500" oninput="document.getElementById('body-strength').innerText = this.value">
+                    <button onclick="submitEmotionBody()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-bold">Submit</button>
+                </div>
+            `;
+        }
+
+        function submitEmotionBody() {
+            const rating = parseInt(document.getElementById('body-slider').value);
+            state.data.beta.emotionBody.push({ task: betaTaskIndex, rating });
+            
+            betaTaskIndex++;
+            state.completedTrials++;
+            updateProgress();
+            saveProgress();
+            runBetaTask();
+        }
+
+        function renderDecisionSomaticTask(container) {
+            const scenarios = [
+                {
+                    title: 'Job Decision',
+                    optionA: 'Higher salary, longer commute, unfamiliar industry',
+                    optionB: 'Lower salary, short commute, passionate about field'
+                },
+                {
+                    title: 'Investment Choice',
+                    optionA: 'Safe bonds with 3% return, highly predictable',
+                    optionB: 'Growth stocks with 15% potential, more volatile'
+                },
+                {
+                    title: 'Relationship Decision',
+                    optionA: 'Stay in comfortable but unfulfilling relationship',
+                    optionB: 'End relationship and face uncertainty alone'
+                }
+            ];
+            
+            const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+            
+            container.innerHTML = `
+                <p class="text-zinc-400 mb-6">Rate how much you'd rely on "gut feeling" vs logical analysis for this decision.</p>
+                <div class="grid grid-cols-2 gap-6 mb-8">
+                    <div class="bg-blue-900/20 p-6 rounded-2xl border border-blue-500/30">
+                        <h4 class="font-bold mb-2">Option A</h4>
+                        <p class="text-sm text-zinc-400">${scenario.optionA}</p>
+                    </div>
+                    <div class="bg-purple-900/20 p-6 rounded-2xl border border-purple-500/30">
+                        <h4 class="font-bold mb-2">Option B</h4>
+                        <p class="text-sm text-zinc-400">${scenario.optionB}</p>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <p class="text-center text-sm text-zinc-400">Decision style: <span id="decision-style" class="text-white font-bold">Balanced</span></p>
+                    <div class="flex justify-between text-xs text-zinc-500 px-2">
+                        <span>Pure Logic</span>
+                        <span>Pure Gut</span>
+                    </div>
+                    <input type="range" id="decision-slider" min="0" max="100" value="50" class="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-emerald-500" oninput="updateDecisionStyle(this.value)">
+                    <button onclick="submitDecision()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-bold">Submit</button>
+                </div>
+            `;
+        }
+
+        function updateDecisionStyle(value) {
+            const styles = ['Pure Logic', 'Mostly Logic', 'Balanced', 'Mostly Gut', 'Pure Gut'];
+            const index = Math.floor(value / 25);
+            document.getElementById('decision-style').innerText = styles[Math.min(index, 4)];
+        }
+
+        function submitDecision() {
+            const rating = parseInt(document.getElementById('decision-slider').value);
+            state.data.beta.decisionSomatic.push({ task: betaTaskIndex, rating });
+            
+            betaTaskIndex++;
+            state.completedTrials++;
+            updateProgress();
+            saveProgress();
+            runBetaTask();
+        }
+
+        // ===================================
+        // MODULE 4: THETA (60 trials, adaptive staircase)
+        // ===================================
+        let thetaTrial = 0;
+        let thetaMaxTrials = 60;
+        let thetaStaircase = null;
+        let thetaFlashTime = 0;
+        let thetaActive = false;
+
+        function initThetaModule() {
+            thetaTrial = 0;
+            thetaActive = true;
+            
+            // Initialize adaptive staircase (3-down-1-up targets 79.4% correct)
+            thetaStaircase = {
+                intensity: 0.3, // Starting intensity
+                correctStreak: 0,
+                stepSize: 0.1,
+                minIntensity: 0.01,
+                maxIntensity: 0.9,
+                reversals: []
+            };
+            
+            document.addEventListener('keydown', handleThetaKey);
+            runThetaTrial();
+        }
+
+        function runThetaTrial() {
+            if (thetaTrial >= thetaMaxTrials) {
+                thetaActive = false;
+                document.removeEventListener('keydown', handleThetaKey);
+                nextStep();
+                return;
+            }
+
+            document.getElementById('theta-counter').innerText = `Trial ${thetaTrial + 1}/${thetaMaxTrials}`;
+            
+            const stim = document.getElementById('threshold-stimulus');
+            stim.style.opacity = '0';
+            thetaFlashTime = 0;
+
+            setTimeout(() => {
+                if (!thetaActive) return;
+                
+                stim.style.opacity = thetaStaircase.intensity;
+                stim.style.transform = 'scale(1.5)';
+                thetaFlashTime = performance.now();
+                
+                setTimeout(() => {
+                    stim.style.opacity = '0';
+                    stim.style.transform = 'scale(1)';
+                    
+                    setTimeout(() => {
+                        if (thetaFlashTime > 0) {
+                            // Missed detection - record the miss
+                            state.data.theta.trials.push({
+                                trial: thetaTrial,
+                                intensity: thetaStaircase.intensity,
+                                response: 'miss',
+                                rt: 2000, // Timeout duration
+                                valid: true
+                            });
+                            
+                            updateStaircase(false);
+                            thetaFlashTime = 0;
+                            thetaTrial++;
+                            state.completedTrials++;
+                            updateProgress();
+                            saveProgress();
+                            setTimeout(runThetaTrial, 500);
+                        }
+                    }, 2000);
+                }, 150);
+            }, 2000 + Math.random() * 3000);
+        }
+
+        function handleThetaKey(e) {
+            if (e.code === 'Enter' && thetaActive) {
+                if (thetaFlashTime > 0) {
+                    const rt = performance.now() - thetaFlashTime;
+                    
+                    if (rt < 100) {
+                        // Too fast - count as false alarm
+                        state.data.theta.trials.push({
+                            trial: thetaTrial,
+                            intensity: thetaStaircase.intensity,
+                            response: 'false_alarm',
+                            rt,
+                            valid: false
+                        });
+                    } else {
+                        // Hit
+                        state.data.theta.trials.push({
+                            trial: thetaTrial,
+                            intensity: thetaStaircase.intensity,
+                            response: 'hit',
+                            rt,
+                            valid: true
+                        });
+                        
+                        document.getElementById('theta-detected').innerText = 
+                            parseInt(document.getElementById('theta-detected').innerText) + 1;
+                        
+                        updateStaircase(true);
+                    }
+                    
+                    thetaFlashTime = 0;
+                    thetaTrial++;
+                    state.completedTrials++;
+                    updateProgress();
+                    saveProgress();
+                    setTimeout(runThetaTrial, 500);
+                } else {
+                    // False alarm
+                    state.data.theta.trials.push({
+                        trial: thetaTrial,
+                        intensity: thetaStaircase.intensity,
+                        response: 'false_alarm',
+                        rt: 0,
+                        valid: true
+                    });
+                    document.getElementById('theta-false').innerText = 
+                        parseInt(document.getElementById('theta-false').innerText) + 1;
+                }
+            }
+        }
+
+        function updateStaircase(correct) {
+            const oldIntensity = thetaStaircase.intensity;
+            
+            if (correct) {
+                thetaStaircase.correctStreak++;
+                if (thetaStaircase.correctStreak >= 3) {
+                    // Decrease intensity (make harder)
+                    thetaStaircase.intensity = Math.max(
+                        thetaStaircase.minIntensity,
+                        thetaStaircase.intensity - thetaStaircase.stepSize
+                    );
+                    thetaStaircase.correctStreak = 0;
+                    
+                    if (thetaStaircase.intensity !== oldIntensity) {
+                        thetaStaircase.reversals.push({ trial: thetaTrial, intensity: thetaStaircase.intensity });
+                    }
+                }
+            } else {
+                // Increase intensity (make easier) on any miss
+                thetaStaircase.intensity = Math.min(
+                    thetaStaircase.maxIntensity,
+                    thetaStaircase.intensity + thetaStaircase.stepSize
+                );
+                thetaStaircase.correctStreak = 0;
+                
+                if (thetaStaircase.intensity !== oldIntensity) {
+                    thetaStaircase.reversals.push({ trial: thetaTrial, intensity: thetaStaircase.intensity });
+                }
+                
+                document.getElementById('theta-missed').innerText = 
+                    parseInt(document.getElementById('theta-missed').innerText) + 1;
+            }
+            
+            // Reduce step size after reversals
+            if (thetaStaircase.reversals.length > 4) {
+                thetaStaircase.stepSize = Math.max(0.02, thetaStaircase.stepSize * 0.8);
+            }
+            
+            state.data.theta.staircase = thetaStaircase;
+        }
+
+        // ===================================
+        // RESULTS CALCULATION (IMPROVED)
+        // ===================================
+        function calculateResults() {
+            document.getElementById('test-nav').classList.add('hidden');
+            document.getElementById('step-4').classList.add('hidden-step');
+            document.getElementById('results').classList.remove('hidden-step');
+
+            // Calculate quality metrics first
+            calculateQualityMetrics();
+
+            // EPSILON: Enhanced d-prime calculation with robust edge case handling
+            const validEpsilonTrials = state.data.epsilon.trials.filter(t => t.valid);
+            const violations = state.data.epsilon.violations;
+            const standards = state.data.epsilon.standards;
+            
+            // Enhanced edge case handling with intelligent defaults
+            let epsilonScore = 50;
+            let dPrime = 0, rtDiff = 0, hitRate = 0.5, faRate = 0.05;
+            
+            if (violations.length === 0 && standards.length === 0) {
+                // No data collected - use population norm
+                epsilonScore = NORMATIVE_DATA.epsilon.mean;
+                dPrime = 0;
+                rtDiff = 0;
+                hitRate = 0.5;
+                faRate = 0.05;
+            } else if (violations.length === 0) {
+                // Only standard trials - conservative estimate
+                epsilonScore = Math.max(30, Math.min(70, NORMATIVE_DATA.epsilon.mean - 10));
+                dPrime = -0.5;
+                rtDiff = 0;
+                hitRate = 0.5;
+                faRate = standards.length > 0 ? 
+                    Math.min(0.3, state.data.epsilon.trials.filter(t => t.type === 'standard').length / standards.length) : 0.05;
+            } else if (standards.length === 0) {
+                // Only violation trials - optimistic estimate with uncertainty
+                epsilonScore = Math.max(30, Math.min(70, NORMATIVE_DATA.epsilon.mean + 5));
+                dPrime = 0.3;
+                rtDiff = 50;
+                hitRate = violations.length > 0 ? 
+                    Math.max(0.3, violations.filter(v => v.rt < 1000).length / violations.length) : 0.5;
+                faRate = 0.05;
+            } else {
+                // Sufficient data for proper calculation
+                const signalTrials = violations.length;
+                const noiseTrials = standards.length;
+                
+                const hits = violations.length;
+                const falseAlarms = state.data.epsilon.trials.filter(t => 
+                    t.valid && t.type === 'standard'
+                ).length;
+                
+                hitRate = signalTrials > 0 ? hits / signalTrials : 0.5;
+                faRate = noiseTrials > 0 ? falseAlarms / noiseTrials : 0.05;
+                
+                const hitRateAdj = Math.max(0.01, Math.min(0.99, hitRate));
+                const faRateAdj = Math.max(0.01, Math.min(0.99, faRate));
+                
+                dPrime = zScore(hitRateAdj) - zScore(faRateAdj);
+                
+                // Enhanced RT handling with outlier detection
+                const standardRTs = standards.map(s => s.rt).filter(rt => rt > 100 && rt < 3000);
+                const violationRTs = violations.map(v => v.rt).filter(rt => rt > 100 && rt < 3000);
+                
+                const avgStandardRT = standardRTs.length > 0 ? mean(standardRTs) : 500;
+                const avgViolationRT = violationRTs.length > 0 ? mean(violationRTs) : 500;
+                rtDiff = avgViolationRT - avgStandardRT;
+                
+                // Robust score calculation with bounds
+                epsilonScore = Math.max(0, Math.min(100, 
+                    50 + (dPrime * 15) + (rtDiff > 0 ? Math.min(30, rtDiff / 10) : 0)
+                ));
+            }
+
+            // PI: Enhanced Brier score calculation with robust edge case handling
+            const piTrials = state.data.pi.trials;
+            
+            // Enhanced edge case handling with intelligent defaults
+            let piScore = 50;
+            let brierScore = 0.25, accuracy = 0.5, calibrationScore = 50, discrimination = 0;
+            
+            if (piTrials.length === 0) {
+                // No data collected - use population norm with uncertainty penalty
+                piScore = Math.max(40, Math.min(60, NORMATIVE_DATA.pi.mean));
+                brierScore = 0.25;
+                accuracy = 0.5;
+                calibrationScore = 50;
+                discrimination = 0;
+            } else if (piTrials.length < 5) {
+                // Insufficient data - conservative estimate
+                piScore = Math.max(35, Math.min(65, NORMATIVE_DATA.pi.mean - 5));
+                brierScore = 0.3;
+                accuracy = 0.45;
+                calibrationScore = 45;
+                discrimination = 5;
+            } else {
+                // Sufficient data for proper calculation
+                const validPiTrials = piTrials.filter(t => 
+                    t.confidence >= 0 && t.confidence <= 100 && 
+                    typeof t.correct === 'boolean'
+                );
+                
+                if (validPiTrials.length === 0) {
+                    // All trials invalid - use conservative defaults
+                    piScore = Math.max(30, Math.min(70, NORMATIVE_DATA.pi.mean - 10));
+                    brierScore = 0.35;
+                    accuracy = 0.4;
+                    calibrationScore = 40;
+                    discrimination = 0;
+                } else {
+                    brierScore = mean(validPiTrials.map(t => Math.pow((t.confidence / 100) - (t.correct ? 1 : 0), 2)));
+                    accuracy = mean(validPiTrials.map(t => t.correct ? 1 : 0));
+                    
+                    // Enhanced calibration score with bounds
+                    calibrationScore = Math.max(0, Math.min(100, (1 - brierScore) * 100));
+                    
+                    // Enhanced metacognitive efficiency with outlier handling
+                    const confCorrect = validPiTrials.filter(t => t.correct).length > 0 ? 
+                        mean(validPiTrials.filter(t => t.correct).map(t => t.confidence)) : 50;
+                    const confIncorrect = validPiTrials.filter(t => !t.correct).length > 0 ? 
+                        mean(validPiTrials.filter(t => !t.correct).map(t => t.confidence)) : 50;
+                    
+                    // Robust discrimination calculation
+                    discrimination = Math.max(0, Math.min(100, Math.abs(confCorrect - confIncorrect)));
+                    
+                    // Weighted combination with data quality adjustment
+                    const dataQualityFactor = Math.min(1, validPiTrials.length / piTrials.length);
+                    piScore = (calibrationScore * 0.5) + (discrimination * 0.3) + (accuracy * 100 * 0.2);
+                    piScore = piScore * dataQualityFactor + (50 * (1 - dataQualityFactor));
+                }
+            }
+
+            // BETA: Enhanced multi-component integration with robust handling
+            let betaScore = 50;
+            let avgHeartbeat = 50, avgEmotion = 50, avgDecision = 50;
+            
+            const heartbeatData = state.data.beta.heartbeat || [];
+            const emotionData = state.data.beta.emotionBody || [];
+            const decisionData = state.data.beta.decisionSomatic || [];
+            
+            if (heartbeatData.length === 0 && emotionData.length === 0 && decisionData.length === 0) {
+                // No data collected - use population norm
+                betaScore = NORMATIVE_DATA.beta.mean;
+                avgHeartbeat = 50;
+                avgEmotion = 50;
+                avgDecision = 50;
+            } else {
+                // Enhanced component processing with validation
+                const validHeartbeatData = heartbeatData.filter(h => 
+                    typeof h.accuracy === 'number' && h.accuracy >= 0 && h.accuracy <= 100
+                );
+                const validEmotionData = emotionData.filter(e => 
+                    typeof e.rating === 'number' && e.rating >= 0 && e.rating <= 100
+                );
+                const validDecisionData = decisionData.filter(d => 
+                    typeof d.rating === 'number' && d.rating >= 0 && d.rating <= 100
+                );
+                
+                // Intelligent fallbacks for missing components
+                if (validHeartbeatData.length > 0) {
+                    avgHeartbeat = mean(validHeartbeatData.map(h => h.accuracy));
+                } else if (heartbeatData.length > 0) {
+                    // Invalid heartbeat data - use conservative estimate
+                    avgHeartbeat = Math.max(30, Math.min(70, NORMATIVE_DATA.beta.mean - 5));
+                } else {
+                    // No heartbeat data - use population norm
+                    avgHeartbeat = NORMATIVE_DATA.beta.mean;
+                }
+                
+                if (validEmotionData.length > 0) {
+                    avgEmotion = mean(validEmotionData.map(e => e.rating));
+                } else if (emotionData.length > 0) {
+                    avgEmotion = Math.max(30, Math.min(70, NORMATIVE_DATA.beta.mean));
+                } else {
+                    avgEmotion = NORMATIVE_DATA.beta.mean;
+                }
+                
+                if (validDecisionData.length > 0) {
+                    avgDecision = mean(validDecisionData.map(d => d.rating));
+                } else if (decisionData.length > 0) {
+                    avgDecision = Math.max(30, Math.min(70, NORMATIVE_DATA.beta.mean));
+                } else {
+                    avgDecision = NORMATIVE_DATA.beta.mean;
+                }
+                
+                // Weighted combination with component reliability adjustment
+                const heartbeatWeight = validHeartbeatData.length > 0 ? 0.5 : 0.4;
+                const emotionWeight = validEmotionData.length > 0 ? 0.25 : 0.3;
+                const decisionWeight = validDecisionData.length > 0 ? 0.25 : 0.3;
+                
+                betaScore = (avgHeartbeat * heartbeatWeight) + 
+                           (avgEmotion * emotionWeight) + 
+                           (avgDecision * decisionWeight);
+            }
+
+            // THETA: Enhanced threshold estimation from staircase with robust handling
+            const validTheta = state.data.theta.trials.filter(t => t.valid && t.response !== 'false_alarm');
+            
+            let thetaScore = 50;
+            let thetaThreshold = 0.5, thetaDPrime = 0;
+            
+            if (state.data.theta.trials.length === 0) {
+                // No data collected - use population norm
+                thetaScore = NORMATIVE_DATA.theta.mean;
+                thetaThreshold = 0.5;
+                thetaDPrime = 0;
+            } else if (state.data.theta.trials.length < 10) {
+                // Insufficient data - conservative estimate with uncertainty
+                thetaScore = Math.max(40, Math.min(60, NORMATIVE_DATA.theta.mean - 5));
+                thetaThreshold = 0.6;
+                thetaDPrime = -0.2;
+            } else if (validTheta.length > 0 && state.data.theta.staircase) {
+                // Enhanced threshold estimation with outlier protection
+                const lastReversals = state.data.theta.staircase.reversals || [];
+                const cleanReversals = lastReversals.slice(-10).filter(r => 
+                    typeof r.intensity === 'number' && r.intensity >= 0 && r.intensity <= 1
+                );
+                
+                if (cleanReversals.length > 0) {
+                    // Robust threshold estimation using median of reversals
+                    const sortedIntensities = cleanReversals.map(r => r.intensity).sort((a, b) => a - b);
+                    const medianIdx = Math.floor(sortedIntensities.length / 2);
+                    thetaThreshold = sortedIntensities.length % 2 === 0 ? 
+                        (sortedIntensities[medianIdx - 1] + sortedIntensities[medianIdx]) / 2 :
+                        sortedIntensities[medianIdx];
+                    
+                    // Additional protection against extreme values
+                    thetaThreshold = Math.max(0.1, Math.min(0.9, thetaThreshold));
+                } else {
+                    // Fallback to adaptive estimate
+                    const allIntensities = state.data.theta.trials
+                        .filter(t => typeof t.intensity === 'number')
+                        .map(t => t.intensity);
+                    thetaThreshold = allIntensities.length > 0 ? 
+                        Math.max(0.2, Math.min(0.8, mean(allIntensities))) : 0.5;
+                }
+                
+                // Enhanced d-prime calculation with bounds
+                const hits = state.data.theta.trials.filter(t => t.response === 'hit').length;
+                const misses = state.data.theta.trials.filter(t => t.response === 'miss').length;
+                const fas = state.data.theta.trials.filter(t => t.response === 'false_alarm').length;
+                const totalSignalTrials = hits + misses;
+                
+                if (totalSignalTrials > 0) {
+                    const thetaHitRate = Math.max(0.01, Math.min(0.99, hits / totalSignalTrials));
+                    const noiseTrials = state.data.theta.trials.filter(t => 
+                        t.response === 'correct_rejection' || t.response === 'false_alarm'
+                    ).length;
+                    const thetaFARate = noiseTrials > 0 ? 
+                        Math.max(0.01, Math.min(0.99, fas / noiseTrials)) : 0.01;
+                    
+                    thetaDPrime = zScore(thetaHitRate) - zScore(thetaFARate);
+                    
+                    // Bound d-prime to reasonable range
+                    thetaDPrime = Math.max(-3, Math.min(3, thetaDPrime));
+                } else {
+                    thetaDPrime = 0;
+                }
+                
+                // Enhanced score combination with reliability weighting
+                const dataQualityFactor = Math.min(1, validTheta.length / state.data.theta.trials.length);
+                const thresholdScore = (1 - thetaThreshold) * 100;
+                const dPrimeScore = Math.max(0, Math.min(100, 50 + thetaDPrime * 15));
+                
+                thetaScore = (thresholdScore * 0.6) + (dPrimeScore * 0.4);
+                thetaScore = thetaScore * dataQualityFactor + (50 * (1 - dataQualityFactor));
+            } else {
+                // Invalid or incomplete data - conservative fallback
+                thetaScore = Math.max(30, Math.min(70, NORMATIVE_DATA.theta.mean - 5));
+                thetaThreshold = 0.6;
+                thetaDPrime = -0.3;
+            }
+
+            // Store results
+            state.results = {
+                epsilon: Math.round(epsilonScore),
+                pi: Math.round(piScore),
+                beta: Math.round(betaScore),
+                theta: Math.round(thetaScore),
+                details: {
+                    epsilon: { dPrime: dPrime || 0, rtDiff: rtDiff || 0, hitRate: hitRate || 0.5, faRate: faRate || 0.05 },
+                    pi: { brierScore: brierScore || 0.25, accuracy: accuracy || 0.5, calibrationScore: calibrationScore || 50, discrimination: discrimination || 0 },
+                    beta: { avgHeartbeat: avgHeartbeat || 50, avgEmotion: avgEmotion || 50, avgDecision: avgDecision || 50 },
+                    theta: { 
+                        threshold: thetaThreshold || 0.5,
+                        dPrime: thetaDPrime || 0
+                    }
+                }
+            };
+
+            displayResults();
+        }
+
+        function calculateQualityMetrics() {
+            const metrics = {
+                attentionChecksPassed: 0,
+                attentionChecksTotal: 0,
+                invalidResponses: 0,
+                totalResponses: 0,
+                averageRT: 0,
+                rtVariability: 0
+            };
+
+            // Epsilon attention checks
+            const epsilonAC = state.data.epsilon.attentionChecks || [];
+            metrics.attentionChecksTotal += epsilonAC.length;
+            metrics.attentionChecksPassed += epsilonAC.filter(a => a.passed).length;
+
+            // Pi attention checks
+            const piAC = state.data.pi.attentionChecks || [];
+            metrics.attentionChecksTotal += piAC.length;
+            metrics.attentionChecksPassed += piAC.filter(a => a.passed).length;
+
+            // Beta attention checks
+            const betaAC = state.data.beta.attentionChecks || [];
+            metrics.attentionChecksTotal += betaAC.length;
+            metrics.attentionChecksPassed += betaAC.filter(a => a.passed).length;
+
+            // Invalid responses
+            const invalidEpsilon = (state.data.epsilon.trials || []).filter(t => !t.valid);
+            metrics.invalidResponses = invalidEpsilon.length;
+            metrics.totalResponses = (state.data.epsilon.trials || []).length;
+
+            // RT metrics
+            const validRTs = (state.data.epsilon.trials || [])
+                .filter(t => t.valid && t.rt && t.rt > 0)
+                .map(t => t.rt);
+            
+            if (validRTs.length > 0) {
+                metrics.averageRT = mean(validRTs);
+                const rtSD = sd(validRTs);
+                metrics.rtVariability = metrics.averageRT > 0 ? rtSD / metrics.averageRT : 0;
+            }
+
+            // Overall quality score with safe defaults
+            const attentionScore = metrics.attentionChecksTotal > 0 ? 
+                (metrics.attentionChecksPassed / metrics.attentionChecksTotal) : 1;
+            const validityScore = metrics.totalResponses > 0 ?
+                (1 - metrics.invalidResponses / metrics.totalResponses) : 1;
+            const rtQuality = metrics.rtVariability < 0.5 ? 1 : (metrics.rtVariability < 0.8 ? 0.8 : 0.6);
+
+            metrics.overallQuality = Math.round((attentionScore * 0.5 + validityScore * 0.3 + rtQuality * 0.2) * 100);
+
+            state.qualityMetrics = metrics;
+        }
+
+        function displayResults() {
+            const { epsilon, pi, beta, theta } = state.results || { epsilon: 50, pi: 50, beta: 50, theta: 50 };
+
+            // Display quality score
+            const qualityScoreEl = document.getElementById('quality-score');
+            if (qualityScoreEl && state.qualityMetrics) {
+                qualityScoreEl.innerText = (state.qualityMetrics.overallQuality || 0) + '%';
+            }
+
+            // Animate values with error checking
+            ['res-e', 'res-p', 'res-b', 'res-t'].forEach((id, index) => {
+                const value = [epsilon, pi, beta, theta][index];
+                const el = document.getElementById(id);
+                if (el && typeof value === 'number') {
+                    animateValue(id, value);
+                }
+            });
+
+            // Calculate and display confidence intervals
+            displayConfidenceInterval('e', epsilon, NORMATIVE_DATA.epsilon);
+            displayConfidenceInterval('p', pi, NORMATIVE_DATA.pi);
+            displayConfidenceInterval('b', beta, NORMATIVE_DATA.beta);
+            displayConfidenceInterval('t', theta, NORMATIVE_DATA.theta);
+
+            // Update bars
+            setTimeout(() => {
+                const bars = [
+                    { id: 'bar-e-linear', value: epsilon },
+                    { id: 'bar-p-linear', value: pi },
+                    { id: 'bar-b-linear', value: beta },
+                    { id: 'bar-t-linear', value: theta }
+                ];
+                
+                bars.forEach(bar => {
+                    const el = document.getElementById(bar.id);
+                    if (el && typeof bar.value === 'number') {
+                        el.style.width = `${bar.value}%`;
+                    }
+                });
+            }, 500);
+
+            // Generate interpretations
+            generateInterpretations();
+            
+            // Create visualizations
+            createRadarChart();
+            displayProcessingStyle();
+            displayQualityMetrics();
+            generateRecommendations();
+        }
+
+        function animateValue(id, end) {
+            let start = 0;
+            const duration = 2000;
+            const obj = document.getElementById(id);
+            const startTime = performance.now();
+
+            function update(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(easeProgress * (end - start) + start);
+                obj.innerText = current;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        function displayConfidenceInterval(param, score, normData) {
+            const ci = calculateConfidenceInterval(score, normData);
+            const percentile = calculatePercentile(score, normData);
+            
+            document.getElementById(`res-${param}-ci`).innerText = `95% CI: [${ci.lower}-${ci.upper}]`;
+            document.getElementById(`res-${param}-percentile`).innerText = `${percentile}th percentile`;
+        }
+
+        function generateInterpretations() {
+            const { epsilon, pi, beta, theta } = state.results || { epsilon: 50, pi: 50, beta: 50, theta: 50 };
+            const details = state.results?.details || {
+                epsilon: { dPrime: 0, rtDiff: 0, hitRate: 0.5, faRate: 0.05 },
+                pi: { brierScore: 0.25, accuracy: 0.5, calibrationScore: 50, discrimination: 0 },
+                beta: { avgHeartbeat: 50, avgEmotion: 50, avgDecision: 50 },
+                theta: { threshold: 0.5, dPrime: 0 }
+            };
+
+            // Epsilon
+            let epsilonText = '';
+            if (epsilon > 75) {
+                epsilonText = `High prediction sensitivity (d' = ${(details.epsilon.dPrime || 0).toFixed(2)}). You quickly detect pattern changes and environmental deviations. This cognitive style excels at noticing subtle shifts but may be sensitive to sensory overload in chaotic environments.`;
+            } else if (epsilon > 50) {
+                epsilonText = `Balanced prediction sensitivity. Your pattern detection is adaptive—you notice important changes while maintaining stable internal models. RT difference: ${Math.round(details.epsilon.rtDiff || 0)}ms between expected and unexpected stimuli.`;
+            } else {
+                epsilonText = `Lower prediction sensitivity. You maintain very stable internal models with high inertia. This provides consistency but may reduce quick adaptation to changing patterns. Consider whether this serves your goals.`;
+            }
+            
+            const epsilonInterpretationEl = document.getElementById('epsilon-interpretation');
+            if (epsilonInterpretationEl) {
+                epsilonInterpretationEl.innerText = epsilonText;
+            }
+
+            const epsilonBreakdownEl = document.getElementById('epsilon-breakdown');
+            if (epsilonBreakdownEl) {
+                epsilonBreakdownEl.innerHTML = `
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">d-prime</div>
+                        <div class="font-bold">${(details.epsilon.dPrime || 0).toFixed(2)}</div>
+                    </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">RT Difference</div>
+                        <div class="font-bold">${Math.round(details.epsilon.rtDiff || 0)}ms</div>
+                    </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Hit Rate</div>
+                        <div class="font-bold">${Math.round((details.epsilon.hitRate || 0.5) * 100)}%</div>
+                    </div>
+                `;
+            }
+
+            // Pi
+            let piText = '';
+            if (pi > 75) {
+                piText = `Excellent metacognitive precision (Brier = ${(details.pi.brierScore || 0.25).toFixed(3)}). Your confidence judgments are well-calibrated to actual performance. This indicates strong introspective awareness and realistic self-assessment. Accuracy: ${Math.round((details.pi.accuracy || 0.5) * 100)}%.`;
+            } else if (pi > 50) {
+                piText = `Moderate metacognitive precision. Your confidence calibration shows room for improvement. Current calibration score: ${Math.round(details.pi.calibrationScore || 50)}. Consider tracking confidence-accuracy alignment to improve self-awareness.`;
+            } else {
+                piText = `Lower metacognitive precision (Brier = ${(details.pi.brierScore || 0.25).toFixed(3)}). There's a gap between your confidence and actual performance. Deliberate practice in estimating uncertainty can enhance this capacity.`;
+            }
+            
+            const piInterpretationEl = document.getElementById('pi-interpretation');
+            if (piInterpretationEl) {
+                piInterpretationEl.innerText = piText;
+            }
+
+            const piBreakdownEl = document.getElementById('pi-breakdown');
+            if (piBreakdownEl) {
+                piBreakdownEl.innerHTML = `
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Brier Score</div>
+                        <div class="font-bold">${(details.pi.brierScore || 0.25).toFixed(3)}</div>
+                    </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Accuracy</div>
+                        <div class="font-bold">${Math.round((details.pi.accuracy || 0.5) * 100)}%</div>
+                    </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Discrimination</div>
+                        <div class="font-bold">${Math.round(details.pi.discrimination || 0)}%</div>
+                    </div>
+                `;
+            }
+
+            // Beta
+            let betaText = '';
+            if (beta > 70) {
+                betaText = `Strong somatic integration. High interoceptive accuracy (${Math.round(details.beta.avgHeartbeat || 50)}% heartbeat detection). You effectively incorporate bodily signals into decision-making. This style values intuitive "gut feelings" alongside rational analysis.`;
+            } else if (beta > 40) {
+                betaText = `Balanced body-mind integration. You access bodily signals when relevant and integrate them appropriately with cognitive analysis. Emotional body awareness: ${Math.round(details.beta.avgEmotion || 50)}/100.`;
+            } else {
+                betaText = `Lower somatic integration. Processing tends toward cognitive/analytical with reduced bodily signal incorporation. This isn't inherently problematic—some decision contexts benefit from this style—but expanding interoceptive awareness may enhance emotional intelligence.`;
+            }
+            
+            const betaInterpretationEl = document.getElementById('beta-interpretation');
+            if (betaInterpretationEl) {
+                betaInterpretationEl.innerText = betaText;
+            }
+
+            const betaBreakdownEl = document.getElementById('beta-breakdown');
+            if (betaBreakdownEl) {
+                betaBreakdownEl.innerHTML = `
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Heartbeat Accuracy</div>
+                        <div class="font-bold">${Math.round(details.beta.avgHeartbeat || 50)}%</div>
+                    </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Emotional Body</div>
+                        <div class="font-bold">${Math.round(details.beta.avgEmotion || 50)}/100</div>
+                    </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Decision Style</div>
+                        <div class="font-bold">${Math.round(details.beta.avgDecision || 50)}/100</div>
+                    </div>
+                `;
+            }
+
+            // Theta
+            let thetaText = '';
+            if (theta > 75) {
+                thetaText = `Very low perceptual threshold (${((details.theta.threshold || 0.5) * 100).toFixed(1)}% opacity, d' = ${(details.theta.dPrime || 0).toFixed(2)}). Exceptionally sensitive to weak signals. You detect stimuli others miss, which provides early warning but may increase susceptibility to sensory overload.`;
+            } else if (theta > 50) {
+                thetaText = `Balanced perceptual threshold. You efficiently gate information into awareness—good signal detection without excessive false alarms. Detection threshold: ${((details.theta.threshold || 0.5) * 100).toFixed(1)}% stimulus intensity.`;
+            } else {
+                thetaText = `Higher perceptual threshold (${((details.theta.threshold || 0.5) * 100).toFixed(1)}% opacity). You require stronger signals for conscious detection. This filters noise effectively but may occasionally miss subtle environmental cues. Consider whether this threshold serves your context.`;
+            }
+            
+            const thetaInterpretationEl = document.getElementById('theta-interpretation');
+            if (thetaInterpretationEl) {
+                thetaInterpretationEl.innerText = thetaText;
+            }
+
+            const thetaBreakdownEl = document.getElementById('theta-breakdown');
+            if (thetaBreakdownEl) {
+                thetaBreakdownEl.innerHTML = `
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Threshold (opacity)</div>
+                        <div class="font-bold">${((details.theta.threshold || 0.5) * 100).toFixed(1)}%</div>
+                    </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">d-prime</div>
+                        <div class="font-bold">${(details.theta.dPrime || 0).toFixed(2)}</div>
+                    </div>
+                    <div class="bg-zinc-900/50 p-3 rounded-xl">
+                        <div class="text-zinc-500 text-[10px] uppercase mb-1">Sensitivity</div>
+                        <div class="font-bold">${theta}/100</div>
+                    </div>
+                `;
+            }
+        }
+
+        function createRadarChart() {
+            const canvas = document.getElementById('radarChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const { epsilon, pi, beta, theta } = state.results || { epsilon: 50, pi: 50, beta: 50, theta: 50 };
+
+            try {
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Prediction (ε)', 'Precision (π)', 'Somatic (β)', 'Threshold (θ)'],
+                        datasets: [{
+                            label: 'Your Profile',
+                            data: [epsilon, pi, beta, theta],
+                            fill: true,
+                            backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                            borderColor: 'rgba(96, 165, 250, 1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: 'rgba(96, 165, 250, 1)',
+                            pointBorderColor: '#fff',
+                            pointRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 25,
+                                    color: '#71717a',
+                                    backdropColor: 'transparent'
+                                },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                pointLabels: {
+                                    color: '#a1a1aa',
+                                    font: { size: 11, family: "'JetBrains Mono', monospace" }
+                                }
+                            }
+                        },
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            } catch (error) {
+                console.warn('Error creating radar chart:', error);
+            }
+        }
+
+        function displayProcessingStyle() {
+            const { epsilon, pi, beta, theta } = state.results || { epsilon: 50, pi: 50, beta: 50, theta: 50 };
+            
+            // Neutral, descriptive categorization
+            let style = {
+                name: 'Balanced Processor',
+                description: 'Your cognitive parameters fall within typical ranges across all dimensions.',
+                color: '#10b981'
+            };
+
+            if (epsilon > 70 && theta < 40) {
+                style = {
+                    name: 'High-Sensitivity Processor',
+                    description: 'You detect pattern changes quickly with a low detection threshold. This style is common in creative fields and vigilance tasks.',
+                    color: '#60a5fa'
+                };
+            } else if (epsilon < 40 && theta > 60) {
+                style = {
+                    name: 'Stable-Model Processor',
+                    description: 'You maintain robust internal models with high signal requirements. This style provides consistency and focus in stable environments.',
+                    color: '#8b5cf6'
+                };
+            } else if (pi > 70) {
+                style = {
+                    name: 'Metacognitively Aware',
+                    description: 'Your confidence calibration is excellent. This trait supports effective decision-making under uncertainty.',
+                    color: '#a855f7'
+                };
+            } else if (beta > 70) {
+                style = {
+                    name: 'Integrative Processor',
+                    description: 'Strong coupling between cognitive and somatic signals. Your decisions incorporate both analytical and intuitive information.',
+                    color: '#10b981'
+                };
+            }
+
+            const styleContentEl = document.getElementById('style-content');
+            if (styleContentEl) {
+                styleContentEl.innerHTML = `
+                    <div class="p-4 rounded-xl border-2" style="border-color: ${style.color}; background: ${style.color}20;">
+                        <h4 class="font-bold text-lg mb-2" style="color: ${style.color};">${style.name}</h4>
+                        <p class="text-sm text-zinc-400">${style.description}</p>
+                        <div class="mt-3 text-xs text-zinc-600">Individual cognitive style • Not a diagnostic category</div>
+                    </div>
+                `;
+            }
+        }
+
+        function displayQualityMetrics() {
+            const m = state.qualityMetrics || {
+                attentionChecksPassed: 0,
+                attentionChecksTotal: 0,
+                invalidResponses: 0,
+                totalResponses: 0,
+                averageRT: 0,
+                rtVariability: 0,
+                overallQuality: 50
+            };
+            
+            const qualityMetricsEl = document.getElementById('quality-metrics');
+            if (qualityMetricsEl) {
+                qualityMetricsEl.innerHTML = `
+                    <div class="flex justify-between">
+                        <span>Attention Checks:</span>
+                        <strong>${m.attentionChecksPassed}/${m.attentionChecksTotal} passed</strong>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Valid Responses:</span>
+                        <strong>${m.totalResponses > 0 ? Math.round((1 - m.invalidResponses / m.totalResponses) * 100) : 0}%</strong>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>RT Consistency:</span>
+                        <strong>${m.averageRT > 0 ? Math.round(m.averageRT) + 'ms (SD=' + (m.rtVariability * m.averageRT).toFixed(0) + ')' : 'N/A'}</strong>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Overall Reliability:</span>
+                        <strong class="${m.overallQuality > 80 ? 'text-emerald-400' : m.overallQuality > 60 ? 'text-yellow-400' : 'text-red-400'}">${m.overallQuality}%</strong>
+                    </div>
+                `;
+            }
+        }
+
+        function generateRecommendations() {
+            const { epsilon, pi, beta, theta } = state.results || { epsilon: 50, pi: 50, beta: 50, theta: 50 };
+            const recommendations = [];
+
+            if (epsilon > 75 && theta < 40) {
+                recommendations.push({
+                    title: 'Manage Sensory Input',
+                    description: 'Your high sensitivity benefits from structured recovery periods. Consider noise-reducing environments, nature exposure, or sensory-friendly workspaces.',
+                    icon: '🌿'
+                });
+            }
+
+            if (pi < 50) {
+                recommendations.push({
+                    title: 'Confidence Calibration Practice',
+                    description: 'Improve metacognitive precision by tracking predictions vs. outcomes. Keep a decision journal noting confidence levels and results.',
+                    icon: '🎯'
+                });
+            }
+
+            if (beta < 40) {
+                recommendations.push({
+                    title: 'Interoceptive Awareness Training',
+                    description: 'Body scan meditation, yoga, or mindful movement can strengthen mind-body integration and emotional granularity.',
+                    icon: '🧘'
+                });
+            }
+
+            if (theta < 30) {
+                recommendations.push({
+                    title: 'Selective Attention Training',
+                    description: 'Your low threshold means you detect many signals. Practice focusing selectively on task-relevant information to reduce overload.',
+                    icon: '🎧'
+                });
+            }
+
+            if (recommendations.length === 0) {
+                recommendations.push({
+                    title: 'Balanced Profile',
+                    description: 'Your parameters are well-balanced. Continue leveraging your cognitive strengths in your current contexts.',
+                    icon: '✨'
+                });
+            }
+
+            const container = document.getElementById('recommendations-grid');
+            if (container) {
+                container.innerHTML = recommendations.map(rec => `
+                    <div class="glass p-6 rounded-2xl space-y-3 hover:border-blue-500/50 transition-all">
+                        <div class="text-4xl">${rec.icon}</div>
+                        <h4 class="font-bold text-lg">${rec.title}</h4>
+                        <p class="text-sm text-zinc-400 leading-relaxed">${rec.description}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function downloadDetailedReport() {
+            try {
+                const { jsPDF } = window.jspdf;
+                if (!jsPDF) {
+                    alert('PDF library not loaded. Please refresh the page and try again.');
+                    return;
+                }
+                
+                const doc = new jsPDF();
+                const { epsilon, pi, beta, theta } = state.results || { epsilon: 50, pi: 50, beta: 50, theta: 50 };
+                
+                doc.setFontSize(20);
+                doc.text('APGI Cognitive Processing Assessment', 20, 20);
+                
+                doc.setFontSize(12);
+                doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 30);
+                doc.text(`Assessment Duration: ${state.startTime ? Math.round((Date.now() - state.startTime) / 60000) : 0} minutes`, 20, 37);
+                
+                doc.setFontSize(14);
+                doc.text('Parameter Scores & Confidence Intervals', 20, 50);
+                
+                doc.setFontSize(11);
+                
+                const ciE = calculateConfidenceInterval(epsilon, NORMATIVE_DATA.epsilon);
+                const ciP = calculateConfidenceInterval(pi, NORMATIVE_DATA.pi);
+                const ciB = calculateConfidenceInterval(beta, NORMATIVE_DATA.beta);
+                const ciT = calculateConfidenceInterval(theta, NORMATIVE_DATA.theta);
+                
+                doc.text(`Prediction Sensitivity (ε): ${epsilon}/100  [95% CI: ${ciE.lower}-${ciE.upper}]`, 20, 60);
+                doc.text(`  Percentile: ${calculatePercentile(epsilon, NORMATIVE_DATA.epsilon)}th`, 30, 66);
+                
+                doc.text(`Metacognitive Precision (π): ${pi}/100  [95% CI: ${ciP.lower}-${ciP.upper}]`, 20, 75);
+                doc.text(`  Percentile: ${calculatePercentile(pi, NORMATIVE_DATA.pi)}th`, 30, 81);
+                
+                doc.text(`Somatic Integration (β): ${beta}/100  [95% CI: ${ciB.lower}-${ciB.upper}]`, 20, 90);
+                doc.text(`  Percentile: ${calculatePercentile(beta, NORMATIVE_DATA.beta)}th`, 30, 96);
+                
+                doc.text(`Perceptual Threshold (θ): ${theta}/100  [95% CI: ${ciT.lower}-${ciT.upper}]`, 20, 105);
+                doc.text(`  Percentile: ${calculatePercentile(theta, NORMATIVE_DATA.theta)}th`, 30, 111);
+                
+                doc.setFontSize(14);
+                doc.text('Data Quality Metrics', 20, 125);
+                
+                doc.setFontSize(11);
+                const m = state.qualityMetrics || { overallQuality: 50, attentionChecksPassed: 0, attentionChecksTotal: 0, invalidResponses: 0, totalResponses: 0 };
+                doc.text(`Overall Quality: ${m.overallQuality}%`, 20, 135);
+                doc.text(`Attention Checks: ${m.attentionChecksPassed}/${m.attentionChecksTotal} passed`, 20, 142);
+                doc.text(`Response Validity: ${m.totalResponses > 0 ? Math.round((1 - m.invalidResponses / m.totalResponses) * 100) : 0}%`, 20, 149);
+                
+                doc.setFontSize(10);
+                doc.text('DISCLAIMER: This is a research tool measuring cognitive processing styles, not a clinical', 20, 270);
+                doc.text('diagnostic instrument. Results reflect individual differences in information processing and', 20, 276);
+                doc.text('do not indicate pathology. Consult licensed professionals for clinical concerns.', 20, 282);
+                
+                doc.save(`APGI-Report-${Date.now()}.pdf`);
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF report. Please try again.');
+            }
+        }
+
+        // Theme management
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('apgi-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'light') {
+                document.getElementById('theme-indicator').style.transform = 'translateX(30px)';
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('apgi-theme', newTheme);
+            
+            const indicator = document.getElementById('theme-indicator');
+            indicator.style.transform = newTheme === 'light' ? 'translateX(30px)' : 'translateX(0)';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            initializeTheme();
+            const saved = loadProgress();
+            if (saved && confirm('Resume previous assessment?')) {
+                Object.assign(state, saved);
+                startTest();
+            }
+            
+            // Add test function for debugging (remove in production)
+            window.testCalculations = function() {
+                // Simulate some test data
+                state.data.epsilon.violations = [{trial: 1, rt: 400}, {trial: 2, rt: 350}];
+                state.data.epsilon.standards = [{trial: 3, rt: 300}, {trial: 4, rt: 320}];
+                state.data.epsilon.trials = [
+                    {trial: 1, type: 'violation', rt: 400, valid: true},
+                    {trial: 2, type: 'violation', rt: 350, valid: true},
+                    {trial: 3, type: 'standard', rt: 300, valid: true},
+                    {trial: 4, type: 'standard', rt: 320, valid: true}
+                ];
+                
+                state.data.pi.trials = [
+                    {trial: 1, correct: true, confidence: 0.8},
+                    {trial: 2, correct: false, confidence: 0.3}
+                ];
+                
+                state.data.beta.heartbeat = [
+                    {task: 1, accuracy: 85}
+                ];
+                state.data.beta.emotionBody = [{task: 1, rating: 70}];
+                state.data.beta.decisionSomatic = [{task: 1, rating: 60}];
+                
+                state.data.theta.trials = [
+                    {trial: 1, response: 'hit', intensity: 0.3, valid: true},
+                    {trial: 2, response: 'miss', intensity: 0.3, valid: true},
+                    {trial: 3, response: 'false_alarm', intensity: 0.3, valid: true}
+                ];
+                state.data.theta.staircase = {
+                    reversals: [{trial: 1, intensity: 0.3}, {trial: 2, intensity: 0.25}]
+                };
+                
+                calculateResults();
+                console.log('Test results:', state.results);
+                return state.results;
+            };
+        });
+    </script>
+</body>
+</html>
