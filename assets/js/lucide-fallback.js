@@ -33,7 +33,7 @@ class LucideFallback {
       // Status
       alertTriangle:
         '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.29 3.86 1.64 1.64-6.89 6.89a2 2 0 0 1 2.83 2.83l6.89 6.89a2 2 0 0 1 2.83-2.83z"></path><path d="m13.17 19-6.89-6.89a2 2 0 0 1-2.83 0l-6.89 6.89a2 2 0 0 1-2.83 2.83z"></path></svg>',
-      info: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
+      info: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>',
     };
   }
 
@@ -42,19 +42,22 @@ class LucideFallback {
     if (!icon) return `<span>[${name}]</span>`;
 
     const size = options.size || 24;
-    const className = options.className || '';
+    const className = options.className || "";
 
     return `<span class="lucide-fallback-icon ${className}" style="width: ${size}px; height: ${size}px; display: inline-block; vertical-align: middle;">${icon}</span>`;
   }
 
   createIcons() {
     // Replace all data-lucide elements with fallbacks
-    document.querySelectorAll('[data-lucide]').forEach(element => {
-      const iconName = element.getAttribute('data-lucide');
+    document.querySelectorAll("[data-lucide]").forEach((element) => {
+      const iconName = element.getAttribute("data-lucide");
       if (iconName && this.icons[iconName]) {
         element.innerHTML = this.createIcon(iconName, {
           className: element.className,
-          size: element.getAttribute('width') || element.getAttribute('height') || 24
+          size:
+            element.getAttribute("width") ||
+            element.getAttribute("height") ||
+            24,
         });
       }
     });
@@ -62,17 +65,17 @@ class LucideFallback {
 }
 
 // Initialize fallback if Lucide is not available
-if (typeof lucide === 'undefined') {
+if (typeof lucide === "undefined") {
   window.lucide = {
     createIcons: () => {
       const fallback = new LucideFallback();
       fallback.createIcons();
-    }
+    },
   };
 
   // Auto-initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
       window.lucide.createIcons();
     });
   } else {
@@ -81,6 +84,6 @@ if (typeof lucide === 'undefined') {
 }
 
 // Export for potential module usage
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = { LucideFallback };
 }

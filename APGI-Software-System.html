@@ -1,667 +1,723 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <script src="assets/js/cdn-fallbacks.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI System | Allostatic Precision-Gated Ignition Framework</title>
-    <link rel="stylesheet" href="assets/css/tailwind-fallback.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/fonts-fallback.css">
-    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
+    <link rel="stylesheet" href="assets/css/tailwind-fallback.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/fonts-fallback.css" />
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
-        /* Modern Design System - Consistent with Site */
-        .container {
-            max-width: min(100% - 2rem, 1200px);
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            position: relative;
+      /* Modern Design System - Consistent with Site */
+      .container {
+        max-width: min(100% - 2rem, 1200px);
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        position: relative;
+      }
+
+      /* Enhanced Typography */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: var(--font-display);
+        margin-top: 0;
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        scroll-margin-top: 2rem;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.05em;
+        background: var(--accent-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0 0 2rem;
+        position: relative;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+
+      h1::after {
+        content: "";
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--accent-gradient);
+        border-radius: 2px;
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+      }
+
+      h2 {
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        margin-bottom: 2rem;
+        color: var(--text-primary);
+        position: relative;
+        padding-bottom: 1rem;
+        text-align: center;
+      }
+
+      h2::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--accent-gradient);
+        border-radius: 2px;
+      }
+
+      h3 {
+        font-size: clamp(1.25rem, 3vw, 1.75rem);
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      h4 {
+        font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0 0 1.75rem;
+        color: var(--text-secondary);
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        line-height: 1.7;
+        max-width: none;
+      }
+
+      /* Section Styles */
+      section {
+        margin: 3rem auto;
+        max-width: 1200px;
+        padding: 4rem 2rem;
+        text-align: center;
+        border-radius: var(--radius-lg);
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+        opacity: 0.3;
+      }
+
+      section:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.12) 0%,
+          rgba(124, 58, 237, 0.12) 50%,
+          rgba(139, 92, 246, 0.12) 100%
+        );
+        border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+        position: relative;
+        overflow: hidden;
+        padding: clamp(6rem, 15vw, 10rem) 1rem;
+        margin-bottom: 4rem;
+        box-shadow: var(--shadow-lg);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+          radial-gradient(
+            circle at 20% 50%,
+            rgba(59, 130, 246, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(139, 92, 246, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 50% 20%,
+            rgba(124, 58, 237, 0.1) 0%,
+            transparent 40%
+          );
+        pointer-events: none;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
         }
-        
-        /* Enhanced Typography */
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-display);
-            margin-top: 0;
-            line-height: 1.2;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            scroll-margin-top: 2rem;
+        50% {
+          transform: translateY(-10px);
         }
-        
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.05em;
-            background: var(--accent-gradient);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0 0 2rem;
-            position: relative;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        }
-        
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--accent-gradient);
-            border-radius: 2px;
-            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
-        }
-        
-        h2 {
-            font-size: clamp(1.75rem, 4vw, 2.5rem);
-            margin-bottom: 2rem;
-            color: var(--text-primary);
-            position: relative;
-            padding-bottom: 1rem;
-            text-align: center;
-        }
-        
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--accent-gradient);
-            border-radius: 2px;
-        }
-        
-        h3 {
-            font-size: clamp(1.25rem, 3vw, 1.75rem);
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        h4 {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        p {
-            margin: 0 0 1.75rem;
-            color: var(--text-secondary);
-            font-size: clamp(1rem, 2vw, 1.1rem);
-            line-height: 1.7;
-            max-width: none;
-        }
-        
-        /* Section Styles */
-        section {
-            margin: 3rem auto;
-            max-width: 1200px;
-            padding: 4rem 2rem;
-            text-align: center;
-            border-radius: var(--radius-lg);
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.3;
-        }
-        
-        section:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-        
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(124, 58, 237, 0.12) 50%, rgba(139, 92, 246, 0.12) 100%);
-            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-            position: relative;
-            overflow: hidden;
-            padding: clamp(6rem, 15vw, 10rem) 1rem;
-            margin-bottom: 4rem;
-            box-shadow: var(--shadow-lg);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 50% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 40%);
-            pointer-events: none;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .hero .container {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        /* Breadcrumbs Styles */
-        .breadcrumbs {
-            background: rgba(248, 250, 252, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 0.75rem 0;
-            position: fixed;
-            top: 64px;
-            left: 0;
-            right: 0;
-            z-index: 999;
-        }
-        
+      }
+
+      .hero .container {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Breadcrumbs Styles */
+      .breadcrumbs {
+        background: rgba(248, 250, 252, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 0.75rem 0;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        z-index: 999;
+      }
+
+      .breadcrumbs .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .breadcrumbs ol {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+      }
+
+      .breadcrumbs li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .breadcrumbs li:not(:last-child)::after {
+        content: "/";
+        color: rgba(0, 0, 0, 0.4);
+        font-size: 0.75rem;
+      }
+
+      .breadcrumbs a {
+        color: rgba(0, 0, 0, 0.6);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .breadcrumbs a:hover {
+        color: #3b82f6;
+      }
+
+      .breadcrumbs li[aria-current="page"] {
+        color: rgba(0, 0, 0, 0.8);
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
         .breadcrumbs .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
+          padding: 0 1rem;
         }
-        
+
         .breadcrumbs ol {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
+          font-size: 0.8rem;
         }
-        
-        .breadcrumbs li {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .breadcrumbs li:not(:last-child)::after {
-            content: '/';
-            color: rgba(0, 0, 0, 0.4);
-            font-size: 0.75rem;
-        }
-        
-        .breadcrumbs a {
-            color: rgba(0, 0, 0, 0.6);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        
-        .breadcrumbs a:hover {
-            color: #3b82f6;
-        }
-        
-        .breadcrumbs li[aria-current="page"] {
-            color: rgba(0, 0, 0, 0.8);
-            font-weight: 500;
-        }
-        
-        @media (max-width: 768px) {
-            .breadcrumbs .nav-container {
-                padding: 0 1rem;
-            }
-            
-            .breadcrumbs ol {
-                font-size: 0.8rem;
-            }
-        }
-        
-        :root {
-            /* Modern Typography */
-            --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            
-            /* Modern Color Palette */
-            --primary: #0f172a;
-            --primary-light: #1e293b;
-            --accent: #3b82f6;
-            --accent-light: #60a5fa;
-            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            
-            /* Semantic Colors */
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #06b6d4;
-            
-            /* Neutral Colors */
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-tertiary: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --border-light: #f1f5f9;
-            
-            /* Effects & Shadows */
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            
-            /* Transitions */
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-fast: all 0.15s ease;
-            
-            /* Border Radius */
-            --radius-sm: 8px;
-            --radius: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-            
-            /* Legacy Colors for compatibility */
-            --primary-blue: #00B4FF;
-            --secondary-red: #FF3366;
-            --tertiary-green: #00CC99;
-            --quaternary-yellow: #FFCC00;
-            --quinary-purple: #9966FF;
-            --neutral-dark: #2C3E50;
-            --neutral-light: #ECF0F1;
-            --caption-gray: #7F8C8D;
-        }
-        
-        [data-theme="dark"] {
-            /* Primary Colors - Enhanced for dark mode */
-            --primary-blue: #00D4FF;
-            --secondary-red: #FF4488;
-            --tertiary-green: #00FFAA;
-            --quaternary-yellow: #FFDD33;
-            --quinary-purple: #AA77FF;
-            --neutral-dark: #F0F4F8;
-            --neutral-light: #2C3E50;
-            --caption-gray: #B8C5D6;
-            
-            /* Extended Color Palette - Dark optimized */
-            --primary: #6b9ac4;
-            --primary-light: #8bb4d8;
-            --accent: #8bb4d8;
-            --secondary: #a47bff;
-            
-            /* Semantic Colors - Enhanced contrast */
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
-            
-            /* Extended Neutrals - Dark theme specific */
-            --dark: #f0f4f8;
-            --light: #2d3748;
-            --bg-primary: #1a202c;
-            --bg-secondary: #2d3748;
-            --bg-tertiary: #4a5568;
-            --text-primary: #f7fafc;
-            --text-secondary: #cbd5e0;
-            --text-tertiary: #a0aec0;
-            --border-color: #4a5568;
-            --border-light: #718096;
-            --card-bg: #2d3748;
-            --card-hover: #374151;
-            --overlay-bg: rgba(26, 32, 44, 0.9);
-            
-            /* Effects - Dark optimized */
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
-            --shadow-active: 0 16px 40px rgba(0, 0, 0, 0.6);
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            --glow: 0 0 20px rgba(0, 212, 255, 0.3);
-            
-            /* Gradients - Dark enhanced */
-            --gradient-primary: linear-gradient(135deg, #00D4FF 0%, #0099CC 100%);
-            --gradient-secondary: linear-gradient(135deg, #FF4488 0%, #CC3366 100%);
-            --gradient-accent: linear-gradient(135deg, #00FFAA 0%, #00CC88 100%);
-            --gradient-warm: linear-gradient(135deg, #FFDD33 0%, #FFAA00 100%);
-            --gradient-cool: linear-gradient(135deg, #AA77FF 0%, #8855DD 100%);
-            
-            /* Interactive States */
-            --hover-bg: rgba(0, 212, 255, 0.1);
-            --active-bg: rgba(0, 212, 255, 0.2);
-            --focus-ring: rgba(0, 212, 255, 0.5);
-            --selection-bg: rgba(0, 212, 255, 0.3);
-            
-            /* Component Specific */
-            --skeleton-base: #4a5568;
-            --skeleton-shimmer: #718096;
-            --disabled-bg: #2d3748;
-            --disabled-text: #718096;
-            --code-bg: #1a202c;
-            --code-border: #4a5568;
-        }
+      }
 
-        body {
-            font-family: var(--font-body);
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            color: var(--text-primary);
-            line-height: 1.6;
-            font-size: 1rem;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            scroll-behavior: smooth;
-            transition: var(--transition);
-            min-height: 100vh;
-            position: relative;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        [data-theme="dark"] body::before {
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain-dark" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain-dark)"/></svg>');
-        }
-        
-        .section-title {
-            position: relative;
-            padding-bottom: 16px;
-            margin-bottom: 2rem;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--accent-gradient);
-            border-radius: 2px;
-        }
+      :root {
+        /* Modern Typography */
+        --font-display:
+          "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-body:
+          "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 
-        .heading-xl {
-            font-family: var(--font-display);
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            line-height: 1.1;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+        /* Modern Color Palette */
+        --primary: #0f172a;
+        --primary-light: #1e293b;
+        --accent: #3b82f6;
+        --accent-light: #60a5fa;
+        --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
-        .subheading-lg {
-            font-family: var(--font-display);
-            font-size: clamp(1.75rem, 4vw, 2.5rem);
-            font-weight: 600;
-            line-height: 1.2;
-            color: var(--text-primary);
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+        /* Semantic Colors */
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #06b6d4;
 
-        .body-md {
-            font-size: clamp(1rem, 2vw, 1.1rem);
-            font-weight: 400;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-        }
+        /* Neutral Colors */
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8fafc;
+        --bg-tertiary: #f1f5f9;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --border-light: #f1f5f9;
 
-        .accent-text {
-            font-family: var(--font-display);
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 600;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-align: center;
-            margin: 1rem auto;
-        }
+        /* Effects & Shadows */
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-        .caption-sm {
-            font-size: clamp(0.875rem, 1.5vw, 1rem);
-            font-weight: 300;
-            color: var(--text-muted);
-        }
+        /* Transitions */
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-fast: all 0.15s ease;
 
+        /* Border Radius */
+        --radius-sm: 8px;
+        --radius: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 24px;
+
+        /* Legacy Colors for compatibility */
+        --primary-blue: #00b4ff;
+        --secondary-red: #ff3366;
+        --tertiary-green: #00cc99;
+        --quaternary-yellow: #ffcc00;
+        --quinary-purple: #9966ff;
+        --neutral-dark: #2c3e50;
+        --neutral-light: #ecf0f1;
+        --caption-gray: #7f8c8d;
+      }
+
+      [data-theme="dark"] {
+        /* Primary Colors - Enhanced for dark mode */
+        --primary-blue: #00d4ff;
+        --secondary-red: #ff4488;
+        --tertiary-green: #00ffaa;
+        --quaternary-yellow: #ffdd33;
+        --quinary-purple: #aa77ff;
+        --neutral-dark: #f0f4f8;
+        --neutral-light: #2c3e50;
+        --caption-gray: #b8c5d6;
+
+        /* Extended Color Palette - Dark optimized */
+        --primary: #6b9ac4;
+        --primary-light: #8bb4d8;
+        --accent: #8bb4d8;
+        --secondary: #a47bff;
+
+        /* Semantic Colors - Enhanced contrast */
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #3b82f6;
+
+        /* Extended Neutrals - Dark theme specific */
+        --dark: #f0f4f8;
+        --light: #2d3748;
+        --bg-primary: #1a202c;
+        --bg-secondary: #2d3748;
+        --bg-tertiary: #4a5568;
+        --text-primary: #f7fafc;
+        --text-secondary: #cbd5e0;
+        --text-tertiary: #a0aec0;
+        --border-color: #4a5568;
+        --border-light: #718096;
+        --card-bg: #2d3748;
+        --card-hover: #374151;
+        --overlay-bg: rgba(26, 32, 44, 0.9);
+
+        /* Effects - Dark optimized */
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
+        --shadow-active: 0 16px 40px rgba(0, 0, 0, 0.6);
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        --glow: 0 0 20px rgba(0, 212, 255, 0.3);
+
+        /* Gradients - Dark enhanced */
+        --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+        --gradient-secondary: linear-gradient(135deg, #ff4488 0%, #cc3366 100%);
+        --gradient-accent: linear-gradient(135deg, #00ffaa 0%, #00cc88 100%);
+        --gradient-warm: linear-gradient(135deg, #ffdd33 0%, #ffaa00 100%);
+        --gradient-cool: linear-gradient(135deg, #aa77ff 0%, #8855dd 100%);
+
+        /* Interactive States */
+        --hover-bg: rgba(0, 212, 255, 0.1);
+        --active-bg: rgba(0, 212, 255, 0.2);
+        --focus-ring: rgba(0, 212, 255, 0.5);
+        --selection-bg: rgba(0, 212, 255, 0.3);
+
+        /* Component Specific */
+        --skeleton-base: #4a5568;
+        --skeleton-shimmer: #718096;
+        --disabled-bg: #2d3748;
+        --disabled-text: #718096;
+        --code-bg: #1a202c;
+        --code-border: #4a5568;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background: linear-gradient(
+          135deg,
+          var(--bg-primary) 0%,
+          var(--bg-secondary) 100%
+        );
+        color: var(--text-primary);
+        line-height: 1.6;
+        font-size: 1rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        scroll-behavior: smooth;
+        transition: var(--transition);
+        min-height: 100vh;
+        position: relative;
+        margin: 0;
+        padding: 0;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23000000" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      [data-theme="dark"] body::before {
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain-dark" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.02"/></pattern></defs><rect width="100" height="100" fill="url(%23grain-dark)"/></svg>');
+      }
+
+      .section-title {
+        position: relative;
+        padding-bottom: 16px;
+        margin-bottom: 2rem;
+      }
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--accent-gradient);
+        border-radius: 2px;
+      }
+
+      .heading-xl {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        line-height: 1.1;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .subheading-lg {
+        font-family: var(--font-display);
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 600;
+        line-height: 1.2;
+        color: var(--text-primary);
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .body-md {
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        font-weight: 400;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 2rem;
+      }
+
+      .accent-text {
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 600;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        margin: 1rem auto;
+      }
+
+      .caption-sm {
+        font-size: clamp(0.875rem, 1.5vw, 1rem);
+        font-weight: 300;
+        color: var(--text-muted);
+      }
+
+      .section-padding {
+        padding: 4rem 2rem;
+        position: relative;
+      }
+
+      .glass-panel {
+        background: var(--bg-primary);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        text-align: left;
+      }
+
+      .glass-panel:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent);
+      }
+
+      .fade-in-section {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .gradient-text {
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .pulse-animation {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.15;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .icon-hover {
+        transition: all 0.3s ease;
+      }
+
+      .icon-hover:hover {
+        transform: rotate(5deg) scale(1.1);
+      }
+
+      .architecture-node {
+        background: var(--accent-gradient);
+        color: white;
+        padding: 2rem;
+        border-radius: var(--radius-lg);
+        margin: 0.5rem;
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+        text-align: left;
+      }
+
+      .architecture-node:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .subsystem-card {
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+        text-align: left;
+      }
+
+      .subsystem-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent);
+      }
+
+      .feature-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: var(--accent-gradient);
+        color: white;
+        border-radius: 20px;
+        font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+        font-weight: 600;
+        margin: 0.25rem;
+        transition: var(--transition);
+      }
+
+      .feature-badge:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+
+      .code-block {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        font-family: "Monaco", "Courier New", monospace;
+        font-size: clamp(0.875rem, 1.5vw, 1rem);
+        overflow-x: auto;
+        color: var(--text-primary);
+      }
+
+      .brain-bg-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 100%;
+        opacity: 0.15;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .hero-illustration {
+        text-align: center;
+        margin: 2rem auto;
+        max-width: 100%;
+      }
+
+      .hero-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-xl);
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+      }
+
+      .hero-image:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
         .section-padding {
-            padding: 4rem 2rem;
-            position: relative;
+          padding: 3rem 1rem;
         }
 
-        .glass-panel {
-            background: var(--bg-primary);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-xl);
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            text-align: left;
-        }
-        
-        .glass-panel:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--accent);
-        }
-        
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .gradient-text {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.15; }
-            50% { opacity: 0.3; }
-        }
-        
-        .icon-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .icon-hover:hover {
-            transform: rotate(5deg) scale(1.1);
-        }
-        
+        .glass-panel,
+        .subsystem-card,
         .architecture-node {
-            background: var(--accent-gradient);
-            color: white;
-            padding: 2rem;
-            border-radius: var(--radius-lg);
-            margin: 0.5rem;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            text-align: left;
+          padding: 1.5rem;
         }
-        
-        .architecture-node:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
+
+        .container {
+          padding: 0 1rem;
         }
-        
-        .subsystem-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            text-align: left;
+
+        section {
+          padding: 3rem 1.5rem;
+          margin: 2rem auto;
         }
-        
-        .subsystem-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--accent);
+      }
+
+      @media (max-width: 480px) {
+        .section-padding {
+          padding: 2rem 1rem;
         }
-        
-        .feature-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--accent-gradient);
-            color: white;
-            border-radius: 20px;
-            font-size: clamp(0.75rem, 1.5vw, 0.875rem);
-            font-weight: 600;
-            margin: 0.25rem;
-            transition: var(--transition);
+
+        .glass-panel,
+        .subsystem-card,
+        .architecture-node {
+          padding: 1rem;
         }
-        
-        .feature-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+
+        section {
+          padding: 2.5rem 1rem;
+          margin: 1.5rem auto;
         }
-        
-        .code-block {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            font-family: 'Monaco', 'Courier New', monospace;
-            font-size: clamp(0.875rem, 1.5vw, 1rem);
-            overflow-x: auto;
-            color: var(--text-primary);
-        }
-        
-        .brain-bg-overlay {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 50%;
-            height: 100%;
-            opacity: 0.15;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .hero-illustration {
-            text-align: center;
-            margin: 2rem auto;
-            max-width: 100%;
-        }
-        
-        .hero-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-        }
-        
-        .hero-image:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .section-padding {
-                padding: 3rem 1rem;
-            }
-            
-            .glass-panel, .subsystem-card, .architecture-node {
-                padding: 1.5rem;
-            }
-            
-            .container {
-                padding: 0 1rem;
-            }
-            
-            section {
-                padding: 3rem 1.5rem;
-                margin: 2rem auto;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .section-padding {
-                padding: 2rem 1rem;
-            }
-            
-            .glass-panel, .subsystem-card, .architecture-node {
-                padding: 1rem;
-            }
-            
-            section {
-                padding: 2.5rem 1rem;
-                margin: 1.5rem auto;
-            }
-        }
+      }
     </style>
-    
+
     <!-- Navigation CSS -->
-    <link rel="stylesheet" href="assets/css/navigation.css">
+    <link rel="stylesheet" href="assets/css/navigation.css" />
     <script src="assets/js/navigation.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -669,59 +725,60 @@
     <div id="navigation-container"></div>
     <script>
       // Load navigation with fallback
-      fetch('components/navigation.html')
-        .then(response => {
+      fetch("components/navigation.html")
+        .then((response) => {
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error("Network response was not ok");
           }
           return response.text();
         })
-        .then(html => {
-          document.getElementById('navigation-container').innerHTML = html;
+        .then((html) => {
+          document.getElementById("navigation-container").innerHTML = html;
           // Initialize dropdown functionality after navigation is loaded
-          const dropdowns = document.querySelectorAll('.nav-dropdown');
-          dropdowns.forEach(dropdown => {
-            const button = dropdown.querySelector('.nav-dropdown-btn');
-            const menu = dropdown.querySelector('.dropdown-menu');
-            
+          const dropdowns = document.querySelectorAll(".nav-dropdown");
+          dropdowns.forEach((dropdown) => {
+            const button = dropdown.querySelector(".nav-dropdown-btn");
+            const menu = dropdown.querySelector(".dropdown-menu");
+
             if (button && menu) {
-              button.addEventListener('click', function(e) {
+              button.addEventListener("click", function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                
-                dropdowns.forEach(otherDropdown => {
+
+                dropdowns.forEach((otherDropdown) => {
                   if (otherDropdown !== dropdown) {
-                    otherDropdown.classList.remove('active');
-                    const otherButton = otherDropdown.querySelector('.nav-dropdown-btn');
+                    otherDropdown.classList.remove("active");
+                    const otherButton =
+                      otherDropdown.querySelector(".nav-dropdown-btn");
                     if (otherButton) {
-                      otherButton.setAttribute('aria-expanded', 'false');
+                      otherButton.setAttribute("aria-expanded", "false");
                     }
                   }
                 });
-                
-                const isActive = dropdown.classList.contains('active');
-                dropdown.classList.toggle('active');
-                button.setAttribute('aria-expanded', !isActive);
+
+                const isActive = dropdown.classList.contains("active");
+                dropdown.classList.toggle("active");
+                button.setAttribute("aria-expanded", !isActive);
               });
             }
           });
-          
-          document.addEventListener('click', function(e) {
-            if (!e.target.closest('.nav-dropdown')) {
-              dropdowns.forEach(dropdown => {
-                dropdown.classList.remove('active');
-                const button = dropdown.querySelector('.nav-dropdown-btn');
+
+          document.addEventListener("click", function (e) {
+            if (!e.target.closest(".nav-dropdown")) {
+              dropdowns.forEach((dropdown) => {
+                dropdown.classList.remove("active");
+                const button = dropdown.querySelector(".nav-dropdown-btn");
                 if (button) {
-                  button.setAttribute('aria-expanded', 'false');
+                  button.setAttribute("aria-expanded", "false");
                 }
               });
             }
           });
         })
-        .catch(error => {
-          console.error('Error loading navigation:', error);
+        .catch((error) => {
+          console.error("Error loading navigation:", error);
           // Fallback navigation if component fails to load
-          document.getElementById('navigation-container').innerHTML = `
+          document.getElementById("navigation-container").innerHTML = `
             <nav class="main-nav" role="navigation" aria-label="Main navigation">
               <div class="nav-container">
                 <div class="nav-links">
@@ -781,561 +838,613 @@
 
     <!-- Header / Hero -->
     <header class="hero" id="main-content">
-        <div class="container">
-            <div class="flex items-center gap-2 mb-4">
-                <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                <p class="caption-sm tracking-widest uppercase text-slate-600">Computational Neuroscience Framework</p>
-            </div>
-            <h1 class="heading-xl">APGI SYSTEM</h1>
-            <p class="accent-text">Allostatic Precision-Gated Ignition</p>
-            <p class="body-md">
-                A computational implementation of consciousness based on active inference, 
-                predictive processing, and allostatic regulation. Designed to model 
-                human-like cognitive processes through biologically-inspired architectures.
-            </p>
-            <div class="hero-illustration">
-                <img src="assets/images/APGI-Software-System.png" alt="APGI Software System Interface" class="hero-image" loading="lazy">
-            </div>
-            <div class="flex flex-wrap gap-3 justify-center">
-                <span class="feature-badge">Active Inference</span>
-                <span class="feature-badge">Predictive Processing</span>
-                <span class="feature-badge">Allostatic Regulation</span>
-                <span class="feature-badge">Global Workspace</span>
-                <span class="feature-badge">Self-Modeling</span>
-            </div>
+      <div class="container">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+          <p class="caption-sm tracking-widest uppercase text-slate-600">
+            Computational Neuroscience Framework
+          </p>
         </div>
-        <!-- Abstract Brain Visualization -->
-        <div class="brain-bg-overlay flex items-center justify-center pulse-animation">
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-blue-500 fill-current">
-                <path d="M100 20C60 20 30 50 30 90C30 110 40 130 55 145C55 160 45 175 35 180C50 180 70 170 80 160C85 163 92 165 100 165C140 165 170 135 170 95C170 55 140 20 100 20Z" />
-                <circle cx="70" cy="80" r="8" fill="currentColor" opacity="0.6"/>
-                <circle cx="130" cy="80" r="8" fill="currentColor" opacity="0.6"/>
-                <path d="M60 120 L140 120" stroke="currentColor" stroke-width="2" opacity="0.4"/>
-            </svg>
+        <h1 class="heading-xl">APGI SYSTEM</h1>
+        <p class="accent-text">Allostatic Precision-Gated Ignition</p>
+        <p class="body-md">
+          A computational implementation of consciousness based on active
+          inference, predictive processing, and allostatic regulation. Designed
+          to model human-like cognitive processes through biologically-inspired
+          architectures.
+        </p>
+        <div class="hero-illustration">
+          <img
+            src="assets/images/APGI-Software-System.png"
+            alt="APGI Software System Interface"
+            class="hero-image"
+            loading="lazy"
+          />
         </div>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <span class="feature-badge">Active Inference</span>
+          <span class="feature-badge">Predictive Processing</span>
+          <span class="feature-badge">Allostatic Regulation</span>
+          <span class="feature-badge">Global Workspace</span>
+          <span class="feature-badge">Self-Modeling</span>
+        </div>
+      </div>
+      <!-- Abstract Brain Visualization -->
+      <div
+        class="brain-bg-overlay flex items-center justify-center pulse-animation"
+      >
+        <svg
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-full h-full text-blue-500 fill-current"
+        >
+          <path
+            d="M100 20C60 20 30 50 30 90C30 110 40 130 55 145C55 160 45 175 35 180C50 180 70 170 80 160C85 163 92 165 100 165C140 165 170 135 170 95C170 55 140 20 100 20Z"
+          />
+          <circle cx="70" cy="80" r="8" fill="currentColor" opacity="0.6" />
+          <circle cx="130" cy="80" r="8" fill="currentColor" opacity="0.6" />
+          <path
+            d="M60 120 L140 120"
+            stroke="currentColor"
+            stroke-width="2"
+            opacity="0.4"
+          />
+        </svg>
+      </div>
     </header>
 
     <!-- 1. Overview Section -->
     <section class="fade-in-section">
-        <div class="container">
-            <h2 class="subheading-lg section-title">Framework Overview</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-panel">
-                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
-                        <i data-lucide="brain" class="text-blue-500"></i> Core Concept
-                    </h3>
-                    <p>
-                        APGI integrates multiple theoretical frameworks to create a comprehensive 
-                        model of consciousness and cognitive processing. It implements biologically 
-                        plausible mechanisms for perception, attention, decision-making, and 
-                        self-awareness.
-                    </p>
-                </div>
-                <div class="glass-panel">
-                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
-                        <i data-lucide="target" class="text-red-500"></i> Research Applications
-                    </h3>
-                    <ul class="space-y-3">
-                        <li>• <strong>Attentional blink</strong> and perceptual limitations</li>
-                        <li>• <strong>Change blindness</strong> and visual awareness</li>
-                        <li>• <strong>Decision-making</strong> under uncertainty (Iowa Gambling)</li>
-                        <li>• <strong>Binocular rivalry</strong> and competitive perception</li>
-                        <li>• <strong>Somatic marker hypothesis</strong> validation</li>
-                    </ul>
-                </div>
-            </div>
+      <div class="container">
+        <h2 class="subheading-lg section-title">Framework Overview</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="glass-panel">
+            <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+              <i data-lucide="brain" class="text-blue-500"></i> Core Concept
+            </h3>
+            <p>
+              APGI integrates multiple theoretical frameworks to create a
+              comprehensive model of consciousness and cognitive processing. It
+              implements biologically plausible mechanisms for perception,
+              attention, decision-making, and self-awareness.
+            </p>
+          </div>
+          <div class="glass-panel">
+            <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+              <i data-lucide="target" class="text-red-500"></i> Research
+              Applications
+            </h3>
+            <ul class="space-y-3">
+              <li>
+                • <strong>Attentional blink</strong> and perceptual limitations
+              </li>
+              <li>• <strong>Change blindness</strong> and visual awareness</li>
+              <li>
+                • <strong>Decision-making</strong> under uncertainty (Iowa
+                Gambling)
+              </li>
+              <li>
+                • <strong>Binocular rivalry</strong> and competitive perception
+              </li>
+              <li>• <strong>Somatic marker hypothesis</strong> validation</li>
+            </ul>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- 2. Architecture Section -->
     <section class="fade-in-section">
-        <div class="container">
-            <h2 class="subheading-lg section-title">System Architecture</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="architecture-node">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i data-lucide="cpu" class="w-8 h-8"></i>
-                        <h3 class="text-xl font-bold">Core Systems</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>• Active Inference Engine</li>
-                        <li>• Hierarchical Predictor</li>
-                        <li>• Precision Weighting</li>
-                        <li>• Free Energy Calculator</li>
-                    </ul>
-                </div>
-                <div class="architecture-node">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i data-lucide="activity" class="w-8 h-8"></i>
-                        <h3 class="text-xl font-bold">Neural Systems</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>• Microscale Networks</li>
-                        <li>• Mesoscale Columns</li>
-                        <li>• Macroscale Networks</li>
-                        <li>• Neural Oscillations</li>
-                    </ul>
-                </div>
-                <div class="architecture-node">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i data-lucide="heart" class="w-8 h-8"></i>
-                        <h3 class="text-xl font-bold">Interoception</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>• Body Model</li>
-                        <li>• Allostatic Regulator</li>
-                        <li>• Somatic Marker System</li>
-                        <li>• Physiological States</li>
-                    </ul>
-                </div>
-                <div class="architecture-node">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i data-lucide="zap" class="w-8 h-8"></i>
-                        <h3 class="text-xl font-bold">Ignition Dynamics</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>• Ignition Threshold</li>
-                        <li>• Global Workspace</li>
-                        <li>• Temporal Dynamics</li>
-                        <li>• Information Broadcasting</li>
-                    </ul>
-                </div>
-                <div class="architecture-node">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i data-lucide="user" class="w-8 h-8"></i>
-                        <h3 class="text-xl font-bold">Self-Model</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>• Minimal Self</li>
-                        <li>• Narrative Self</li>
-                        <li>• Coherence Maintenance</li>
-                        <li>• Autobiographical Memory</li>
-                    </ul>
-                </div>
-                <div class="architecture-node">
-                    <div class="flex items-center gap-3 mb-3">
-                        <i data-lucide="thermometer" class="w-8 h-8"></i>
-                        <h3 class="text-xl font-bold">Thermodynamic</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>• Metabolic Budget</li>
-                        <li>• Energy Constraints</li>
-                        <li>• Entropy Tracking</li>
-                        <li>• Thermodynamic Costs</li>
-                    </ul>
-                </div>
+      <div class="container">
+        <h2 class="subheading-lg section-title">System Architecture</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="architecture-node">
+            <div class="flex items-center gap-3 mb-3">
+              <i data-lucide="cpu" class="w-8 h-8"></i>
+              <h3 class="text-xl font-bold">Core Systems</h3>
             </div>
+            <ul class="space-y-2 text-sm">
+              <li>• Active Inference Engine</li>
+              <li>• Hierarchical Predictor</li>
+              <li>• Precision Weighting</li>
+              <li>• Free Energy Calculator</li>
+            </ul>
+          </div>
+          <div class="architecture-node">
+            <div class="flex items-center gap-3 mb-3">
+              <i data-lucide="activity" class="w-8 h-8"></i>
+              <h3 class="text-xl font-bold">Neural Systems</h3>
+            </div>
+            <ul class="space-y-2 text-sm">
+              <li>• Microscale Networks</li>
+              <li>• Mesoscale Columns</li>
+              <li>• Macroscale Networks</li>
+              <li>• Neural Oscillations</li>
+            </ul>
+          </div>
+          <div class="architecture-node">
+            <div class="flex items-center gap-3 mb-3">
+              <i data-lucide="heart" class="w-8 h-8"></i>
+              <h3 class="text-xl font-bold">Interoception</h3>
+            </div>
+            <ul class="space-y-2 text-sm">
+              <li>• Body Model</li>
+              <li>• Allostatic Regulator</li>
+              <li>• Somatic Marker System</li>
+              <li>• Physiological States</li>
+            </ul>
+          </div>
+          <div class="architecture-node">
+            <div class="flex items-center gap-3 mb-3">
+              <i data-lucide="zap" class="w-8 h-8"></i>
+              <h3 class="text-xl font-bold">Ignition Dynamics</h3>
+            </div>
+            <ul class="space-y-2 text-sm">
+              <li>• Ignition Threshold</li>
+              <li>• Global Workspace</li>
+              <li>• Temporal Dynamics</li>
+              <li>• Information Broadcasting</li>
+            </ul>
+          </div>
+          <div class="architecture-node">
+            <div class="flex items-center gap-3 mb-3">
+              <i data-lucide="user" class="w-8 h-8"></i>
+              <h3 class="text-xl font-bold">Self-Model</h3>
+            </div>
+            <ul class="space-y-2 text-sm">
+              <li>• Minimal Self</li>
+              <li>• Narrative Self</li>
+              <li>• Coherence Maintenance</li>
+              <li>• Autobiographical Memory</li>
+            </ul>
+          </div>
+          <div class="architecture-node">
+            <div class="flex items-center gap-3 mb-3">
+              <i data-lucide="thermometer" class="w-8 h-8"></i>
+              <h3 class="text-xl font-bold">Thermodynamic</h3>
+            </div>
+            <ul class="space-y-2 text-sm">
+              <li>• Metabolic Budget</li>
+              <li>• Energy Constraints</li>
+              <li>• Entropy Tracking</li>
+              <li>• Thermodynamic Costs</li>
+            </ul>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- 3. Subsystems Detailed -->
     <section class="fade-in-section">
-        <div class="container">
-            <h2 class="subheading-lg section-title">Core Subsystems</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="subsystem-card">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#00B4FF] to-[#9966FF] flex items-center justify-center">
-                            <i data-lucide="cpu" class="w-6 h-6 text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold">Active Inference Engine</h3>
-                    </div>
-                    <p>
-                        Implements variational free energy minimization and Bayesian inference 
-                        through hierarchical predictive coding across 4 levels.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="feature-badge">256→128→64→32 nodes</span>
-                        <span class="feature-badge">10ms→50ms→200ms→500ms</span>
-                    </div>
-                </div>
-                <div class="subsystem-card">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#FF3366] to-[#FFCC00] flex items-center justify-center">
-                            <i data-lucide="activity" class="w-6 h-6 text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold">Allostatic Regulation</h3>
-                    </div>
-                    <p>
-                        Models physiological states and maintains homeostatic balance through 
-                        interoceptive predictive processing.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="feature-badge">Heart Rate</span>
-                        <span class="feature-badge">Cortisol</span>
-                        <span class="feature-badge">Glucose</span>
-                    </div>
-                </div>
-                <div class="subsystem-card">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#00CC99] to-[#00B4FF] flex items-center justify-center">
-                            <i data-lucide="zap" class="w-6 h-6 text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold">Ignition Dynamics</h3>
-                    </div>
-                    <p>
-                        Implements global workspace broadcasting with threshold-based ignition 
-                        events following 300-500ms timeline of consciousness.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="feature-badge">Dynamic Threshold</span>
-                        <span class="feature-badge">Global Workspace</span>
-                    </div>
-                </div>
-                <div class="subsystem-card">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#9966FF] to-[#FF3366] flex items-center justify-center">
-                            <i data-lucide="user" class="w-6 h-6 text-white"></i>
-                        </div>
-                        <h3 class="text-xl font-bold">Self-Model System</h3>
-                    </div>
-                    <p>
-                        Maintains minimal and narrative self-representations with coherence 
-                        tracking and integrity monitoring.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="feature-badge">Minimal Self</span>
-                        <span class="feature-badge">Narrative Self</span>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="subheading-lg section-title">Core Subsystems</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="subsystem-card">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#00B4FF] to-[#9966FF] flex items-center justify-center"
+              >
+                <i data-lucide="cpu" class="w-6 h-6 text-white"></i>
+              </div>
+              <h3 class="text-xl font-bold">Active Inference Engine</h3>
             </div>
+            <p>
+              Implements variational free energy minimization and Bayesian
+              inference through hierarchical predictive coding across 4 levels.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="feature-badge">256→128→64→32 nodes</span>
+              <span class="feature-badge">10ms→50ms→200ms→500ms</span>
+            </div>
+          </div>
+          <div class="subsystem-card">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#FF3366] to-[#FFCC00] flex items-center justify-center"
+              >
+                <i data-lucide="activity" class="w-6 h-6 text-white"></i>
+              </div>
+              <h3 class="text-xl font-bold">Allostatic Regulation</h3>
+            </div>
+            <p>
+              Models physiological states and maintains homeostatic balance
+              through interoceptive predictive processing.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="feature-badge">Heart Rate</span>
+              <span class="feature-badge">Cortisol</span>
+              <span class="feature-badge">Glucose</span>
+            </div>
+          </div>
+          <div class="subsystem-card">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#00CC99] to-[#00B4FF] flex items-center justify-center"
+              >
+                <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+              </div>
+              <h3 class="text-xl font-bold">Ignition Dynamics</h3>
+            </div>
+            <p>
+              Implements global workspace broadcasting with threshold-based
+              ignition events following 300-500ms timeline of consciousness.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="feature-badge">Dynamic Threshold</span>
+              <span class="feature-badge">Global Workspace</span>
+            </div>
+          </div>
+          <div class="subsystem-card">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 rounded-lg bg-gradient-to-r from-[#9966FF] to-[#FF3366] flex items-center justify-center"
+              >
+                <i data-lucide="user" class="w-6 h-6 text-white"></i>
+              </div>
+              <h3 class="text-xl font-bold">Self-Model System</h3>
+            </div>
+            <p>
+              Maintains minimal and narrative self-representations with
+              coherence tracking and integrity monitoring.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="feature-badge">Minimal Self</span>
+              <span class="feature-badge">Narrative Self</span>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- 4. Experimental Tasks -->
     <section class="fade-in-section">
-        <div class="container">
-            <h2 class="subheading-lg section-title">Experimental Tasks</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="eye" class="w-8 h-8 text-blue-500"></i>
-                        <h3 class="text-xl font-bold">Attentional Blink</h3>
-                    </div>
-                    <p>
-                        Tests temporal attention limitations and consciousness timing 
-                        through rapid serial visual presentation.
-                    </p>
-                    <div class="text-sm text-muted">Temporal resolution: ~200ms</div>
-                </div>
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="eye-off" class="w-8 h-8 text-red-500"></i>
-                        <h3 class="text-xl font-bold">Change Blindness</h3>
-                    </div>
-                    <p>
-                        Examines visual perception failures when changes occur during 
-                        saccades or brief interruptions.
-                    </p>
-                    <div class="text-sm text-muted">Spatial attention modeling</div>
-                </div>
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="git-merge" class="w-8 h-8 text-[#00CC99]"></i>
-                        <h3 class="text-xl font-bold">Binocular Rivalry</h3>
-                    </div>
-                    <p>
-                        Studies competitive perception when different images are presented 
-                        to each eye simultaneously.
-                    </p>
-                    <div class="text-sm text-muted">Competitive neural dynamics</div>
-                </div>
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="trending-up" class="w-8 h-8 text-[#FFCC00]"></i>
-                        <h3 class="text-xl font-bold">Iowa Gambling Task</h3>
-                    </div>
-                    <p>
-                        Assesses decision-making under uncertainty and somatic marker 
-                        hypothesis in risky choices.
-                    </p>
-                    <div class="text-sm text-muted">Somatic marker learning</div>
-                </div>
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="shield" class="w-8 h-8 text-[#9966FF]"></i>
-                        <h3 class="text-xl font-bold">Masking Paradigm</h3>
-                    </div>
-                    <p>
-                        Tests subliminal processing and threshold detection for 
-                        conscious vs. unconscious perception.
-                    </p>
-                    <div class="text-sm text-muted">Threshold dynamics</div>
-                </div>
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="bar-chart" class="w-8 h-8 text-[#2C3E50]"></i>
-                        <h3 class="text-xl font-bold">Validation Metrics</h3>
-                    </div>
-                    <p>
-                        Comprehensive metrics including Phi integration, PCI complexity, 
-                        and coherence tracking.
-                    </p>
-                    <div class="text-sm text-muted">Phi, PCI, ERP matching</div>
-                </div>
+      <div class="container">
+        <h2 class="subheading-lg section-title">Experimental Tasks</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="eye" class="w-8 h-8 text-blue-500"></i>
+              <h3 class="text-xl font-bold">Attentional Blink</h3>
             </div>
+            <p>
+              Tests temporal attention limitations and consciousness timing
+              through rapid serial visual presentation.
+            </p>
+            <div class="text-sm text-muted">Temporal resolution: ~200ms</div>
+          </div>
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="eye-off" class="w-8 h-8 text-red-500"></i>
+              <h3 class="text-xl font-bold">Change Blindness</h3>
+            </div>
+            <p>
+              Examines visual perception failures when changes occur during
+              saccades or brief interruptions.
+            </p>
+            <div class="text-sm text-muted">Spatial attention modeling</div>
+          </div>
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="git-merge" class="w-8 h-8 text-[#00CC99]"></i>
+              <h3 class="text-xl font-bold">Binocular Rivalry</h3>
+            </div>
+            <p>
+              Studies competitive perception when different images are presented
+              to each eye simultaneously.
+            </p>
+            <div class="text-sm text-muted">Competitive neural dynamics</div>
+          </div>
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="trending-up" class="w-8 h-8 text-[#FFCC00]"></i>
+              <h3 class="text-xl font-bold">Iowa Gambling Task</h3>
+            </div>
+            <p>
+              Assesses decision-making under uncertainty and somatic marker
+              hypothesis in risky choices.
+            </p>
+            <div class="text-sm text-muted">Somatic marker learning</div>
+          </div>
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="shield" class="w-8 h-8 text-[#9966FF]"></i>
+              <h3 class="text-xl font-bold">Masking Paradigm</h3>
+            </div>
+            <p>
+              Tests subliminal processing and threshold detection for conscious
+              vs. unconscious perception.
+            </p>
+            <div class="text-sm text-muted">Threshold dynamics</div>
+          </div>
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <i data-lucide="bar-chart" class="w-8 h-8 text-[#2C3E50]"></i>
+              <h3 class="text-xl font-bold">Validation Metrics</h3>
+            </div>
+            <p>
+              Comprehensive metrics including Phi integration, PCI complexity,
+              and coherence tracking.
+            </p>
+            <div class="text-sm text-muted">Phi, PCI, ERP matching</div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- 6. GUI Features -->
     <section class="fade-in-section">
-        <div class="container">
-            <h2 class="subheading-lg section-title">GUI Interface</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-lg bg-[#00B4FF] flex items-center justify-center">
-                            <i data-lucide="sliders" class="w-5 h-5 text-white"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Control Panel</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>• Start/Pause/Stop/Reset controls</li>
-                        <li>• Speed control (0.1x - 10x)</li>
-                        <li>• System status display</li>
-                        <li>• Quick parameter adjustments</li>
-                        <li>• Event log with timestamps</li>
-                    </ul>
-                </div>
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-lg bg-[#FF3366] flex items-center justify-center">
-                            <i data-lucide="layout" class="w-5 h-5 text-white"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Visualization Tabs</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>1. Neural Activity</li>
-                        <li>2. Interoception</li>
-                        <li>3. System Metrics</li>
-                        <li>4. Self-Model</li>
-                        <li>5. Oscillations</li>
-                        <li>6. State Space (3D)</li>
-                    </ul>
-                </div>
-                <div class="glass-panel">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-lg bg-[#00CC99] flex items-center justify-center">
-                            <i data-lucide="menu" class="w-5 h-5 text-white"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Menu System</h3>
-                    </div>
-                    <ul class="space-y-2 text-sm">
-                        <li>• File Menu (8 items)</li>
-                        <li>• Edit Menu (4 items)</li>
-                        <li>• Simulation Menu (5 items)</li>
-                        <li>• View Menu (7 items)</li>
-                        <li>• Tools Menu (6 items)</li>
-                        <li>• Analysis Menu (5 items)</li>
-                        <li>• Help Menu (3 items)</li>
-                    </ul>
-                </div>
+      <div class="container">
+        <h2 class="subheading-lg section-title">GUI Interface</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 rounded-lg bg-[#00B4FF] flex items-center justify-center"
+              >
+                <i data-lucide="sliders" class="w-5 h-5 text-white"></i>
+              </div>
+              <h3 class="text-lg font-bold">Control Panel</h3>
             </div>
-            <div class="mt-8 grid md:grid-cols-2 gap-6">
-                <div class="glass-panel">
-                    <h3 class="text-xl font-bold mb-4">Keyboard Shortcuts</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <div class="font-medium">Ctrl+N</div>
-                            <div class="text-sm">New Session</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">Ctrl+O</div>
-                            <div class="text-sm">Load Configuration</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">Ctrl+S</div>
-                            <div class="text-sm">Save Configuration</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">Ctrl+E</div>
-                            <div class="text-sm">Export Data</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">F5</div>
-                            <div class="text-sm">Start Simulation</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">F6</div>
-                            <div class="text-sm">Pause/Resume</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">F7</div>
-                            <div class="text-sm">Stop Simulation</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">F8</div>
-                            <div class="text-sm">Reset System</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-panel">
-                    <h3 class="text-xl font-bold mb-4">Data Export</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <div class="font-medium">CSV Export</div>
-                            <div class="text-sm">Tabular data with all metrics</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">JSON Export</div>
-                            <div class="text-sm">Structured system state</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">Analysis Reports</div>
-                            <div class="text-sm">Generated automatically</div>
-                        </div>
-                        <div>
-                            <div class="font-medium">Visualization Exports</div>
-                            <div class="text-sm">PNG/PDF/SVG formats</div>
-                        </div>
-                    </div>
-                </div>
+            <ul class="space-y-2 text-sm">
+              <li>• Start/Pause/Stop/Reset controls</li>
+              <li>• Speed control (0.1x - 10x)</li>
+              <li>• System status display</li>
+              <li>• Quick parameter adjustments</li>
+              <li>• Event log with timestamps</li>
+            </ul>
+          </div>
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 rounded-lg bg-[#FF3366] flex items-center justify-center"
+              >
+                <i data-lucide="layout" class="w-5 h-5 text-white"></i>
+              </div>
+              <h3 class="text-lg font-bold">Visualization Tabs</h3>
             </div>
+            <ul class="space-y-2 text-sm">
+              <li>1. Neural Activity</li>
+              <li>2. Interoception</li>
+              <li>3. System Metrics</li>
+              <li>4. Self-Model</li>
+              <li>5. Oscillations</li>
+              <li>6. State Space (3D)</li>
+            </ul>
+          </div>
+          <div class="glass-panel">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 rounded-lg bg-[#00CC99] flex items-center justify-center"
+              >
+                <i data-lucide="menu" class="w-5 h-5 text-white"></i>
+              </div>
+              <h3 class="text-lg font-bold">Menu System</h3>
+            </div>
+            <ul class="space-y-2 text-sm">
+              <li>• File Menu (8 items)</li>
+              <li>• Edit Menu (4 items)</li>
+              <li>• Simulation Menu (5 items)</li>
+              <li>• View Menu (7 items)</li>
+              <li>• Tools Menu (6 items)</li>
+              <li>• Analysis Menu (5 items)</li>
+              <li>• Help Menu (3 items)</li>
+            </ul>
+          </div>
         </div>
+        <div class="mt-8 grid md:grid-cols-2 gap-6">
+          <div class="glass-panel">
+            <h3 class="text-xl font-bold mb-4">Keyboard Shortcuts</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="font-medium">Ctrl+N</div>
+                <div class="text-sm">New Session</div>
+              </div>
+              <div>
+                <div class="font-medium">Ctrl+O</div>
+                <div class="text-sm">Load Configuration</div>
+              </div>
+              <div>
+                <div class="font-medium">Ctrl+S</div>
+                <div class="text-sm">Save Configuration</div>
+              </div>
+              <div>
+                <div class="font-medium">Ctrl+E</div>
+                <div class="text-sm">Export Data</div>
+              </div>
+              <div>
+                <div class="font-medium">F5</div>
+                <div class="text-sm">Start Simulation</div>
+              </div>
+              <div>
+                <div class="font-medium">F6</div>
+                <div class="text-sm">Pause/Resume</div>
+              </div>
+              <div>
+                <div class="font-medium">F7</div>
+                <div class="text-sm">Stop Simulation</div>
+              </div>
+              <div>
+                <div class="font-medium">F8</div>
+                <div class="text-sm">Reset System</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-panel">
+            <h3 class="text-xl font-bold mb-4">Data Export</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="font-medium">CSV Export</div>
+                <div class="text-sm">Tabular data with all metrics</div>
+              </div>
+              <div>
+                <div class="font-medium">JSON Export</div>
+                <div class="text-sm">Structured system state</div>
+              </div>
+              <div>
+                <div class="font-medium">Analysis Reports</div>
+                <div class="text-sm">Generated automatically</div>
+              </div>
+              <div>
+                <div class="font-medium">Visualization Exports</div>
+                <div class="text-sm">PNG/PDF/SVG formats</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 7. Performance Metrics -->
     <section class="fade-in-section">
-        <div class="container">
-            <h2 class="subheading-lg section-title">Performance & Validation</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="glass-panel">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-[#00B4FF] mb-2">1ms</div>
-                        <div class="text-lg font-semibold">Timestep Resolution</div>
-                        <div class="text-sm mt-2">Microscale temporal precision</div>
-                    </div>
-                </div>
-                <div class="glass-panel">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-[#FF3366] mb-2">~1000 Hz</div>
-                        <div class="text-lg font-semibold">System Update Rate</div>
-                        <div class="text-sm mt-2">Real-time simulation speed</div>
-                    </div>
-                </div>
-                <div class="glass-panel">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-[#00CC99] mb-2">10 Hz</div>
-                        <div class="text-lg font-semibold">GUI Refresh Rate</div>
-                        <div class="text-sm mt-2">Visualization update frequency</div>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="subheading-lg section-title">Performance & Validation</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="glass-panel">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-[#00B4FF] mb-2">1ms</div>
+              <div class="text-lg font-semibold">Timestep Resolution</div>
+              <div class="text-sm mt-2">Microscale temporal precision</div>
             </div>
-            <div class="mt-8 grid md:grid-cols-2 gap-8">
-                <div class="glass-panel">
-                    <h3 class="text-xl font-bold mb-4">Success Criteria</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <div class="font-semibold">Minimal Requirements</div>
-                            <ul class="mt-2 space-y-2 text-sm">
-                                <li>• Ignition dynamics match 300-500ms timeline</li>
-                                <li>• Metabolic costs align with 5-10% overhead</li>
-                                <li>• Reproduces attentional blink phenomena</li>
-                                <li>• Reproduces masking paradigm effects</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div class="font-semibold">Target Requirements</div>
-                            <ul class="mt-2 space-y-2 text-sm">
-                                <li>• Human-comparable task performance</li>
-                                <li>• Neural signatures match empirical data</li>
-                                <li>• Pathology models reproduce clinical phenotypes</li>
-                                <li>• Scalable to large-scale brain simulations</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-panel">
-                    <h3 class="text-xl font-bold mb-4">Consciousness Metrics</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <div class="font-semibold">Phi Integration (Φ)</div>
-                            <div class="text-sm">Integrated information theory measure</div>
-                        </div>
-                        <div>
-                            <div class="font-semibold">PCI Complexity</div>
-                            <div class="text-sm">Perturbational complexity index</div>
-                        </div>
-                        <div>
-                            <div class="font-semibold">Ignition Events</div>
-                            <div class="text-sm">Global workspace broadcasting frequency</div>
-                        </div>
-                        <div>
-                            <div class="font-semibold">Coherence Tracking</div>
-                            <div class="text-sm">Self-model integrity monitoring</div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="glass-panel">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-[#FF3366] mb-2">~1000 Hz</div>
+              <div class="text-lg font-semibold">System Update Rate</div>
+              <div class="text-sm mt-2">Real-time simulation speed</div>
             </div>
+          </div>
+          <div class="glass-panel">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-[#00CC99] mb-2">10 Hz</div>
+              <div class="text-lg font-semibold">GUI Refresh Rate</div>
+              <div class="text-sm mt-2">Visualization update frequency</div>
+            </div>
+          </div>
         </div>
+        <div class="mt-8 grid md:grid-cols-2 gap-8">
+          <div class="glass-panel">
+            <h3 class="text-xl font-bold mb-4">Success Criteria</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="font-semibold">Minimal Requirements</div>
+                <ul class="mt-2 space-y-2 text-sm">
+                  <li>• Ignition dynamics match 300-500ms timeline</li>
+                  <li>• Metabolic costs align with 5-10% overhead</li>
+                  <li>• Reproduces attentional blink phenomena</li>
+                  <li>• Reproduces masking paradigm effects</li>
+                </ul>
+              </div>
+              <div>
+                <div class="font-semibold">Target Requirements</div>
+                <ul class="mt-2 space-y-2 text-sm">
+                  <li>• Human-comparable task performance</li>
+                  <li>• Neural signatures match empirical data</li>
+                  <li>• Pathology models reproduce clinical phenotypes</li>
+                  <li>• Scalable to large-scale brain simulations</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="glass-panel">
+            <h3 class="text-xl font-bold mb-4">Consciousness Metrics</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="font-semibold">Phi Integration (Φ)</div>
+                <div class="text-sm">Integrated information theory measure</div>
+              </div>
+              <div>
+                <div class="font-semibold">PCI Complexity</div>
+                <div class="text-sm">Perturbational complexity index</div>
+              </div>
+              <div>
+                <div class="font-semibold">Ignition Events</div>
+                <div class="text-sm">
+                  Global workspace broadcasting frequency
+                </div>
+              </div>
+              <div>
+                <div class="font-semibold">Coherence Tracking</div>
+                <div class="text-sm">Self-model integrity monitoring</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <script src="assets/js/theme-manager.js"></script>
     <script>
-        // Wait for DOM to be ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Lucide Icons if available
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            } else {
-                console.warn('Lucide icons not loaded');
-            }
-            
-            // Enhanced scroll reveal effect for sections
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
-            }, { threshold: 0.1 });
+      // Wait for DOM to be ready
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Lucide Icons if available
+        if (typeof lucide !== "undefined") {
+          lucide.createIcons();
+        } else {
+          console.warn("Lucide icons not loaded");
+        }
 
-            // Observe all fade-in sections
-            document.querySelectorAll('.fade-in-section').forEach(el => {
-                observer.observe(el);
+        // Enhanced scroll reveal effect for sections
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+              }
             });
-            
-            // Mobile menu functionality
-            const mobileToggle = document.querySelector('.mobile-menu-toggle');
-            const mobileMenu = document.querySelector('.global-nav ul');
-            
-            if (mobileToggle && mobileMenu) {
-                mobileToggle.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('mobile-open');
-                    const icon = this.querySelector('i');
-                    if (icon && typeof lucide !== 'undefined') {
-                        // Toggle between menu and x icons
-                        const menuIcon = document.createElement('i');
-                        menuIcon.setAttribute('data-lucide', 'menu');
-                        
-                        const xIcon = document.createElement('i');
-                        xIcon.setAttribute('data-lucide', 'x');
-                        
-                        if (icon.getAttribute('data-lucide') === 'menu') {
-                            icon.replaceWith(xIcon);
-                            lucide.createIcons();
-                        } else {
-                            icon.replaceWith(menuIcon);
-                            lucide.createIcons();
-                        }
-                    }
-                });
-                
-                // Close mobile menu when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!e.target.closest('.global-nav')) {
-                        mobileMenu.classList.remove('mobile-open');
-                        const icon = mobileToggle.querySelector('i');
-                        if (icon && icon.getAttribute('data-lucide') === 'x' && typeof lucide !== 'undefined') {
-                            const menuIcon = document.createElement('i');
-                            menuIcon.setAttribute('data-lucide', 'menu');
-                            icon.replaceWith(menuIcon);
-                            lucide.createIcons();
-                        }
-                    }
-                });
-            }
+          },
+          { threshold: 0.1 },
+        );
+
+        // Observe all fade-in sections
+        document.querySelectorAll(".fade-in-section").forEach((el) => {
+          observer.observe(el);
         });
+
+        // Mobile menu functionality
+        const mobileToggle = document.querySelector(".mobile-menu-toggle");
+        const mobileMenu = document.querySelector(".global-nav ul");
+
+        if (mobileToggle && mobileMenu) {
+          mobileToggle.addEventListener("click", function () {
+            mobileMenu.classList.toggle("mobile-open");
+            const icon = this.querySelector("i");
+            if (icon && typeof lucide !== "undefined") {
+              // Toggle between menu and x icons
+              const menuIcon = document.createElement("i");
+              menuIcon.setAttribute("data-lucide", "menu");
+
+              const xIcon = document.createElement("i");
+              xIcon.setAttribute("data-lucide", "x");
+
+              if (icon.getAttribute("data-lucide") === "menu") {
+                icon.replaceWith(xIcon);
+                lucide.createIcons();
+              } else {
+                icon.replaceWith(menuIcon);
+                lucide.createIcons();
+              }
+            }
+          });
+
+          // Close mobile menu when clicking outside
+          document.addEventListener("click", function (e) {
+            if (!e.target.closest(".global-nav")) {
+              mobileMenu.classList.remove("mobile-open");
+              const icon = mobileToggle.querySelector("i");
+              if (
+                icon &&
+                icon.getAttribute("data-lucide") === "x" &&
+                typeof lucide !== "undefined"
+              ) {
+                const menuIcon = document.createElement("i");
+                menuIcon.setAttribute("data-lucide", "menu");
+                icon.replaceWith(menuIcon);
+                lucide.createIcons();
+              }
+            }
+          });
+        }
+      });
     </script>
-</body>
+  </body>
 </html>

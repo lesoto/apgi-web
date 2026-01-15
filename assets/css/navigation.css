@@ -30,7 +30,6 @@
   justify-content: flex-start;
 }
 
-
 .nav-link {
   text-decoration: none;
   color: #0f172a;
@@ -115,7 +114,9 @@
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.15),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
   min-width: 200px;
   opacity: 0;
   visibility: hidden;
@@ -262,37 +263,37 @@
     height: auto;
     min-height: 64px;
   }
-  
+
   .nav-links {
     gap: 1px;
   }
-  
+
   .nav-link {
     font-size: 0.8rem;
     padding: 5px 8px;
   }
-  
+
   .nav-link.nav-brand {
     font-size: 0.85rem;
     margin-right: 6px;
   }
-  
+
   .nav-dropdown-btn {
     font-size: 0.8rem;
     padding: 5px 8px;
   }
-  
+
   .dropdown-arrow {
     font-size: 0.6rem;
   }
-  
+
   .theme-toggle {
     padding: 5px 8px;
     font-size: 0.75rem;
     gap: 4px;
     margin-left: 6px;
   }
-  
+
   .theme-text {
     display: none;
   }
@@ -302,26 +303,26 @@
   .nav-container {
     padding: 8px 12px;
   }
-  
+
   .nav-links {
     gap: 0;
   }
-  
+
   .nav-link {
     font-size: 0.75rem;
     padding: 4px 6px;
   }
-  
+
   .nav-link.nav-brand {
     font-size: 0.8rem;
     margin-right: 4px;
   }
-  
+
   .nav-dropdown-btn {
     font-size: 0.75rem;
     padding: 4px 6px;
   }
-  
+
   .dropdown-menu {
     position: fixed;
     top: 64px;
@@ -332,19 +333,19 @@
     margin-top: 0;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
-  
+
   .dropdown-link {
     padding: 14px 20px;
     font-size: 0.9rem;
   }
-  
+
   .theme-toggle {
     padding: 4px 6px;
     font-size: 0.7rem;
     gap: 3px;
     margin-left: 4px;
   }
-  
+
   .dropdown-arrow {
     font-size: 0.55rem;
   }

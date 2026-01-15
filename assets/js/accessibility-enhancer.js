@@ -6,12 +6,12 @@ class APGIAccessibility {
 
   // Input sanitization utility
   sanitizeInput(input) {
-    if (typeof input !== 'string') return input;
+    if (typeof input !== "string") return input;
 
     return input
-      .replace(/[<>]/g, '') // Remove potential HTML tags
-      .replace(/javascript:/gi, '') // Remove javascript: protocol
-      .replace(/on\w+=/gi, '') // Remove event handlers
+      .replace(/[<>]/g, "") // Remove potential HTML tags
+      .replace(/javascript:/gi, "") // Remove javascript: protocol
+      .replace(/on\w+=/gi, "") // Remove event handlers
       .trim();
   }
 
@@ -22,16 +22,17 @@ class APGIAccessibility {
   }
 
   // Validate form inputs
-  validateFormInput(input, type = 'text') {
+  validateFormInput(input, type = "text") {
     const sanitized = this.sanitizeInput(input);
 
     switch (type) {
-      case 'email':
+      case "email":
         return this.isValidEmail(sanitized) ? sanitized : null;
-      case 'number':
+      case "number": {
         const num = parseFloat(sanitized);
         return !isNaN(num) ? num : null;
-      case 'text':
+      }
+      case "text":
       default:
         return sanitized.length > 0 ? sanitized : null;
     }
@@ -49,33 +50,33 @@ class APGIAccessibility {
 
   addARIALabels() {
     // Add ARIA labels to navigation
-    const nav = document.querySelector('.apgi-navigation');
+    const nav = document.querySelector(".apgi-navigation");
     if (nav) {
-      nav.setAttribute('role', 'navigation');
-      nav.setAttribute('aria-label', 'Main navigation');
+      nav.setAttribute("role", "navigation");
+      nav.setAttribute("aria-label", "Main navigation");
     }
 
     // Add ARIA labels to interactive elements
-    const buttons = document.querySelectorAll('button:not([aria-label])');
-    buttons.forEach(button => {
+    const buttons = document.querySelectorAll("button:not([aria-label])");
+    buttons.forEach((button) => {
       const text = button.textContent.trim();
-      if (text && !button.getAttribute('aria-label')) {
-        button.setAttribute('aria-label', text);
+      if (text && !button.getAttribute("aria-label")) {
+        button.setAttribute("aria-label", text);
       }
     });
 
     // Add ARIA labels to links that lack descriptive text
-    const links = document.querySelectorAll('a:not([aria-label])');
-    links.forEach(link => {
+    const links = document.querySelectorAll("a:not([aria-label])");
+    links.forEach((link) => {
       const text = link.textContent.trim();
-      const href = link.getAttribute('href');
+      const href = link.getAttribute("href");
 
       if (!text && href) {
         // Handle icon-only links
-        const icon = link.querySelector('i, svg');
+        const icon = link.querySelector("i, svg");
         if (icon) {
-          const className = icon.className || icon.getAttribute('data-lucide');
-          link.setAttribute('aria-label', this.getIconDescription(className));
+          const className = icon.className || icon.getAttribute("data-lucide");
+          link.setAttribute("aria-label", this.getIconDescription(className));
         }
       }
     });
@@ -83,42 +84,45 @@ class APGIAccessibility {
     // Add ARIA labels to visualization containers
     const plots = document.querySelectorAll('[id*="plot"], .plot-container');
     plots.forEach((plot, index) => {
-      if (!plot.getAttribute('role')) {
-        plot.setAttribute('role', 'img');
-        plot.setAttribute('aria-label', `Interactive visualization ${index + 1}`);
+      if (!plot.getAttribute("role")) {
+        plot.setAttribute("role", "img");
+        plot.setAttribute(
+          "aria-label",
+          `Interactive visualization ${index + 1}`,
+        );
       }
     });
 
     // Add ARIA descriptions for complex content
-    const descriptions = document.querySelectorAll('.description, .subtitle');
-    descriptions.forEach(desc => {
-      if (!desc.getAttribute('role')) {
-        desc.setAttribute('role', 'doc-introduction');
+    const descriptions = document.querySelectorAll(".description, .subtitle");
+    descriptions.forEach((desc) => {
+      if (!desc.getAttribute("role")) {
+        desc.setAttribute("role", "doc-introduction");
       }
     });
   }
 
   getIconDescription(className) {
     const iconMap = {
-      home: 'Home page',
-      menu: 'Menu',
-      settings: 'Settings',
-      user: 'User profile',
-      search: 'Search',
-      close: 'Close',
-      chevron: 'Navigate',
-      arrow: 'Navigate',
-      download: 'Download',
-      upload: 'Upload',
-      edit: 'Edit',
-      delete: 'Delete',
-      share: 'Share',
-      facebook: 'Facebook',
-      twitter: 'Twitter',
-      instagram: 'Instagram',
-      linkedin: 'LinkedIn',
-      youtube: 'YouTube',
-      github: 'GitHub'
+      home: "Home page",
+      menu: "Menu",
+      settings: "Settings",
+      user: "User profile",
+      search: "Search",
+      close: "Close",
+      chevron: "Navigate",
+      arrow: "Navigate",
+      download: "Download",
+      upload: "Upload",
+      edit: "Edit",
+      delete: "Delete",
+      share: "Share",
+      facebook: "Facebook",
+      twitter: "Twitter",
+      instagram: "Instagram",
+      linkedin: "LinkedIn",
+      youtube: "YouTube",
+      github: "GitHub",
     };
 
     for (const [key, description] of Object.entries(iconMap)) {
@@ -127,17 +131,17 @@ class APGIAccessibility {
       }
     }
 
-    return 'Interactive element';
+    return "Interactive element";
   }
 
   improveKeyboardNavigation() {
     // Ensure all interactive elements are focusable
     const interactiveElements = document.querySelectorAll(
-      'button, a, input, select, textarea, [tabindex]'
+      "button, a, input, select, textarea, [tabindex]",
     );
-    interactiveElements.forEach(element => {
-      if (!element.hasAttribute('tabindex')) {
-        element.setAttribute('tabindex', element.disabled ? '-1' : '0');
+    interactiveElements.forEach((element) => {
+      if (!element.hasAttribute("tabindex")) {
+        element.setAttribute("tabindex", element.disabled ? "-1" : "0");
       }
     });
 
@@ -150,10 +154,10 @@ class APGIAccessibility {
 
   addKeyboardNavigationForCustomComponents() {
     // Add keyboard support for quiz navigation
-    const quizButtons = document.querySelectorAll('.quiz-nav button, .btn');
-    quizButtons.forEach(button => {
-      button.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
+    const quizButtons = document.querySelectorAll(".quiz-nav button, .btn");
+    quizButtons.forEach((button) => {
+      button.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           button.click();
         }
@@ -161,11 +165,11 @@ class APGIAccessibility {
     });
 
     // Add arrow key navigation for button groups
-    const buttonGroups = document.querySelectorAll('.controls, .button-group');
-    buttonGroups.forEach(group => {
-      const buttons = group.querySelectorAll('button');
+    const buttonGroups = document.querySelectorAll(".controls, .button-group");
+    buttonGroups.forEach((group) => {
+      const buttons = group.querySelectorAll("button");
 
-      group.addEventListener('keydown', e => {
+      group.addEventListener("keydown", (e) => {
         let currentIndex = -1;
         buttons.forEach((btn, index) => {
           if (btn === document.activeElement) {
@@ -175,13 +179,14 @@ class APGIAccessibility {
 
         let newIndex = currentIndex;
         switch (e.key) {
-          case 'ArrowRight':
-          case 'ArrowDown':
+          case "ArrowRight":
+          case "ArrowDown":
             newIndex = (currentIndex + 1) % buttons.length;
             break;
-          case 'ArrowLeft':
-          case 'ArrowUp':
-            newIndex = currentIndex === 0 ? buttons.length - 1 : currentIndex - 1;
+          case "ArrowLeft":
+          case "ArrowUp":
+            newIndex =
+              currentIndex === 0 ? buttons.length - 1 : currentIndex - 1;
             break;
           default:
             return;
@@ -198,17 +203,17 @@ class APGIAccessibility {
   addFocusManagement() {
     // Trap focus within modal dialogs
     const modals = document.querySelectorAll('.modal, [role="dialog"]');
-    modals.forEach(modal => {
+    modals.forEach((modal) => {
       const focusableElements = modal.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
 
       if (focusableElements.length > 0) {
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
-        modal.addEventListener('keydown', e => {
-          if (e.key === 'Tab') {
+        modal.addEventListener("keydown", (e) => {
+          if (e.key === "Tab") {
             if (e.shiftKey) {
               if (document.activeElement === firstElement) {
                 e.preventDefault();
@@ -228,7 +233,7 @@ class APGIAccessibility {
 
   enhanceFocusIndicators() {
     // Add enhanced focus styles
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       /* Enhanced focus indicators */
       *:focus {
@@ -340,25 +345,27 @@ class APGIAccessibility {
 
   addLiveRegions() {
     // Create live region container
-    if (!document.getElementById('accessibility-live-region')) {
-      const liveRegion = document.createElement('div');
-      liveRegion.id = 'accessibility-live-region';
-      liveRegion.setAttribute('aria-live', 'polite');
-      liveRegion.setAttribute('aria-atomic', 'true');
-      liveRegion.style.position = 'absolute';
-      liveRegion.style.left = '-10000px';
-      liveRegion.style.width = '1px';
-      liveRegion.style.height = '1px';
-      liveRegion.style.overflow = 'hidden';
+    if (!document.getElementById("accessibility-live-region")) {
+      const liveRegion = document.createElement("div");
+      liveRegion.id = "accessibility-live-region";
+      liveRegion.setAttribute("aria-live", "polite");
+      liveRegion.setAttribute("aria-atomic", "true");
+      liveRegion.style.position = "absolute";
+      liveRegion.style.left = "-10000px";
+      liveRegion.style.width = "1px";
+      liveRegion.style.height = "1px";
+      liveRegion.style.overflow = "hidden";
       document.body.appendChild(liveRegion);
     }
 
     // Announce loading states
-    const loadingElements = document.querySelectorAll('.loading, [id*="loading"]');
-    loadingElements.forEach(element => {
-      const observer = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
-          if (mutation.type === 'childList') {
+    const loadingElements = document.querySelectorAll(
+      '.loading, [id*="loading"]',
+    );
+    loadingElements.forEach((element) => {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === "childList") {
             const text = element.textContent.trim();
             if (text) {
               this.announceToScreenReader(text);
@@ -380,23 +387,26 @@ class APGIAccessibility {
       }
     });
 
-    titleObserver.observe(document.querySelector('title'), { childList: true });
+    titleObserver.observe(document.querySelector("title"), { childList: true });
   }
 
   enhanceFormValidation() {
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-      form.addEventListener('submit', e => {
+    const forms = document.querySelectorAll("form");
+    forms.forEach((form) => {
+      form.addEventListener("submit", (e) => {
         const errors = form.querySelectorAll('.error, [aria-invalid="true"]');
         if (errors.length > 0) {
           e.preventDefault();
           const errorMessages = Array.from(errors)
-            .map(error => error.textContent || error.getAttribute('aria-describedby'))
+            .map(
+              (error) =>
+                error.textContent || error.getAttribute("aria-describedby"),
+            )
             .filter(Boolean);
 
           if (errorMessages.length > 0) {
             this.announceToScreenReader(
-              `Form has ${errorMessages.length} error(s): ${errorMessages.join(', ')}`
+              `Form has ${errorMessages.length} error(s): ${errorMessages.join(", ")}`,
             );
           }
         }
@@ -405,19 +415,19 @@ class APGIAccessibility {
   }
 
   announceToScreenReader(message) {
-    const liveRegion = document.getElementById('accessibility-live-region');
+    const liveRegion = document.getElementById("accessibility-live-region");
     if (liveRegion) {
       liveRegion.textContent = message;
       // Clear after announcement
       setTimeout(() => {
-        liveRegion.textContent = '';
+        liveRegion.textContent = "";
       }, 1000);
     }
   }
 
   improveColorContrast() {
     // Add high contrast mode support
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       /* High contrast mode support */
       @media (prefers-contrast: high) {
@@ -464,7 +474,7 @@ class APGIAccessibility {
 
   addSkipLinks() {
     // Add skip links for keyboard navigation
-    const skipLinks = document.createElement('div');
+    const skipLinks = document.createElement("div");
     skipLinks.innerHTML = `
       <a href="#main-content" class="skip-link">Skip to main content</a>
       <a href="#navigation" class="skip-link">Skip to navigation</a>
@@ -472,26 +482,33 @@ class APGIAccessibility {
     document.body.insertBefore(skipLinks, document.body.firstChild);
 
     // Add main content landmark
-    const main = document.querySelector('main') || document.querySelector('[role="main"]');
+    const main =
+      document.querySelector("main") || document.querySelector('[role="main"]');
     if (main && !main.id) {
-      main.id = 'main-content';
+      main.id = "main-content";
     }
 
     // Add navigation landmark
-    const nav = document.querySelector('.apgi-navigation');
+    const nav = document.querySelector(".apgi-navigation");
     if (nav && !nav.id) {
-      nav.id = 'navigation';
+      nav.id = "navigation";
     }
   }
 
   enhanceFormAccessibility() {
     // Add proper form labels
-    const inputs = document.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-      if (!input.getAttribute('aria-label') && !input.getAttribute('aria-labelledby')) {
+    const inputs = document.querySelectorAll("input, select, textarea");
+    inputs.forEach((input) => {
+      if (
+        !input.getAttribute("aria-label") &&
+        !input.getAttribute("aria-labelledby")
+      ) {
         const label = document.querySelector(`label[for="${input.id}"]`);
         if (label) {
-          input.setAttribute('aria-labelledby', label.id || `label-${input.id}`);
+          input.setAttribute(
+            "aria-labelledby",
+            label.id || `label-${input.id}`,
+          );
           if (!label.id) {
             label.id = `label-${input.id}`;
           }
@@ -499,17 +516,17 @@ class APGIAccessibility {
       }
 
       // Add required field indicators
-      if (input.required && !input.getAttribute('aria-required')) {
-        input.setAttribute('aria-required', 'true');
+      if (input.required && !input.getAttribute("aria-required")) {
+        input.setAttribute("aria-required", "true");
       }
     });
 
     // Add fieldset and legend for form groups
-    const formGroups = document.querySelectorAll('.form-group, .input-group');
-    formGroups.forEach(group => {
-      if (!group.querySelector('fieldset')) {
-        const fieldset = document.createElement('fieldset');
-        const legend = document.createElement('legend');
+    const formGroups = document.querySelectorAll(".form-group, .input-group");
+    formGroups.forEach((group) => {
+      if (!group.querySelector("fieldset")) {
+        const fieldset = document.createElement("fieldset");
+        const legend = document.createElement("legend");
 
         // Move group content into fieldset
         while (group.firstChild) {
@@ -517,7 +534,7 @@ class APGIAccessibility {
         }
 
         // Add legend if there's a heading
-        const heading = group.querySelector('h3, h4, .group-label');
+        const heading = group.querySelector("h3, h4, .group-label");
         if (heading) {
           legend.textContent = heading.textContent;
           heading.remove();
@@ -541,12 +558,12 @@ class APGIAccessibility {
 }
 
 // Initialize accessibility enhancements
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   window.apgiAccessibility = new APGIAccessibility();
 });
 
 // Also initialize if DOM is already loaded
-if (document.readyState !== 'loading') {
+if (document.readyState !== "loading") {
   if (!window.apgiAccessibility) {
     window.apgiAccessibility = new APGIAccessibility();
   }

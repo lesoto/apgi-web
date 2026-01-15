@@ -1,627 +1,1268 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <script src="../assets/js/performance-optimizer.js"></script>
     <script src="../assets/js/accessibility-enhancer.js"></script>
     <script src="../assets/js/navigation.js"></script>
     <script src="../assets/js/theme-manager.js"></script>
     <script src="../assets/js/cdn-fallbacks.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Computational Phenomenology Engine</title>
-    
+
     <!-- Chart.js for radar chart -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
-    
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js"
+      integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ"
+      crossorigin="anonymous"
+    ></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/css/tailwind-fallback.css">
-    
+    <link rel="stylesheet" href="../assets/css/tailwind-fallback.css" />
+
     <style>
-        :root {
-            /* Light theme as default */
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #e2e8f0;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --border-color: #cbd5e1;
-            --accent-color: #0891b2;
-            --accent-light: rgba(8, 145, 178, 0.1);
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --hover-bg: #f1f5f9;
-            --gradient-start: #f8fafc;
-            --gradient-mid: #f1f5f9;
-            --gradient-end: #e0e7ff;
-            --card-hover: rgba(8, 145, 178, 0.1);
-        }
+      :root {
+        /* Light theme as default */
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --bg-tertiary: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+        --border-color: #cbd5e1;
+        --accent-color: #0891b2;
+        --accent-light: rgba(8, 145, 178, 0.1);
+        --glass-bg: rgba(255, 255, 255, 0.8);
+        --hover-bg: #f1f5f9;
+        --gradient-start: #f8fafc;
+        --gradient-mid: #f1f5f9;
+        --gradient-end: #e0e7ff;
+        --card-hover: rgba(8, 145, 178, 0.1);
+      }
 
-        [data-theme="dark"] {
-            /* Dark theme overrides */
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-tertiary: #334155;
-            --text-primary: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border-color: #334155;
-            --accent-color: #06b6d4;
-            --accent-light: rgba(6, 182, 212, 0.1);
-            --glass-bg: rgba(30, 41, 59, 0.7);
-            --hover-bg: #1e293b;
-            --gradient-start: #0f172a;
-            --gradient-mid: #0f172a;
-            --gradient-end: #1e1b4b;
-            --card-hover: rgba(6, 182, 212, 0.15);
-        }
+      [data-theme="dark"] {
+        /* Dark theme overrides */
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-tertiary: #334155;
+        --text-primary: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border-color: #334155;
+        --accent-color: #06b6d4;
+        --accent-light: rgba(6, 182, 212, 0.1);
+        --glass-bg: rgba(30, 41, 59, 0.7);
+        --hover-bg: #1e293b;
+        --gradient-start: #0f172a;
+        --gradient-mid: #0f172a;
+        --gradient-end: #1e1b4b;
+        --card-hover: rgba(6, 182, 212, 0.15);
+      }
 
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: system-ui, -apple-system, sans-serif;
-            overflow: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        overflow: hidden;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
 
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
 
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
 
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
+      .glass-panel {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+      }
 
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
+      .fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+      }
 
-        @keyframes fadeIn {
-            from { 
-                opacity: 0; 
-                transform: translateY(10px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        .theme-toggle {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: var(--bg-tertiary);
-            border-radius: 15px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
+      .theme-toggle {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background: var(--bg-tertiary);
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        border: 1px solid var(--border-color);
+      }
 
-        .theme-toggle-slider {
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .theme-toggle-slider {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        [data-theme="dark"] .theme-toggle-slider {
-            transform: translateX(30px);
-        }
+      [data-theme="dark"] .theme-toggle-slider {
+        transform: translateX(30px);
+      }
 
-        .sidebar-bg {
-            background: var(--bg-secondary);
-            border-color: var(--border-color);
-        }
+      .sidebar-bg {
+        background: var(--bg-secondary);
+        border-color: var(--border-color);
+      }
 
-        .search-input {
-            background: var(--hover-bg);
-            border-color: var(--border-color);
-            color: var(--text-primary);
-        }
+      .search-input {
+        background: var(--hover-bg);
+        border-color: var(--border-color);
+        color: var(--text-primary);
+      }
 
-        .search-input:focus {
-            border-color: var(--accent-color);
-            outline: none;
-        }
+      .search-input:focus {
+        border-color: var(--accent-color);
+        outline: none;
+      }
 
-        .state-button {
-            color: var(--text-secondary);
-            border-color: transparent;
-            transition: all 0.2s ease;
-        }
+      .state-button {
+        color: var(--text-secondary);
+        border-color: transparent;
+        transition: all 0.2s ease;
+      }
 
-        .state-button:hover {
-            background: var(--hover-bg);
-        }
+      .state-button:hover {
+        background: var(--hover-bg);
+      }
 
-        .state-button.active {
-            background: var(--accent-light);
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-            box-shadow: 0 0 15px var(--card-hover);
-        }
+      .state-button.active {
+        background: var(--accent-light);
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        box-shadow: 0 0 15px var(--card-hover);
+      }
 
-        .main-gradient {
-            background: linear-gradient(to bottom right, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
-        }
+      .main-gradient {
+        background: linear-gradient(
+          to bottom right,
+          var(--gradient-start),
+          var(--gradient-mid),
+          var(--gradient-end)
+        );
+      }
 
-        .stat-card {
-            transition: all 0.3s ease;
-        }
+      .stat-card {
+        transition: all 0.3s ease;
+      }
 
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--card-hover);
-        }
+      .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px var(--card-hover);
+      }
 
-        .tooltip {
-            position: absolute;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 12px;
-            z-index: 1000;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            max-width: 250px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
+      .tooltip {
+        position: absolute;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12px;
+        z-index: 1000;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        max-width: 250px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
 
-        .tooltip.show {
-            opacity: 1;
-        }
+      .tooltip.show {
+        opacity: 1;
+      }
 
-        .icon-sun, .icon-moon {
-            width: 14px;
-            height: 14px;
-            color: white;
-        }
+      .icon-sun,
+      .icon-moon {
+        width: 14px;
+        height: 14px;
+        color: white;
+      }
 
-        [data-theme="light"] .chart-grid {
-            filter: brightness(0.6);
-        }
+      [data-theme="light"] .chart-grid {
+        filter: brightness(0.6);
+      }
     </style>
-</head>
-<body class="antialiased">
+  </head>
+  <body class="antialiased">
     <div class="flex flex-col md:flex-row h-screen overflow-hidden" id="app">
-        
-        <!-- SIDEBAR -->
-        <div class="w-full md:w-80 flex-shrink-0 sidebar-bg border-r flex flex-col h-[40vh] md:h-full">
-            <div class="p-4 border-b" style="border-color: var(--border-color)">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-color)">
-                            <path d="M12 4.5a2.5 2.5 0 0 0-4.96-.46 2.5 2.5 0 0 0-1.98 3 2.5 2.5 0 0 0 1.32 4.24 3 3 0 0 0 .4 5.72 3 3 0 0 0 4.24-4.24 3 3 0 0 0 5.72-.4 2.5 2.5 0 0 0 3-1.98 2.5 2.5 0 0 0-.46-4.96 2.5 2.5 0 0 0-4.24-1.32A2.5 2.5 0 0 0 12 4.5z"></path>
-                        </svg>
-                        <h1 class="text-xl font-bold" style="color: var(--accent-color)">NeuroStates</h1>
-                    </div>
-                    
-                    <!-- Theme Toggle -->
-                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                        <div class="theme-toggle-slider">
-                            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                            </svg>
-                            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
-                                <circle cx="12" cy="12" r="5"></circle>
-                                <line x1="12" y1="1" x2="12" y2="3"></line>
-                                <line x1="12" y1="21" x2="12" y2="23"></line>
-                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                                <line x1="1" y1="12" x2="3" y2="12"></line>
-                                <line x1="21" y1="12" x2="23" y2="12"></line>
-                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                            </svg>
-                        </div>
-                    </button>
-                </div>
-                <p class="text-xs mt-1" style="color: var(--text-muted)">Computational Phenomenology Engine</p>
+      <!-- SIDEBAR -->
+      <div
+        class="w-full md:w-80 flex-shrink-0 sidebar-bg border-r flex flex-col h-[40vh] md:h-full"
+      >
+        <div class="p-4 border-b" style="border-color: var(--border-color)">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="color: var(--accent-color)"
+              >
+                <path
+                  d="M12 4.5a2.5 2.5 0 0 0-4.96-.46 2.5 2.5 0 0 0-1.98 3 2.5 2.5 0 0 0 1.32 4.24 3 3 0 0 0 .4 5.72 3 3 0 0 0 4.24-4.24 3 3 0 0 0 5.72-.4 2.5 2.5 0 0 0 3-1.98 2.5 2.5 0 0 0-.46-4.96 2.5 2.5 0 0 0-4.24-1.32A2.5 2.5 0 0 0 12 4.5z"
+                ></path>
+              </svg>
+              <h1 class="text-xl font-bold" style="color: var(--accent-color)">
+                NeuroStates
+              </h1>
             </div>
-            
-            <div class="p-3">
-                <div class="relative">
-                    <input 
-                        type="text" 
-                        id="searchInput"
-                        placeholder="Search states (e.g. Flow, Fear)..." 
-                        class="w-full search-input rounded-md py-2 px-3 pl-9 text-sm transition-colors"
-                    />
-                    <span class="absolute left-3 top-2.5" style="color: var(--text-muted)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </span>
-                </div>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto scrollbar-hide p-2 space-y-1" id="statesList">
-                <!-- States will be loaded here -->
-            </div>
+
+            <!-- Theme Toggle -->
+            <button
+              class="theme-toggle"
+              id="themeToggle"
+              aria-label="Toggle theme"
+            >
+              <div class="theme-toggle-slider">
+                <svg
+                  class="icon-moon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                  ></path>
+                </svg>
+                <svg
+                  class="icon-sun"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  style="display: none"
+                >
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+              </div>
+            </button>
+          </div>
+          <p class="text-xs mt-1" style="color: var(--text-muted)">
+            Computational Phenomenology Engine
+          </p>
         </div>
 
-        <!-- MAIN CONTENT -->
-        <div class="flex-1 flex flex-col h-full overflow-y-auto main-gradient">
-            
-            <!-- Header -->
-            <div class="p-6 md:p-8 pb-0">
-                <h2 class="text-3xl md:text-4xl font-light tracking-tight mb-2" style="color: var(--text-primary)" id="stateName">
-                    Flow state
-                </h2>
-                <div class="inline-block px-3 py-1 rounded-full text-xs font-mono" style="background: var(--accent-light); border: 1px solid var(--accent-color); color: var(--accent-color)">
-                    KEY SIGNATURE
-                </div>
-                <p class="mt-4 text-lg leading-relaxed max-w-3xl pl-4 italic" style="color: var(--text-secondary); border-left: 2px solid var(--accent-color)" id="stateSignature">
-                    "Temporal entrainment, metacognitive suppression, highly accurate predictions."
-                </p>
-            </div>
-
-            <!-- Visualization Area -->
-            <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-                
-                <!-- Grid of Stats -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 h-min" id="statsGrid">
-                    <!-- Stats will be loaded here -->
-                </div>
-
-                <!-- Radar Chart -->
-                <div class="glass-panel rounded-2xl p-4 flex flex-col items-center justify-center min-h-[300px] relative">
-                    <div class="absolute top-4 left-4 text-xs font-mono" style="color: var(--text-muted)">STATE TOPOLOGY</div>
-                    <div class="w-full h-[300px]">
-                        <canvas id="radarChart"></canvas>
-                    </div>
-                    <div class="text-center text-xs mt-2" style="color: var(--text-muted)">
-                        Normalized comparison against neutral baseline
-                    </div>
-                </div>
-
-            </div>
+        <div class="p-3">
+          <div class="relative">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search states (e.g. Flow, Fear)..."
+              class="w-full search-input rounded-md py-2 px-3 pl-9 text-sm transition-colors"
+            />
+            <span
+              class="absolute left-3 top-2.5"
+              style="color: var(--text-muted)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </span>
+          </div>
         </div>
+
+        <div
+          class="flex-1 overflow-y-auto scrollbar-hide p-2 space-y-1"
+          id="statesList"
+        >
+          <!-- States will be loaded here -->
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div class="flex-1 flex flex-col h-full overflow-y-auto main-gradient">
+        <!-- Header -->
+        <div class="p-6 md:p-8 pb-0">
+          <h2
+            class="text-3xl md:text-4xl font-light tracking-tight mb-2"
+            style="color: var(--text-primary)"
+            id="stateName"
+          >
+            Flow state
+          </h2>
+          <div
+            class="inline-block px-3 py-1 rounded-full text-xs font-mono"
+            style="
+              background: var(--accent-light);
+              border: 1px solid var(--accent-color);
+              color: var(--accent-color);
+            "
+          >
+            KEY SIGNATURE
+          </div>
+          <p
+            class="mt-4 text-lg leading-relaxed max-w-3xl pl-4 italic"
+            style="
+              color: var(--text-secondary);
+              border-left: 2px solid var(--accent-color);
+            "
+            id="stateSignature"
+          >
+            "Temporal entrainment, metacognitive suppression, highly accurate
+            predictions."
+          </p>
+        </div>
+
+        <!-- Visualization Area -->
+        <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Grid of Stats -->
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 gap-4 h-min"
+            id="statsGrid"
+          >
+            <!-- Stats will be loaded here -->
+          </div>
+
+          <!-- Radar Chart -->
+          <div
+            class="glass-panel rounded-2xl p-4 flex flex-col items-center justify-center min-h-[300px] relative"
+          >
+            <div
+              class="absolute top-4 left-4 text-xs font-mono"
+              style="color: var(--text-muted)"
+            >
+              STATE TOPOLOGY
+            </div>
+            <div class="w-full h-[300px]">
+              <canvas id="radarChart"></canvas>
+            </div>
+            <div
+              class="text-center text-xs mt-2"
+              style="color: var(--text-muted)"
+            >
+              Normalized comparison against neutral baseline
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        // --- DATA ---
-        const rawData = [
-            { name: "Joy/Happiness", pe: 2.5, prec: 17.5, thresh: 0.85, bias: 1.35, 
-              desc_pe: "Positive outcomes: +2 to +3σ", desc_prec: "Positive content: 15-20% reduction", desc_thresh: "0.8-0.9", desc_bias: "1.2-1.5", 
-              signature: "Ventral striatal activation, sustained positive RPE, predictions exceed expectations." },
-            { name: "Flow state", pe: 4, prec: 12.5, thresh: 0.9, bias: 1.15, 
-              desc_pe: "Task: +4σ; Distractor: <0.5σ", desc_prec: "Task: 10-15% below baseline", desc_thresh: "0.85-0.95", desc_bias: "1.0-1.3", 
-              signature: "Temporal entrainment, metacognitive suppression, highly accurate predictions." },
-              { name: "Gratitude", pe: 3, prec: 12.5, thresh: 0.9, bias: 1.1, 
-              desc_pe: "Social/attachment: +2 to +4σ", desc_prec: "Social-affiliative: 10-15% reduction", desc_thresh: "0.85-0.9", desc_bias: "1.0-1.2", 
-              signature: "Oxytocin-mediated, social predictions resolved favorably, requires temporal extension." },
-            { name: "Hope", pe: 2.5, prec: 15, thresh: 0.85, bias: 0.9, 
-              desc_pe: "Future-oriented: +2 to +3σ", desc_prec: "Outcome-relevant: 12-18% reduction", desc_thresh: "0.82-0.88", desc_bias: "0.8-1.0", 
-              signature: "Sustained tonic DA maintaining accessibility, high expected value despite uncertainty." },
-            { name: "Optimism", pe: 1.75, prec: 10, thresh: 0.9, bias: 1.0, 
-              desc_pe: "Positive: +1.5 to +2σ constitutively", desc_prec: "Confirmatory evidence: 8-12% reduction", desc_thresh: "0.88-0.92", desc_bias: "0.9-1.1", 
-              signature: "Stable positive prior distribution, trait-like generalized positive priors." },
-            { name: "Awe", pe: 4.5, prec: 25, thresh: 0.75, bias: 1.0, 
-              desc_pe: "Global: +3 to +5σ transiently", desc_prec: "Global: 20-30% suppression (2-10s)", desc_thresh: "0.7-0.8", desc_bias: "0.9-1.1", 
-              signature: "DMN suppression, model inadequacy signal, massive prediction error from vastness." },
-            { name: "Inspiration", pe: 3, prec: 12.5, thresh: 0.9, bias: 1.75, 
-              desc_pe: "Abstract/pattern: +2 to +4σ", desc_prec: "Beyond-task associations: 10-15% reduction", desc_thresh: "0.85-0.9", desc_bias: "1.5-2.0", 
-              signature: "DMN-FPN coupling, latent pattern detection, coherence > strength weighting." },
-            { name: "Serenity", pe: 0.3, prec: 12.5, thresh: 1.2, bias: 1.1, 
-              desc_pe: "Threat: <0.3σ", desc_prec: "Internal calm: 10-15% reduction", desc_thresh: "1.15-1.25", desc_bias: "1.0-1.2", 
-              signature: "Dual-threshold architecture, parasympathetic dominant, high accuracy low-surprise." },
-            { name: "Pride", pe: 3.5, prec: 15, thresh: 0.85, bias: 2.25, 
-              desc_pe: "Self-achievement: +3 to +4σ", desc_prec: "Self-referential: 12-18% reduction", desc_thresh: "0.82-0.88", desc_bias: "1.8-2.5", 
-              signature: "Strong embodied component, somatic confirmation, self-model prediction exceeded." },
-            { name: "Amusement", pe: 2.5, prec: 17.5, thresh: 0.8, bias: 1.0, 
-              desc_pe: "Social incongruity: +2 to +3σ", desc_prec: "Playful content: 15-20% reduction", desc_thresh: "0.8-0.85", desc_bias: "0.9-1.1", 
-              signature: "Rapid ignition (<200ms), mesolimbic reinforcement, benign violation." },
-            { name: "Love (romantic)", pe: 5, prec: 25, thresh: 0.75, bias: 2.15, 
-              desc_pe: "Attachment-specific: +4 to +6σ", desc_prec: "Partner-relevant: 20-30% reduction", desc_thresh: "0.7-0.8", desc_bias: "1.8-2.5", 
-              signature: "Extreme metabolic cost, oxytocin/vasopressin mediated, partner-focus." },
-            { name: "Curiosity", pe: 3, prec: 14, thresh: 0.85, bias: 1.45, 
-              desc_pe: "Uncertainty signals: +2 to +4σ", desc_prec: "Exploratory content: 10-18% reduction", desc_thresh: "0.82-0.88", desc_bias: "1.3-1.6", 
-              signature: "Inverted PE response—uncertainty valued, information gaps actively detected." },
-            { name: "Engagement", pe: 3.5, prec: 12.5, thresh: 0.9, bias: 1.0, 
-              desc_pe: "Task: +3 to +4σ", desc_prec: "Task: 10-15% reduction", desc_thresh: "0.85-0.95", desc_bias: "1.0", 
-              signature: "Effortful control maintained, no metacognitive suppression, task-aligned." },
-            { name: "Mindfulness", pe: 1.0, prec: 17.5, thresh: 1.15, bias: 0.9, 
-              desc_pe: "Reduced top-down strength (-30-40%)", desc_prec: "Present-moment: 15-20% reduction", desc_thresh: "1.1-1.2", desc_bias: "0.8-1.0", 
-              signature: "Non-judgmental, dual threshold adjustment, heightened interoceptive awareness." },
-            { name: "Neutrality", pe: 0.3, prec: 0, thresh: 1.0, bias: 1.0, 
-              desc_pe: "All channels: baseline ±0.3σ", desc_prec: "Resting set-point", desc_thresh: "1.0", desc_bias: "1.0", 
-              signature: "Homeostatic equilibrium, rare phenomenologically, balanced priors." },
-            { name: "Boredom", pe: 0.5, prec: 27.5, thresh: 1.25, bias: 1.0, 
-              desc_pe: "Near-zero PE (<0.5σ)", desc_prec: "Elevated: 20-35% increase", desc_thresh: "1.2-1.35", desc_bias: "0.9-1.1", 
-              signature: "Aversive meta-signal motivates exploration, over-learned environment." },
-            { name: "Daydreaming", pe: 2.5, prec: 20, thresh: 0.8, bias: 0.9, 
-              desc_pe: "Internal/memory: +2 to +3σ", desc_prec: "Internal: 15-25% reduction", desc_thresh: "0.75-0.85", desc_bias: "0.8-1.0", 
-              signature: "DMN dominance, spontaneous ignition, endogenously generated predictions dominate." },
-            { name: "Distraction", pe: 2.5, prec: 0, thresh: 1.1, bias: 1.0, 
-              desc_pe: "Multiple streams each +2 to +3σ", desc_prec: "Crossed repeatedly", desc_thresh: "1.0-1.2", desc_bias: "1.0 (unstable)", 
-              signature: "Reservoir coherence degraded, rapid switching, fragmented predictions." },
-            { name: "Fatigue", pe: -3, prec: 30, thresh: 1.3, bias: 1.0, 
-              desc_pe: "Global reduction: -2 to -4σ", desc_prec: "Elevated: 20-40% increase", desc_thresh: "1.2-1.4", desc_bias: "1.0 (depleted)", 
-              signature: "Metabolic constraint protection mechanism, slowed PE accumulation." },
-            { name: "Anxiety", pe: 4.5, prec: 32.5, thresh: 0.65, bias: 3.0, 
-              desc_pe: "Threat: +3 to +6σ", desc_prec: "Threat-relevant: 25-40% reduction", desc_thresh: "0.6-0.75", desc_bias: "2.0-4.0", 
-              signature: "False alarm generator, self-reinforcing cycle, interoceptive hypervigilance." },
-            { name: "Stress", pe: 3, prec: 20, thresh: 1.15, bias: 2.0, 
-              desc_pe: "Non-selective global: +2 to +4σ", desc_prec: "Unstable: ±15-25%", desc_thresh: "0.85-1.25", desc_bias: "1.8-2.2", 
-              signature: "NE-mediated saturation, eventual burnout, persistently violated arousal." },
-            { name: "Depression", pe: -4, prec: 15, thresh: 1.4, bias: 0.8, 
-              desc_pe: "Reward: -3 to -5σ", desc_prec: "Positive: 30-50% elevation", desc_thresh: "1.3-1.5", desc_bias: "0.7-0.9", 
-              signature: "Computational trap, asymmetric filtering, pessimistic rigid negative priors." },
-            { name: "Anger", pe: 4, prec: 27.5, thresh: 0.7, bias: 2.25, 
-              desc_pe: "Injustice/obstruction: +3 to +5σ", desc_prec: "Action-preparation: 20-35% reduction", desc_thresh: "0.65-0.8", desc_bias: "2.0-2.5", 
-              signature: "NE surge, rapid behavioral mobilization, goal obstruction detection." },
-            { name: "Fear", pe: 5.5, prec: 50, thresh: 0.5, bias: 3.25, 
-              desc_pe: "Threat: +4 to +7σ", desc_prec: "Threat-relevant: 40-60% reduction", desc_thresh: "0.4-0.6", desc_bias: "2.5-4.0", 
-              signature: "Amygdala-driven, extreme urgency, imminent threat reactive mode." },
-            { name: "Guilt", pe: 4, prec: 25, thresh: 0.75, bias: 2.15, 
-              desc_pe: "Self-monitoring: +3 to +5σ", desc_prec: "Self-monitoring: 20-30% reduction", desc_thresh: "0.7-0.8", desc_bias: "1.8-2.5", 
-              signature: "Recurrent ignition, self-correction function, self-model violation." },
-            { name: "Shame", pe: 5, prec: 32.5, thresh: 0.65, bias: 1.35, 
-              desc_pe: "Social-threat: +4 to +6σ", desc_prec: "Social-threat: 25-40% reduction", desc_thresh: "0.6-0.75", desc_bias: "1.2-1.5", 
-              signature: "Global ignition, self-devaluation, MPF-TPJ network, imagined observers." },
-            { name: "Loneliness", pe: 3, prec: 20, thresh: 0.8, bias: 1.15, 
-              desc_pe: "Social-absence: +2 to +4σ", desc_prec: "Social-threat: 15-25% reduction", desc_thresh: "0.75-0.85", desc_bias: "1.0-1.3", 
-              signature: "Paradoxical rejection sensitivity, self-fulfilling, social predictions unmet." },
-            { name: "Frustration", pe: 3, prec: 25, thresh: 1.15, bias: 1.1, 
-              desc_pe: "Goal-relevant: +2 to +4σ", desc_prec: "Oscillating: ±20-30%", desc_thresh: "0.8-1.3", desc_bias: "1.0-1.2", 
-              signature: "Unstable threshold, arousal building, repeated goal-blocking." },
-            { name: "Confusion", pe: 0, prec: 0, thresh: 1.1, bias: 2.5, 
-              desc_pe: "Diffused (no dominant >3σ)", desc_prec: "Normal", desc_thresh: "1.0-1.2", desc_bias: "2.0-3.0", 
-              signature: "Model selection failure, high-entropy state, competing models." },
-            { name: "Disgust", pe: 4, prec: 25, thresh: 0.75, bias: 2.25, 
-              desc_pe: "Contamination: +3 to +5σ", desc_prec: "Rejection/avoidance: 20-30% reduction", desc_thresh: "0.7-0.8", desc_bias: "2.0-3.0", 
-              signature: "Anterior insula-driven, visceral dominance, pathogen detection." },
-            { name: "Envy", pe: 3, prec: 20, thresh: 0.8, bias: 1.75, 
-              desc_pe: "Social-comparison: +2 to +4σ", desc_prec: "Status-relevant: 15-25% reduction", desc_thresh: "0.75-0.85", desc_bias: "1.5-2.0", 
-              signature: "Desire + resentment, self-model threatened, status threat." },
-            { name: "Jealousy", pe: 4, prec: 27.5, thresh: 0.7, bias: 1.35, 
-              desc_pe: "Rival-related: +3 to +5σ", desc_prec: "Defensive cognition: 20-35% reduction", desc_thresh: "0.65-0.8", desc_bias: "1.2-1.5", 
-              signature: "Mate-guarding function, hypervigilance for betrayal, attachment security threatened." },
-            { name: "Regret", pe: 4, prec: 20, thresh: 0.85, bias: 1.0, 
-              desc_pe: "Self-blame: +3 to +5σ", desc_prec: "Autobiographical memory: 15-25% reduction", desc_thresh: "0.75-0.875", desc_bias: "0.9-1.1", 
-              signature: "Learning signal, recurrent 'what if' ignition, counterfactual error." },
-            { name: "Pessimism", pe: -2.5, prec: 27.5, thresh: 1.25, bias: 1.75, 
-              desc_pe: "Positive PE: -2 to -3σ (suppressed)", desc_prec: "Positive content: 20-35% elevation", desc_thresh: "1.2-1.35", desc_bias: "1.5-2.0", 
-              signature: "Prior distribution bias, anticipatory not current, negative outcome priors." },
-            { name: "Overwhelm", pe: 5, prec: 5, thresh: 0.9, bias: 0.2, 
-              desc_pe: "Multiple high-Π streams (>10-15)", desc_prec: "Chaotically exceeded", desc_thresh: "0.8-1.0", desc_bias: "<0.3", 
-              signature: "Reservoir saturation, computational collapse, excessive concurrent demands." },
-            { name: "Dissociation", pe: 0, prec: 55, thresh: 0.25, bias: 0.2, 
-              desc_pe: "Interoceptive: approaches zero", desc_prec: "Embodied content: 40-70% elevation", desc_thresh: "<0.3", desc_bias: "<0.3", 
-              signature: "Prefrontal-insula uncoupling, protective detachment, prediction-body coupling severed." },
-            { name: "Trance", pe: 0.3, prec: 27.5, thresh: 0.7, bias: 4.5, 
-              desc_pe: "External: <0.3σ", desc_prec: "Endogenous rhythmic: 20-35% reduction", desc_thresh: "0.65-0.8", desc_bias: "Variable", 
-              signature: "Self-sustained ignition, reduced sensory gating, top-down predictions dominate." },
-            { name: "Hallucination", pe: 4.5, prec: 0, thresh: 1.0, bias: 1.1, 
-              desc_pe: "Internal assigned: +3 to +6σ", desc_prec: "Crossed by internal signals", desc_thresh: "Variable", desc_bias: "1.0-1.2", 
-              signature: "Reality monitoring failure, source confusion, internal predictions misattributed." },
-            { name: "Déjà Vu", pe: 0.5, prec: 0, thresh: 1.1, bias: 1.0, 
-              desc_pe: "Momentary match", desc_prec: "Briefly crossed prematurely", desc_thresh: "1.0-1.2", desc_bias: "0.8-1.2", 
-              signature: "Temporal-binding error, 2-10s duration, temporal misalignment." },
-            { name: "Hypnagogia", pe: 0, prec: 30, thresh: 0.8, bias: 2.0, 
-              desc_pe: "External declining", desc_prec: "Dream content: 20-40% reduction", desc_thresh: "0.6-1.0", desc_bias: "1.5-2.5", 
-              signature: "Extended memory window, sleep transition, sensory-decoupled." },
-            { name: "Empathy", pe: 4, prec: 25, thresh: 0.75, bias: 2.25, 
-              desc_pe: "Other-emotion: +3 to +5σ", desc_prec: "Affective resonance: 20-30% reduction", desc_thresh: "0.7-0.8", desc_bias: "1.5-2.5", 
-              signature: "Insula-mediated somatic mapping, shared feeling, other's emotional state simulated." },
-            { name: "Sympathy", pe: 2.5, prec: 20, thresh: 1.2, bias: 1.35, 
-              desc_pe: "Other-distress: +2 to +3σ", desc_prec: "Personal distress: 15-25% elevation", desc_thresh: "1.15-1.25", desc_bias: "1.2-1.5", 
-              signature: "Sustainable care without overwhelm, limited somatic mirroring." },
-            { name: "Belonging", pe: 3, prec: 20, thresh: 0.8, bias: 1.5, 
-              desc_pe: "Inclusion signals: +2 to +4σ", desc_prec: "Group-relevant: 15-25% reduction", desc_thresh: "0.75-0.85", desc_bias: "1.3-1.7", 
-              signature: "Reduced social vigilance, oxytocin-sustained, social inclusion confirmed." },
-            { name: "Rejection", pe: 4, prec: 27.5, thresh: 0.7, bias: 1.1, 
-              desc_pe: "Social-threat: +3 to +5σ", desc_prec: "Threat: 20-35% reduction", desc_thresh: "0.65-0.8", desc_bias: "1.0-1.2", 
-              signature: "dACC activation, pain system overlap, social exclusion." },
-            { name: "Trust", pe: -2.5, prec: 25, thresh: 1.25, bias: 1.1, 
-              desc_pe: "Betrayal: -2 to -3σ", desc_prec: "Threat/suspicion: 20-30% elevation", desc_thresh: "1.2-1.3", desc_bias: "1.0-1.2", 
-              signature: "Computational commitment, oxytocin-mediated, positive social priors." },
-            { name: "Focus", pe: 4, prec: 12.5, thresh: 0.9, bias: 1.0, 
-              desc_pe: "Task: +3 to +5σ", desc_prec: "Task: 10-15% reduction", desc_thresh: "0.85-0.95", desc_bias: "0.9-1.1", 
-              signature: "Tuned filter, LC-NE signal-to-noise optimization, singular task-aligned." },
-            { name: "Creativity", pe: 3, prec: 15, thresh: 0.9, bias: 1.1, 
-              desc_pe: "Remote associations: +2 to +4σ", desc_prec: "Novel combinations: 10-20% reduction", desc_thresh: "0.8-1.0", desc_bias: "1.0-1.2", 
-              signature: "Near-critical dynamics, DMN-ECN coupling, loosened constraints." },
-            { name: "Decision Fatigue", pe: 0, prec: 32.5, thresh: 1.3, bias: 1.4, 
-              desc_pe: "Equal across options", desc_prec: "Elevated: 25-40% increase", desc_thresh: "1.25-1.4", desc_bias: "1.2-1.6", 
-              signature: "Glucose depletion, prefrontal exhaustion, model comparison impaired." },
-            { name: "Cognitive Dissonance", pe: 3.5, prec: 25, thresh: 1.15, bias: 0.9, 
-              desc_pe: "Competing models each >3σ", desc_prec: "Unstable: ±20-30%", desc_thresh: "0.8-1.3", desc_bias: "0.8-1.0", 
-              signature: "ACC conflict signal, aversive instability, incompatible high-precision models." },
-            { name: "Hyperfocus", pe: 6.5, prec: 40, thresh: 0.6, bias: 1.55, 
-              desc_pe: "Task: +5 to +8σ (extreme)", desc_prec: "Task: 30-50% reduction", desc_thresh: "0.5-0.7", desc_bias: "1.3-1.8", 
-              signature: "Time distortion, complete absorption, post-crash, locked on target." },
-            { name: "Hunger", pe: 3, prec: 20, thresh: 1.2, bias: 2.15, 
-              desc_pe: "Interoceptive: +2 to +4σ", desc_prec: "Non-food: 15-30% elevation", desc_thresh: "1.15-1.25", desc_bias: "1.3-2.5", 
-              signature: "Ghrelin-mediated, attentional hijacking, homeostatic deficit (caloric)." },
-            { name: "Thirst", pe: 2.5, prec: 17.5, thresh: 1.2, bias: 1.1, 
-              desc_pe: "Interoceptive: +2 to +3σ", desc_prec: "Non-water: 15-25% elevation", desc_thresh: "1.15-1.25", desc_bias: "1.2", 
-              signature: "Angiotensin signaling, cognitive impairment, homeostatic deficit (hydration)." }
+      // --- DATA ---
+      const rawData = [
+        {
+          name: "Joy/Happiness",
+          pe: 2.5,
+          prec: 17.5,
+          thresh: 0.85,
+          bias: 1.35,
+          desc_pe: "Positive outcomes: +2 to +3σ",
+          desc_prec: "Positive content: 15-20% reduction",
+          desc_thresh: "0.8-0.9",
+          desc_bias: "1.2-1.5",
+          signature:
+            "Ventral striatal activation, sustained positive RPE, predictions exceed expectations.",
+        },
+        {
+          name: "Flow state",
+          pe: 4,
+          prec: 12.5,
+          thresh: 0.9,
+          bias: 1.15,
+          desc_pe: "Task: +4σ; Distractor: <0.5σ",
+          desc_prec: "Task: 10-15% below baseline",
+          desc_thresh: "0.85-0.95",
+          desc_bias: "1.0-1.3",
+          signature:
+            "Temporal entrainment, metacognitive suppression, highly accurate predictions.",
+        },
+        {
+          name: "Gratitude",
+          pe: 3,
+          prec: 12.5,
+          thresh: 0.9,
+          bias: 1.1,
+          desc_pe: "Social/attachment: +2 to +4σ",
+          desc_prec: "Social-affiliative: 10-15% reduction",
+          desc_thresh: "0.85-0.9",
+          desc_bias: "1.0-1.2",
+          signature:
+            "Oxytocin-mediated, social predictions resolved favorably, requires temporal extension.",
+        },
+        {
+          name: "Hope",
+          pe: 2.5,
+          prec: 15,
+          thresh: 0.85,
+          bias: 0.9,
+          desc_pe: "Future-oriented: +2 to +3σ",
+          desc_prec: "Outcome-relevant: 12-18% reduction",
+          desc_thresh: "0.82-0.88",
+          desc_bias: "0.8-1.0",
+          signature:
+            "Sustained tonic DA maintaining accessibility, high expected value despite uncertainty.",
+        },
+        {
+          name: "Optimism",
+          pe: 1.75,
+          prec: 10,
+          thresh: 0.9,
+          bias: 1.0,
+          desc_pe: "Positive: +1.5 to +2σ constitutively",
+          desc_prec: "Confirmatory evidence: 8-12% reduction",
+          desc_thresh: "0.88-0.92",
+          desc_bias: "0.9-1.1",
+          signature:
+            "Stable positive prior distribution, trait-like generalized positive priors.",
+        },
+        {
+          name: "Awe",
+          pe: 4.5,
+          prec: 25,
+          thresh: 0.75,
+          bias: 1.0,
+          desc_pe: "Global: +3 to +5σ transiently",
+          desc_prec: "Global: 20-30% suppression (2-10s)",
+          desc_thresh: "0.7-0.8",
+          desc_bias: "0.9-1.1",
+          signature:
+            "DMN suppression, model inadequacy signal, massive prediction error from vastness.",
+        },
+        {
+          name: "Inspiration",
+          pe: 3,
+          prec: 12.5,
+          thresh: 0.9,
+          bias: 1.75,
+          desc_pe: "Abstract/pattern: +2 to +4σ",
+          desc_prec: "Beyond-task associations: 10-15% reduction",
+          desc_thresh: "0.85-0.9",
+          desc_bias: "1.5-2.0",
+          signature:
+            "DMN-FPN coupling, latent pattern detection, coherence > strength weighting.",
+        },
+        {
+          name: "Serenity",
+          pe: 0.3,
+          prec: 12.5,
+          thresh: 1.2,
+          bias: 1.1,
+          desc_pe: "Threat: <0.3σ",
+          desc_prec: "Internal calm: 10-15% reduction",
+          desc_thresh: "1.15-1.25",
+          desc_bias: "1.0-1.2",
+          signature:
+            "Dual-threshold architecture, parasympathetic dominant, high accuracy low-surprise.",
+        },
+        {
+          name: "Pride",
+          pe: 3.5,
+          prec: 15,
+          thresh: 0.85,
+          bias: 2.25,
+          desc_pe: "Self-achievement: +3 to +4σ",
+          desc_prec: "Self-referential: 12-18% reduction",
+          desc_thresh: "0.82-0.88",
+          desc_bias: "1.8-2.5",
+          signature:
+            "Strong embodied component, somatic confirmation, self-model prediction exceeded.",
+        },
+        {
+          name: "Amusement",
+          pe: 2.5,
+          prec: 17.5,
+          thresh: 0.8,
+          bias: 1.0,
+          desc_pe: "Social incongruity: +2 to +3σ",
+          desc_prec: "Playful content: 15-20% reduction",
+          desc_thresh: "0.8-0.85",
+          desc_bias: "0.9-1.1",
+          signature:
+            "Rapid ignition (<200ms), mesolimbic reinforcement, benign violation.",
+        },
+        {
+          name: "Love (romantic)",
+          pe: 5,
+          prec: 25,
+          thresh: 0.75,
+          bias: 2.15,
+          desc_pe: "Attachment-specific: +4 to +6σ",
+          desc_prec: "Partner-relevant: 20-30% reduction",
+          desc_thresh: "0.7-0.8",
+          desc_bias: "1.8-2.5",
+          signature:
+            "Extreme metabolic cost, oxytocin/vasopressin mediated, partner-focus.",
+        },
+        {
+          name: "Curiosity",
+          pe: 3,
+          prec: 14,
+          thresh: 0.85,
+          bias: 1.45,
+          desc_pe: "Uncertainty signals: +2 to +4σ",
+          desc_prec: "Exploratory content: 10-18% reduction",
+          desc_thresh: "0.82-0.88",
+          desc_bias: "1.3-1.6",
+          signature:
+            "Inverted PE response—uncertainty valued, information gaps actively detected.",
+        },
+        {
+          name: "Engagement",
+          pe: 3.5,
+          prec: 12.5,
+          thresh: 0.9,
+          bias: 1.0,
+          desc_pe: "Task: +3 to +4σ",
+          desc_prec: "Task: 10-15% reduction",
+          desc_thresh: "0.85-0.95",
+          desc_bias: "1.0",
+          signature:
+            "Effortful control maintained, no metacognitive suppression, task-aligned.",
+        },
+        {
+          name: "Mindfulness",
+          pe: 1.0,
+          prec: 17.5,
+          thresh: 1.15,
+          bias: 0.9,
+          desc_pe: "Reduced top-down strength (-30-40%)",
+          desc_prec: "Present-moment: 15-20% reduction",
+          desc_thresh: "1.1-1.2",
+          desc_bias: "0.8-1.0",
+          signature:
+            "Non-judgmental, dual threshold adjustment, heightened interoceptive awareness.",
+        },
+        {
+          name: "Neutrality",
+          pe: 0.3,
+          prec: 0,
+          thresh: 1.0,
+          bias: 1.0,
+          desc_pe: "All channels: baseline ±0.3σ",
+          desc_prec: "Resting set-point",
+          desc_thresh: "1.0",
+          desc_bias: "1.0",
+          signature:
+            "Homeostatic equilibrium, rare phenomenologically, balanced priors.",
+        },
+        {
+          name: "Boredom",
+          pe: 0.5,
+          prec: 27.5,
+          thresh: 1.25,
+          bias: 1.0,
+          desc_pe: "Near-zero PE (<0.5σ)",
+          desc_prec: "Elevated: 20-35% increase",
+          desc_thresh: "1.2-1.35",
+          desc_bias: "0.9-1.1",
+          signature:
+            "Aversive meta-signal motivates exploration, over-learned environment.",
+        },
+        {
+          name: "Daydreaming",
+          pe: 2.5,
+          prec: 20,
+          thresh: 0.8,
+          bias: 0.9,
+          desc_pe: "Internal/memory: +2 to +3σ",
+          desc_prec: "Internal: 15-25% reduction",
+          desc_thresh: "0.75-0.85",
+          desc_bias: "0.8-1.0",
+          signature:
+            "DMN dominance, spontaneous ignition, endogenously generated predictions dominate.",
+        },
+        {
+          name: "Distraction",
+          pe: 2.5,
+          prec: 0,
+          thresh: 1.1,
+          bias: 1.0,
+          desc_pe: "Multiple streams each +2 to +3σ",
+          desc_prec: "Crossed repeatedly",
+          desc_thresh: "1.0-1.2",
+          desc_bias: "1.0 (unstable)",
+          signature:
+            "Reservoir coherence degraded, rapid switching, fragmented predictions.",
+        },
+        {
+          name: "Fatigue",
+          pe: -3,
+          prec: 30,
+          thresh: 1.3,
+          bias: 1.0,
+          desc_pe: "Global reduction: -2 to -4σ",
+          desc_prec: "Elevated: 20-40% increase",
+          desc_thresh: "1.2-1.4",
+          desc_bias: "1.0 (depleted)",
+          signature:
+            "Metabolic constraint protection mechanism, slowed PE accumulation.",
+        },
+        {
+          name: "Anxiety",
+          pe: 4.5,
+          prec: 32.5,
+          thresh: 0.65,
+          bias: 3.0,
+          desc_pe: "Threat: +3 to +6σ",
+          desc_prec: "Threat-relevant: 25-40% reduction",
+          desc_thresh: "0.6-0.75",
+          desc_bias: "2.0-4.0",
+          signature:
+            "False alarm generator, self-reinforcing cycle, interoceptive hypervigilance.",
+        },
+        {
+          name: "Stress",
+          pe: 3,
+          prec: 20,
+          thresh: 1.15,
+          bias: 2.0,
+          desc_pe: "Non-selective global: +2 to +4σ",
+          desc_prec: "Unstable: ±15-25%",
+          desc_thresh: "0.85-1.25",
+          desc_bias: "1.8-2.2",
+          signature:
+            "NE-mediated saturation, eventual burnout, persistently violated arousal.",
+        },
+        {
+          name: "Depression",
+          pe: -4,
+          prec: 15,
+          thresh: 1.4,
+          bias: 0.8,
+          desc_pe: "Reward: -3 to -5σ",
+          desc_prec: "Positive: 30-50% elevation",
+          desc_thresh: "1.3-1.5",
+          desc_bias: "0.7-0.9",
+          signature:
+            "Computational trap, asymmetric filtering, pessimistic rigid negative priors.",
+        },
+        {
+          name: "Anger",
+          pe: 4,
+          prec: 27.5,
+          thresh: 0.7,
+          bias: 2.25,
+          desc_pe: "Injustice/obstruction: +3 to +5σ",
+          desc_prec: "Action-preparation: 20-35% reduction",
+          desc_thresh: "0.65-0.8",
+          desc_bias: "2.0-2.5",
+          signature:
+            "NE surge, rapid behavioral mobilization, goal obstruction detection.",
+        },
+        {
+          name: "Fear",
+          pe: 5.5,
+          prec: 50,
+          thresh: 0.5,
+          bias: 3.25,
+          desc_pe: "Threat: +4 to +7σ",
+          desc_prec: "Threat-relevant: 40-60% reduction",
+          desc_thresh: "0.4-0.6",
+          desc_bias: "2.5-4.0",
+          signature:
+            "Amygdala-driven, extreme urgency, imminent threat reactive mode.",
+        },
+        {
+          name: "Guilt",
+          pe: 4,
+          prec: 25,
+          thresh: 0.75,
+          bias: 2.15,
+          desc_pe: "Self-monitoring: +3 to +5σ",
+          desc_prec: "Self-monitoring: 20-30% reduction",
+          desc_thresh: "0.7-0.8",
+          desc_bias: "1.8-2.5",
+          signature:
+            "Recurrent ignition, self-correction function, self-model violation.",
+        },
+        {
+          name: "Shame",
+          pe: 5,
+          prec: 32.5,
+          thresh: 0.65,
+          bias: 1.35,
+          desc_pe: "Social-threat: +4 to +6σ",
+          desc_prec: "Social-threat: 25-40% reduction",
+          desc_thresh: "0.6-0.75",
+          desc_bias: "1.2-1.5",
+          signature:
+            "Global ignition, self-devaluation, MPF-TPJ network, imagined observers.",
+        },
+        {
+          name: "Loneliness",
+          pe: 3,
+          prec: 20,
+          thresh: 0.8,
+          bias: 1.15,
+          desc_pe: "Social-absence: +2 to +4σ",
+          desc_prec: "Social-threat: 15-25% reduction",
+          desc_thresh: "0.75-0.85",
+          desc_bias: "1.0-1.3",
+          signature:
+            "Paradoxical rejection sensitivity, self-fulfilling, social predictions unmet.",
+        },
+        {
+          name: "Frustration",
+          pe: 3,
+          prec: 25,
+          thresh: 1.15,
+          bias: 1.1,
+          desc_pe: "Goal-relevant: +2 to +4σ",
+          desc_prec: "Oscillating: ±20-30%",
+          desc_thresh: "0.8-1.3",
+          desc_bias: "1.0-1.2",
+          signature:
+            "Unstable threshold, arousal building, repeated goal-blocking.",
+        },
+        {
+          name: "Confusion",
+          pe: 0,
+          prec: 0,
+          thresh: 1.1,
+          bias: 2.5,
+          desc_pe: "Diffused (no dominant >3σ)",
+          desc_prec: "Normal",
+          desc_thresh: "1.0-1.2",
+          desc_bias: "2.0-3.0",
+          signature:
+            "Model selection failure, high-entropy state, competing models.",
+        },
+        {
+          name: "Disgust",
+          pe: 4,
+          prec: 25,
+          thresh: 0.75,
+          bias: 2.25,
+          desc_pe: "Contamination: +3 to +5σ",
+          desc_prec: "Rejection/avoidance: 20-30% reduction",
+          desc_thresh: "0.7-0.8",
+          desc_bias: "2.0-3.0",
+          signature:
+            "Anterior insula-driven, visceral dominance, pathogen detection.",
+        },
+        {
+          name: "Envy",
+          pe: 3,
+          prec: 20,
+          thresh: 0.8,
+          bias: 1.75,
+          desc_pe: "Social-comparison: +2 to +4σ",
+          desc_prec: "Status-relevant: 15-25% reduction",
+          desc_thresh: "0.75-0.85",
+          desc_bias: "1.5-2.0",
+          signature:
+            "Desire + resentment, self-model threatened, status threat.",
+        },
+        {
+          name: "Jealousy",
+          pe: 4,
+          prec: 27.5,
+          thresh: 0.7,
+          bias: 1.35,
+          desc_pe: "Rival-related: +3 to +5σ",
+          desc_prec: "Defensive cognition: 20-35% reduction",
+          desc_thresh: "0.65-0.8",
+          desc_bias: "1.2-1.5",
+          signature:
+            "Mate-guarding function, hypervigilance for betrayal, attachment security threatened.",
+        },
+        {
+          name: "Regret",
+          pe: 4,
+          prec: 20,
+          thresh: 0.85,
+          bias: 1.0,
+          desc_pe: "Self-blame: +3 to +5σ",
+          desc_prec: "Autobiographical memory: 15-25% reduction",
+          desc_thresh: "0.75-0.875",
+          desc_bias: "0.9-1.1",
+          signature:
+            "Learning signal, recurrent 'what if' ignition, counterfactual error.",
+        },
+        {
+          name: "Pessimism",
+          pe: -2.5,
+          prec: 27.5,
+          thresh: 1.25,
+          bias: 1.75,
+          desc_pe: "Positive PE: -2 to -3σ (suppressed)",
+          desc_prec: "Positive content: 20-35% elevation",
+          desc_thresh: "1.2-1.35",
+          desc_bias: "1.5-2.0",
+          signature:
+            "Prior distribution bias, anticipatory not current, negative outcome priors.",
+        },
+        {
+          name: "Overwhelm",
+          pe: 5,
+          prec: 5,
+          thresh: 0.9,
+          bias: 0.2,
+          desc_pe: "Multiple high-Π streams (>10-15)",
+          desc_prec: "Chaotically exceeded",
+          desc_thresh: "0.8-1.0",
+          desc_bias: "<0.3",
+          signature:
+            "Reservoir saturation, computational collapse, excessive concurrent demands.",
+        },
+        {
+          name: "Dissociation",
+          pe: 0,
+          prec: 55,
+          thresh: 0.25,
+          bias: 0.2,
+          desc_pe: "Interoceptive: approaches zero",
+          desc_prec: "Embodied content: 40-70% elevation",
+          desc_thresh: "<0.3",
+          desc_bias: "<0.3",
+          signature:
+            "Prefrontal-insula uncoupling, protective detachment, prediction-body coupling severed.",
+        },
+        {
+          name: "Trance",
+          pe: 0.3,
+          prec: 27.5,
+          thresh: 0.7,
+          bias: 4.5,
+          desc_pe: "External: <0.3σ",
+          desc_prec: "Endogenous rhythmic: 20-35% reduction",
+          desc_thresh: "0.65-0.8",
+          desc_bias: "Variable",
+          signature:
+            "Self-sustained ignition, reduced sensory gating, top-down predictions dominate.",
+        },
+        {
+          name: "Hallucination",
+          pe: 4.5,
+          prec: 0,
+          thresh: 1.0,
+          bias: 1.1,
+          desc_pe: "Internal assigned: +3 to +6σ",
+          desc_prec: "Crossed by internal signals",
+          desc_thresh: "Variable",
+          desc_bias: "1.0-1.2",
+          signature:
+            "Reality monitoring failure, source confusion, internal predictions misattributed.",
+        },
+        {
+          name: "Déjà Vu",
+          pe: 0.5,
+          prec: 0,
+          thresh: 1.1,
+          bias: 1.0,
+          desc_pe: "Momentary match",
+          desc_prec: "Briefly crossed prematurely",
+          desc_thresh: "1.0-1.2",
+          desc_bias: "0.8-1.2",
+          signature:
+            "Temporal-binding error, 2-10s duration, temporal misalignment.",
+        },
+        {
+          name: "Hypnagogia",
+          pe: 0,
+          prec: 30,
+          thresh: 0.8,
+          bias: 2.0,
+          desc_pe: "External declining",
+          desc_prec: "Dream content: 20-40% reduction",
+          desc_thresh: "0.6-1.0",
+          desc_bias: "1.5-2.5",
+          signature:
+            "Extended memory window, sleep transition, sensory-decoupled.",
+        },
+        {
+          name: "Empathy",
+          pe: 4,
+          prec: 25,
+          thresh: 0.75,
+          bias: 2.25,
+          desc_pe: "Other-emotion: +3 to +5σ",
+          desc_prec: "Affective resonance: 20-30% reduction",
+          desc_thresh: "0.7-0.8",
+          desc_bias: "1.5-2.5",
+          signature:
+            "Insula-mediated somatic mapping, shared feeling, other's emotional state simulated.",
+        },
+        {
+          name: "Sympathy",
+          pe: 2.5,
+          prec: 20,
+          thresh: 1.2,
+          bias: 1.35,
+          desc_pe: "Other-distress: +2 to +3σ",
+          desc_prec: "Personal distress: 15-25% elevation",
+          desc_thresh: "1.15-1.25",
+          desc_bias: "1.2-1.5",
+          signature:
+            "Sustainable care without overwhelm, limited somatic mirroring.",
+        },
+        {
+          name: "Belonging",
+          pe: 3,
+          prec: 20,
+          thresh: 0.8,
+          bias: 1.5,
+          desc_pe: "Inclusion signals: +2 to +4σ",
+          desc_prec: "Group-relevant: 15-25% reduction",
+          desc_thresh: "0.75-0.85",
+          desc_bias: "1.3-1.7",
+          signature:
+            "Reduced social vigilance, oxytocin-sustained, social inclusion confirmed.",
+        },
+        {
+          name: "Rejection",
+          pe: 4,
+          prec: 27.5,
+          thresh: 0.7,
+          bias: 1.1,
+          desc_pe: "Social-threat: +3 to +5σ",
+          desc_prec: "Threat: 20-35% reduction",
+          desc_thresh: "0.65-0.8",
+          desc_bias: "1.0-1.2",
+          signature: "dACC activation, pain system overlap, social exclusion.",
+        },
+        {
+          name: "Trust",
+          pe: -2.5,
+          prec: 25,
+          thresh: 1.25,
+          bias: 1.1,
+          desc_pe: "Betrayal: -2 to -3σ",
+          desc_prec: "Threat/suspicion: 20-30% elevation",
+          desc_thresh: "1.2-1.3",
+          desc_bias: "1.0-1.2",
+          signature:
+            "Computational commitment, oxytocin-mediated, positive social priors.",
+        },
+        {
+          name: "Focus",
+          pe: 4,
+          prec: 12.5,
+          thresh: 0.9,
+          bias: 1.0,
+          desc_pe: "Task: +3 to +5σ",
+          desc_prec: "Task: 10-15% reduction",
+          desc_thresh: "0.85-0.95",
+          desc_bias: "0.9-1.1",
+          signature:
+            "Tuned filter, LC-NE signal-to-noise optimization, singular task-aligned.",
+        },
+        {
+          name: "Creativity",
+          pe: 3,
+          prec: 15,
+          thresh: 0.9,
+          bias: 1.1,
+          desc_pe: "Remote associations: +2 to +4σ",
+          desc_prec: "Novel combinations: 10-20% reduction",
+          desc_thresh: "0.8-1.0",
+          desc_bias: "1.0-1.2",
+          signature:
+            "Near-critical dynamics, DMN-ECN coupling, loosened constraints.",
+        },
+        {
+          name: "Decision Fatigue",
+          pe: 0,
+          prec: 32.5,
+          thresh: 1.3,
+          bias: 1.4,
+          desc_pe: "Equal across options",
+          desc_prec: "Elevated: 25-40% increase",
+          desc_thresh: "1.25-1.4",
+          desc_bias: "1.2-1.6",
+          signature:
+            "Glucose depletion, prefrontal exhaustion, model comparison impaired.",
+        },
+        {
+          name: "Cognitive Dissonance",
+          pe: 3.5,
+          prec: 25,
+          thresh: 1.15,
+          bias: 0.9,
+          desc_pe: "Competing models each >3σ",
+          desc_prec: "Unstable: ±20-30%",
+          desc_thresh: "0.8-1.3",
+          desc_bias: "0.8-1.0",
+          signature:
+            "ACC conflict signal, aversive instability, incompatible high-precision models.",
+        },
+        {
+          name: "Hyperfocus",
+          pe: 6.5,
+          prec: 40,
+          thresh: 0.6,
+          bias: 1.55,
+          desc_pe: "Task: +5 to +8σ (extreme)",
+          desc_prec: "Task: 30-50% reduction",
+          desc_thresh: "0.5-0.7",
+          desc_bias: "1.3-1.8",
+          signature:
+            "Time distortion, complete absorption, post-crash, locked on target.",
+        },
+        {
+          name: "Hunger",
+          pe: 3,
+          prec: 20,
+          thresh: 1.2,
+          bias: 2.15,
+          desc_pe: "Interoceptive: +2 to +4σ",
+          desc_prec: "Non-food: 15-30% elevation",
+          desc_thresh: "1.15-1.25",
+          desc_bias: "1.3-2.5",
+          signature:
+            "Ghrelin-mediated, attentional hijacking, homeostatic deficit (caloric).",
+        },
+        {
+          name: "Thirst",
+          pe: 2.5,
+          prec: 17.5,
+          thresh: 1.2,
+          bias: 1.1,
+          desc_pe: "Interoceptive: +2 to +3σ",
+          desc_prec: "Non-water: 15-25% elevation",
+          desc_thresh: "1.15-1.25",
+          desc_bias: "1.2",
+          signature:
+            "Angiotensin signaling, cognitive impairment, homeostatic deficit (hydration).",
+        },
+      ];
+
+      // --- APP STATE ---
+      let currentState = rawData[0];
+      let radarChart = null;
+      let currentTheme = localStorage.getItem("theme") || "dark";
+
+      // --- DOM ELEMENTS ---
+      const stateNameEl = document.getElementById("stateName");
+      const stateSignatureEl = document.getElementById("stateSignature");
+      const statsGridEl = document.getElementById("statsGrid");
+      const statesListEl = document.getElementById("statesList");
+      const searchInput = document.getElementById("searchInput");
+
+      // --- CHART FUNCTIONS ---
+      function getChartColors() {
+        const isDark = currentTheme === "dark";
+        return {
+          grid: isDark
+            ? "rgba(148, 163, 184, 0.2)"
+            : "rgba(100, 116, 139, 0.3)",
+          labels: isDark ? "#94a3b8" : "#475569",
+          border: isDark ? "rgb(6, 182, 212)" : "rgb(8, 145, 178)",
+          background: isDark
+            ? "rgba(6, 182, 212, 0.2)"
+            : "rgba(8, 145, 178, 0.2)",
+          point: isDark ? "rgb(6, 182, 212)" : "rgb(8, 145, 178)",
+          tooltipBg: isDark
+            ? "rgba(15, 23, 42, 0.9)"
+            : "rgba(255, 255, 255, 0.95)",
+          tooltipTitle: isDark ? "#06b6d4" : "#0891b2",
+          tooltipBody: isDark ? "#e2e8f0" : "#0f172a",
+          tooltipBorder: isDark ? "#334155" : "#cbd5e1",
+        };
+      }
+
+      function normalizeForChart(state) {
+        return [
+          Math.min(100, Math.max(0, (state.pe + 4) * 10)),
+          Math.min(100, state.prec * 2),
+          Math.min(100, state.thresh * 25),
+          Math.min(100, state.bias * 25),
+        ];
+      }
+
+      function createRadarChart() {
+        const ctx = document.getElementById("radarChart").getContext("2d");
+        const colors = getChartColors();
+
+        if (radarChart) {
+          radarChart.destroy();
+        }
+
+        const normalizedData = normalizeForChart(currentState);
+
+        radarChart = new Chart(ctx, {
+          type: "radar",
+          data: {
+            labels: [
+              "Pred Error (ε)",
+              "Precision (π)",
+              "Threshold (θ)",
+              "Somatic (β)",
+            ],
+            datasets: [
+              {
+                label: currentState.name,
+                data: normalizedData,
+                backgroundColor: colors.background,
+                borderColor: colors.border,
+                pointBackgroundColor: colors.point,
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: colors.border,
+                borderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  display: false,
+                  stepSize: 20,
+                },
+                grid: {
+                  color: colors.grid,
+                },
+                angleLines: {
+                  color: colors.grid,
+                },
+                pointLabels: {
+                  color: colors.labels,
+                  font: {
+                    size: 13,
+                    weight: "500",
+                  },
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+              tooltip: {
+                backgroundColor: colors.tooltipBg,
+                titleColor: colors.tooltipTitle,
+                bodyColor: colors.tooltipBody,
+                borderColor: colors.tooltipBorder,
+                borderWidth: 1,
+                cornerRadius: 8,
+                padding: 12,
+                displayColors: false,
+                callbacks: {
+                  label: function (context) {
+                    const labels = [
+                      currentState.desc_pe,
+                      currentState.desc_prec,
+                      currentState.desc_thresh,
+                      currentState.desc_bias,
+                    ];
+                    return labels[context.dataIndex];
+                  },
+                },
+              },
+            },
+            animation: {
+              duration: 300,
+              easing: "easeOutQuart",
+            },
+          },
+        });
+      }
+
+      function renderStats() {
+        const stats = [
+          {
+            label: "Prediction Error",
+            symbol: "ε (Epsilon)",
+            value:
+              currentState.pe > 0
+                ? `+${currentState.pe}σ`
+                : `${currentState.pe}σ`,
+            subtext: currentState.desc_pe,
+            color: "border-red-500",
+            info: "The difference between expected and actual sensory input. High ε drives learning or arousal.",
+          },
+          {
+            label: "Precision",
+            symbol: "π (Pi)",
+            value:
+              currentState.prec > 0
+                ? `-${currentState.prec}%`
+                : currentState.prec < 0
+                  ? `+${Math.abs(currentState.prec)}%`
+                  : "Baseline",
+            subtext: currentState.desc_prec,
+            color: "border-emerald-500",
+            info: "The confidence placed in prediction errors. High precision amplifies signals (attention).",
+          },
+          {
+            label: "Threshold",
+            symbol: "θ (Theta)",
+            value: currentState.desc_thresh.split(" ")[0],
+            subtext: currentState.desc_thresh,
+            color: "border-amber-500",
+            info: "The limit required for a signal to trigger a global update (consciousness).",
+          },
+          {
+            label: "Somatic Bias",
+            symbol: "β (Beta)",
+            value: currentState.desc_bias.split(" ")[0],
+            subtext: currentState.desc_bias,
+            color: "border-purple-500",
+            info: "The weighting of internal bodily signals (interoception) vs external signals.",
+          },
         ];
 
-        // --- APP STATE ---
-        let currentState = rawData[0];
-        let radarChart = null;
-        let currentTheme = localStorage.getItem('theme') || 'dark';
-
-        // --- DOM ELEMENTS ---
-        const stateNameEl = document.getElementById('stateName');
-        const stateSignatureEl = document.getElementById('stateSignature');
-        const statsGridEl = document.getElementById('statsGrid');
-        const statesListEl = document.getElementById('statesList');
-        const searchInput = document.getElementById('searchInput');
-
-        // --- CHART FUNCTIONS ---
-        function getChartColors() {
-            const isDark = currentTheme === 'dark';
-            return {
-                grid: isDark ? 'rgba(148, 163, 184, 0.2)' : 'rgba(100, 116, 139, 0.3)',
-                labels: isDark ? '#94a3b8' : '#475569',
-                border: isDark ? 'rgb(6, 182, 212)' : 'rgb(8, 145, 178)',
-                background: isDark ? 'rgba(6, 182, 212, 0.2)' : 'rgba(8, 145, 178, 0.2)',
-                point: isDark ? 'rgb(6, 182, 212)' : 'rgb(8, 145, 178)',
-                tooltipBg: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.95)',
-                tooltipTitle: isDark ? '#06b6d4' : '#0891b2',
-                tooltipBody: isDark ? '#e2e8f0' : '#0f172a',
-                tooltipBorder: isDark ? '#334155' : '#cbd5e1'
-            };
-        }
-
-        function normalizeForChart(state) {
-            return [
-                Math.min(100, Math.max(0, (state.pe + 4) * 10)),
-                Math.min(100, state.prec * 2),
-                Math.min(100, state.thresh * 25),
-                Math.min(100, state.bias * 25)
-            ];
-        }
-
-        function createRadarChart() {
-            const ctx = document.getElementById('radarChart').getContext('2d');
-            const colors = getChartColors();
-            
-            if (radarChart) {
-                radarChart.destroy();
-            }
-            
-            const normalizedData = normalizeForChart(currentState);
-            
-            radarChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Pred Error (ε)', 'Precision (π)', 'Threshold (θ)', 'Somatic (β)'],
-                    datasets: [{
-                        label: currentState.name,
-                        data: normalizedData,
-                        backgroundColor: colors.background,
-                        borderColor: colors.border,
-                        pointBackgroundColor: colors.point,
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: colors.border,
-                        borderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                display: false,
-                                stepSize: 20
-                            },
-                            grid: {
-                                color: colors.grid
-                            },
-                            angleLines: {
-                                color: colors.grid
-                            },
-                            pointLabels: {
-                                color: colors.labels,
-                                font: {
-                                    size: 13,
-                                    weight: '500'
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: colors.tooltipBg,
-                            titleColor: colors.tooltipTitle,
-                            bodyColor: colors.tooltipBody,
-                            borderColor: colors.tooltipBorder,
-                            borderWidth: 1,
-                            cornerRadius: 8,
-                            padding: 12,
-                            displayColors: false,
-                            callbacks: {
-                                label: function(context) {
-                                    const labels = [
-                                        currentState.desc_pe,
-                                        currentState.desc_prec,
-                                        currentState.desc_thresh,
-                                        currentState.desc_bias
-                                    ];
-                                    return labels[context.dataIndex];
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 300,
-                        easing: 'easeOutQuart'
-                    }
-                }
-            });
-        }
-
-        function renderStats() {
-            const stats = [
-                { 
-                    label: "Prediction Error", 
-                    symbol: "ε (Epsilon)", 
-                    value: currentState.pe > 0 ? `+${currentState.pe}σ` : `${currentState.pe}σ`,
-                    subtext: currentState.desc_pe,
-                    color: "border-red-500",
-                    info: "The difference between expected and actual sensory input. High ε drives learning or arousal."
-                },
-                { 
-                    label: "Precision", 
-                    symbol: "π (Pi)", 
-                    value: currentState.prec > 0 ? `-${currentState.prec}%` : currentState.prec < 0 ? `+${Math.abs(currentState.prec)}%` : "Baseline",
-                    subtext: currentState.desc_prec,
-                    color: "border-emerald-500",
-                    info: "The confidence placed in prediction errors. High precision amplifies signals (attention)."
-                },
-                { 
-                    label: "Threshold", 
-                    symbol: "θ (Theta)", 
-                    value: currentState.desc_thresh.split(' ')[0],
-                    subtext: currentState.desc_thresh,
-                    color: "border-amber-500",
-                    info: "The limit required for a signal to trigger a global update (consciousness)."
-                },
-                { 
-                    label: "Somatic Bias", 
-                    symbol: "β (Beta)", 
-                    value: currentState.desc_bias.split(' ')[0],
-                    subtext: currentState.desc_bias,
-                    color: "border-purple-500",
-                    info: "The weighting of internal bodily signals (interoception) vs external signals."
-                }
-            ];
-
-            statsGridEl.innerHTML = stats.map(stat => `
+        statsGridEl.innerHTML = stats
+          .map(
+            (stat) => `
                 <div class="p-4 rounded-xl glass-panel border-l-4 ${stat.color} stat-card fade-in">
                     <div class="flex justify-between items-start mb-2">
                         <div class="group relative flex items-center gap-1 cursor-help">
@@ -636,97 +1277,104 @@
                     <div class="text-lg font-bold mb-1" style="color: var(--text-primary)">${stat.value}</div>
                     <div class="text-xs font-mono leading-tight" style="color: var(--text-secondary)">${stat.subtext}</div>
                 </div>
-            `).join('');
-        }
+            `,
+          )
+          .join("");
+      }
 
-        function renderStateList(filterText = '') {
-            const filtered = rawData.filter(state => 
-                state.name.toLowerCase().includes(filterText.toLowerCase()) ||
-                state.signature.toLowerCase().includes(filterText.toLowerCase())
-            );
+      function renderStateList(filterText = "") {
+        const filtered = rawData.filter(
+          (state) =>
+            state.name.toLowerCase().includes(filterText.toLowerCase()) ||
+            state.signature.toLowerCase().includes(filterText.toLowerCase()),
+        );
 
-            statesListEl.innerHTML = filtered.map(state => `
+        statesListEl.innerHTML = filtered
+          .map(
+            (state) => `
                 <button
                     data-state="${state.name.replace(/'/g, "\\'")}"
                     class="w-full text-left px-4 py-3 rounded-lg text-sm transition-all border state-button ${
-                        currentState.name === state.name ? 'active' : ''
+                      currentState.name === state.name ? "active" : ""
                     } fade-in"
                 >
                     <div class="font-semibold" style="color: var(--text-primary)">${state.name}</div>
                     <div class="text-[10px] opacity-60 truncate" style="color: var(--text-secondary)">${state.signature}</div>
                 </button>
-            `).join('');
+            `,
+          )
+          .join("");
 
-            // Add event listeners to state buttons
-            statesListEl.querySelectorAll('.state-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const stateName = this.getAttribute('data-state');
-                    selectState(stateName);
-                });
-            });
+        // Add event listeners to state buttons
+        statesListEl.querySelectorAll(".state-button").forEach((button) => {
+          button.addEventListener("click", function () {
+            const stateName = this.getAttribute("data-state");
+            selectState(stateName);
+          });
+        });
+      }
+
+      function selectState(stateName) {
+        const state = rawData.find((s) => s.name === stateName);
+        if (!state) return;
+
+        currentState = state;
+        stateNameEl.textContent = state.name;
+        stateSignatureEl.textContent = `"${state.signature}"`;
+
+        renderStats();
+        createRadarChart();
+        renderStateList(searchInput.value);
+      }
+
+      // --- INITIALIZATION ---
+      function init() {
+        // Initialize theme
+        const savedTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        updateThemeToggle(savedTheme);
+
+        // Theme toggle is now handled by theme-manager.js
+        // This prevents conflicts with the centralized ThemeManager
+
+        // Set initial state
+        selectState("Flow state");
+
+        // Setup search
+        searchInput.addEventListener("input", (e) => {
+          renderStateList(e.target.value);
+        });
+
+        // Setup keyboard shortcuts
+        document.addEventListener("keydown", (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === "f") {
+            e.preventDefault();
+            searchInput.focus();
+          }
+        });
+
+        // Initial render of state list
+        renderStateList();
+      }
+
+      function updateThemeToggle(theme) {
+        const sunIcon = document.querySelector(".icon-sun");
+        const moonIcon = document.querySelector(".icon-moon");
+
+        if (theme === "light") {
+          sunIcon.style.display = "none";
+          moonIcon.style.display = "block";
+        } else {
+          sunIcon.style.display = "block";
+          moonIcon.style.display = "none";
         }
+      }
 
-        function selectState(stateName) {
-            const state = rawData.find(s => s.name === stateName);
-            if (!state) return;
-            
-            currentState = state;
-            stateNameEl.textContent = state.name;
-            stateSignatureEl.textContent = `"${state.signature}"`;
-            
-            renderStats();
-            createRadarChart();
-            renderStateList(searchInput.value);
-        }
+      // Make selectState globally accessible
+      window.selectState = selectState;
 
-        // --- INITIALIZATION ---
-        function init() {
-            // Initialize theme
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeToggle(savedTheme);
-            
-            // Theme toggle is now handled by theme-manager.js
-            // This prevents conflicts with the centralized ThemeManager
-            
-            // Set initial state
-            selectState('Flow state');
-            
-            // Setup search
-            searchInput.addEventListener('input', (e) => {
-                renderStateList(e.target.value);
-            });
-            
-            // Setup keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-                    e.preventDefault();
-                    searchInput.focus();
-                }
-            });
-            
-            // Initial render of state list
-            renderStateList();
-        }
-
-        function updateThemeToggle(theme) {
-            const sunIcon = document.querySelector('.icon-sun');
-            const moonIcon = document.querySelector('.icon-moon');
-            
-            if (theme === 'light') {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
-            } else {
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
-            }
-        }
-
-        // Make selectState globally accessible
-        window.selectState = selectState;
-
-        // --- START APP ---
-        document.addEventListener('DOMContentLoaded', init);
+      // --- START APP ---
+      document.addEventListener("DOMContentLoaded", init);
     </script>
-</body>
+  </body>
 </html>

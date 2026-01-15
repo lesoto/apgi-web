@@ -3,16 +3,16 @@
 
 class OfflineQuizManager {
   constructor() {
-    this.dbName = 'APGIQuizResults';
+    this.dbName = "APGIQuizResults";
     this.dbVersion = 1;
-    this.storeName = 'results';
+    this.storeName = "results";
     this.init();
   }
 
   async init() {
     // Initialize IndexedDB for offline storage
     this.db = await this.openDB();
-    
+
     // Check if we're coming back online and need to sync
     this.setupSyncListener();
   }
@@ -20,16 +20,16 @@ class OfflineQuizManager {
   async openDB() {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(this.dbName, this.dbVersion);
-      
+
       request.onerror = () => reject(request.error);
       request.onsuccess = () => resolve(request.result);
-      
+
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
         if (!db.objectStoreNames.contains(this.storeName)) {
-          const store = db.createObjectStore(this.storeName, { keyPath: 'id' });
-          store.createIndex('timestamp', 'timestamp', { unique: false });
-          store.createIndex('synced', 'synced', { unique: false });
+          const store = db.createObjectStore(this.storeName, { keyPath: "id" });
+          store.createIndex("timestamp", "timestamp", { unique: false });
+          store.createIndex("synced", "synced", { unique: false });
         }
       };
     });
@@ -37,7 +37,7 @@ class OfflineQuizManager {
 
   async storeQuizResult(result) {
     if (!this.db) {
-      console.warn('Offline storage not available');
+      console.warn("Offline storage not available");
       return null;
     }
 
@@ -47,20 +47,22 @@ class OfflineQuizManager {
       timestamp: new Date().toISOString(),
       synced: false,
       userAgent: navigator.userAgent,
-      url: window.location.href
+      url: window.location.href,
     };
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction([this.storeName], 'readwrite');
+      const transaction = this.db.transaction([this.storeName], "readwrite");
       const store = transaction.objectStore(this.storeName);
-      
+
       const addRequest = store.add(resultWithId);
-      
+
       addRequest.onsuccess = () => {
         resolve(resultWithId);
-        this.showOfflineNotification('Quiz result saved locally. Will sync when online.');
+        this.showOfflineNotification(
+          "Quiz result saved locally. Will sync when online.",
+        );
       };
-      
+
       addRequest.onerror = () => reject(addRequest.error);
     });
   }
@@ -69,10 +71,10 @@ class OfflineQuizManager {
     if (!this.db) return [];
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction([this.storeName], 'readonly');
+      const transaction = this.db.transaction([this.storeName], "readonly");
       const store = transaction.objectStore(this.storeName);
       const getAllRequest = store.getAll();
-      
+
       getAllRequest.onsuccess = () => resolve(getAllRequest.result || []);
       getAllRequest.onerror = () => reject(getAllRequest.error);
     });
@@ -80,14 +82,14 @@ class OfflineQuizManager {
 
   async syncResults() {
     if (!navigator.onLine) {
-      return { success: false, message: 'Still offline' };
+      return { success: false, message: "Still offline" };
     }
 
     const results = await this.getStoredResults();
-    const unsyncedResults = results.filter(r => !r.synced);
-    
+    const unsyncedResults = results.filter((r) => !r.synced);
+
     if (unsyncedResults.length === 0) {
-      return { success: true, message: 'No results to sync' };
+      return { success: true, message: "No results to sync" };
     }
 
     let syncedCount = 0;
@@ -96,12 +98,12 @@ class OfflineQuizManager {
     for (const result of unsyncedResults) {
       try {
         // Try to sync with server (if API endpoint exists)
-        const response = await fetch('/api/quiz-results', {
-          method: 'POST',
+        const response = await fetch("/api/quiz-results", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(result)
+          body: JSON.stringify(result),
         });
 
         if (response.ok) {
@@ -113,33 +115,33 @@ class OfflineQuizManager {
         }
       } catch (error) {
         failedCount++;
-        console.warn('Failed to sync quiz result:', error);
+        console.warn("Failed to sync quiz result:", error);
       }
     }
 
-    const message = `Synced ${syncedCount} results${failedCount > 0 ? `, ${failedCount} failed` : ''}`;
+    const message = `Synced ${syncedCount} results${failedCount > 0 ? `, ${failedCount} failed` : ""}`;
     this.showSyncNotification(message);
-    
+
     return { success: true, message, syncedCount, failedCount };
   }
 
   async markAsSynced(id) {
     return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction([this.storeName], 'readwrite');
+      const transaction = this.db.transaction([this.storeName], "readwrite");
       const store = transaction.objectStore(this.storeName);
-      
+
       const getRequest = store.get(id);
       getRequest.onsuccess = () => {
         const result = getRequest.result;
         if (result) {
           result.synced = true;
           result.syncedAt = new Date().toISOString();
-          
+
           const updateRequest = store.put(result);
           updateRequest.onsuccess = () => resolve();
           updateRequest.onerror = () => reject(updateRequest.error);
         } else {
-          reject(new Error('Result not found'));
+          reject(new Error("Result not found"));
         }
       };
       getRequest.onerror = () => reject(getRequest.error);
@@ -148,14 +150,14 @@ class OfflineQuizManager {
 
   setupSyncListener() {
     // Listen for online events to trigger sync
-    window.addEventListener('online', () => {
+    window.addEventListener("online", () => {
       this.syncResults();
     });
   }
 
   showOfflineNotification(message) {
     // Show a subtle notification that result was saved offline
-    const notification = document.createElement('div');
+    const notification = document.createElement("div");
     notification.style.cssText = `
       position: fixed;
       bottom: 20px;
@@ -172,20 +174,20 @@ class OfflineQuizManager {
       transform: translateY(20px);
       transition: all 0.3s ease;
     `;
-    
+
     notification.textContent = message;
     document.body.appendChild(notification);
 
     // Animate in
     setTimeout(() => {
-      notification.style.opacity = '1';
-      notification.style.transform = 'translateY(0)';
+      notification.style.opacity = "1";
+      notification.style.transform = "translateY(0)";
     }, 100);
 
     // Remove after 5 seconds
     setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translateY(20px)';
+      notification.style.opacity = "0";
+      notification.style.transform = "translateY(20px)";
       setTimeout(() => {
         if (notification.parentNode) {
           notification.parentNode.removeChild(notification);
@@ -196,7 +198,7 @@ class OfflineQuizManager {
 
   showSyncNotification(message) {
     // Show sync notification
-    const notification = document.createElement('div');
+    const notification = document.createElement("div");
     notification.style.cssText = `
       position: fixed;
       top: 20px;
@@ -213,20 +215,20 @@ class OfflineQuizManager {
       transform: translateY(-20px);
       transition: all 0.3s ease;
     `;
-    
+
     notification.textContent = message;
     document.body.appendChild(notification);
 
     // Animate in
     setTimeout(() => {
-      notification.style.opacity = '1';
-      notification.style.transform = 'translateY(0)';
+      notification.style.opacity = "1";
+      notification.style.transform = "translateY(0)";
     }, 100);
 
     // Remove after 5 seconds
     setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translateY(-20px)';
+      notification.style.opacity = "0";
+      notification.style.transform = "translateY(-20px)";
       setTimeout(() => {
         if (notification.parentNode) {
           notification.parentNode.removeChild(notification);
@@ -245,8 +247,10 @@ class OfflineQuizManager {
         userAgent: navigator.userAgent,
         url: window.location.href,
         online: navigator.onLine,
-        connection: navigator.connection ? navigator.connection.effectiveType : 'unknown'
-      }
+        connection: navigator.connection
+          ? navigator.connection.effectiveType
+          : "unknown",
+      },
     };
 
     // Store offline copy as well
@@ -256,14 +260,14 @@ class OfflineQuizManager {
 
     // Create download
     const dataStr = JSON.stringify(exportData, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(dataBlob);
-    
-    const link = document.createElement('a');
+
+    const link = document.createElement("a");
     link.href = url;
-    link.download = `APGI_Assessment_${new Date().toISOString().slice(0,10)}.json`;
+    link.download = `APGI_Assessment_${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
-    
+
     URL.revokeObjectURL(url);
   }
 }
@@ -272,6 +276,6 @@ class OfflineQuizManager {
 window.offlineQuizManager = new OfflineQuizManager();
 
 // Export for use in assessment pages
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = OfflineQuizManager;
 }

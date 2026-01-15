@@ -1,813 +1,978 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI Appendix – Explore Consciousness Science</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        :root {
-            /* APGI Color Palette */
-            --threshold-blue: #00B4FF;
-            --precision-red: #FF3366;
-            --neuromodulator-green: #00CC99;
-            --error-yellow: #FFCC00;
-            --workspace-purple: #9966FF;
-            --bg-slate: #2C3E50;
-            --bg-dark: #1a252f;
-            --text-light: #E8EEF2;
-            --text-muted: #9CA9B3;
-        }
+      :root {
+        /* APGI Color Palette */
+        --threshold-blue: #00b4ff;
+        --precision-red: #ff3366;
+        --neuromodulator-green: #00cc99;
+        --error-yellow: #ffcc00;
+        --workspace-purple: #9966ff;
+        --bg-slate: #2c3e50;
+        --bg-dark: #1a252f;
+        --text-light: #e8eef2;
+        --text-muted: #9ca9b3;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-slate) 100%);
-            color: var(--text-light);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--bg-dark) 0%,
+          var(--bg-slate) 100%
+        );
+        color: var(--text-light);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
 
-        /* Neural Glow Background Animation */
-        .neural-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.15;
-            z-index: 0;
-            pointer-events: none;
-        }
+      /* Neural Glow Background Animation */
+      .neural-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.15;
+        z-index: 0;
+        pointer-events: none;
+      }
 
-        .neural-particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--threshold-blue);
-            border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
-            box-shadow: 0 0 10px var(--threshold-blue);
-        }
+      .neural-particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: var(--threshold-blue);
+        border-radius: 50%;
+        animation: float 20s infinite ease-in-out;
+        box-shadow: 0 0 10px var(--threshold-blue);
+      }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
-            25% { transform: translateY(-100px) translateX(50px); opacity: 0.8; }
-            50% { transform: translateY(-50px) translateX(-30px); opacity: 0.5; }
-            75% { transform: translateY(-80px) translateX(70px); opacity: 0.7; }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) translateX(0);
+          opacity: 0.3;
         }
-
-        /* Container */
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 40px;
+        25% {
+          transform: translateY(-100px) translateX(50px);
+          opacity: 0.8;
         }
-
-        /* Header */
-        header {
-            padding: 60px 0 40px;
-            text-align: center;
+        50% {
+          transform: translateY(-50px) translateX(-30px);
+          opacity: 0.5;
         }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
+        75% {
+          transform: translateY(-80px) translateX(70px);
+          opacity: 0.7;
         }
+      }
 
-        .app-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: 700;
-            color: white;
-            box-shadow: 0 20px 60px rgba(0, 180, 255, 0.4);
-            animation: pulse-glow 3s infinite;
+      /* Container */
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 40px;
+      }
+
+      /* Header */
+      header {
+        padding: 60px 0 40px;
+        text-align: center;
+      }
+
+      .logo-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .app-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(
+          135deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: 700;
+        color: white;
+        box-shadow: 0 20px 60px rgba(0, 180, 255, 0.4);
+        animation: pulse-glow 3s infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 20px 60px rgba(0, 180, 255, 0.4);
         }
-
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 20px 60px rgba(0, 180, 255, 0.4); }
-            50% { box-shadow: 0 20px 80px rgba(153, 102, 255, 0.6); }
+        50% {
+          box-shadow: 0 20px 80px rgba(153, 102, 255, 0.6);
         }
+      }
 
+      h1 {
+        font-size: 56px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        background: linear-gradient(
+          135deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        font-size: 24px;
+        color: var(--text-muted);
+        font-weight: 400;
+        margin-bottom: 30px;
+      }
+
+      .tagline {
+        font-size: 18px;
+        color: var(--error-yellow);
+        font-style: italic;
+        margin-bottom: 40px;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 15px 35px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        color: white;
+        box-shadow: 0 10px 30px rgba(0, 180, 255, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(0, 180, 255, 0.5);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-light);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--threshold-blue);
+      }
+
+      /* Hero Screenshot */
+      .hero-screenshot {
+        margin: 60px 0;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .hero-screenshot img {
+        width: 100%;
+        display: block;
+      }
+
+      /* Features Grid */
+      .features-section {
+        padding: 80px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-header h2 {
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--text-light);
+      }
+
+      .section-header p {
+        font-size: 18px;
+        color: var(--text-muted);
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 35px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 50px rgba(0, 180, 255, 0.2);
+        border-color: var(--threshold-blue);
+      }
+
+      .feature-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+        display: inline-block;
+      }
+
+      .feature-card h3 {
+        font-size: 24px;
+        margin-bottom: 12px;
+        color: var(--text-light);
+      }
+
+      .feature-card p {
+        color: var(--text-muted);
+        line-height: 1.7;
+      }
+
+      /* APGI Parameters Section */
+      .parameters-section {
+        padding: 80px 0;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .parameters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-top: 50px;
+      }
+
+      .parameter-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 25px;
+        border-left: 4px solid;
+        transition: all 0.3s ease;
+      }
+
+      .parameter-card:hover {
+        transform: translateX(5px);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .param-threshold {
+        border-color: var(--threshold-blue);
+      }
+      .param-precision {
+        border-color: var(--precision-red);
+      }
+      .param-neuro {
+        border-color: var(--neuromodulator-green);
+      }
+      .param-error {
+        border-color: var(--error-yellow);
+      }
+      .param-workspace {
+        border-color: var(--workspace-purple);
+      }
+
+      .parameter-card h4 {
+        font-size: 20px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .param-color-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 10px currentColor;
+      }
+
+      /* Interactive Demo Section */
+      .demo-section {
+        padding: 80px 0;
+      }
+
+      .demo-container {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 40px;
+      }
+
+      .ignition-visualization {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: 40px 0;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+
+      .ignition-stage {
+        text-align: center;
+        opacity: 0.5;
+        transition: all 0.5s ease;
+      }
+
+      .ignition-stage.active {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+
+      .stage-icon {
+        font-size: 64px;
+        margin-bottom: 15px;
+        filter: drop-shadow(0 0 20px currentColor);
+      }
+
+      .stage-label {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-muted);
+      }
+
+      /* Categories List */
+      .categories-section {
+        padding: 80px 0;
+      }
+
+      .categories-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 40px;
+      }
+
+      .category-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 25px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .category-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateX(10px);
+      }
+
+      .category-icon {
+        font-size: 32px;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .category-text h4 {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .category-text p {
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      /* Footer */
+      footer {
+        padding: 60px 0;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 100px;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--threshold-blue);
+      }
+
+      .copyright {
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
         h1 {
-            font-size: 56px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+          font-size: 38px;
         }
-
         .subtitle {
-            font-size: 24px;
-            color: var(--text-muted);
-            font-weight: 400;
-            margin-bottom: 30px;
+          font-size: 18px;
         }
-
-        .tagline {
-            font-size: 18px;
-            color: var(--error-yellow);
-            font-style: italic;
-            margin-bottom: 40px;
+        .container {
+          padding: 0 20px;
         }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 15px 35px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
-            color: white;
-            box-shadow: 0 10px 30px rgba(0, 180, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0, 180, 255, 0.5);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--threshold-blue);
-        }
-
-        /* Hero Screenshot */
-        .hero-screenshot {
-            margin: 60px 0;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .hero-screenshot img {
-            width: 100%;
-            display: block;
-        }
-
-        /* Features Grid */
-        .features-section {
-            padding: 80px 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--text-light);
-        }
-
-        .section-header p {
-            font-size: 18px;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
         .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+          grid-template-columns: 1fr;
         }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--threshold-blue), var(--workspace-purple));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(0, 180, 255, 0.2);
-            border-color: var(--threshold-blue);
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-
-        .feature-card h3 {
-            font-size: 24px;
-            margin-bottom: 12px;
-            color: var(--text-light);
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        /* APGI Parameters Section */
-        .parameters-section {
-            padding: 80px 0;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .parameters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 50px;
-        }
-
-        .parameter-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
-            border-left: 4px solid;
-            transition: all 0.3s ease;
-        }
-
-        .parameter-card:hover {
-            transform: translateX(5px);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .param-threshold { border-color: var(--threshold-blue); }
-        .param-precision { border-color: var(--precision-red); }
-        .param-neuro { border-color: var(--neuromodulator-green); }
-        .param-error { border-color: var(--error-yellow); }
-        .param-workspace { border-color: var(--workspace-purple); }
-
-        .parameter-card h4 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .param-color-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 10px currentColor;
-        }
-
-        /* Interactive Demo Section */
-        .demo-section {
-            padding: 80px 0;
-        }
-
         .demo-container {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 40px;
+          padding: 30px 20px;
         }
+      }
 
-        .ignition-visualization {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            margin: 40px 0;
-            flex-wrap: wrap;
-            gap: 30px;
+      /* Animations */
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        .ignition-stage {
-            text-align: center;
-            opacity: 0.5;
-            transition: all 0.5s ease;
-        }
+      .animate-in {
+        animation: slideInUp 0.6s ease-out forwards;
+      }
 
-        .ignition-stage.active {
-            opacity: 1;
-            transform: scale(1.1);
-        }
+      /* Scroll reveal */
+      .reveal {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.6s ease-out;
+      }
 
-        .stage-icon {
-            font-size: 64px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 20px currentColor);
-        }
-
-        .stage-label {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        /* Categories List */
-        .categories-section {
-            padding: 80px 0;
-        }
-
-        .categories-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .category-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .category-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateX(10px);
-        }
-
-        .category-icon {
-            font-size: 32px;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .category-text h4 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .category-text p {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        /* Footer */
-        footer {
-            padding: 60px 0;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 100px;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--threshold-blue);
-        }
-
-        .copyright {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 { font-size: 38px; }
-            .subtitle { font-size: 18px; }
-            .container { padding: 0 20px; }
-            .features-grid { grid-template-columns: 1fr; }
-            .demo-container { padding: 30px 20px; }
-        }
-
-        /* Animations */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-in {
-            animation: slideInUp 0.6s ease-out forwards;
-        }
-
-        /* Scroll reveal */
-        .reveal {
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.6s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Include Navigation Component -->
     <div id="navigation-container"></div>
     <script>
-      fetch('components/navigation.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('navigation-container').innerHTML = html;
+      fetch("components/navigation.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("navigation-container").innerHTML = html;
         })
-        .catch(error => console.error('Error loading navigation:', error));
+        .catch((error) => console.error("Error loading navigation:", error));
     </script>
-    
+
     <!-- Neural Background Animation -->
     <div class="neural-background" id="neuralBg"></div>
 
     <!-- Header -->
     <header>
-        <div class="container">
-            <div class="logo-section">
-                <div class="app-icon">🧠</div>
-            </div>
-            <h1 class="animate-in">APGI Appendix</h1>
-            <p class="subtitle animate-in">Interactive Companion to Consciousness Science</p>
-            <p class="tagline animate-in">Explore the Allostatic Precision-Gated Ignition Framework</p>
-            
-            <div class="cta-buttons animate-in">
-                <a href="https://github.com/lesoto/apgi-framework/releases/latest" class="btn btn-primary">
-                    <span>Download for macOS</span>
-                    <span>↓</span>
-                </a>
-                <a href="#features" class="btn btn-secondary">
-                    <span>Explore Features</span>
-                </a>
-            </div>
+      <div class="container">
+        <div class="logo-section">
+          <div class="app-icon">🧠</div>
         </div>
+        <h1 class="animate-in">APGI Appendix</h1>
+        <p class="subtitle animate-in">
+          Interactive Companion to Consciousness Science
+        </p>
+        <p class="tagline animate-in">
+          Explore the Allostatic Precision-Gated Ignition Framework
+        </p>
+
+        <div class="cta-buttons animate-in">
+          <a
+            href="https://github.com/lesoto/apgi-framework/releases/latest"
+            class="btn btn-primary"
+          >
+            <span>Download for macOS</span>
+            <span>↓</span>
+          </a>
+          <a href="#features" class="btn btn-secondary">
+            <span>Explore Features</span>
+          </a>
+        </div>
+      </div>
     </header>
 
     <!-- Hero Screenshot -->
     <div class="container">
-        <div class="hero-screenshot animate-in">
-            <img src="assets/images/App-Appendix.png" alt="APGI Appendix Interface">
-        </div>
+      <div class="hero-screenshot animate-in">
+        <img
+          src="assets/images/App-Appendix.png"
+          alt="APGI Appendix Interface"
+        />
+      </div>
     </div>
-
 
     <!-- Interactive Demo Section -->
     <section class="demo-section">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>Watch Consciousness Emerge</h2>
-                <p>The APGI ignition sequence visualized in real-time</p>
-            </div>
-
-            <div class="demo-container reveal">
-                <div class="ignition-visualization" id="ignitionDemo">
-                    <div class="ignition-stage" data-stage="1">
-                        <div class="stage-icon" style="color: var(--error-yellow);">⚠️</div>
-                        <div class="stage-label">Prediction Error</div>
-                    </div>
-                    <div class="ignition-stage" data-stage="2">
-                        <div class="stage-icon" style="color: var(--precision-red);">💓</div>
-                        <div class="stage-label">Precision Weighting</div>
-                    </div>
-                    <div class="ignition-stage" data-stage="3">
-                        <div class="stage-icon" style="color: var(--threshold-blue);">⚡</div>
-                        <div class="stage-label">Threshold Crossing</div>
-                    </div>
-                    <div class="ignition-stage" data-stage="4">
-                        <div class="stage-icon" style="color: var(--workspace-purple);">🧠</div>
-                        <div class="stage-label">Global Broadcast</div>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Watch Consciousness Emerge</h2>
+          <p>The APGI ignition sequence visualized in real-time</p>
         </div>
-    </section>
 
+        <div class="demo-container reveal">
+          <div class="ignition-visualization" id="ignitionDemo">
+            <div class="ignition-stage" data-stage="1">
+              <div class="stage-icon" style="color: var(--error-yellow)">
+                ⚠️
+              </div>
+              <div class="stage-label">Prediction Error</div>
+            </div>
+            <div class="ignition-stage" data-stage="2">
+              <div class="stage-icon" style="color: var(--precision-red)">
+                💓
+              </div>
+              <div class="stage-label">Precision Weighting</div>
+            </div>
+            <div class="ignition-stage" data-stage="3">
+              <div class="stage-icon" style="color: var(--threshold-blue)">
+                ⚡
+              </div>
+              <div class="stage-label">Threshold Crossing</div>
+            </div>
+            <div class="ignition-stage" data-stage="4">
+              <div class="stage-icon" style="color: var(--workspace-purple)">
+                🧠
+              </div>
+              <div class="stage-label">Global Broadcast</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- APGI Parameters Section -->
     <section class="parameters-section">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>The APGI Color Spectrum</h2>
-                <p>Each parameter has semantic meaning, encoded in our consistent visual language</p>
-            </div>
-
-            <div class="parameters-grid">
-                <div class="parameter-card param-threshold reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--threshold-blue);"></span>
-                        Threshold (Bₜ)
-                    </h4>
-                    <p style="color: var(--threshold-blue);">The "gate" that must be crossed for ignition. Controls thalamic gating mechanisms.</p>
-                </div>
-
-                <div class="parameter-card param-precision reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--precision-red);"></span>
-                        Interoceptive Precision (Π)
-                    </h4>
-                    <p style="color: var(--precision-red);">Bodily urgency and precision weighting. Maps to insula and ACC activity.</p>
-                </div>
-
-                <div class="parameter-card param-neuro reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--neuromodulator-green);"></span>
-                        Neuromodulator Tone
-                    </h4>
-                    <p style="color: var(--neuromodulator-green);">Chemical balance and adaptability. Brainstem projections and modulatory waves.</p>
-                </div>
-
-                <div class="parameter-card param-error reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--error-yellow);"></span>
-                        Prediction Error (|ε|)
-                    </h4>
-                    <p style="color: var(--error-yellow);">Mismatch between expectation and reality. Surprise responses and conflict detection.</p>
-                </div>
-
-                <div class="parameter-card param-workspace reveal">
-                    <h4>
-                        <span class="param-color-dot" style="background: var(--workspace-purple);"></span>
-                        Global Workspace
-                    </h4>
-                    <p style="color: var(--workspace-purple);">Higher-order integration and broadcasting. Frontoparietal network activation.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>The APGI Color Spectrum</h2>
+          <p>
+            Each parameter has semantic meaning, encoded in our consistent
+            visual language
+          </p>
         </div>
+
+        <div class="parameters-grid">
+          <div class="parameter-card param-threshold reveal">
+            <h4>
+              <span
+                class="param-color-dot"
+                style="background: var(--threshold-blue)"
+              ></span>
+              Threshold (Bₜ)
+            </h4>
+            <p style="color: var(--threshold-blue)">
+              The "gate" that must be crossed for ignition. Controls thalamic
+              gating mechanisms.
+            </p>
+          </div>
+
+          <div class="parameter-card param-precision reveal">
+            <h4>
+              <span
+                class="param-color-dot"
+                style="background: var(--precision-red)"
+              ></span>
+              Interoceptive Precision (Π)
+            </h4>
+            <p style="color: var(--precision-red)">
+              Bodily urgency and precision weighting. Maps to insula and ACC
+              activity.
+            </p>
+          </div>
+
+          <div class="parameter-card param-neuro reveal">
+            <h4>
+              <span
+                class="param-color-dot"
+                style="background: var(--neuromodulator-green)"
+              ></span>
+              Neuromodulator Tone
+            </h4>
+            <p style="color: var(--neuromodulator-green)">
+              Chemical balance and adaptability. Brainstem projections and
+              modulatory waves.
+            </p>
+          </div>
+
+          <div class="parameter-card param-error reveal">
+            <h4>
+              <span
+                class="param-color-dot"
+                style="background: var(--error-yellow)"
+              ></span>
+              Prediction Error (|ε|)
+            </h4>
+            <p style="color: var(--error-yellow)">
+              Mismatch between expectation and reality. Surprise responses and
+              conflict detection.
+            </p>
+          </div>
+
+          <div class="parameter-card param-workspace reveal">
+            <h4>
+              <span
+                class="param-color-dot"
+                style="background: var(--workspace-purple)"
+              ></span>
+              Global Workspace
+            </h4>
+            <p style="color: var(--workspace-purple)">
+              Higher-order integration and broadcasting. Frontoparietal network
+              activation.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Features Section -->
     <section class="features-section" id="features">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>Powerful Features for Deep Understanding</h2>
-                <p>Everything you need to explore consciousness science, from interactive simulations to comprehensive reference materials</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Real-Time APGI Simulator</h3>
-                    <p>Experience consciousness emergence with live parameter controls. Watch surprise signals cross precision-weighted thresholds in real-time at 180+ FPS.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">⏱️</div>
-                    <h3>Interactive Timeline</h3>
-                    <p>Visualize temporal dynamics of ignition sequences. Control playback speed, zoom into critical moments, and understand phase transitions.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Intelligent Global Search</h3>
-                    <p>Find anything instantly. Search across titles, formulas, references, and glossary with smart filtering and instant navigation.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">📊</div>
-                    <h3>Mathematical Framework</h3>
-                    <p>Deep dive into the quantitative foundations. Explore equations, parameter mappings, and computational models with interactive visualizations.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🧬</div>
-                    <h3>Biological Implementation</h3>
-                    <p>Connect theory to neural systems. Explore anatomical substrates, neurotransmitter dynamics, and physiological mechanisms.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Focus Mode</h3>
-                    <p>Distraction-free reading experience. Clean typography and minimal UI optimized for deep study and concentration.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🔖</div>
-                    <h3>Smart Bookmarks</h3>
-                    <p>Never lose your place. Auto-save important sections and return instantly with keyboard shortcuts.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🌐</div>
-                    <h3>Cross-Referenced Navigation</h3>
-                    <p>Follow the conceptual web. Linked terms, related sections, and contextual connections guide your exploration.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">📚</div>
-                    <h3>Comprehensive Bibliography</h3>
-                    <p>Academic rigor at your fingertips. Full reference materials with source citations and further reading suggestions.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Powerful Features for Deep Understanding</h2>
+          <p>
+            Everything you need to explore consciousness science, from
+            interactive simulations to comprehensive reference materials
+          </p>
         </div>
+
+        <div class="features-grid">
+          <div class="feature-card reveal">
+            <div class="feature-icon">🎯</div>
+            <h3>Real-Time APGI Simulator</h3>
+            <p>
+              Experience consciousness emergence with live parameter controls.
+              Watch surprise signals cross precision-weighted thresholds in
+              real-time at 180+ FPS.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">⏱️</div>
+            <h3>Interactive Timeline</h3>
+            <p>
+              Visualize temporal dynamics of ignition sequences. Control
+              playback speed, zoom into critical moments, and understand phase
+              transitions.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">🔍</div>
+            <h3>Intelligent Global Search</h3>
+            <p>
+              Find anything instantly. Search across titles, formulas,
+              references, and glossary with smart filtering and instant
+              navigation.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">📊</div>
+            <h3>Mathematical Framework</h3>
+            <p>
+              Deep dive into the quantitative foundations. Explore equations,
+              parameter mappings, and computational models with interactive
+              visualizations.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">🧬</div>
+            <h3>Biological Implementation</h3>
+            <p>
+              Connect theory to neural systems. Explore anatomical substrates,
+              neurotransmitter dynamics, and physiological mechanisms.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">🎨</div>
+            <h3>Focus Mode</h3>
+            <p>
+              Distraction-free reading experience. Clean typography and minimal
+              UI optimized for deep study and concentration.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">🔖</div>
+            <h3>Smart Bookmarks</h3>
+            <p>
+              Never lose your place. Auto-save important sections and return
+              instantly with keyboard shortcuts.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">🌐</div>
+            <h3>Cross-Referenced Navigation</h3>
+            <p>
+              Follow the conceptual web. Linked terms, related sections, and
+              contextual connections guide your exploration.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">📚</div>
+            <h3>Comprehensive Bibliography</h3>
+            <p>
+              Academic rigor at your fingertips. Full reference materials with
+              source citations and further reading suggestions.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Categories Section -->
     <section class="categories-section">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>Comprehensive Content Library</h2>
-                <p>Seven major categories covering theory, implementation, and applications</p>
-            </div>
-
-            <div class="categories-list">
-                <div class="category-item reveal">
-                    <div class="category-icon" style="color: var(--threshold-blue);">🎯</div>
-                    <div class="category-text">
-                        <h4>Demonstrations</h4>
-                        <p>Interactive simulations and timeline visualizations</p>
-                    </div>
-                </div>
-
-                <div class="category-item reveal">
-                    <div class="category-icon" style="color: var(--workspace-purple);">💡</div>
-                    <div class="category-text">
-                        <h4>Theoretical Foundation</h4>
-                        <p>Core concepts, methodology, and framework overview</p>
-                    </div>
-                </div>
-
-                <div class="category-item reveal">
-                    <div class="category-icon" style="color: var(--error-yellow);">📐</div>
-                    <div class="category-text">
-                        <h4>Mathematical Framework</h4>
-                        <p>Equations, models, and parameter mappings</p>
-                    </div>
-                </div>
-
-                <div class="category-item reveal">
-                    <div class="category-icon" style="color: var(--neuromodulator-green);">🧬</div>
-                    <div class="category-text">
-                        <h4>Biological Implementation</h4>
-                        <p>Neural substrates and physiological mechanisms</p>
-                    </div>
-                </div>
-
-                <div class="category-item reveal">
-                    <div class="category-icon" style="color: var(--precision-red);">🧩</div>
-                    <div class="category-text">
-                        <h4>Cognitive Integration</h4>
-                        <p>Memory, attention, and executive functions</p>
-                    </div>
-                </div>
-
-                <div class="category-item reveal">
-                    <div class="category-icon" style="color: var(--workspace-purple);">🏥</div>
-                    <div class="category-text">
-                        <h4>Applications & Extensions</h4>
-                        <p>Clinical applications and psychiatric disorders</p>
-                    </div>
-                </div>
-
-                <div class="category-item reveal">
-                    <div class="category-icon" style="color: var(--text-muted);">📚</div>
-                    <div class="category-text">
-                        <h4>Reference Materials</h4>
-                        <p>Glossary, bibliography, and additional resources</p>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Comprehensive Content Library</h2>
+          <p>
+            Seven major categories covering theory, implementation, and
+            applications
+          </p>
         </div>
+
+        <div class="categories-list">
+          <div class="category-item reveal">
+            <div class="category-icon" style="color: var(--threshold-blue)">
+              🎯
+            </div>
+            <div class="category-text">
+              <h4>Demonstrations</h4>
+              <p>Interactive simulations and timeline visualizations</p>
+            </div>
+          </div>
+
+          <div class="category-item reveal">
+            <div class="category-icon" style="color: var(--workspace-purple)">
+              💡
+            </div>
+            <div class="category-text">
+              <h4>Theoretical Foundation</h4>
+              <p>Core concepts, methodology, and framework overview</p>
+            </div>
+          </div>
+
+          <div class="category-item reveal">
+            <div class="category-icon" style="color: var(--error-yellow)">
+              📐
+            </div>
+            <div class="category-text">
+              <h4>Mathematical Framework</h4>
+              <p>Equations, models, and parameter mappings</p>
+            </div>
+          </div>
+
+          <div class="category-item reveal">
+            <div
+              class="category-icon"
+              style="color: var(--neuromodulator-green)"
+            >
+              🧬
+            </div>
+            <div class="category-text">
+              <h4>Biological Implementation</h4>
+              <p>Neural substrates and physiological mechanisms</p>
+            </div>
+          </div>
+
+          <div class="category-item reveal">
+            <div class="category-icon" style="color: var(--precision-red)">
+              🧩
+            </div>
+            <div class="category-text">
+              <h4>Cognitive Integration</h4>
+              <p>Memory, attention, and executive functions</p>
+            </div>
+          </div>
+
+          <div class="category-item reveal">
+            <div class="category-icon" style="color: var(--workspace-purple)">
+              🏥
+            </div>
+            <div class="category-text">
+              <h4>Applications & Extensions</h4>
+              <p>Clinical applications and psychiatric disorders</p>
+            </div>
+          </div>
+
+          <div class="category-item reveal">
+            <div class="category-icon" style="color: var(--text-muted)">📚</div>
+            <div class="category-text">
+              <h4>Reference Materials</h4>
+              <p>Glossary, bibliography, and additional resources</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <p class="copyright">© 2026 APGI Appendix. Built for consciousness researchers and curious minds.</p>
-        </div>
+      <div class="container">
+        <p class="copyright">
+          © 2026 APGI Appendix. Built for consciousness researchers and curious
+          minds.
+        </p>
+      </div>
     </footer>
 
     <!-- JavaScript -->
     <script>
-        // Generate neural background particles
-        function createNeuralBackground() {
-            const bg = document.getElementById('neuralBg');
-            const colors = [
-                'var(--threshold-blue)',
-                'var(--precision-red)',
-                'var(--neuromodulator-green)',
-                'var(--error-yellow)',
-                'var(--workspace-purple)'
-            ];
-            
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'neural-particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                bg.appendChild(particle);
-            }
-        }
+      // Generate neural background particles
+      function createNeuralBackground() {
+        const bg = document.getElementById("neuralBg");
+        const colors = [
+          "var(--threshold-blue)",
+          "var(--precision-red)",
+          "var(--neuromodulator-green)",
+          "var(--error-yellow)",
+          "var(--workspace-purple)",
+        ];
 
-        // Scroll reveal animation
-        function revealOnScroll() {
-            const reveals = document.querySelectorAll('.reveal');
-            
-            reveals.forEach(element => {
-                const windowHeight = window.innerHeight;
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 100;
-                
-                if (elementTop < windowHeight - elementVisible) {
-                    element.classList.add('active');
-                }
-            });
+        for (let i = 0; i < 50; i++) {
+          const particle = document.createElement("div");
+          particle.className = "neural-particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.top = Math.random() * 100 + "%";
+          particle.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          particle.style.animationDelay = Math.random() * 5 + "s";
+          particle.style.animationDuration = 15 + Math.random() * 10 + "s";
+          bg.appendChild(particle);
         }
+      }
 
-        // Ignition demo animation
-        function animateIgnition() {
-            const stages = document.querySelectorAll('.ignition-stage');
-            let currentStage = 0;
-            
-            setInterval(() => {
-                stages.forEach(stage => stage.classList.remove('active'));
-                stages[currentStage].classList.add('active');
-                currentStage = (currentStage + 1) % stages.length;
-            }, 1500);
-        }
+      // Scroll reveal animation
+      function revealOnScroll() {
+        const reveals = document.querySelectorAll(".reveal");
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            createNeuralBackground();
-            animateIgnition();
-            revealOnScroll();
-            
-            window.addEventListener('scroll', revealOnScroll);
+        reveals.forEach((element) => {
+          const windowHeight = window.innerHeight;
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 100;
+
+          if (elementTop < windowHeight - elementVisible) {
+            element.classList.add("active");
+          }
         });
+      }
+
+      // Ignition demo animation
+      function animateIgnition() {
+        const stages = document.querySelectorAll(".ignition-stage");
+        let currentStage = 0;
+
+        setInterval(() => {
+          stages.forEach((stage) => stage.classList.remove("active"));
+          stages[currentStage].classList.add("active");
+          currentStage = (currentStage + 1) % stages.length;
+        }, 1500);
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        createNeuralBackground();
+        animateIgnition();
+        revealOnScroll();
+
+        window.addEventListener("scroll", revealOnScroll);
+      });
     </script>
-</body>
+  </body>
 </html>

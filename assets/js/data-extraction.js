@@ -1,20 +1,21 @@
 // Data Extraction and Optimization for APGI Website
 // Ensure logger is available
-if (typeof logger === 'undefined') {
-    // Fallback logger if not loaded - only logs in development
-    const isDev = window.location.hostname === 'localhost' || 
-                  window.location.hostname === '127.0.0.1' ||
-                  window.location.hostname.includes('.local') ||
-                  window.location.hostname.includes('.dev') ||
-                  window.location.hostname.includes('.test') ||
-                  window.location.protocol === 'file:';
-    
-    window.logger = {
-        error: (...args) => isDev && console.error('[ERROR]', ...args),
-        warn: (...args) => isDev && console.warn('[WARN]', ...args),
-        info: (...args) => isDev && console.info('[INFO]', ...args),
-        debug: (...args) => isDev && console.log('[DEBUG]', ...args)
-    };
+if (typeof logger === "undefined") {
+  // Fallback logger if not loaded - only logs in development
+  const isDev =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1" ||
+    window.location.hostname.includes(".local") ||
+    window.location.hostname.includes(".dev") ||
+    window.location.hostname.includes(".test") ||
+    window.location.protocol === "file:";
+
+  window.logger = {
+    error: (...args) => isDev && console.error("[ERROR]", ...args),
+    warn: (...args) => isDev && console.warn("[WARN]", ...args),
+    info: (...args) => isDev && console.info("[INFO]", ...args),
+    debug: (...args) => isDev && console.log("[DEBUG]", ...args),
+  };
 }
 
 class APGIDataOptimizer {
@@ -37,40 +38,53 @@ class APGIDataOptimizer {
   }
 
   extractPlotlyData() {
-    const problematicFiles = ['Ignition-Landscape.html', 'State-Network-Flow.html'];
-    
-    problematicFiles.forEach(fileName => {
+    const problematicFiles = [
+      "Ignition-Landscape.html",
+      "State-Network-Flow.html",
+    ];
+
+    problematicFiles.forEach((fileName) => {
       try {
         const response = fetch(fileName)
-          .then(response => response.text())
-          .then(html => {
+          .then((response) => response.text())
+          .then((html) => {
             const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            
+            const doc = parser.parseFromString(html, "text/html");
+
             // Extract Plotly data and configuration
-            const scripts = doc.querySelectorAll('script[type="text/javascript"]');
+            const scripts = doc.querySelectorAll(
+              'script[type="text/javascript"]',
+            );
             scripts.forEach((script, index) => {
               const content = script.textContent;
-              
+
               // Look for Plotly data patterns
-              if (content.includes('Plotly.newPlot') || content.includes('plotly.js')) {
+              if (
+                content.includes("Plotly.newPlot") ||
+                content.includes("plotly.js")
+              ) {
                 const dataMatch = content.match(/data:\s*(\[[\s\S]*?\])/);
                 const layoutMatch = content.match(/layout:\s*(\{[\s\S]*?\})/);
-                
+
                 if (dataMatch || layoutMatch) {
                   const extractedData = {
                     data: dataMatch ? this.parseSafely(dataMatch[1]) : null,
-                    layout: layoutMatch ? this.parseSafely(layoutMatch[1]) : null,
+                    layout: layoutMatch
+                      ? this.parseSafely(layoutMatch[1])
+                      : null,
                     fileName: fileName,
-                    scriptIndex: index
+                    scriptIndex: index,
                   };
-                  
-                  this.extractedData.set(`${fileName}-plotly-${index}`, extractedData);
+
+                  this.extractedData.set(
+                    `${fileName}-plotly-${index}`,
+                    extractedData,
+                  );
                 }
               }
             });
           })
-          .catch(error => {
+          .catch((error) => {
             // Handle fetch error silently in production
           });
       } catch (error) {
@@ -82,21 +96,24 @@ class APGIDataOptimizer {
   extractImageData() {
     // Find Base64 encoded images
     const base64Pattern = /data:image\/[^;]+;base64,[A-Za-z0-9+/=]+/g;
-    
-    document.querySelectorAll('script, style').forEach(element => {
+
+    document.querySelectorAll("script, style").forEach((element) => {
       const content = element.textContent;
       const matches = content.match(base64Pattern);
-      
+
       if (matches) {
         matches.forEach((base64Data, index) => {
           const imageInfo = {
             data: base64Data,
             size: base64Data.length,
             element: element.tagName,
-            index: index
+            index: index,
           };
-          
-          this.extractedData.set(`image-${element.tagName}-${index}`, imageInfo);
+
+          this.extractedData.set(
+            `image-${element.tagName}-${index}`,
+            imageInfo,
+          );
         });
       }
     });
@@ -104,11 +121,13 @@ class APGIDataOptimizer {
 
   extractVisualizationData() {
     // Extract large datasets from visualization pages
-    const vizPages = ['PsyStates-Visualizer.html', 'Consciousness-Visualization.html'];
-    
-    vizPages.forEach(fileName => {
+    const vizPages = [
+      "PsyStates-Visualizer.html",
+      "Consciousness-Visualization.html",
+    ];
+
+    vizPages.forEach((fileName) => {
       // This would be implemented based on the actual structure of these files
-      
     });
   }
 
@@ -116,7 +135,6 @@ class APGIDataOptimizer {
     try {
       return JSON.parse(jsonString);
     } catch (error) {
-      
       return null;
     }
   }
@@ -125,12 +143,10 @@ class APGIDataOptimizer {
     // Create JSON files for extracted data
     this.extractedData.forEach((data, key) => {
       const jsonData = JSON.stringify(data, null, 2);
-      const blob = new Blob([jsonData], { type: 'application/json' });
+      const blob = new Blob([jsonData], { type: "application/json" });
       const url = URL.createObjectURL(blob);
-      
+
       // In a real implementation, this would save to actual files
-      
-      
     });
   }
 
@@ -141,8 +157,6 @@ class APGIDataOptimizer {
   }
 
   optimizeIgnitionLandscape() {
-    
-    
     // Extract the essential structure without embedded Plotly
     const optimizedContent = `
 <!DOCTYPE html>
@@ -286,15 +300,11 @@ class APGIDataOptimizer {
     </script>
 </body>
 </html>`;
-    
+
     // In a real implementation, this would save the file
-    
-    
   }
 
   optimizeStateNetworkFlow() {
-    
-    
     // Similar optimization for State-Network-Flow.html
     const optimizedContent = `
 <!DOCTYPE html>
@@ -444,37 +454,15 @@ class APGIDataOptimizer {
     </script>
 </body>
 </html>`;
-    
-    
-    
   }
 
-  generateReport() {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  }
+  generateReport() {}
 }
 
 // Initialize the optimizer
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   window.apgiOptimizer = new APGIDataOptimizer();
-  
+
   // Generate report after initialization
   setTimeout(() => {
     window.apgiOptimizer.generateReport();
@@ -482,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Also initialize if DOM is already loaded
-if (document.readyState !== 'loading') {
+if (document.readyState !== "loading") {
   if (!window.apgiOptimizer) {
     window.apgiOptimizer = new APGIDataOptimizer();
     setTimeout(() => {

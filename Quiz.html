@@ -1,2192 +1,2515 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
-<head>
+  <head>
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/navigation.js"></script>
     <script src="assets/js/theme-manager.js"></script>
     <script src="assets/js/cdn-fallbacks.js"></script>
-    <link rel="stylesheet" href="assets/css/navigation.css">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>APGI Consciousness Signature Assessment</title>
-  <meta name="description" content="Take the APGI Consciousness Signature Assessment to discover your unique cognitive profile. Answer questions about prediction errors, precision allocation, and consciousness thresholds.">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha384-/o6I2CkkWC//PSjvWC/eYN7l3xM3tJm8ZzVkCOfp//W05QcE3mlGskpoHB6XqI+B" crossorigin="anonymous">
-  <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
-  <link rel="stylesheet" href="assets/css/design-system.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
-  <style>
-    :root {
-      --bg: #ffffff;
-      --text: #1a202c;
-      --primary: #667eea;
-      --primary-light: #8094f4;
-      --secondary: #764ba2;
-      --accent: #f093fb;
-      --card-bg: #f8fafc;
-      --border: #e2e8f0;
-      --border-light: #f1f5f9;
-      --success: #48bb78;
-      --warning: #ed8936;
-      --danger: #e53e3e;
-      --info: #4299e1;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-      --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
-      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      --gradient-light: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
-      --gradient-radial: radial-gradient(circle at top right, var(--primary-light), var(--secondary));
-    }
-    [data-theme="dark"] {
-      --bg: #0f0f23;
-      --text: #e2e8f0;
-      --card-bg: #1a1a2e;
-      --border: #2d2d44;
-      --border-light: #252538;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
-      --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
-      --shadow-xl: 0 20px 40px rgba(0,0,0,0.5);
-    }
-    
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; 
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    @keyframes slideInRight {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-    
-    @keyframes shimmer {
-      0% { background-position: -1000px 0; }
-      100% { background-position: 1000px 0; }
-    }
-    
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    
-    body {
-      background: linear-gradient(135deg, var(--bg) 0%, var(--card-bg) 100%);
-      color: var(--text);
-      line-height: 1.6;
-      padding: 0;
-      transition: all 0.3s ease;
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
-    
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(102, 126, 234, 0.03) 0%, transparent 50%);
-      animation: gradientShift 15s ease infinite;
-      pointer-events: none;
-      z-index: 0;
-    }
-    
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    
-    /* Loading Spinner */
-    .loading-spinner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-      font-size: 1.1rem;
-      color: var(--accent);
-      animation: fadeIn 0.3s ease;
-    }
-    
-    .loading-spinner .fa-spinner {
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
-    /* Mobile Responsiveness */
-    @media (max-width: 768px) {
-      .container {
-        padding: 15px;
-      }
-      
-      .quiz-navigation {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .quiz-navigation button {
-        width: 100%;
-        order: 2;
-      }
-      
-      #prev-btn {
-        order: 1;
-      }
-      
-      .loading-spinner {
-        font-size: 1rem;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .container {
-        padding: 10px;
-      }
-      
-      header h1 {
-        font-size: 1.8rem;
-      }
-      
-      .section-title {
-        font-size: 1.3rem;
-      }
-    }
-    
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-      position: relative;
-      animation: fadeInUp 0.8s ease;
-    }
-    
-        
-    h1 {
-      font-size: 3rem;
-      font-weight: 800;
-      margin-bottom: 15px;
-      background: var(--gradient);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.2;
-      animation: gradientShift 8s ease infinite;
-    }
-    
-    .subtitle {
-      font-size: 1.3rem;
-      color: var(--text);
-      opacity: 0.8;
-      margin-bottom: 25px;
-      font-weight: 400;
-      animation: fadeIn 1s ease 0.3s both;
-    }
-    
-    .quiz-section, .results-container {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 35px;
-      box-shadow: var(--shadow-md);
-      margin-bottom: 30px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid var(--border-light);
-      backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .quiz-section::before, .results-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--gradient);
-      transform: scaleX(0);
-      transition: transform 0.4s ease;
-    }
-    
-    .quiz-section:hover::before, .results-container:hover::before {
-      transform: scaleX(1);
-    }
-    
-    .quiz-section:hover, .results-container:hover {
-      box-shadow: var(--shadow-xl);
-      transform: translateY(-4px);
-      border-color: var(--primary-light);
-    }
-    
-    /* Focus Indicators */
-    button:focus,
-    input:focus,
-    select:focus,
-    textarea:focus {
-      outline: 3px solid var(--accent);
-      outline-offset: 2px;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
-    }
-    
-    /* High Contrast Mode Support */
-    @media (prefers-contrast: high) {
+    <link rel="stylesheet" href="assets/css/navigation.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APGI Consciousness Signature Assessment</title>
+    <meta
+      name="description"
+      content="Take the APGI Consciousness Signature Assessment to discover your unique cognitive profile. Answer questions about prediction errors, precision allocation, and consciousness thresholds."
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha384-/o6I2CkkWC//PSjvWC/eYN7l3xM3tJm8ZzVkCOfp//W05QcE3mlGskpoHB6XqI+B"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css" />
+    <link rel="stylesheet" href="assets/css/design-system.css" />
+    <style>
       :root {
-        --text: #000000;
         --bg: #ffffff;
-        --accent: #0000ff;
-        --border: #000000;
+        --text: #1a202c;
+        --primary: #667eea;
+        --primary-light: #8094f4;
+        --secondary: #764ba2;
+        --accent: #f093fb;
+        --card-bg: #f8fafc;
+        --border: #e2e8f0;
+        --border-light: #f1f5f9;
+        --success: #48bb78;
+        --warning: #ed8936;
+        --danger: #e53e3e;
+        --info: #4299e1;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+        --gradient: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        --gradient-light: linear-gradient(
+          135deg,
+          var(--primary-light) 0%,
+          var(--accent) 100%
+        );
+        --gradient-radial: radial-gradient(
+          circle at top right,
+          var(--primary-light),
+          var(--secondary)
+        );
       }
-      
-      .quiz-section, .results-container {
-        border: 2px solid #000000;
+      [data-theme="dark"] {
+        --bg: #0f0f23;
+        --text: #e2e8f0;
+        --card-bg: #1a1a2e;
+        --border: #2d2d44;
+        --border-light: #252538;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
       }
-    }
-    
-    /* Reduced Motion Support */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          system-ui,
+          sans-serif;
       }
-    }
-    
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid var(--border);
-      animation: slideInRight 0.6s ease;
-    }
-    
-    .section-icon {
-      background: var(--gradient-light);
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-    }
-    
-    .section-icon::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      background: var(--gradient);
-      border-radius: 18px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: -1;
-    }
-    
-    .section-icon:hover::before {
-      opacity: 0.5;
-    }
-    
-    .section-icon:hover {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: var(--shadow-lg);
-    }
-    
-    .section-icon i {
-      font-size: 2rem;
-      color: white;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-    }
-    
-    .section-title {
-      font-size: 1.9rem;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.5px;
-    }
-    
-    .section-subtitle {
-      font-size: 1rem;
-      opacity: 0.8;
-      margin-top: 5px;
-    }
-    
-    .profile-section {
-      margin-bottom: 25px;
-      animation: fadeInUp 0.6s ease;
-    }
-    
-    .profile-section-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--secondary);
-    }
-    
-    .profile-section-title i {
-      background: var(--gradient-light);
-      padding: 8px;
-      border-radius: 8px;
-      color: white;
-      font-size: 1rem;
-    }
-    
-    .info-box {
-      background: var(--gradient-light);
-      padding: 24px;
-      border-radius: 16px;
-      font-size: 0.95rem;
-      margin: 24px 0;
-      border-left: 4px solid var(--primary);
-      color: white;
-      box-shadow: var(--shadow-md);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .info-box::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-      transform: rotate(45deg);
-      transition: all 0.6s ease;
-    }
-    
-    .info-box:hover::before {
-      animation: shimmer 2s infinite;
-    }
-    
-    .info-box:hover {
-      transform: translateX(4px);
-      box-shadow: var(--shadow-lg);
-    }
-    
-    .warning-box {
-      background: linear-gradient(135deg, rgba(237, 137, 54, 0.15), rgba(237, 137, 54, 0.05));
-      padding: 24px;
-      border-radius: 16px;
-      font-size: 0.95rem;
-      margin: 24px 0;
-      border-left: 4px solid var(--warning);
-      box-shadow: var(--shadow-sm);
-      transition: all 0.3s ease;
-    }
-    
-    .warning-box:hover {
-      transform: translateX(4px);
-      box-shadow: var(--shadow-md);
-      border-left-width: 6px;
-    }
-    
-    .scenario-box {
-      background: linear-gradient(135deg, rgba(66, 153, 225, 0.15), rgba(66, 153, 225, 0.05));
-      padding: 24px;
-      border-radius: 16px;
-      margin: 24px 0;
-      border-left: 4px solid var(--info);
-      box-shadow: var(--shadow-sm);
-      transition: all 0.3s ease;
-    }
-    
-    .scenario-box:hover {
-      transform: translateX(4px);
-      box-shadow: var(--shadow-md);
-      border-left-width: 6px;
-    }
-    
-    .scenario-title {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-      color: var(--info);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .scenario-character {
-      margin: 18px 0;
-      padding: 18px;
-      background: var(--bg);
-      border-radius: 12px;
-      border-left: 3px solid var(--primary);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .scenario-character::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--gradient);
-      transform: scaleY(0);
-      transition: transform 0.3s ease;
-    }
-    
-    .scenario-character:hover::before {
-      transform: scaleY(1);
-    }
-    
-    .scenario-character:hover {
-      transform: translateX(8px);
-      box-shadow: var(--shadow-md);
-      border-left-color: transparent;
-    }
-    
-    .character-name {
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 5px;
-      font-size: 1.05rem;
-    }
-    
-    .character-params {
-      font-size: 0.9rem;
-      font-style: italic;
-      color: var(--text);
-      opacity: 0.7;
-      margin-bottom: 8px;
-    }
-    
-    .progress {
-      margin-bottom: 30px;
-      animation: fadeInUp 0.6s ease 0.2s both;
-    }
-    
-    .progress-text {
-      font-size: 0.95rem;
-      margin-bottom: 8px;
-      color: var(--text);
-      display: flex;
-      justify-content: space-between;
-      font-weight: 500;
-    }
-    
-    .progress-bar {
-      height: 12px;
-      background: var(--border-light);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-      position: relative;
-    }
-    
-    .progress-bar::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      transform: translateX(-100%);
-      animation: shimmer 2s infinite;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: var(--gradient);
-      background-size: 200% 200%;
-      width: 0%;
-      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
-      animation: gradientShift 3s ease infinite;
-      position: relative;
-    }
-    
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      animation: shimmer 2s infinite;
-    }
-    
-    .question {
-      margin-bottom: 30px;
-      padding: 24px;
-      background: var(--bg);
-      border-radius: 16px;
-      border: 1px solid var(--border-light);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      animation: fadeInUp 0.5s ease;
-    }
-    
-    .question:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-      border-color: var(--primary-light);
-    }
-    
-    .question-text {
-      font-size: 1.3rem;
-      margin-bottom: 18px;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.4;
-    }
-    
-    .question-note {
-      font-size: 0.9rem;
-      opacity: 0.7;
-      margin-bottom: 15px;
-      font-style: italic;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    
-    .question-note i {
-      margin-top: 3px;
-      color: var(--info);
-    }
-    
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    
-    .option {
-      padding: 18px 22px;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      background: var(--card-bg);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .option::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: var(--gradient-light);
-      transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 0.1;
-    }
-    
-    .option::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(102, 126, 234, 0.2);
-      transform: translate(-50%, -50%);
-      transition: width 0.4s ease, height 0.4s ease;
-    }
-    
-    .option:hover::after {
-      width: 500px;
-      height: 500px;
-    }
-    
-    .option:hover {
-      border-color: var(--primary);
-      transform: translateX(8px) scale(1.01);
-      box-shadow: var(--shadow-md);
-    }
-    
-    .option:hover::before {
-      left: 0;
-    }
-    
-    .option:active {
-      transform: translateX(8px) scale(0.99);
-    }
-    
-    .option.selected {
-      border-color: var(--primary);
-      background: var(--gradient-light);
-      color: white;
-      transform: translateX(12px) scale(1.02);
-      box-shadow: var(--shadow-lg);
-      animation: pulse 0.5s ease;
-    }
-    
-    .option.selected::before {
-      left: 0;
-      opacity: 0.3;
-    }
-    
-    .option-letter {
-      font-weight: 700;
-      margin-right: 14px;
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      text-align: center;
-      line-height: 32px;
-      color: var(--primary);
-      background: rgba(102, 126, 234, 0.1);
-      border-radius: 50%;
-      font-size: 0.9rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      z-index: 1;
-    }
-    
-    .option:hover .option-letter {
-      transform: scale(1.1) rotate(5deg);
-      background: rgba(102, 126, 234, 0.2);
-    }
-    
-    .option.selected .option-letter {
-      background: white;
-      color: var(--primary);
-      transform: scale(1.15) rotate(0deg);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    
-    .option-content {
-      display: inline-block;
-      vertical-align: top;
-      width: calc(100% - 50px);
-      position: relative;
-      z-index: 1;
-    }
-    
-    .option-text {
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-    
-    .option-note {
-      font-size: 0.85rem;
-      opacity: 0.7;
-      margin-top: 4px;
-    }
-    
-    .quiz-navigation {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 30px;
-      gap: 15px;
-      animation: fadeInUp 0.6s ease 0.3s both;
-    }
-    
-    button {
-      padding: 16px 32px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-weight: 600;
-      position: relative;
-      overflow: hidden;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255,255,255,0.2);
-      transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    button:hover::before {
-      left: 100%;
-    }
-    
-    button::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s ease, height 0.6s ease;
-    }
-    
-    button:active::after {
-      width: 300px;
-      height: 300px;
-    }
-    
-    button.secondary {
-      background: var(--border);
-      color: var(--text);
-      border: 2px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-    
-    button.secondary:hover {
-      background: var(--border-light);
-      border-color: var(--primary);
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: var(--shadow-md);
-    }
-    
-    button.secondary:active {
-      transform: translateY(0) scale(0.98);
-    }
-    
-    button:not(.secondary) {
-      background: var(--gradient);
-      background-size: 200% 200%;
-      color: white;
-      box-shadow: var(--shadow-md);
-      animation: gradientShift 5s ease infinite;
-    }
-    
-    button:not(.secondary):hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: var(--shadow-xl);
-    }
-    
-    button:not(.secondary):active {
-      transform: translateY(-1px) scale(0.98);
-    }
-    
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-      animation: none;
-    }
-    
-    button:disabled::before,
-    button:disabled::after {
-      display: none;
-    }
-    
-    .tabs-container {
-      margin: 30px 0;
-    }
-    
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 25px;
-      background: var(--bg);
-      padding: 10px;
-      border-radius: 16px;
-      border: 1px solid var(--border-light);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    }
-    
-    .tab {
-      padding: 14px 24px;
-      background: transparent;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-weight: 500;
-      color: var(--text);
-      position: relative;
-    }
-    
-    .tab::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background: var(--gradient);
-      transform: translateX(-50%);
-      transition: width 0.3s ease;
-    }
-    
-    .tab:hover::before {
-      width: 80%;
-    }
-    
-    .tab:hover {
-      background: var(--border-light);
-      transform: translateY(-2px);
-    }
-    
-    .tab.active {
-      background: var(--gradient);
-      background-size: 200% 200%;
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-      animation: gradientShift 5s ease infinite;
-    }
-    
-    .tab.active::before {
-      display: none;
-    }
-    
-    .tab-content {
-      display: none;
-      padding: 25px 0;
-    }
-    
-    .tab-content.active {
-      display: block;
-      animation: fadeInUp 0.5s ease;
-    }
-    
-    .chart-container, .multi-chart-container {
-      margin-top: 25px;
-      padding: 25px;
-      background: var(--bg);
-      border-radius: 16px;
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-sm);
-      transition: all 0.3s ease;
-    }
-    
-    .chart-container:hover, .multi-chart-container:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-    }
-    
-    .chart-container {
-      height: clamp(250px, 40vh, 450px);
-      min-height: 250px;
-    }
-    
-    .mini-chart {
-      display: inline-block;
-      width: 48%;
-      margin-right: 2%;
-      margin-bottom: 25px;
-      vertical-align: top;
-      padding: 20px;
-      background: var(--card-bg);
-      border-radius: 16px;
-      border: 1px solid var(--border-light);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .mini-chart::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--gradient);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-    
-    .mini-chart:hover::before {
-      transform: scaleX(1);
-    }
-    
-    .mini-chart:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--primary-light);
-    }
-    
-    .mini-chart-title {
-      font-weight: 600;
-      margin-bottom: 15px;
-      text-align: center;
-      color: var(--secondary);
-      font-size: 1rem;
-    }
-    
-    .gauge-container {
-      height: 220px;
-    }
-    
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 25px;
-      background: var(--bg);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-    
-    .data-table th, .data-table td {
-      padding: 18px;
-      text-align: left;
-      border-bottom: 1px solid var(--border-light);
-      transition: all 0.3s ease;
-    }
-    
-    .data-table th {
-      background: var(--gradient);
-      background-size: 200% 200%;
-      color: white;
-      font-weight: 600;
-      animation: gradientShift 8s ease infinite;
-    }
-    
-    .data-table tr {
-      transition: all 0.3s ease;
-    }
-    
-    .data-table tr:hover {
-      background: rgba(102, 126, 234, 0.08);
-      transform: scale(1.01);
-    }
-    
-    .data-table tr:hover td {
-      padding-left: 22px;
-    }
-    
-    .profile-name {
-      font-size: 2.5rem;
-      font-weight: 800;
-      background: var(--gradient);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin: 25px 0;
-      text-align: center;
-      animation: gradientShift 8s ease infinite, fadeInUp 0.8s ease;
-      letter-spacing: -1px;
-    }
-    
-    .profile-tagline {
-      text-align: center;
-      font-size: 1.2rem;
-      opacity: 0.8;
-      margin-bottom: 35px;
-      font-weight: 400;
-      animation: fadeIn 1s ease 0.3s both;
-    }
-    
-    .dimensional-position {
-      background: var(--gradient-light);
-      padding: 30px;
-      border-radius: 16px;
-      margin: 24px 0;
-      color: white;
-      box-shadow: var(--shadow-md);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .dimensional-position::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-      animation: gradientShift 10s ease infinite;
-    }
-    
-    .dimensional-position:hover {
-      box-shadow: var(--shadow-xl);
-      transform: translateY(-4px);
-    }
-    
-    .dimensional-position h3 {
-      position: relative;
-      z-index: 1;
-    }
-    
-    .dimension-row {
-      display: flex;
-      align-items: center;
-      margin: 15px 0;
-      gap: 15px;
-      animation: slideInRight 0.6s ease;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .dimension-label {
-      width: 180px;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    
-    .dimension-bar {
-      flex: 1;
-      height: 34px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 17px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
-    }
-    
-    .dimension-bar::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      animation: shimmer 3s infinite;
-    }
-    
-    .dimension-fill {
-      height: 100%;
-      background: var(--gradient);
-      background-size: 200% 200%;
-      border-radius: 17px;
-      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding-right: 10px;
-      color: white;
-      font-weight: 600;
-      font-size: 0.85rem;
-      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
-      animation: gradientShift 5s ease infinite;
-      position: relative;
-    }
-    
-    .dimension-fill::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: shimmer 2s infinite;
-    }
-    
-    .dimension-value {
-      width: 50px;
-      text-align: right;
-      font-weight: 700;
-      color: var(--primary);
-      font-size: 1rem;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .actions {
-      text-align: center;
-      margin-top: 40px;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      animation: fadeInUp 0.8s ease 0.4s both;
-    }
-    
-    ul {
-      margin: 10px 0 10px 25px;
-    }
-    
-    ul li {
-      margin: 8px 0;
-      transition: all 0.3s ease;
-      padding-left: 5px;
-    }
-    
-    ul li:hover {
-      padding-left: 10px;
-      color: var(--primary);
-    }
-    
-    .methodology-note {
-      background: linear-gradient(135deg, rgba(237, 137, 54, 0.15), rgba(237, 137, 54, 0.05));
-      padding: 20px;
-      border-radius: 16px;
-      margin: 20px 0;
-      border-left: 4px solid var(--warning);
-      font-size: 0.95rem;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.3s ease;
-    }
-    
-    .methodology-note:hover {
-      transform: translateX(4px);
-      box-shadow: var(--shadow-md);
-      border-left-width: 6px;
-    }
-    
-    .interaction-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 15px;
-      margin: 20px 0;
-    }
-    
-    .interaction-card {
-      background: var(--card-bg);
-      padding: 20px;
-      border-radius: 16px;
-      border: 2px solid var(--border-light);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: var(--shadow-sm);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .interaction-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--gradient);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-    
-    .interaction-card:hover::before {
-      transform: scaleX(1);
-    }
-    
-    .interaction-card:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--primary);
-    }
-    
-    .interaction-title {
-      font-weight: 700;
-      color: var(--secondary);
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .interaction-title::before {
-      content: '▸';
-      color: var(--primary);
-      font-size: 1.2rem;
-    }
-    
-    /* Scrollbar Styling */
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    
-    ::-webkit-scrollbar-track {
-      background: var(--border-light);
-      border-radius: 5px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-      background: var(--gradient);
-      border-radius: 5px;
-      transition: all 0.3s ease;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--secondary);
-    }
-    
-    /* Loading Animation */
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 0.6s linear infinite;
-    }
-    
-    @media (max-width: 768px) {
-      .container { 
-        padding: 15px; 
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
-      
-      h1 { 
-        font-size: 2.2rem; 
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
-      
-      .subtitle { 
-        font-size: 1.1rem; 
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
-      
-      .quiz-section, .results-container { 
-        padding: 20px;
-        border-radius: 16px;
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
       }
-      
-      .section-header { 
-        flex-direction: column; 
-        text-align: center; 
-        gap: 15px; 
+
+      @keyframes shimmer {
+        0% {
+          background-position: -1000px 0;
+        }
+        100% {
+          background-position: 1000px 0;
+        }
       }
-      
-      .section-icon { 
-        margin: 0 auto; 
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
       }
-      
-      .mini-chart { 
-        width: 100%; 
-        margin-right: 0; 
-      }
-      
-      .tabs { 
-        flex-direction: column; 
-      }
-      
-      .tab {
-        width: 100%;
-        text-align: center;
-      }
-      
-      .dimension-row { 
-        flex-direction: column; 
-        align-items: flex-start; 
-        gap: 10px;
-      }
-      
-      .dimension-label { 
-        width: 100%; 
-      }
-      
-      .dimension-bar { 
-        width: 100%; 
-      }
-      
-            
-      .question { 
-        padding: 15px; 
-      }
-      
-      .option { 
-        padding: 14px 16px; 
-      }
-      
-      .actions { 
-        gap: 10px;
-        flex-direction: column;
-      }
-      
-      .actions button {
-        width: 100%;
-      }
-      
-      .quiz-navigation {
-        flex-direction: column;
-      }
-      
-      .quiz-navigation button {
-        width: 100%;
-      }
-    }
-    
-    /* Print Styles */
-    @media print {
+
       body {
-        background: white;
+        background: linear-gradient(135deg, var(--bg) 0%, var(--card-bg) 100%);
+        color: var(--text);
+        line-height: 1.6;
+        padding: 0;
+        transition: all 0.3s ease;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
       }
-      
-      .actions,
-      .quiz-navigation,
-      .tabs {
-        display: none !important;
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(102, 126, 234, 0.03) 0%,
+          transparent 50%
+        );
+        animation: gradientShift 15s ease infinite;
+        pointer-events: none;
+        z-index: 0;
       }
-      
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Loading Spinner */
+      .loading-spinner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+        font-size: 1.1rem;
+        color: var(--accent);
+        animation: fadeIn 0.3s ease;
+      }
+
+      .loading-spinner .fa-spinner {
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Mobile Responsiveness */
+      @media (max-width: 768px) {
+        .container {
+          padding: 15px;
+        }
+
+        .quiz-navigation {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .quiz-navigation button {
+          width: 100%;
+          order: 2;
+        }
+
+        #prev-btn {
+          order: 1;
+        }
+
+        .loading-spinner {
+          font-size: 1rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 10px;
+        }
+
+        header h1 {
+          font-size: 1.8rem;
+        }
+
+        .section-title {
+          font-size: 1.3rem;
+        }
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        animation: fadeInUp 0.8s ease;
+      }
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        background: var(--gradient);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+        animation: gradientShift 8s ease infinite;
+      }
+
+      .subtitle {
+        font-size: 1.3rem;
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 25px;
+        font-weight: 400;
+        animation: fadeIn 1s ease 0.3s both;
+      }
+
       .quiz-section,
       .results-container {
-        box-shadow: none;
-        page-break-inside: avoid;
-      }
-      
-      .tab-content {
-        display: block !important;
-      }
-    }
-
-    /* ============================================
-       PRINT-OPTIMIZED STYLES
-       ============================================ */
-    @media print {
-      /* Page setup */
-      @page {
-        margin: 0.5in;
-        size: A4;
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 30px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid var(--border-light);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
       }
 
-      body {
-        font-size: 12pt;
+      .quiz-section::before,
+      .results-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+      }
+
+      .quiz-section:hover::before,
+      .results-container:hover::before {
+        transform: scaleX(1);
+      }
+
+      .quiz-section:hover,
+      .results-container:hover {
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-4px);
+        border-color: var(--primary-light);
+      }
+
+      /* Focus Indicators */
+      button:focus,
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+      }
+
+      /* High Contrast Mode Support */
+      @media (prefers-contrast: high) {
+        :root {
+          --text: #000000;
+          --bg: #ffffff;
+          --accent: #0000ff;
+          --border: #000000;
+        }
+
+        .quiz-section,
+        .results-container {
+          border: 2px solid #000000;
+        }
+      }
+
+      /* Reduced Motion Support */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--border);
+        animation: slideInRight 0.6s ease;
+      }
+
+      .section-icon {
+        background: var(--gradient-light);
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+
+      .section-icon::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: var(--gradient);
+        border-radius: 18px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+
+      .section-icon:hover::before {
+        opacity: 0.5;
+      }
+
+      .section-icon:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .section-icon i {
+        font-size: 2rem;
+        color: white;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+
+      .section-title {
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.5px;
+      }
+
+      .section-subtitle {
+        font-size: 1rem;
+        opacity: 0.8;
+        margin-top: 5px;
+      }
+
+      .profile-section {
+        margin-bottom: 25px;
+        animation: fadeInUp 0.6s ease;
+      }
+
+      .profile-section-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--secondary);
+      }
+
+      .profile-section-title i {
+        background: var(--gradient-light);
+        padding: 8px;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+      }
+
+      .info-box {
+        background: var(--gradient-light);
+        padding: 24px;
+        border-radius: 16px;
+        font-size: 0.95rem;
+        margin: 24px 0;
+        border-left: 4px solid var(--primary);
+        color: white;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .info-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: rotate(45deg);
+        transition: all 0.6s ease;
+      }
+
+      .info-box:hover::before {
+        animation: shimmer 2s infinite;
+      }
+
+      .info-box:hover {
+        transform: translateX(4px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .warning-box {
+        background: linear-gradient(
+          135deg,
+          rgba(237, 137, 54, 0.15),
+          rgba(237, 137, 54, 0.05)
+        );
+        padding: 24px;
+        border-radius: 16px;
+        font-size: 0.95rem;
+        margin: 24px 0;
+        border-left: 4px solid var(--warning);
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+      }
+
+      .warning-box:hover {
+        transform: translateX(4px);
+        box-shadow: var(--shadow-md);
+        border-left-width: 6px;
+      }
+
+      .scenario-box {
+        background: linear-gradient(
+          135deg,
+          rgba(66, 153, 225, 0.15),
+          rgba(66, 153, 225, 0.05)
+        );
+        padding: 24px;
+        border-radius: 16px;
+        margin: 24px 0;
+        border-left: 4px solid var(--info);
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+      }
+
+      .scenario-box:hover {
+        transform: translateX(4px);
+        box-shadow: var(--shadow-md);
+        border-left-width: 6px;
+      }
+
+      .scenario-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: var(--info);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .scenario-character {
+        margin: 18px 0;
+        padding: 18px;
+        background: var(--bg);
+        border-radius: 12px;
+        border-left: 3px solid var(--primary);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .scenario-character::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--gradient);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+      }
+
+      .scenario-character:hover::before {
+        transform: scaleY(1);
+      }
+
+      .scenario-character:hover {
+        transform: translateX(8px);
+        box-shadow: var(--shadow-md);
+        border-left-color: transparent;
+      }
+
+      .character-name {
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 5px;
+        font-size: 1.05rem;
+      }
+
+      .character-params {
+        font-size: 0.9rem;
+        font-style: italic;
+        color: var(--text);
+        opacity: 0.7;
+        margin-bottom: 8px;
+      }
+
+      .progress {
+        margin-bottom: 30px;
+        animation: fadeInUp 0.6s ease 0.2s both;
+      }
+
+      .progress-text {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        color: var(--text);
+        display: flex;
+        justify-content: space-between;
+        font-weight: 500;
+      }
+
+      .progress-bar {
+        height: 12px;
+        background: var(--border-light);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      .progress-bar::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transform: translateX(-100%);
+        animation: shimmer 2s infinite;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--gradient);
+        background-size: 200% 200%;
+        width: 0%;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        animation: gradientShift 3s ease infinite;
+        position: relative;
+      }
+
+      .progress-fill::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+
+      .question {
+        margin-bottom: 30px;
+        padding: 24px;
+        background: var(--bg);
+        border-radius: 16px;
+        border: 1px solid var(--border-light);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: fadeInUp 0.5s ease;
+      }
+
+      .question:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary-light);
+      }
+
+      .question-text {
+        font-size: 1.3rem;
+        margin-bottom: 18px;
+        font-weight: 600;
+        color: var(--text);
         line-height: 1.4;
-        color: #000;
-        background: #fff !important;
       }
 
-      /* Hide unnecessary elements */
-      .main-nav,
-      .navigation-placeholder,
-      .theme-toggle,
-      .btn,
-      .progress-bar,
-      .question-card,
-      .option-card,
-      button,
-      .quiz-controls,
-      .tab-nav,
-      .tab-button {
-        display: none !important;
+      .question-note {
+        font-size: 0.9rem;
+        opacity: 0.7;
+        margin-bottom: 15px;
+        font-style: italic;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
       }
 
-      /* Show only results section */
-      .quiz-results,
-      .results-section {
-        display: block !important;
-        visibility: visible !important;
+      .question-note i {
+        margin-top: 3px;
+        color: var(--info);
       }
 
-      /* Results styling */
-      .results-header {
-        page-break-after: avoid;
-        margin-bottom: 20pt;
-        border-bottom: 2pt solid #333;
-        padding-bottom: 10pt;
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
       }
 
-      .results-header h2 {
-        font-size: 18pt;
-        color: #000 !important;
-        margin-bottom: 8pt;
+      .option {
+        padding: 18px 22px;
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--card-bg);
+        position: relative;
+        overflow: hidden;
       }
 
-      /* Score displays */
-      .parameter-score,
-      .score-display {
-        font-size: 16pt;
-        font-weight: bold;
-        color: #000 !important;
-        margin-bottom: 5pt;
+      .option::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient-light);
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0.1;
       }
 
-      .parameter-label {
-        font-size: 11pt;
-        font-weight: bold;
-        color: #000 !important;
-        margin-bottom: 3pt;
+      .option::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(102, 126, 234, 0.2);
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.4s ease,
+          height 0.4s ease;
       }
 
-      .parameter-description {
-        font-size: 9pt;
-        color: #666;
-        line-height: 1.3;
-        margin-bottom: 10pt;
+      .option:hover::after {
+        width: 500px;
+        height: 500px;
       }
 
-      /* Charts and visualizations */
+      .option:hover {
+        border-color: var(--primary);
+        transform: translateX(8px) scale(1.01);
+        box-shadow: var(--shadow-md);
+      }
+
+      .option:hover::before {
+        left: 0;
+      }
+
+      .option:active {
+        transform: translateX(8px) scale(0.99);
+      }
+
+      .option.selected {
+        border-color: var(--primary);
+        background: var(--gradient-light);
+        color: white;
+        transform: translateX(12px) scale(1.02);
+        box-shadow: var(--shadow-lg);
+        animation: pulse 0.5s ease;
+      }
+
+      .option.selected::before {
+        left: 0;
+        opacity: 0.3;
+      }
+
+      .option-letter {
+        font-weight: 700;
+        margin-right: 14px;
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        text-align: center;
+        line-height: 32px;
+        color: var(--primary);
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 50%;
+        font-size: 0.9rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 1;
+      }
+
+      .option:hover .option-letter {
+        transform: scale(1.1) rotate(5deg);
+        background: rgba(102, 126, 234, 0.2);
+      }
+
+      .option.selected .option-letter {
+        background: white;
+        color: var(--primary);
+        transform: scale(1.15) rotate(0deg);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .option-content {
+        display: inline-block;
+        vertical-align: top;
+        width: calc(100% - 50px);
+        position: relative;
+        z-index: 1;
+      }
+
+      .option-text {
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .option-note {
+        font-size: 0.85rem;
+        opacity: 0.7;
+        margin-top: 4px;
+      }
+
+      .quiz-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        gap: 15px;
+        animation: fadeInUp 0.6s ease 0.3s both;
+      }
+
+      button {
+        padding: 16px 32px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      button:hover::before {
+        left: 100%;
+      }
+
+      button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.6s ease,
+          height 0.6s ease;
+      }
+
+      button:active::after {
+        width: 300px;
+        height: 300px;
+      }
+
+      button.secondary {
+        background: var(--border);
+        color: var(--text);
+        border: 2px solid var(--border);
+        box-shadow: var(--shadow-sm);
+      }
+
+      button.secondary:hover {
+        background: var(--border-light);
+        border-color: var(--primary);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: var(--shadow-md);
+      }
+
+      button.secondary:active {
+        transform: translateY(0) scale(0.98);
+      }
+
+      button:not(.secondary) {
+        background: var(--gradient);
+        background-size: 200% 200%;
+        color: white;
+        box-shadow: var(--shadow-md);
+        animation: gradientShift 5s ease infinite;
+      }
+
+      button:not(.secondary):hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: var(--shadow-xl);
+      }
+
+      button:not(.secondary):active {
+        transform: translateY(-1px) scale(0.98);
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        animation: none;
+      }
+
+      button:disabled::before,
+      button:disabled::after {
+        display: none;
+      }
+
+      .tabs-container {
+        margin: 30px 0;
+      }
+
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 25px;
+        background: var(--bg);
+        padding: 10px;
+        border-radius: 16px;
+        border: 1px solid var(--border-light);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .tab {
+        padding: 14px 24px;
+        background: transparent;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-weight: 500;
+        color: var(--text);
+        position: relative;
+      }
+
+      .tab::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--gradient);
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+      }
+
+      .tab:hover::before {
+        width: 80%;
+      }
+
+      .tab:hover {
+        background: var(--border-light);
+        transform: translateY(-2px);
+      }
+
+      .tab.active {
+        background: var(--gradient);
+        background-size: 200% 200%;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        animation: gradientShift 5s ease infinite;
+      }
+
+      .tab.active::before {
+        display: none;
+      }
+
+      .tab-content {
+        display: none;
+        padding: 25px 0;
+      }
+
+      .tab-content.active {
+        display: block;
+        animation: fadeInUp 0.5s ease;
+      }
+
       .chart-container,
-      .visualization {
-        margin: 20pt 0;
-        padding: 15pt;
-        border: 1pt solid #ccc;
-        page-break-inside: avoid;
+      .multi-chart-container {
+        margin-top: 25px;
+        padding: 25px;
+        background: var(--bg);
+        border-radius: 16px;
+        border: 1px solid var(--border-light);
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
       }
 
-      .chart-container h3,
-      .visualization h3 {
-        font-size: 14pt;
-        color: #000 !important;
-        margin-bottom: 10pt;
-        border-bottom: 1pt solid #ccc;
-        padding-bottom: 5pt;
+      .chart-container:hover,
+      .multi-chart-container:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
       }
 
-      /* Canvas styling */
-      canvas {
-        max-width: 100% !important;
-        height: auto !important;
-        page-break-inside: avoid;
+      .chart-container {
+        height: clamp(250px, 40vh, 450px);
+        min-height: 250px;
       }
 
-      /* Tables */
-      table {
+      .mini-chart {
+        display: inline-block;
+        width: 48%;
+        margin-right: 2%;
+        margin-bottom: 25px;
+        vertical-align: top;
+        padding: 20px;
+        background: var(--card-bg);
+        border-radius: 16px;
+        border: 1px solid var(--border-light);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mini-chart::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .mini-chart:hover::before {
+        transform: scaleX(1);
+      }
+
+      .mini-chart:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary-light);
+      }
+
+      .mini-chart-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+        text-align: center;
+        color: var(--secondary);
+        font-size: 1rem;
+      }
+
+      .gauge-container {
+        height: 220px;
+      }
+
+      .data-table {
         width: 100%;
         border-collapse: collapse;
-        margin: 10pt 0;
-        font-size: 10pt;
+        margin-top: 25px;
+        background: var(--bg);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
       }
 
-      th, td {
-        border: 1pt solid #ccc;
-        padding: 5pt;
+      .data-table th,
+      .data-table td {
+        padding: 18px;
         text-align: left;
+        border-bottom: 1px solid var(--border-light);
+        transition: all 0.3s ease;
       }
 
-      th {
-        background: #f0f0f0;
-        font-weight: bold;
+      .data-table th {
+        background: var(--gradient);
+        background-size: 200% 200%;
+        color: white;
+        font-weight: 600;
+        animation: gradientShift 8s ease infinite;
       }
 
-      /* Ensure text readability */
-      * {
-        color: #000 !important;
-        text-shadow: none !important;
+      .data-table tr {
+        transition: all 0.3s ease;
       }
 
-      /* Links */
-      a {
-        color: #000 !important;
-        text-decoration: underline;
+      .data-table tr:hover {
+        background: rgba(102, 126, 234, 0.08);
+        transform: scale(1.01);
       }
 
-      a::after {
-        content: " (" attr(href) ")";
-        font-size: 9pt;
-        color: #666;
+      .data-table tr:hover td {
+        padding-left: 22px;
       }
 
-      /* Page breaks */
-      .chart-container,
-      .visualization,
-      .results-section {
-        page-break-inside: avoid;
+      .profile-name {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: var(--gradient);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 25px 0;
+        text-align: center;
+        animation:
+          gradientShift 8s ease infinite,
+          fadeInUp 0.8s ease;
+        letter-spacing: -1px;
       }
 
-      .chart-container:nth-child(2n) {
-        page-break-before: auto;
+      .profile-tagline {
+        text-align: center;
+        font-size: 1.2rem;
+        opacity: 0.8;
+        margin-bottom: 35px;
+        font-weight: 400;
+        animation: fadeIn 1s ease 0.3s both;
       }
 
-      /* Header and footer */
-      @page {
-        @top-center {
-          content: "APGI Quiz Results";
+      .dimensional-position {
+        background: var(--gradient-light);
+        padding: 30px;
+        border-radius: 16px;
+        margin: 24px 0;
+        color: white;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dimensional-position::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        animation: gradientShift 10s ease infinite;
+      }
+
+      .dimensional-position:hover {
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-4px);
+      }
+
+      .dimensional-position h3 {
+        position: relative;
+        z-index: 1;
+      }
+
+      .dimension-row {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+        gap: 15px;
+        animation: slideInRight 0.6s ease;
+        position: relative;
+        z-index: 1;
+      }
+
+      .dimension-label {
+        width: 180px;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .dimension-bar {
+        flex: 1;
+        height: 34px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 17px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+      }
+
+      .dimension-bar::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        animation: shimmer 3s infinite;
+      }
+
+      .dimension-fill {
+        height: 100%;
+        background: var(--gradient);
+        background-size: 200% 200%;
+        border-radius: 17px;
+        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 10px;
+        color: white;
+        font-weight: 600;
+        font-size: 0.85rem;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        animation: gradientShift 5s ease infinite;
+        position: relative;
+      }
+
+      .dimension-fill::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+
+      .dimension-value {
+        width: 50px;
+        text-align: right;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .actions {
+        text-align: center;
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        animation: fadeInUp 0.8s ease 0.4s both;
+      }
+
+      ul {
+        margin: 10px 0 10px 25px;
+      }
+
+      ul li {
+        margin: 8px 0;
+        transition: all 0.3s ease;
+        padding-left: 5px;
+      }
+
+      ul li:hover {
+        padding-left: 10px;
+        color: var(--primary);
+      }
+
+      .methodology-note {
+        background: linear-gradient(
+          135deg,
+          rgba(237, 137, 54, 0.15),
+          rgba(237, 137, 54, 0.05)
+        );
+        padding: 20px;
+        border-radius: 16px;
+        margin: 20px 0;
+        border-left: 4px solid var(--warning);
+        font-size: 0.95rem;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+      }
+
+      .methodology-note:hover {
+        transform: translateX(4px);
+        box-shadow: var(--shadow-md);
+        border-left-width: 6px;
+      }
+
+      .interaction-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .interaction-card {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 16px;
+        border: 2px solid var(--border-light);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .interaction-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .interaction-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .interaction-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary);
+      }
+
+      .interaction-title {
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .interaction-title::before {
+        content: "▸";
+        color: var(--primary);
+        font-size: 1.2rem;
+      }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--border-light);
+        border-radius: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--gradient);
+        border-radius: 5px;
+        transition: all 0.3s ease;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary);
+      }
+
+      /* Loading Animation */
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 0.6s linear infinite;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 15px;
+        }
+
+        h1 {
+          font-size: 2.2rem;
+        }
+
+        .subtitle {
+          font-size: 1.1rem;
+        }
+
+        .quiz-section,
+        .results-container {
+          padding: 20px;
+          border-radius: 16px;
+        }
+
+        .section-header {
+          flex-direction: column;
+          text-align: center;
+          gap: 15px;
+        }
+
+        .section-icon {
+          margin: 0 auto;
+        }
+
+        .mini-chart {
+          width: 100%;
+          margin-right: 0;
+        }
+
+        .tabs {
+          flex-direction: column;
+        }
+
+        .tab {
+          width: 100%;
+          text-align: center;
+        }
+
+        .dimension-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .dimension-label {
+          width: 100%;
+        }
+
+        .dimension-bar {
+          width: 100%;
+        }
+
+        .question {
+          padding: 15px;
+        }
+
+        .option {
+          padding: 14px 16px;
+        }
+
+        .actions {
+          gap: 10px;
+          flex-direction: column;
+        }
+
+        .actions button {
+          width: 100%;
+        }
+
+        .quiz-navigation {
+          flex-direction: column;
+        }
+
+        .quiz-navigation button {
+          width: 100%;
+        }
+      }
+
+      /* Print Styles */
+      @media print {
+        body {
+          background: white;
+        }
+
+        .actions,
+        .quiz-navigation,
+        .tabs {
+          display: none !important;
+        }
+
+        .quiz-section,
+        .results-container {
+          box-shadow: none;
+          page-break-inside: avoid;
+        }
+
+        .tab-content {
+          display: block !important;
+        }
+      }
+
+      /* ============================================
+       PRINT-OPTIMIZED STYLES
+       ============================================ */
+      @media print {
+        /* Page setup */
+        @page {
+          margin: 0.5in;
+          size: A4;
+        }
+
+        body {
+          font-size: 12pt;
+          line-height: 1.4;
+          color: #000;
+          background: #fff !important;
+        }
+
+        /* Hide unnecessary elements */
+        .main-nav,
+        .navigation-placeholder,
+        .theme-toggle,
+        .btn,
+        .progress-bar,
+        .question-card,
+        .option-card,
+        button,
+        .quiz-controls,
+        .tab-nav,
+        .tab-button {
+          display: none !important;
+        }
+
+        /* Show only results section */
+        .quiz-results,
+        .results-section {
+          display: block !important;
+          visibility: visible !important;
+        }
+
+        /* Results styling */
+        .results-header {
+          page-break-after: avoid;
+          margin-bottom: 20pt;
+          border-bottom: 2pt solid #333;
+          padding-bottom: 10pt;
+        }
+
+        .results-header h2 {
+          font-size: 18pt;
+          color: #000 !important;
+          margin-bottom: 8pt;
+        }
+
+        /* Score displays */
+        .parameter-score,
+        .score-display {
+          font-size: 16pt;
+          font-weight: bold;
+          color: #000 !important;
+          margin-bottom: 5pt;
+        }
+
+        .parameter-label {
+          font-size: 11pt;
+          font-weight: bold;
+          color: #000 !important;
+          margin-bottom: 3pt;
+        }
+
+        .parameter-description {
+          font-size: 9pt;
+          color: #666;
+          line-height: 1.3;
+          margin-bottom: 10pt;
+        }
+
+        /* Charts and visualizations */
+        .chart-container,
+        .visualization {
+          margin: 20pt 0;
+          padding: 15pt;
+          border: 1pt solid #ccc;
+          page-break-inside: avoid;
+        }
+
+        .chart-container h3,
+        .visualization h3 {
+          font-size: 14pt;
+          color: #000 !important;
+          margin-bottom: 10pt;
+          border-bottom: 1pt solid #ccc;
+          padding-bottom: 5pt;
+        }
+
+        /* Canvas styling */
+        canvas {
+          max-width: 100% !important;
+          height: auto !important;
+          page-break-inside: avoid;
+        }
+
+        /* Tables */
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 10pt 0;
           font-size: 10pt;
+        }
+
+        th,
+        td {
+          border: 1pt solid #ccc;
+          padding: 5pt;
+          text-align: left;
+        }
+
+        th {
+          background: #f0f0f0;
+          font-weight: bold;
+        }
+
+        /* Ensure text readability */
+        * {
+          color: #000 !important;
+          text-shadow: none !important;
+        }
+
+        /* Links */
+        a {
+          color: #000 !important;
+          text-decoration: underline;
+        }
+
+        a::after {
+          content: " (" attr(href) ")";
+          font-size: 9pt;
           color: #666;
         }
-        
-        @bottom-center {
-          content: "Page " counter(page);
-          font-size: 10pt;
-          color: #666;
+
+        /* Page breaks */
+        .chart-container,
+        .visualization,
+        .results-section {
+          page-break-inside: avoid;
+        }
+
+        .chart-container:nth-child(2n) {
+          page-break-before: auto;
+        }
+
+        /* Header and footer */
+        @page {
+          @top-center {
+            content: "APGI Quiz Results";
+            font-size: 10pt;
+            color: #666;
+          }
+
+          @bottom-center {
+            content: "Page " counter(page);
+            font-size: 10pt;
+            color: #666;
+          }
+        }
+
+        /* Special handling for dark mode */
+        [data-theme="dark"] * {
+          color: #000 !important;
+          background: #fff !important;
+        }
+
+        /* Hide any remaining interactive elements */
+        [onclick],
+        [role="button"],
+        input,
+        select,
+        .slider {
+          display: none !important;
+        }
+
+        /* Ensure proper spacing */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          page-break-after: avoid;
+          page-break-inside: avoid;
+        }
+
+        img {
+          max-width: 100% !important;
+          height: auto !important;
+          page-break-inside: avoid;
         }
       }
 
-      /* Special handling for dark mode */
-      [data-theme="dark"] * {
-        color: #000 !important;
-        background: #fff !important;
+      /* Navigation Styles */
+      .nav-dropdown {
+        position: relative;
+        display: inline-block;
       }
 
-      /* Hide any remaining interactive elements */
-      [onclick],
-      [role="button"],
-      input,
-      select,
-      .slider {
-        display: none !important;
+      .nav-dropdown-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary, #64748b);
+        font-weight: 500;
+        font-family: var(
+          --font-body,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif
+        );
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: var(--radius-sm, 8px);
+        cursor: pointer;
+        transition: var(--transition, all 0.3s ease);
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        white-space: nowrap;
       }
 
-      /* Ensure proper spacing */
-      h1, h2, h3, h4, h5, h6 {
-        page-break-after: avoid;
-        page-break-inside: avoid;
+      .nav-dropdown-btn:hover,
+      .nav-dropdown-btn:focus {
+        color: var(--accent, #3b82f6);
+        background: rgba(59, 130, 246, 0.1);
+        transform: translateY(-1px);
+        outline: none;
       }
 
-      img {
-        max-width: 100% !important;
-        height: auto !important;
-        page-break-inside: avoid;
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: var(--bg-primary, #ffffff);
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: var(--radius, 12px);
+        box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+        min-width: 200px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: var(--transition, all 0.3s ease);
+        z-index: 1000;
+        backdrop-filter: blur(20px);
+        margin-top: 0.5rem;
       }
-    }
-    
-    /* Navigation Styles */
-    .nav-dropdown {
-      position: relative;
-      display: inline-block;
-    }
 
-    .nav-dropdown-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary, #64748b);
-      font-weight: 500;
-      font-family: var(--font-body, -apple-system, BlinkMacSystemFont, sans-serif);
-      font-size: 0.9rem;
-      padding: 0.4rem 0.8rem;
-      border-radius: var(--radius-sm, 8px);
-      cursor: pointer;
-      transition: var(--transition, all 0.3s ease);
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      white-space: nowrap;
-    }
-
-    .nav-dropdown-btn:hover,
-    .nav-dropdown-btn:focus {
-      color: var(--accent, #3b82f6);
-      background: rgba(59, 130, 246, 0.1);
-      transform: translateY(-1px);
-      outline: none;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: var(--bg-primary, #ffffff);
-      border: 1px solid var(--border-color, #e2e8f0);
-      border-radius: var(--radius, 12px);
-      box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
-      min-width: 200px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: var(--transition, all 0.3s ease);
-      z-index: 1000;
-      backdrop-filter: blur(20px);
-      margin-top: 0.5rem;
-    }
-
-    .nav-dropdown.active .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .dropdown-link {
-      display: block;
-      padding: 0.75rem 1rem;
-      color: var(--text-secondary, #64748b);
-      text-decoration: none;
-      font-weight: 500;
-      font-family: var(--font-body, -apple-system, BlinkMacSystemFont, sans-serif);
-      font-size: 0.9rem;
-      transition: var(--transition, all 0.2s ease);
-      border-bottom: 1px solid var(--border-light, #f1f5f9);
-    }
-
-    .dropdown-link:first-child {
-      border-radius: var(--radius, 12px) var(--radius, 12px) 0 0;
-    }
-
-    .dropdown-link:last-child {
-      border-bottom: none;
-      border-radius: 0 0 var(--radius, 12px) var(--radius, 12px);
-    }
-
-    .dropdown-link:hover,
-    .dropdown-link:focus {
-      color: var(--accent, #3b82f6);
-      background: rgba(59, 130, 246, 0.1);
-      transform: translateX(4px);
-      outline: none;
-    }
-
-    /* Dark theme support for dropdowns */
-    [data-theme="dark"] .dropdown-menu {
-      background: var(--bg-primary, #0f172a);
-      border-color: var(--border-color, #334155);
-    }
-
-    [data-theme="dark"] .dropdown-link {
-      color: var(--text-secondary, #cbd5e1);
-      border-bottom-color: var(--border-light, #1e293b);
-    }
-
-    [data-theme="dark"] .dropdown-link:hover,
-    [data-theme="dark"] .dropdown-link:focus {
-      background: rgba(59, 130, 246, 0.2);
-      color: var(--accent-light, #60a5fa);
-    }
-
-    /* Theme Toggle Styles */
-    .theme-toggle {
-      background: transparent;
-      border: 1px solid var(--border-color, #e2e8f0);
-      border-radius: 8px;
-      padding: 0.5rem 0.75rem;
-      color: var(--text-secondary, #64748b);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(8px);
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    .theme-toggle:hover,
-    .theme-toggle:focus {
-      color: var(--accent, #3b82f6);
-      background: rgba(59, 130, 246, 0.1);
-      border-color: var(--accent, #3b82f6);
-      transform: translateY(-1px);
-      outline: none;
-    }
-
-    /* Dark theme styles */
-    [data-theme="dark"] .theme-toggle {
-      background: rgba(15, 23, 42, 0.8);
-      border-color: var(--border-color, #334155);
-      color: var(--text-secondary, #cbd5e1);
-    }
-
-    [data-theme="dark"] .theme-toggle:hover,
-    [data-theme="dark"] .theme-toggle:focus {
-      background: rgba(59, 130, 246, 0.2);
-      color: var(--accent, #60a5fa);
-    }
-  </style>
-  
-  <!-- Shared Navigation -->
-  <link rel="stylesheet" href="assets/css/navigation.css">
-</head>
-<body>
-  <!-- Skip to main content for accessibility -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Include Navigation Component -->
-  <div id="navigation-container">
-<!-- Navigation Component -->
-<nav class="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-container">
-    <div class="nav-links">
-      <a href="Home.html" class="nav-link nav-brand">APGI Framework</a>
-      
-      <!-- Assessment Tools Dropdown -->
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
-          Assessment ▼
-        </button>
-        <div class="dropdown-menu">
-          <a href="Quiz.html" class="dropdown-link">Quiz (Short)</a>
-          <a href="Assessment.html" class="dropdown-link">Assessment (Full)</a>
-          <a href="Assessment-OnePage.html" class="dropdown-link">Assessment (One Page)</a>
-          <a href="APGI-Software-System.html" class="dropdown-link">APGI Software System</a>
-        </div>
-      </div>
-      
-      <!-- Visualizations & Tools Dropdown -->
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
-          Visualizations ▼
-        </button>
-        <div class="dropdown-menu">
-          <a href="SCI/PsyStates-Visualizer.html" class="dropdown-link">PsyStates Visualizer</a>
-          <a href="SCI/Consciousness-Visualization.html" class="dropdown-link">Consciousness Visualization</a>
-          <a href="SCI/State-Network.html" class="dropdown-link">3D Network</a>
-          <a href="SCI/Neuromoduratory-Cascade.html" class="dropdown-link">Neuromodulatory Cascade</a>
-          <a href="APGI-Software-System.html" class="dropdown-link">APGI Software System</a>
-        </div>
-      </div>
-      
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
-          Research ▼
-        </button>
-        <div class="dropdown-menu">
-          <a href="Paper.html" class="dropdown-link">Research Paper</a>
-          <a href="App-Appendix.html" class="dropdown-link">Appendix App</a>
-          <a href="App-Explorer.html" class="dropdown-link">App Explorer</a>
-          <a href="APGI-Experiments.html" class="dropdown-link">Experiments App</a>
-          <a href="API.html" class="dropdown-link">API Documentation</a>
-          <a href="APGI-Software-System.html" class="dropdown-link active">APGI Software System</a>
-          <a href="SCI/Dashboard.html" class="dropdown-link">Dashboard</a>
-          <a href="Book-Available-Now.html" class="dropdown-link">Book (Available Now)</a>
-          <a href="Book-Outline.html" class="dropdown-link">Book Outline</a>
-        </div>
-      </div>
-      
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
-          Resources ▼
-        </button>
-        <div class="dropdown-menu">
-          <a href="Profile.html" class="dropdown-link">Profile</a>
-          <a href="APGI-Software-System.html" class="dropdown-link">APGI Software System</a>
-          <a href="Privacy-Policy.html" class="dropdown-link">Privacy Policy</a>
-          <a href="Terms-of-Service.html" class="dropdown-link">Terms of Service</a>
-        </div>
-      </div>
-      
-      <!-- Theme Toggle -->
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false">
-        <span class="theme-icon" id="theme-icon" aria-hidden="true">🌙</span>
-        <span class="theme-text" id="theme-text">Dark</span>
-      </button>
-    </div>
-  </div>
-</nav>
-  </div>
-  
-  <!-- Navigation JavaScript -->
-  <script>
-    // Handle dropdown functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const dropdowns = document.querySelectorAll('.nav-dropdown');
-      
-      dropdowns.forEach(dropdown => {
-        const button = dropdown.querySelector('.nav-dropdown-btn');
-        const menu = dropdown.querySelector('.dropdown-menu');
-        
-        if (button && menu) {
-          button.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            dropdowns.forEach(otherDropdown => {
-              if (otherDropdown !== dropdown) {
-                otherDropdown.classList.remove('active');
-                const otherButton = otherDropdown.querySelector('.nav-dropdown-btn');
-                if (otherButton) {
-                  otherButton.setAttribute('aria-expanded', 'false');
-                }
-              }
-            });
-            
-            const isActive = dropdown.classList.contains('active');
-            dropdown.classList.toggle('active');
-            button.setAttribute('aria-expanded', !isActive);
-          });
-        }
-      });
-      
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-dropdown')) {
-          dropdowns.forEach(dropdown => {
-            dropdown.classList.remove('active');
-            const button = dropdown.querySelector('.nav-dropdown-btn');
-            if (button) {
-              button.setAttribute('aria-expanded', 'false');
-            }
-          });
-        }
-      });
-      
-      // Reinitialize theme toggle after navigation loads
-      if (window.themeManager) {
-        window.themeManager.setupThemeToggle();
-        window.themeManager.updateThemeUI(window.themeManager.getTheme());
+      .nav-dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
       }
-    });
-  </script>
-  
-  
-  <div class="container" id="main-content">
-    <header>
-      <h1>APGI Consciousness Signature</h1>
-      <p class="subtitle">A Dimensional Assessment of Your Brain's Awareness Operating System</p>
-      
-      <div class="quiz-section">
-        <div class="section-header">
-          <div class="section-icon"><i class="fas fa-brain"></i></div>
-          <div>
-            <h2 class="section-title">Understanding the APGI Framework</h2>
-            <p class="section-subtitle">Your consciousness as a four-parameter control system</p>
-          </div>
-        </div>
-        
-        <div class="profile-section">
-          <h3 class="profile-section-title"><i class="fas fa-lightbulb"></i> The Consciousness Cockpit</h3>
-          <p>Your APGI Signature describes how your brain's "consciousness cockpit" operates—a unique configuration of four interacting parameters that shape what you perceive, what feels significant, and how intensely experiences register in awareness:</p>
-          
-          <ul style="margin: 15px 0 15px 25px;">
-            <li><strong>Prediction Error Sensitivity (ε):</strong> How intensely you register mismatches between expectation and reality. High ε drives curiosity but invites anxiety; low ε offers stability but may miss critical changes.</li>
-            <li><strong>Precision Allocation (π):</strong> Which signals (threat, reward, bodily, social) your brain weights most confidently. High threat-precision creates hypervigilance; high reward-precision tunes you to opportunities.</li>
-            <li><strong>Ignition Threshold (θₜ):</strong> The dynamic barrier information must cross to reach conscious awareness. Low threshold = rich detail but vulnerability to overwhelm; high threshold = stability and focus but risk of missing subtle cues.</li>
-            <li><strong>Somatic Bias (β):</strong> Whether awareness anchors in bodily sensations (high β: "I <em>feel</em> my feelings") or external cognition (low β: "I <em>think about</em> my feelings").</li>
-          </ul>
-        </div>
 
-        <div class="scenario-box">
-          <div class="scenario-title"><i class="fas fa-users"></i> Why Parameters Matter: The Same Event, Three Different Realities</div>
-          <p><strong>Scenario:</strong> Alex, Jamie, and Morgan encounter a barking dog during an evening walk.</p>
-          
-          <div class="scenario-character">
-            <div class="character-name">Alex — The Hypervigilant Integrator</div>
-            <div class="character-params">Low θₜ (easy ignition) + High β (body-anchored) + High π-threat (amplified danger signals)</div>
-            <p><strong>Experience:</strong> Heartbeat instantly pounds into awareness, muscles tense, attention locks on threat. Every physiological fluctuation breaches the low threshold—creating an interoceptive storm. The dog isn't just scary; the <em>fear itself</em> becomes the entire conscious content, a feedback loop of escalating bodily alarm.</p>
-          </div>
+      .dropdown-link {
+        display: block;
+        padding: 0.75rem 1rem;
+        color: var(--text-secondary, #64748b);
+        text-decoration: none;
+        font-weight: 500;
+        font-family: var(
+          --font-body,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif
+        );
+        font-size: 0.9rem;
+        transition: var(--transition, all 0.2s ease);
+        border-bottom: 1px solid var(--border-light, #f1f5f9);
+      }
 
-          <div class="scenario-character">
-            <div class="character-name">Jamie — The Detached Analyst</div>
-            <div class="character-params">High θₜ (hard ignition) + Low β (cognition-anchored) + Moderate π-threat</div>
-            <p><strong>Experience:</strong> Mild annoyance. Attention barely diverts from conversation. Body signals (elevated heart rate, adrenaline) remain completely below conscious access—filtered out by the high threshold. Awareness stays in external problem-solving mode: "That dog needs training."</p>
-          </div>
+      .dropdown-link:first-child {
+        border-radius: var(--radius, 12px) var(--radius, 12px) 0 0;
+      }
 
-          <div class="scenario-character">
-            <div class="character-name">Morgan — The Balanced Navigator</div>
-            <div class="character-params">Moderate θₜ + Moderate β + Balanced π across domains</div>
-            <p><strong>Experience:</strong> Notice heartbeat elevation, acknowledge concern, assess situation, continue walking with slight increase in alertness. Awareness oscillates between bodily signals and environmental assessment without getting stuck in either mode.</p>
-          </div>
+      .dropdown-link:last-child {
+        border-bottom: none;
+        border-radius: 0 0 var(--radius, 12px) var(--radius, 12px);
+      }
 
-          <p style="margin-top: 15px;"><strong>Key Insight:</strong> Same stimulus, radically different phenomenologies—not due to "character flaws" but to parameter settings. These configurations are <em>mechanistic</em>, not moral judgments.</p>
-        </div>
+      .dropdown-link:hover,
+      .dropdown-link:focus {
+        color: var(--accent, #3b82f6);
+        background: rgba(59, 130, 246, 0.1);
+        transform: translateX(4px);
+        outline: none;
+      }
 
-        <div class="info-box">
-          <p><strong><i class="fas fa-clock"></i> Assessment Time:</strong> 8–10 minutes | <strong><i class="fas fa-question-circle"></i> Questions:</strong> 24 (20 core parameters + 4 validity/stability checks)</p>
-          <p><strong><i class="fas fa-book"></i> Theoretical Basis:</strong> Predictive Processing • Global Neuronal Workspace Theory • Interoceptive Inference • Allostatic Regulation</p>
-        </div>
+      /* Dark theme support for dropdowns */
+      [data-theme="dark"] .dropdown-menu {
+        background: var(--bg-primary, #0f172a);
+        border-color: var(--border-color, #334155);
+      }
 
-        <div class="methodology-note">
-          <strong><i class="fas fa-microscope"></i> Assessment Methodology Note:</strong>
-          <p style="margin-top: 8px;">This tool uses <strong>structured self-report</strong>, which provides useful approximations but differs fundamentally from laboratory assessment. Rigorous APGI profiling requires multimodal integration:</p>
-          <ul style="margin: 10px 0 10px 20px; font-size: 0.9rem;">
-            <li><strong>ε (Error Sensitivity):</strong> Lab uses oddball paradigms measuring Mismatch Negativity (MMN) amplitude and P3a response latency</li>
-            <li><strong>π (Precision):</strong> Lab uses confidence calibration tasks measuring metacognitive sensitivity across domains</li>
-            <li><strong>θₜ (Threshold):</strong> Lab uses backward masking and attentional blink paradigms with variable stimulus-onset asynchrony</li>
-            <li><strong>β (Somatic Bias):</strong> Lab uses heartbeat detection tasks (Schandry paradigm) with fMRI of anterior insula activation</li>
-          </ul>
-          <p style="margin-top: 10px;">Self-report captures <em>subjective experience</em> of these computational processes. While behaviorally valid for everyday insights, clinical or research applications require objective measurement.</p>
-        </div>
+      [data-theme="dark"] .dropdown-link {
+        color: var(--text-secondary, #cbd5e1);
+        border-bottom-color: var(--border-light, #1e293b);
+      }
 
-        <div class="warning-box">
-          <p><strong><i class="fas fa-exclamation-triangle"></i> Critical Disclaimers:</strong></p>
-          <ul style="margin: 10px 0 0 20px;">
-            <li><strong>Not a diagnostic tool.</strong> This assessment is for educational purposes only. Consult qualified clinicians for mental health concerns.</li>
-            <li><strong>Parameters are dynamic.</strong> Your signature shifts with context, stress, sleep, substances, and training. Results reflect your <em>current state</em> when calm and alert.</li>
-            <li><strong>No "optimal" signature exists.</strong> Each configuration has adaptive and maladaptive contexts. The goal is self-knowledge and flexibility, not conformity to an arbitrary ideal.</li>
-          </ul>
-        </div>
-      </div>
-    </header>
+      [data-theme="dark"] .dropdown-link:hover,
+      [data-theme="dark"] .dropdown-link:focus {
+        background: rgba(59, 130, 246, 0.2);
+        color: var(--accent-light, #60a5fa);
+      }
 
-    <div class="progress">
-      <div class="progress-text">
-        <span>Question <span id="current-question">1</span> of 24</span>
-        <span id="section-progress">Prediction Error Sensitivity</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
-    </div>
+      /* Theme Toggle Styles */
+      .theme-toggle {
+        background: transparent;
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: 8px;
+        padding: 0.5rem 0.75rem;
+        color: var(--text-secondary, #64748b);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        backdrop-filter: blur(8px);
+        background: rgba(255, 255, 255, 0.8);
+      }
 
-    <!-- Introduction -->
-    <div class="quiz-section" id="introduction-section">
-      <h2>Begin Your Consciousness Mapping</h2>
-      <p style="font-size: 1.1rem; margin: 20px 0;">This assessment will map your brain's four-parameter operating system through behavioral proxies and scenario-based reasoning.</p>
-      
-      <div class="info-box">
-        <p><strong>Instructions:</strong></p>
-        <ul style="margin: 10px 0 0 20px;">
-          <li>Answer based on your <strong>typical experience when calm and alert</strong></li>
-          <li>Be honest—there are no "good" or "bad" answers</li>
-          <li>If between options, choose the one that's most often true</li>
-          <li>Some questions are scenarios; others ask about behavior patterns</li>
-        </ul>
-      </div>
+      .theme-toggle:hover,
+      .theme-toggle:focus {
+        color: var(--accent, #3b82f6);
+        background: rgba(59, 130, 246, 0.1);
+        border-color: var(--accent, #3b82f6);
+        transform: translateY(-1px);
+        outline: none;
+      }
 
-      <div style="text-align: center; margin-top: 35px;">
-        <button id="start-quiz-btn" aria-label="Begin the APGI consciousness assessment"><i class="fas fa-play"></i> Begin Assessment</button>
-        <div id="loading-spinner" class="loading-spinner" style="display: none;" aria-hidden="true">
-          <i class="fas fa-spinner fa-spin"></i>
-          <span>Loading assessment...</span>
-        </div>
-      </div>
-    </div>
+      /* Dark theme styles */
+      [data-theme="dark"] .theme-toggle {
+        background: rgba(15, 23, 42, 0.8);
+        border-color: var(--border-color, #334155);
+        color: var(--text-secondary, #cbd5e1);
+      }
 
-    <!-- Quiz -->
-    <div class="quiz-section" id="quiz-section" style="display: none;">
-      <div class="section-header">
-        <div class="section-icon" id="section-icon"><i class="fas fa-bullseye"></i></div>
-        <div>
-          <div class="section-title" id="section-title">Parameter Assessment</div>
-          <div class="section-subtitle" id="section-subtitle">Measuring parameter dimensions</div>
-        </div>
-      </div>
-      <div id="question-container"></div>
-      <div class="quiz-navigation">
-        <button class="secondary" id="prev-btn" disabled aria-label="Go to previous question"><i class="fas fa-arrow-left"></i> Previous</button>
-        <button id="next-btn" aria-label="Go to next question">Next <i class="fas fa-arrow-right"></i></button>
-      </div>
-    </div>
+      [data-theme="dark"] .theme-toggle:hover,
+      [data-theme="dark"] .theme-toggle:focus {
+        background: rgba(59, 130, 246, 0.2);
+        color: var(--accent, #60a5fa);
+      }
+    </style>
 
-    <!-- Results -->
-    <div class="results-container" id="results-container" style="display: none;">
-      <div class="section-header">
-        <div class="section-icon"><i class="fas fa-chart-line"></i></div>
-        <div>
-          <h2 class="section-title">Your APGI Consciousness Signature</h2>
-          <p class="section-subtitle">Dimensional mapping complete</p>
-        </div>
-      </div>
+    <!-- Shared Navigation -->
+    <link rel="stylesheet" href="assets/css/navigation.css" />
+  </head>
+  <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-      <div class="profile-name" id="profile-name">THE BALANCED NAVIGATOR</div>
-      <div class="profile-tagline" id="profile-tagline">Moderate parameters, adaptive flexibility</div>
+    <!-- Include Navigation Component -->
+    <div id="navigation-container"></div>
+    <script src="assets/js/navigation-loader.js"></script>
 
-      <div class="dimensional-position">
-        <h3 style="margin-bottom: 20px; color: white;"><i class="fas fa-map-marked-alt"></i> Your Position in Consciousness Space</h3>
-        <div class="dimension-row">
-          <div class="dimension-label">Prediction Error (ε)</div>
-          <div class="dimension-bar">
-            <div class="dimension-fill" id="dim-epsilon" style="width: 50%;">
-              <span id="epsilon-label">10</span>
+    <div class="container" id="main-content">
+      <header>
+        <h1>APGI Consciousness Signature</h1>
+        <p class="subtitle">
+          A Dimensional Assessment of Your Brain's Awareness Operating System
+        </p>
+
+        <div class="quiz-section">
+          <div class="section-header">
+            <div class="section-icon"><i class="fas fa-brain"></i></div>
+            <div>
+              <h2 class="section-title">Understanding the APGI Framework</h2>
+              <p class="section-subtitle">
+                Your consciousness as a four-parameter control system
+              </p>
             </div>
-          </div>
-          <div class="dimension-value" id="epsilon-value">10/20</div>
-        </div>
-        <div class="dimension-row">
-          <div class="dimension-label">Precision (π)</div>
-          <div class="dimension-bar">
-            <div class="dimension-fill" id="dim-precision" style="width: 50%;">
-              <span id="precision-label">10</span>
-            </div>
-          </div>
-          <div class="dimension-value" id="precision-value">10/20</div>
-        </div>
-        <div class="dimension-row">
-          <div class="dimension-label">Ignition Threshold (θₜ)</div>
-          <div class="dimension-bar">
-            <div class="dimension-fill" id="dim-threshold" style="width: 50%;">
-              <span id="threshold-label">10</span>
-            </div>
-          </div>
-          <div class="dimension-value" id="threshold-value">10/20</div>
-        </div>
-        <div class="dimension-row">
-          <div class="dimension-label">Somatic Bias (β)</div>
-          <div class="dimension-bar">
-            <div class="dimension-fill" id="dim-somatic" style="width: 50%;">
-              <span id="somatic-label">10</span>
-            </div>
-          </div>
-          <div class="dimension-value" id="somatic-value">10/20</div>
-        </div>
-        <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.9;"><em>Note: Lower θₜ = easier conscious access (more passes threshold). Higher values on other parameters = stronger sensitivity/weighting/bias.</em></p>
-      </div>
-
-      <div class="tabs-container">
-        <div class="tabs">
-          <button class="tab active" data-tab="overview"><i class="fas fa-eye"></i> Overview</button>
-          <button class="tab" data-tab="radar"><i class="fas fa-chart-radar"></i> Radar Chart</button>
-          <button class="tab" data-tab="gauge"><i class="fas fa-tachometer-alt"></i> Gauges</button>
-          <button class="tab" data-tab="interactions"><i class="fas fa-project-diagram"></i> Parameter Interactions</button>
-          <button class="tab" data-tab="clinical"><i class="fas fa-heartbeat"></i> Clinical Context</button>
-          <button class="tab" data-tab="data"><i class="fas fa-table"></i> Data Table</button>
-        </div>
-
-        <!-- Overview Tab -->
-        <div class="tab-content active" id="overview-tab">
-          <div class="profile-section">
-            <div class="profile-section-title"><i class="fas fa-cogs"></i> Computational Mechanism</div>
-            <p id="mechanism-text">Your brain operates with...</p>
           </div>
 
           <div class="profile-section">
-            <div class="profile-section-title"><i class="fas fa-check-circle"></i> Adaptive Strengths</div>
-            <ul class="strengths-list" id="strengths-list"></ul>
-          </div>
+            <h3 class="profile-section-title">
+              <i class="fas fa-lightbulb"></i> The Consciousness Cockpit
+            </h3>
+            <p>
+              Your APGI Signature describes how your brain's "consciousness
+              cockpit" operates—a unique configuration of four interacting
+              parameters that shape what you perceive, what feels significant,
+              and how intensely experiences register in awareness:
+            </p>
 
-          <div class="profile-section">
-            <div class="profile-section-title"><i class="fas fa-exclamation-triangle"></i> Vulnerability Contexts</div>
-            <ul class="vulnerabilities-list" id="vulnerabilities-list"></ul>
-          </div>
-
-          <div class="profile-section">
-            <div class="profile-section-title"><i class="fas fa-tools"></i> Calibration Strategies</div>
-            <div id="strategies-text"></div>
-          </div>
-
-          <div class="profile-section">
-            <div class="profile-section-title"><i class="fas fa-clock"></i> Temporal Stability Assessment</div>
-            <p id="stability-text">Based on your responses...</p>
-          </div>
-        </div>
-
-        <!-- Radar Chart Tab -->
-        <div class="tab-content" id="radar-tab">
-          <h3 style="margin-bottom: 15px;">Four-Dimensional Parameter Space</h3>
-          <div class="chart-container"><canvas id="radarChart"></canvas></div>
-        </div>
-
-        <!-- Gauge Tab -->
-        <div class="tab-content" id="gauge-tab">
-          <h3 style="margin-bottom: 15px;">Individual Parameter Gauges</h3>
-          <div class="multi-chart-container">
-            <div class="mini-chart">
-              <div class="mini-chart-title">Prediction Error Sensitivity (ε)</div>
-              <div class="gauge-container"><canvas id="gauge1"></canvas></div>
-            </div>
-            <div class="mini-chart">
-              <div class="mini-chart-title">Precision Allocation (π)</div>
-              <div class="gauge-container"><canvas id="gauge2"></canvas></div>
-            </div>
-            <div class="mini-chart">
-              <div class="mini-chart-title">Ignition Threshold (θₜ)</div>
-              <div class="gauge-container"><canvas id="gauge3"></canvas></div>
-            </div>
-            <div class="mini-chart">
-              <div class="mini-chart-title">Somatic Bias (β)</div>
-              <div class="gauge-container"><canvas id="gauge4"></canvas></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Parameter Interactions Tab -->
-        <div class="tab-content" id="interactions-tab">
-          <h3 style="margin-bottom: 15px;"><i class="fas fa-project-diagram"></i> How Your Parameters Interact</h3>
-          <p style="margin-bottom: 20px;">Parameters don't operate in isolation—they create <strong>nonlinear interactions</strong> that amplify or dampen each other's effects. Here's how your specific configuration combines:</p>
-          
-          <div class="interaction-grid" id="interaction-grid"></div>
-
-          <div class="scenario-box" style="margin-top: 25px;">
-            <div class="scenario-title">Scenario Analysis: Job Loss Email</div>
-            <p style="margin-bottom: 15px;">How would someone with YOUR signature likely experience receiving unexpected termination news?</p>
-            <div id="scenario-analysis"></div>
-          </div>
-        </div>
-
-        <!-- Clinical Context Tab -->
-        <div class="tab-content" id="clinical-tab">
-          <h3 style="margin-bottom: 15px;"><i class="fas fa-heartbeat"></i> Clinical Applications & Mental Health</h3>
-          
-          <div class="profile-section">
-            <h4 class="profile-section-title"><i class="fas fa-layer-group"></i> States, Traits, and Disorders: A Dimensional View</h4>
-            <p>The APGI framework reveals that <strong>mental states, personality traits, and clinical disorders differ not in kind but in parameter configuration, stability, and reversibility</strong>:</p>
-            
-            <ul style="margin: 15px 0 15px 25px;">
-              <li><strong>Transient States</strong> (seconds to minutes): Flow during performance, acute fear, momentary curiosity. Recovery time &lt;1 minute when context removed. High metabolic cost—brain doesn't maintain unless necessary.</li>
-              <li><strong>Enduring Traits</strong> (weeks to years): Chronic optimism, baseline anxiety, characteristic attentional style. Recovery time days to months. Modifiable through sustained practice (meditation, CBT, exposure therapy).</li>
-              <li><strong>Entrenched Disorders</strong> (years to decades): Recurrent depression, GAD, schizophrenia. Recovery time months to years. Maintained by three mechanisms:
-                <ul style="margin: 8px 0 0 20px;">
-                  <li><em>Structural changes:</em> Chronic stress shrinks hippocampus; anxiety enlarges amygdala; altered white matter connectivity</li>
-                  <li><em>Neuromodulator dysregulation:</em> Serotonin/dopamine/norepinephrine systems stuck in maladaptive set-points</li>
-                  <li><em>Self-confirming predictions:</em> Depressive priors ("nothing will work") generate experiences confirming hopelessness—a vicious cycle</li>
-                </ul>
+            <ul style="margin: 15px 0 15px 25px">
+              <li>
+                <strong>Prediction Error Sensitivity (ε):</strong> How intensely
+                you register mismatches between expectation and reality. High ε
+                drives curiosity but invites anxiety; low ε offers stability but
+                may miss critical changes.
+              </li>
+              <li>
+                <strong>Precision Allocation (π):</strong> Which signals
+                (threat, reward, bodily, social) your brain weights most
+                confidently. High threat-precision creates hypervigilance; high
+                reward-precision tunes you to opportunities.
+              </li>
+              <li>
+                <strong>Ignition Threshold (θₜ):</strong> The dynamic barrier
+                information must cross to reach conscious awareness. Low
+                threshold = rich detail but vulnerability to overwhelm; high
+                threshold = stability and focus but risk of missing subtle cues.
+              </li>
+              <li>
+                <strong>Somatic Bias (β):</strong> Whether awareness anchors in
+                bodily sensations (high β: "I <em>feel</em> my feelings") or
+                external cognition (low β: "I <em>think about</em> my
+                feelings").
               </li>
             </ul>
           </div>
 
-          <div class="profile-section">
-            <h4 class="profile-section-title"><i class="fas fa-diagnoses"></i> Why Categorical Diagnosis Fails: The Comorbidity Puzzle</h4>
-            <p>Traditional diagnosis asks "What symptoms?" The APGI asks "What parameters?" This explains why:</p>
-            
-            <div class="interaction-grid" style="margin: 15px 0;">
-              <div class="interaction-card">
-                <div class="interaction-title">Same Diagnosis, Different Mechanisms</div>
-                <p style="font-size: 0.9rem;">Three patients with "Generalized Anxiety Disorder" may have entirely different signatures:</p>
-                <ul style="margin: 8px 0 0 15px; font-size: 0.85rem;">
-                  <li><strong>Patient A:</strong> Low θₜ (everything breaches threshold) → overwhelm</li>
-                  <li><strong>Patient B:</strong> Catastrophic π-somatic (normal heartbeat = cardiac arrest) → panic</li>
-                  <li><strong>Patient C:</strong> Excessive ε (constant novelty detection) → hypervigilance</li>
-                </ul>
-                <p style="font-size: 0.85rem; margin-top: 8px;"><em>Same label, three mechanisms requiring distinct interventions.</em></p>
-              </div>
+          <div class="scenario-box">
+            <div class="scenario-title">
+              <i class="fas fa-users"></i> Why Parameters Matter: The Same
+              Event, Three Different Realities
+            </div>
+            <p>
+              <strong>Scenario:</strong> Alex, Jamie, and Morgan encounter a
+              barking dog during an evening walk.
+            </p>
 
-              <div class="interaction-card">
-                <div class="interaction-title">Comorbidity Explained</div>
-                <p style="font-size: 0.9rem;">Disorders cluster because they share parameter vulnerabilities:</p>
-                <ul style="margin: 8px 0 0 15px; font-size: 0.85rem;">
-                  <li><strong>OCD + Eating Disorders:</strong> Both feature elevated β and excessive precision on specific error domains (intrusive thoughts vs. body-image discrepancies)</li>
-                  <li><strong>Depression + Anxiety:</strong> Both involve precision dysregulation—depression globally reduces π (nothing feels important); anxiety hyperweights threat-π (everything feels dangerous)</li>
-                </ul>
+            <div class="scenario-character">
+              <div class="character-name">
+                Alex — The Hypervigilant Integrator
+              </div>
+              <div class="character-params">
+                Low θₜ (easy ignition) + High β (body-anchored) + High π-threat
+                (amplified danger signals)
+              </div>
+              <p>
+                <strong>Experience:</strong> Heartbeat instantly pounds into
+                awareness, muscles tense, attention locks on threat. Every
+                physiological fluctuation breaches the low threshold—creating an
+                interoceptive storm. The dog isn't just scary; the
+                <em>fear itself</em> becomes the entire conscious content, a
+                feedback loop of escalating bodily alarm.
+              </p>
+            </div>
+
+            <div class="scenario-character">
+              <div class="character-name">Jamie — The Detached Analyst</div>
+              <div class="character-params">
+                High θₜ (hard ignition) + Low β (cognition-anchored) + Moderate
+                π-threat
+              </div>
+              <p>
+                <strong>Experience:</strong> Mild annoyance. Attention barely
+                diverts from conversation. Body signals (elevated heart rate,
+                adrenaline) remain completely below conscious access—filtered
+                out by the high threshold. Awareness stays in external
+                problem-solving mode: "That dog needs training."
+              </p>
+            </div>
+
+            <div class="scenario-character">
+              <div class="character-name">Morgan — The Balanced Navigator</div>
+              <div class="character-params">
+                Moderate θₜ + Moderate β + Balanced π across domains
+              </div>
+              <p>
+                <strong>Experience:</strong> Notice heartbeat elevation,
+                acknowledge concern, assess situation, continue walking with
+                slight increase in alertness. Awareness oscillates between
+                bodily signals and environmental assessment without getting
+                stuck in either mode.
+              </p>
+            </div>
+
+            <p style="margin-top: 15px">
+              <strong>Key Insight:</strong> Same stimulus, radically different
+              phenomenologies—not due to "character flaws" but to parameter
+              settings. These configurations are <em>mechanistic</em>, not moral
+              judgments.
+            </p>
+          </div>
+
+          <div class="info-box">
+            <p>
+              <strong><i class="fas fa-clock"></i> Assessment Time:</strong>
+              8–10 minutes |
+              <strong><i class="fas fa-question-circle"></i> Questions:</strong>
+              24 (20 core parameters + 4 validity/stability checks)
+            </p>
+            <p>
+              <strong><i class="fas fa-book"></i> Theoretical Basis:</strong>
+              Predictive Processing • Global Neuronal Workspace Theory •
+              Interoceptive Inference • Allostatic Regulation
+            </p>
+          </div>
+
+          <div class="methodology-note">
+            <strong
+              ><i class="fas fa-microscope"></i> Assessment Methodology
+              Note:</strong
+            >
+            <p style="margin-top: 8px">
+              This tool uses <strong>structured self-report</strong>, which
+              provides useful approximations but differs fundamentally from
+              laboratory assessment. Rigorous APGI profiling requires multimodal
+              integration:
+            </p>
+            <ul style="margin: 10px 0 10px 20px; font-size: 0.9rem">
+              <li>
+                <strong>ε (Error Sensitivity):</strong> Lab uses oddball
+                paradigms measuring Mismatch Negativity (MMN) amplitude and P3a
+                response latency
+              </li>
+              <li>
+                <strong>π (Precision):</strong> Lab uses confidence calibration
+                tasks measuring metacognitive sensitivity across domains
+              </li>
+              <li>
+                <strong>θₜ (Threshold):</strong> Lab uses backward masking and
+                attentional blink paradigms with variable stimulus-onset
+                asynchrony
+              </li>
+              <li>
+                <strong>β (Somatic Bias):</strong> Lab uses heartbeat detection
+                tasks (Schandry paradigm) with fMRI of anterior insula
+                activation
+              </li>
+            </ul>
+            <p style="margin-top: 10px">
+              Self-report captures <em>subjective experience</em> of these
+              computational processes. While behaviorally valid for everyday
+              insights, clinical or research applications require objective
+              measurement.
+            </p>
+          </div>
+
+          <div class="warning-box">
+            <p>
+              <strong
+                ><i class="fas fa-exclamation-triangle"></i> Critical
+                Disclaimers:</strong
+              >
+            </p>
+            <ul style="margin: 10px 0 0 20px">
+              <li>
+                <strong>Not a diagnostic tool.</strong> This assessment is for
+                educational purposes only. Consult qualified clinicians for
+                mental health concerns.
+              </li>
+              <li>
+                <strong>Parameters are dynamic.</strong> Your signature shifts
+                with context, stress, sleep, substances, and training. Results
+                reflect your <em>current state</em> when calm and alert.
+              </li>
+              <li>
+                <strong>No "optimal" signature exists.</strong> Each
+                configuration has adaptive and maladaptive contexts. The goal is
+                self-knowledge and flexibility, not conformity to an arbitrary
+                ideal.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="progress">
+        <div class="progress-text">
+          <span>Question <span id="current-question">1</span> of 24</span>
+          <span id="section-progress">Prediction Error Sensitivity</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Introduction -->
+      <div class="quiz-section" id="introduction-section">
+        <h2>Begin Your Consciousness Mapping</h2>
+        <p style="font-size: 1.1rem; margin: 20px 0">
+          This assessment will map your brain's four-parameter operating system
+          through behavioral proxies and scenario-based reasoning.
+        </p>
+
+        <div class="info-box">
+          <p><strong>Instructions:</strong></p>
+          <ul style="margin: 10px 0 0 20px">
+            <li>
+              Answer based on your
+              <strong>typical experience when calm and alert</strong>
+            </li>
+            <li>Be honest—there are no "good" or "bad" answers</li>
+            <li>If between options, choose the one that's most often true</li>
+            <li>
+              Some questions are scenarios; others ask about behavior patterns
+            </li>
+          </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 35px">
+          <button
+            id="start-quiz-btn"
+            aria-label="Begin the APGI consciousness assessment"
+          >
+            <i class="fas fa-play"></i> Begin Assessment
+          </button>
+          <div
+            id="loading-spinner"
+            class="loading-spinner"
+            style="display: none"
+            aria-hidden="true"
+          >
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Loading assessment...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz -->
+      <div class="quiz-section" id="quiz-section" style="display: none">
+        <div class="section-header">
+          <div class="section-icon" id="section-icon">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <div>
+            <div class="section-title" id="section-title">
+              Parameter Assessment
+            </div>
+            <div class="section-subtitle" id="section-subtitle">
+              Measuring parameter dimensions
+            </div>
+          </div>
+        </div>
+        <div id="question-container"></div>
+        <div class="quiz-navigation">
+          <button
+            class="secondary"
+            id="prev-btn"
+            disabled
+            aria-label="Go to previous question"
+          >
+            <i class="fas fa-arrow-left"></i> Previous
+          </button>
+          <button id="next-btn" aria-label="Go to next question">
+            Next <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div
+        class="results-container"
+        id="results-container"
+        style="display: none"
+      >
+        <div class="section-header">
+          <div class="section-icon"><i class="fas fa-chart-line"></i></div>
+          <div>
+            <h2 class="section-title">Your APGI Consciousness Signature</h2>
+            <p class="section-subtitle">Dimensional mapping complete</p>
+          </div>
+        </div>
+
+        <div class="profile-name" id="profile-name">THE BALANCED NAVIGATOR</div>
+        <div class="profile-tagline" id="profile-tagline">
+          Moderate parameters, adaptive flexibility
+        </div>
+
+        <div class="dimensional-position">
+          <h3 style="margin-bottom: 20px; color: white">
+            <i class="fas fa-map-marked-alt"></i> Your Position in Consciousness
+            Space
+          </h3>
+          <div class="dimension-row">
+            <div class="dimension-label">Prediction Error (ε)</div>
+            <div class="dimension-bar">
+              <div class="dimension-fill" id="dim-epsilon" style="width: 50%">
+                <span id="epsilon-label">10</span>
+              </div>
+            </div>
+            <div class="dimension-value" id="epsilon-value">10/20</div>
+          </div>
+          <div class="dimension-row">
+            <div class="dimension-label">Precision (π)</div>
+            <div class="dimension-bar">
+              <div class="dimension-fill" id="dim-precision" style="width: 50%">
+                <span id="precision-label">10</span>
+              </div>
+            </div>
+            <div class="dimension-value" id="precision-value">10/20</div>
+          </div>
+          <div class="dimension-row">
+            <div class="dimension-label">Ignition Threshold (θₜ)</div>
+            <div class="dimension-bar">
+              <div class="dimension-fill" id="dim-threshold" style="width: 50%">
+                <span id="threshold-label">10</span>
+              </div>
+            </div>
+            <div class="dimension-value" id="threshold-value">10/20</div>
+          </div>
+          <div class="dimension-row">
+            <div class="dimension-label">Somatic Bias (β)</div>
+            <div class="dimension-bar">
+              <div class="dimension-fill" id="dim-somatic" style="width: 50%">
+                <span id="somatic-label">10</span>
+              </div>
+            </div>
+            <div class="dimension-value" id="somatic-value">10/20</div>
+          </div>
+          <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.9">
+            <em
+              >Note: Lower θₜ = easier conscious access (more passes threshold).
+              Higher values on other parameters = stronger
+              sensitivity/weighting/bias.</em
+            >
+          </p>
+        </div>
+
+        <div class="tabs-container">
+          <div class="tabs">
+            <button class="tab active" data-tab="overview">
+              <i class="fas fa-eye"></i> Overview
+            </button>
+            <button class="tab" data-tab="radar">
+              <i class="fas fa-chart-radar"></i> Radar Chart
+            </button>
+            <button class="tab" data-tab="gauge">
+              <i class="fas fa-tachometer-alt"></i> Gauges
+            </button>
+            <button class="tab" data-tab="interactions">
+              <i class="fas fa-project-diagram"></i> Parameter Interactions
+            </button>
+            <button class="tab" data-tab="clinical">
+              <i class="fas fa-heartbeat"></i> Clinical Context
+            </button>
+            <button class="tab" data-tab="data">
+              <i class="fas fa-table"></i> Data Table
+            </button>
+          </div>
+
+          <!-- Overview Tab -->
+          <div class="tab-content active" id="overview-tab">
+            <div class="profile-section">
+              <div class="profile-section-title">
+                <i class="fas fa-cogs"></i> Computational Mechanism
+              </div>
+              <p id="mechanism-text">Your brain operates with...</p>
+            </div>
+
+            <div class="profile-section">
+              <div class="profile-section-title">
+                <i class="fas fa-check-circle"></i> Adaptive Strengths
+              </div>
+              <ul class="strengths-list" id="strengths-list"></ul>
+            </div>
+
+            <div class="profile-section">
+              <div class="profile-section-title">
+                <i class="fas fa-exclamation-triangle"></i> Vulnerability
+                Contexts
+              </div>
+              <ul class="vulnerabilities-list" id="vulnerabilities-list"></ul>
+            </div>
+
+            <div class="profile-section">
+              <div class="profile-section-title">
+                <i class="fas fa-tools"></i> Calibration Strategies
+              </div>
+              <div id="strategies-text"></div>
+            </div>
+
+            <div class="profile-section">
+              <div class="profile-section-title">
+                <i class="fas fa-clock"></i> Temporal Stability Assessment
+              </div>
+              <p id="stability-text">Based on your responses...</p>
+            </div>
+          </div>
+
+          <!-- Radar Chart Tab -->
+          <div class="tab-content" id="radar-tab">
+            <h3 style="margin-bottom: 15px">
+              Four-Dimensional Parameter Space
+            </h3>
+            <div class="chart-container"><canvas id="radarChart"></canvas></div>
+          </div>
+
+          <!-- Gauge Tab -->
+          <div class="tab-content" id="gauge-tab">
+            <h3 style="margin-bottom: 15px">Individual Parameter Gauges</h3>
+            <div class="multi-chart-container">
+              <div class="mini-chart">
+                <div class="mini-chart-title">
+                  Prediction Error Sensitivity (ε)
+                </div>
+                <div class="gauge-container"><canvas id="gauge1"></canvas></div>
+              </div>
+              <div class="mini-chart">
+                <div class="mini-chart-title">Precision Allocation (π)</div>
+                <div class="gauge-container"><canvas id="gauge2"></canvas></div>
+              </div>
+              <div class="mini-chart">
+                <div class="mini-chart-title">Ignition Threshold (θₜ)</div>
+                <div class="gauge-container"><canvas id="gauge3"></canvas></div>
+              </div>
+              <div class="mini-chart">
+                <div class="mini-chart-title">Somatic Bias (β)</div>
+                <div class="gauge-container"><canvas id="gauge4"></canvas></div>
               </div>
             </div>
           </div>
 
-          <div class="profile-section">
-            <h4 class="profile-section-title"><i class="fas fa-user-md"></i> Your Signature & Mental Health</h4>
-            <div id="clinical-interpretation"></div>
+          <!-- Parameter Interactions Tab -->
+          <div class="tab-content" id="interactions-tab">
+            <h3 style="margin-bottom: 15px">
+              <i class="fas fa-project-diagram"></i> How Your Parameters
+              Interact
+            </h3>
+            <p style="margin-bottom: 20px">
+              Parameters don't operate in isolation—they create
+              <strong>nonlinear interactions</strong> that amplify or dampen
+              each other's effects. Here's how your specific configuration
+              combines:
+            </p>
+
+            <div class="interaction-grid" id="interaction-grid"></div>
+
+            <div class="scenario-box" style="margin-top: 25px">
+              <div class="scenario-title">
+                Scenario Analysis: Job Loss Email
+              </div>
+              <p style="margin-bottom: 15px">
+                How would someone with YOUR signature likely experience
+                receiving unexpected termination news?
+              </p>
+              <div id="scenario-analysis"></div>
+            </div>
           </div>
 
-          <div class="warning-box">
-            <p><strong><i class="fas fa-stethoscope"></i> If You're Experiencing Distress:</strong></p>
-            <p style="margin-top: 10px;">This framework provides mechanistic insight but <strong>is not a substitute for professional care</strong>. If your signature configuration is causing significant impairment:</p>
-            <ul style="margin: 10px 0 0 20px;">
-              <li>Consult a licensed mental health provider for proper assessment</li>
-              <li>Consider mechanism-matched interventions (e.g., interoceptive exposure for high β, mindfulness for low θₜ)</li>
-              <li>Remember: Parameters are dynamic and recalibratable with appropriate support</li>
-            </ul>
+          <!-- Clinical Context Tab -->
+          <div class="tab-content" id="clinical-tab">
+            <h3 style="margin-bottom: 15px">
+              <i class="fas fa-heartbeat"></i> Clinical Applications & Mental
+              Health
+            </h3>
+
+            <div class="profile-section">
+              <h4 class="profile-section-title">
+                <i class="fas fa-layer-group"></i> States, Traits, and
+                Disorders: A Dimensional View
+              </h4>
+              <p>
+                The APGI framework reveals that
+                <strong
+                  >mental states, personality traits, and clinical disorders
+                  differ not in kind but in parameter configuration, stability,
+                  and reversibility</strong
+                >:
+              </p>
+
+              <ul style="margin: 15px 0 15px 25px">
+                <li>
+                  <strong>Transient States</strong> (seconds to minutes): Flow
+                  during performance, acute fear, momentary curiosity. Recovery
+                  time &lt;1 minute when context removed. High metabolic
+                  cost—brain doesn't maintain unless necessary.
+                </li>
+                <li>
+                  <strong>Enduring Traits</strong> (weeks to years): Chronic
+                  optimism, baseline anxiety, characteristic attentional style.
+                  Recovery time days to months. Modifiable through sustained
+                  practice (meditation, CBT, exposure therapy).
+                </li>
+                <li>
+                  <strong>Entrenched Disorders</strong> (years to decades):
+                  Recurrent depression, GAD, schizophrenia. Recovery time months
+                  to years. Maintained by three mechanisms:
+                  <ul style="margin: 8px 0 0 20px">
+                    <li>
+                      <em>Structural changes:</em> Chronic stress shrinks
+                      hippocampus; anxiety enlarges amygdala; altered white
+                      matter connectivity
+                    </li>
+                    <li>
+                      <em>Neuromodulator dysregulation:</em>
+                      Serotonin/dopamine/norepinephrine systems stuck in
+                      maladaptive set-points
+                    </li>
+                    <li>
+                      <em>Self-confirming predictions:</em> Depressive priors
+                      ("nothing will work") generate experiences confirming
+                      hopelessness—a vicious cycle
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <div class="profile-section">
+              <h4 class="profile-section-title">
+                <i class="fas fa-diagnoses"></i> Why Categorical Diagnosis
+                Fails: The Comorbidity Puzzle
+              </h4>
+              <p>
+                Traditional diagnosis asks "What symptoms?" The APGI asks "What
+                parameters?" This explains why:
+              </p>
+
+              <div class="interaction-grid" style="margin: 15px 0">
+                <div class="interaction-card">
+                  <div class="interaction-title">
+                    Same Diagnosis, Different Mechanisms
+                  </div>
+                  <p style="font-size: 0.9rem">
+                    Three patients with "Generalized Anxiety Disorder" may have
+                    entirely different signatures:
+                  </p>
+                  <ul style="margin: 8px 0 0 15px; font-size: 0.85rem">
+                    <li>
+                      <strong>Patient A:</strong> Low θₜ (everything breaches
+                      threshold) → overwhelm
+                    </li>
+                    <li>
+                      <strong>Patient B:</strong> Catastrophic π-somatic (normal
+                      heartbeat = cardiac arrest) → panic
+                    </li>
+                    <li>
+                      <strong>Patient C:</strong> Excessive ε (constant novelty
+                      detection) → hypervigilance
+                    </li>
+                  </ul>
+                  <p style="font-size: 0.85rem; margin-top: 8px">
+                    <em
+                      >Same label, three mechanisms requiring distinct
+                      interventions.</em
+                    >
+                  </p>
+                </div>
+
+                <div class="interaction-card">
+                  <div class="interaction-title">Comorbidity Explained</div>
+                  <p style="font-size: 0.9rem">
+                    Disorders cluster because they share parameter
+                    vulnerabilities:
+                  </p>
+                  <ul style="margin: 8px 0 0 15px; font-size: 0.85rem">
+                    <li>
+                      <strong>OCD + Eating Disorders:</strong> Both feature
+                      elevated β and excessive precision on specific error
+                      domains (intrusive thoughts vs. body-image discrepancies)
+                    </li>
+                    <li>
+                      <strong>Depression + Anxiety:</strong> Both involve
+                      precision dysregulation—depression globally reduces π
+                      (nothing feels important); anxiety hyperweights threat-π
+                      (everything feels dangerous)
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-section">
+              <h4 class="profile-section-title">
+                <i class="fas fa-user-md"></i> Your Signature & Mental Health
+              </h4>
+              <div id="clinical-interpretation"></div>
+            </div>
+
+            <div class="warning-box">
+              <p>
+                <strong
+                  ><i class="fas fa-stethoscope"></i> If You're Experiencing
+                  Distress:</strong
+                >
+              </p>
+              <p style="margin-top: 10px">
+                This framework provides mechanistic insight but
+                <strong>is not a substitute for professional care</strong>. If
+                your signature configuration is causing significant impairment:
+              </p>
+              <ul style="margin: 10px 0 0 20px">
+                <li>
+                  Consult a licensed mental health provider for proper
+                  assessment
+                </li>
+                <li>
+                  Consider mechanism-matched interventions (e.g., interoceptive
+                  exposure for high β, mindfulness for low θₜ)
+                </li>
+                <li>
+                  Remember: Parameters are dynamic and recalibratable with
+                  appropriate support
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Data Table Tab -->
+          <div class="tab-content" id="data-tab">
+            <h3 style="margin-bottom: 15px">Raw Parameter Scores</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Your Score</th>
+                  <th>Range</th>
+                  <th>Interpretation</th>
+                  <th>Lab Assessment</th>
+                </tr>
+              </thead>
+              <tbody id="results-table-body"></tbody>
+            </table>
           </div>
         </div>
 
-        <!-- Data Table Tab -->
-        <div class="tab-content" id="data-tab">
-          <h3 style="margin-bottom: 15px;">Raw Parameter Scores</h3>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Your Score</th>
-                <th>Range</th>
-                <th>Interpretation</th>
-                <th>Lab Assessment</th>
-              </tr>
-            </thead>
-            <tbody id="results-table-body"></tbody>
-          </table>
+        <div class="actions">
+          <button
+            class="secondary"
+            id="retake-btn"
+            aria-label="Retake the consciousness assessment"
+          >
+            <i class="fas fa-redo"></i> Retake Assessment
+          </button>
+          <button id="share-btn" aria-label="Share assessment results">
+            <i class="fas fa-share-alt"></i> Share Results
+          </button>
+          <button id="print-btn" aria-label="Print assessment report">
+            <i class="fas fa-print"></i> Print Report
+          </button>
         </div>
-      </div>
-
-      <div class="actions">
-        <button class="secondary" id="retake-btn" aria-label="Retake the consciousness assessment"><i class="fas fa-redo"></i> Retake Assessment</button>
-        <button id="share-btn" aria-label="Share assessment results"><i class="fas fa-share-alt"></i> Share Results</button>
-        <button id="print-btn" aria-label="Print assessment report"><i class="fas fa-print"></i> Print Report</button>
       </div>
     </div>
-  </div>
 
-  <!-- Quiz Functionality Script -->
-  <script src="assets/js/assessment-quiz.js"></script>
-  <script src="assets/js/quiz-functionality.js"></script>
-</body>
+    <!-- Quiz Functionality Script -->
+    <script src="assets/js/assessment-quiz.js"></script>
+    <script src="assets/js/quiz-functionality.js"></script>
+  </body>
 </html>

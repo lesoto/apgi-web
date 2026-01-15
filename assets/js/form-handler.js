@@ -3,27 +3,27 @@
 
 class FormHandler {
   constructor() {
-    this.apiEndpoint = 'https://api.apgiframework.com/v1/forms'; // Placeholder API endpoint
+    this.apiEndpoint = "https://api.apgiframework.com/v1/forms"; // Placeholder API endpoint
     this.init();
   }
 
   init() {
     // Handle newsletter signup (Home.html)
-    const emailForm = document.getElementById('email-form');
+    const emailForm = document.getElementById("email-form");
     if (emailForm) {
-      emailForm.addEventListener('submit', this.handleEmailSubmit.bind(this));
+      emailForm.addEventListener("submit", this.handleEmailSubmit.bind(this));
     }
 
     // Handle book chapter request (Book-Outline.html)
-    const subscriptionForms = document.querySelectorAll('.subscription-form');
-    subscriptionForms.forEach(form => {
-      form.addEventListener('submit', this.handleSubscriptionSubmit.bind(this));
+    const subscriptionForms = document.querySelectorAll(".subscription-form");
+    subscriptionForms.forEach((form) => {
+      form.addEventListener("submit", this.handleSubscriptionSubmit.bind(this));
     });
 
     // Handle any form with data-form-handler attribute
-    const dynamicForms = document.querySelectorAll('[data-form-handler]');
-    dynamicForms.forEach(form => {
-      form.addEventListener('submit', this.handleDynamicSubmit.bind(this));
+    const dynamicForms = document.querySelectorAll("[data-form-handler]");
+    dynamicForms.forEach((form) => {
+      form.addEventListener("submit", this.handleDynamicSubmit.bind(this));
     });
   }
 
@@ -31,20 +31,20 @@ class FormHandler {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
-    const email = formData.get('email');
-    
+    const email = formData.get("email");
+
     // Validate email
     if (!this.validateEmail(email)) {
-      this.showError(form, 'Please enter a valid email address.');
+      this.showError(form, "Please enter a valid email address.");
       return;
     }
-    
+
     const data = {
-      type: 'newsletter',
-      name: formData.get('fname') || '',
+      type: "newsletter",
+      name: formData.get("fname") || "",
       email: email,
-      source: 'Home.html',
-      timestamp: new Date().toISOString()
+      source: "Home.html",
+      timestamp: new Date().toISOString(),
     };
 
     await this.submitForm(data, form);
@@ -57,18 +57,18 @@ class FormHandler {
     if (!emailInput) return;
 
     const email = emailInput.value;
-    
+
     // Validate email
     if (!this.validateEmail(email)) {
-      this.showError(form, 'Please enter a valid email address.');
+      this.showError(form, "Please enter a valid email address.");
       return;
     }
 
     const data = {
-      type: 'book_chapter',
+      type: "book_chapter",
       email: email,
-      source: 'Book-Outline.html',
-      timestamp: new Date().toISOString()
+      source: "Book-Outline.html",
+      timestamp: new Date().toISOString(),
     };
 
     await this.submitForm(data, form);
@@ -78,13 +78,13 @@ class FormHandler {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
-    const formType = form.dataset.formHandler || 'contact';
+    const formType = form.dataset.formHandler || "contact";
 
     const data = {
       type: formType,
       ...Object.fromEntries(formData.entries()),
       source: window.location.pathname,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     await this.submitForm(data, form);
@@ -101,11 +101,11 @@ class FormHandler {
       // Try to submit to API (will fail in development but shows proper implementation)
       try {
         const response = await fetch(this.apiEndpoint, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(data),
         });
 
         if (!response.ok) {
@@ -113,24 +113,29 @@ class FormHandler {
         }
 
         const result = await response.json();
-        this.showSuccess(form, 'Thank you! Your submission has been received.');
+        this.showSuccess(form, "Thank you! Your submission has been received.");
       } catch (apiError) {
         // Fallback to localStorage submission
         // API unavailable, using localStorage fallback
-        this.showSuccess(form, 'Thank you! Your submission has been saved locally.');
+        this.showSuccess(
+          form,
+          "Thank you! Your submission has been saved locally.",
+        );
       }
     } catch (error) {
       // Form submission error - silent fail
-      this.showError(form, 'Sorry, there was an error. Please try again.');
+      this.showError(form, "Sorry, there was an error. Please try again.");
     } finally {
       this.setLoadingState(form, false);
     }
   }
 
   storeSubmission(data) {
-    const submissions = JSON.parse(localStorage.getItem('apgi_form_submissions') || '[]');
+    const submissions = JSON.parse(
+      localStorage.getItem("apgi_form_submissions") || "[]",
+    );
     submissions.push(data);
-    localStorage.setItem('apgi_form_submissions', JSON.stringify(submissions));
+    localStorage.setItem("apgi_form_submissions", JSON.stringify(submissions));
   }
 
   setLoadingState(form, isLoading) {
@@ -139,31 +144,32 @@ class FormHandler {
 
     if (isLoading) {
       submitButton.disabled = true;
-      submitButton.textContent = 'Submitting...';
-      submitButton.style.opacity = '0.7';
+      submitButton.textContent = "Submitting...";
+      submitButton.style.opacity = "0.7";
     } else {
       submitButton.disabled = false;
-      submitButton.textContent = submitButton.dataset.originalText || submitButton.textContent;
-      submitButton.style.opacity = '1';
+      submitButton.textContent =
+        submitButton.dataset.originalText || submitButton.textContent;
+      submitButton.style.opacity = "1";
     }
   }
 
   showSuccess(form, message) {
-    this.showMessage(form, message, 'success');
-    if (form.tagName === 'FORM') {
+    this.showMessage(form, message, "success");
+    if (form.tagName === "FORM") {
       form.reset();
     }
   }
 
   showError(form, message) {
-    this.showMessage(form, message, 'error');
+    this.showMessage(form, message, "error");
   }
 
   validateEmail(email) {
-    if (!email || typeof email !== 'string') {
+    if (!email || typeof email !== "string") {
       return false;
     }
-    
+
     // Basic email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.trim());
@@ -171,13 +177,13 @@ class FormHandler {
 
   showMessage(form, message, type) {
     // Remove existing messages
-    const existingMessage = form.parentNode.querySelector('.form-message');
+    const existingMessage = form.parentNode.querySelector(".form-message");
     if (existingMessage) {
       existingMessage.remove();
     }
 
     // Create message element
-    const messageEl = document.createElement('div');
+    const messageEl = document.createElement("div");
     messageEl.className = `form-message form-message-${type}`;
     messageEl.textContent = message;
     messageEl.style.cssText = `
@@ -186,9 +192,9 @@ class FormHandler {
             border-radius: 5px;
             font-size: 14px;
             ${
-              type === 'success'
-                ? 'background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;'
-                : 'background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;'
+              type === "success"
+                ? "background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;"
+                : "background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;"
             }
         `;
 
@@ -205,11 +211,11 @@ class FormHandler {
 }
 
 // Initialize form handler when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   new FormHandler();
 });
 
 // Export for potential module usage
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = FormHandler;
 }

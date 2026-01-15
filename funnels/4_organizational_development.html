@@ -1,539 +1,646 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APGI Organizational Intelligence | Build Teams That Actually Work</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      APGI Organizational Intelligence | Build Teams That Actually Work
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --blue: #00B4FF;
-            --red: #FF3366;
-            --green: #00CC99;
-            --yellow: #FFCC00;
-            --purple: #9966FF;
-            --dark: #0f1419;
-            --darker: #08090b;
-            --light: #ffffff;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--darker);
-            color: var(--light);
-            line-height: 1.6;
-        }
+      :root {
+        --blue: #00b4ff;
+        --red: #ff3366;
+        --green: #00cc99;
+        --yellow: #ffcc00;
+        --purple: #9966ff;
+        --dark: #0f1419;
+        --darker: #08090b;
+        --light: #ffffff;
+      }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--darker);
+        color: var(--light);
+        line-height: 1.6;
+      }
 
-        /* Animated Grid Background */
-        .grid-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 180, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 180, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 0;
-            pointer-events: none;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
 
-        header {
-            position: relative;
-            z-index: 10;
-            padding: 25px 0;
-            border-bottom: 1px solid rgba(0, 180, 255, 0.2);
-            background: rgba(15, 20, 25, 0.95);
-            backdrop-filter: blur(10px);
-        }
+      /* Animated Grid Background */
+      .grid-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+          linear-gradient(rgba(0, 180, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 180, 255, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: 0;
+        pointer-events: none;
+      }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      header {
+        position: relative;
+        z-index: 10;
+        padding: 25px 0;
+        border-bottom: 1px solid rgba(0, 180, 255, 0.2);
+        background: rgba(15, 20, 25, 0.95);
+        backdrop-filter: blur(10px);
+      }
 
-        .logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.3rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, var(--blue), var(--purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .hero {
-            position: relative;
-            z-index: 1;
-            padding: 120px 20px 100px;
-            text-align: center;
-        }
+      .logo {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.3rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--blue), var(--purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 5rem);
-            font-weight: 800;
-            margin-bottom: 30px;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-        }
+      .hero {
+        position: relative;
+        z-index: 1;
+        padding: 120px 20px 100px;
+        text-align: center;
+      }
 
-        .hero h1 .gradient-text {
-            background: linear-gradient(135deg, var(--blue), var(--purple), var(--red));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      .hero h1 {
+        font-size: clamp(2.5rem, 5vw, 5rem);
+        font-weight: 800;
+        margin-bottom: 30px;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
 
-        .hero-stat {
-            font-size: 1.3rem;
-            color: #8a9db5;
-            margin-bottom: 40px;
-        }
+      .hero h1 .gradient-text {
+        background: linear-gradient(
+          135deg,
+          var(--blue),
+          var(--purple),
+          var(--red)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-        .hero-stat strong {
-            color: var(--red);
-            font-weight: 700;
-        }
+      .hero-stat {
+        font-size: 1.3rem;
+        color: #8a9db5;
+        margin-bottom: 40px;
+      }
 
-        .team-viz {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 50px;
-            background: rgba(0, 180, 255, 0.05);
-            border: 1px solid rgba(0, 180, 255, 0.2);
-            border-radius: 16px;
-            position: relative;
-        }
+      .hero-stat strong {
+        color: var(--red);
+        font-weight: 700;
+      }
 
+      .team-viz {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 50px;
+        background: rgba(0, 180, 255, 0.05);
+        border: 1px solid rgba(0, 180, 255, 0.2);
+        border-radius: 16px;
+        position: relative;
+      }
+
+      .viz-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 25px;
+        margin-bottom: 30px;
+      }
+
+      .team-member {
+        aspect-ratio: 1;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid var(--member-color);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .team-member:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 180, 255, 0.3);
+      }
+
+      .member-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .member-label {
+        font-size: 0.75rem;
+        text-align: center;
+        color: var(--member-color);
+        font-weight: 600;
+      }
+
+      .diversity-score {
+        text-align: center;
+        padding: 25px;
+        background: rgba(0, 204, 153, 0.1);
+        border-radius: 12px;
+        border: 2px solid var(--green);
+      }
+
+      .diversity-score h3 {
+        font-size: 2.5rem;
+        color: var(--green);
+        margin-bottom: 10px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 16px 40px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--blue), var(--purple));
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px rgba(0, 180, 255, 0.4);
+      }
+
+      .features {
+        padding: 100px 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 35px;
+        transition: all 0.4s ease;
+      }
+
+      .feature-card:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--blue);
+        transform: translateY(-5px);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        display: block;
+      }
+
+      .feature-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--blue);
+      }
+
+      .case-study {
+        padding: 100px 20px;
+        background: rgba(0, 180, 255, 0.03);
+        position: relative;
+        z-index: 1;
+      }
+
+      .case-card {
+        max-width: 900px;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 180, 255, 0.3);
+        border-radius: 16px;
+        padding: 50px;
+      }
+
+      .case-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        margin: 40px 0;
+      }
+
+      .metric-box {
+        text-align: center;
+        padding: 25px;
+        background: rgba(0, 204, 153, 0.1);
+        border-radius: 12px;
+        border: 2px solid var(--green);
+      }
+
+      .metric-value {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--green);
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .pricing {
+        padding: 100px 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1100px;
+        margin: 50px auto;
+      }
+
+      .pricing-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 40px;
+        transition: all 0.3s ease;
+      }
+
+      .pricing-card.featured {
+        border-color: var(--blue);
+        background: rgba(0, 180, 255, 0.05);
+        transform: scale(1.05);
+      }
+
+      .tier-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      .tier-price {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--blue);
+        margin: 20px 0;
+      }
+
+      .tier-features {
+        list-style: none;
+        margin: 25px 0;
+      }
+
+      .tier-features li {
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .tier-features li::before {
+        content: "✓ ";
+        color: var(--green);
+        font-weight: 700;
+      }
+
+      footer {
+        padding: 60px 20px;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 1;
+      }
+
+      @media (max-width: 968px) {
         .viz-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 25px;
-            margin-bottom: 30px;
+          grid-template-columns: repeat(3, 1fr);
         }
-
-        .team-member {
-            aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--member-color);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .team-member:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 180, 255, 0.3);
-        }
-
-        .member-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .member-label {
-            font-size: 0.75rem;
-            text-align: center;
-            color: var(--member-color);
-            font-weight: 600;
-        }
-
-        .diversity-score {
-            text-align: center;
-            padding: 25px;
-            background: rgba(0, 204, 153, 0.1);
-            border-radius: 12px;
-            border: 2px solid var(--green);
-        }
-
-        .diversity-score h3 {
-            font-size: 2.5rem;
-            color: var(--green);
-            margin-bottom: 10px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 16px 40px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--blue), var(--purple));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(0, 180, 255, 0.4);
-        }
-
-        .features {
-            padding: 100px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 35px;
-            transition: all 0.4s ease;
-        }
-
-        .feature-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--blue);
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .feature-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--blue);
-        }
-
-        .case-study {
-            padding: 100px 20px;
-            background: rgba(0, 180, 255, 0.03);
-            position: relative;
-            z-index: 1;
-        }
-
-        .case-card {
-            max-width: 900px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 180, 255, 0.3);
-            border-radius: 16px;
-            padding: 50px;
-        }
-
-        .case-metrics {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .metric-box {
-            text-align: center;
-            padding: 25px;
-            background: rgba(0, 204, 153, 0.1);
-            border-radius: 12px;
-            border: 2px solid var(--green);
-        }
-
-        .metric-value {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--green);
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .pricing {
-            padding: 100px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
         .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            max-width: 1100px;
-            margin: 50px auto;
+          grid-template-columns: 1fr;
         }
-
-        .pricing-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 40px;
-            transition: all 0.3s ease;
-        }
-
         .pricing-card.featured {
-            border-color: var(--blue);
-            background: rgba(0, 180, 255, 0.05);
-            transform: scale(1.05);
+          transform: scale(1);
         }
-
-        .tier-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .tier-price {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--blue);
-            margin: 20px 0;
-        }
-
-        .tier-features {
-            list-style: none;
-            margin: 25px 0;
-        }
-
-        .tier-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .tier-features li::before {
-            content: '✓ ';
-            color: var(--green);
-            font-weight: 700;
-        }
-
-        footer {
-            padding: 60px 20px;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 968px) {
-            .viz-grid { grid-template-columns: repeat(3, 1fr); }
-            .pricing-grid { grid-template-columns: 1fr; }
-            .pricing-card.featured { transform: scale(1); }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="grid-bg"></div>
 
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">APGI_ORGANIZATIONAL</div>
-                <a href="#pricing" class="btn btn-primary">Schedule Demo</a>
-            </div>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">APGI_ORGANIZATIONAL</div>
+          <a href="#pricing" class="btn btn-primary">Schedule Demo</a>
         </div>
+      </div>
     </header>
 
     <section class="hero">
-        <div class="container">
-            <h1>
-                <span class="gradient-text">85%</span> of team failures<br>
-                trace to communication breakdowns
-            </h1>
-            <p class="hero-stat">
-                Not technical gaps. <strong>(Harvard Business Review, 2023)</strong>
-            </p>
-            <p style="font-size: 1.3rem; color: #8a9db5; max-width: 800px; margin: 0 auto 60px;">
-                Team Cognitive Diversity: Your Missing Competitive Advantage
-            </p>
+      <div class="container">
+        <h1>
+          <span class="gradient-text">85%</span> of team failures<br />
+          trace to communication breakdowns
+        </h1>
+        <p class="hero-stat">
+          Not technical gaps. <strong>(Harvard Business Review, 2023)</strong>
+        </p>
+        <p
+          style="
+            font-size: 1.3rem;
+            color: #8a9db5;
+            max-width: 800px;
+            margin: 0 auto 60px;
+          "
+        >
+          Team Cognitive Diversity: Your Missing Competitive Advantage
+        </p>
 
-            <div class="team-viz">
-                <div class="viz-grid">
-                    <div class="team-member" style="--member-color: var(--blue);">
-                        <div class="member-icon">🧠</div>
-                        <div class="member-label">Analytical</div>
-                    </div>
-                    <div class="team-member" style="--member-color: var(--red);">
-                        <div class="member-icon">❤️</div>
-                        <div class="member-label">Emotional</div>
-                    </div>
-                    <div class="team-member" style="--member-color: var(--purple);">
-                        <div class="member-icon">🎯</div>
-                        <div class="member-label">Strategic</div>
-                    </div>
-                    <div class="team-member" style="--member-color: var(--green);">
-                        <div class="member-icon">🔄</div>
-                        <div class="member-label">Adaptive</div>
-                    </div>
-                    <div class="team-member" style="--member-color: var(--yellow);">
-                        <div class="member-icon">⚡</div>
-                        <div class="member-label">Reactive</div>
-                    </div>
-                </div>
-
-                <div class="diversity-score">
-                    <h3>87% Cognitive Diversity</h3>
-                    <p style="color: #8a9db5;">Optimal team composition detected</p>
-                </div>
+        <div class="team-viz">
+          <div class="viz-grid">
+            <div class="team-member" style="--member-color: var(--blue)">
+              <div class="member-icon">🧠</div>
+              <div class="member-label">Analytical</div>
             </div>
+            <div class="team-member" style="--member-color: var(--red)">
+              <div class="member-icon">❤️</div>
+              <div class="member-label">Emotional</div>
+            </div>
+            <div class="team-member" style="--member-color: var(--purple)">
+              <div class="member-icon">🎯</div>
+              <div class="member-label">Strategic</div>
+            </div>
+            <div class="team-member" style="--member-color: var(--green)">
+              <div class="member-icon">🔄</div>
+              <div class="member-label">Adaptive</div>
+            </div>
+            <div class="team-member" style="--member-color: var(--yellow)">
+              <div class="member-icon">⚡</div>
+              <div class="member-label">Reactive</div>
+            </div>
+          </div>
 
-            <a href="#pricing" class="btn btn-primary">Discover Your Team's Blueprint</a>
+          <div class="diversity-score">
+            <h3>87% Cognitive Diversity</h3>
+            <p style="color: #8a9db5">Optimal team composition detected</p>
+          </div>
         </div>
+
+        <a href="#pricing" class="btn btn-primary"
+          >Discover Your Team's Blueprint</a
+        >
+      </div>
     </section>
 
     <section class="features">
-        <div class="container">
-            <h2 style="font-size: 3rem; text-align: center; margin-bottom: 20px;">Enterprise Solutions</h2>
-            <p style="text-align: center; color: #8a9db5; margin-bottom: 60px; font-size: 1.2rem;">
-                Move beyond personality tests to cognitive compatibility science
+      <div class="container">
+        <h2 style="font-size: 3rem; text-align: center; margin-bottom: 20px">
+          Enterprise Solutions
+        </h2>
+        <p
+          style="
+            text-align: center;
+            color: #8a9db5;
+            margin-bottom: 60px;
+            font-size: 1.2rem;
+          "
+        >
+          Move beyond personality tests to cognitive compatibility science
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <span class="feature-icon">📊</span>
+            <h3 class="feature-title">Team Dashboards</h3>
+            <p style="color: #8a9db5">
+              Aggregate and anonymized views of team cognitive patterns with
+              real-time compatibility metrics.
             </p>
+          </div>
 
-            <div class="features-grid">
-                <div class="feature-card">
-                    <span class="feature-icon">📊</span>
-                    <h3 class="feature-title">Team Dashboards</h3>
-                    <p style="color: #8a9db5;">Aggregate and anonymized views of team cognitive patterns with real-time compatibility metrics.</p>
-                </div>
+          <div class="feature-card">
+            <span class="feature-icon">🤝</span>
+            <h3 class="feature-title">Compatibility Analysis</h3>
+            <p style="color: #8a9db5">
+              Predict team dynamics before conflicts. Optimize team composition
+              for specific project types.
+            </p>
+          </div>
 
-                <div class="feature-card">
-                    <span class="feature-icon">🤝</span>
-                    <h3 class="feature-title">Compatibility Analysis</h3>
-                    <p style="color: #8a9db5;">Predict team dynamics before conflicts. Optimize team composition for specific project types.</p>
-                </div>
+          <div class="feature-card">
+            <span class="feature-icon">👔</span>
+            <h3 class="feature-title">Leadership Development</h3>
+            <p style="color: #8a9db5">
+              Customized growth paths based on cognitive profiles. Track
+              leadership evolution over time.
+            </p>
+          </div>
 
-                <div class="feature-card">
-                    <span class="feature-icon">👔</span>
-                    <h3 class="feature-title">Leadership Development</h3>
-                    <p style="color: #8a9db5;">Customized growth paths based on cognitive profiles. Track leadership evolution over time.</p>
-                </div>
+          <div class="feature-card">
+            <span class="feature-icon">🌈</span>
+            <h3 class="feature-title">DEI Applications</h3>
+            <p style="color: #8a9db5">
+              Measure and optimize cognitive diversity. Quantify inclusion
+              beyond demographics.
+            </p>
+          </div>
 
-                <div class="feature-card">
-                    <span class="feature-icon">🌈</span>
-                    <h3 class="feature-title">DEI Applications</h3>
-                    <p style="color: #8a9db5;">Measure and optimize cognitive diversity. Quantify inclusion beyond demographics.</p>
-                </div>
+          <div class="feature-card">
+            <span class="feature-icon">🔗</span>
+            <h3 class="feature-title">HR Integration</h3>
+            <p style="color: #8a9db5">
+              Connect with Workday, BambooHR, SAP SuccessFactors. Seamless
+              workflow integration.
+            </p>
+          </div>
 
-                <div class="feature-card">
-                    <span class="feature-icon">🔗</span>
-                    <h3 class="feature-title">HR Integration</h3>
-                    <p style="color: #8a9db5;">Connect with Workday, BambooHR, SAP SuccessFactors. Seamless workflow integration.</p>
-                </div>
-
-                <div class="feature-card">
-                    <span class="feature-icon">🔒</span>
-                    <h3 class="feature-title">Privacy Controls</h3>
-                    <p style="color: #8a9db5;">Individual results stay private. Team patterns aggregate anonymously. Full GDPR/CCPA compliance.</p>
-                </div>
-            </div>
+          <div class="feature-card">
+            <span class="feature-icon">🔒</span>
+            <h3 class="feature-title">Privacy Controls</h3>
+            <p style="color: #8a9db5">
+              Individual results stay private. Team patterns aggregate
+              anonymously. Full GDPR/CCPA compliance.
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="case-study">
-        <div class="container">
-            <h2 style="font-size: 3rem; text-align: center; margin-bottom: 60px;">ROI Case Study</h2>
-            
-            <div class="case-card">
-                <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--blue);">TechForward Inc. — Project Alpha</h3>
-                <p style="color: #8a9db5; margin-bottom: 30px;">
-                    Cross-functional team of 12, 6-month software development cycle
-                </p>
+      <div class="container">
+        <h2 style="font-size: 3rem; text-align: center; margin-bottom: 60px">
+          ROI Case Study
+        </h2>
 
-                <div class="case-metrics">
-                    <div class="metric-box">
-                        <span class="metric-value">-34%</span>
-                        <span style="color: #8a9db5;">Time to Completion</span>
-                    </div>
-                    <div class="metric-box">
-                        <span class="metric-value">+41%</span>
-                        <span style="color: #8a9db5;">Stakeholder Satisfaction</span>
-                    </div>
-                </div>
+        <div class="case-card">
+          <h3
+            style="font-size: 1.5rem; margin-bottom: 20px; color: var(--blue)"
+          >
+            TechForward Inc. — Project Alpha
+          </h3>
+          <p style="color: #8a9db5; margin-bottom: 30px">
+            Cross-functional team of 12, 6-month software development cycle
+          </p>
 
-                <p style="color: #8a9db5; font-size: 0.95rem; font-style: italic;">
-                    "After implementing APGI team mapping, Project Alpha reduced time-to-completion by 34% and increased stakeholder satisfaction scores by 41%."
-                </p>
-                <p style="color: #8a9db5; font-size: 0.85rem; margin-top: 15px;">
-                    Measured via Jira velocity metrics and quarterly stakeholder surveys
-                </p>
+          <div class="case-metrics">
+            <div class="metric-box">
+              <span class="metric-value">-34%</span>
+              <span style="color: #8a9db5">Time to Completion</span>
             </div>
+            <div class="metric-box">
+              <span class="metric-value">+41%</span>
+              <span style="color: #8a9db5">Stakeholder Satisfaction</span>
+            </div>
+          </div>
+
+          <p style="color: #8a9db5; font-size: 0.95rem; font-style: italic">
+            "After implementing APGI team mapping, Project Alpha reduced
+            time-to-completion by 34% and increased stakeholder satisfaction
+            scores by 41%."
+          </p>
+          <p style="color: #8a9db5; font-size: 0.85rem; margin-top: 15px">
+            Measured via Jira velocity metrics and quarterly stakeholder surveys
+          </p>
         </div>
+      </div>
     </section>
 
     <section class="pricing" id="pricing">
-        <div class="container">
-            <h2 style="font-size: 3rem; text-align: center; margin-bottom: 20px;">Enterprise Transformation</h2>
-            <p style="text-align: center; color: #8a9db5; margin-bottom: 20px; font-size: 1.2rem;">
-                Scalable solutions for companies 50-5000+ employees
-            </p>
+      <div class="container">
+        <h2 style="font-size: 3rem; text-align: center; margin-bottom: 20px">
+          Enterprise Transformation
+        </h2>
+        <p
+          style="
+            text-align: center;
+            color: #8a9db5;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+          "
+        >
+          Scalable solutions for companies 50-5000+ employees
+        </p>
 
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3 class="tier-name">Starter</h3>
-                    <p style="color: #8a9db5;">50-200 employees</p>
-                    <div class="tier-price">$10K<small style="font-size: 1rem; color: #8a9db5;">/year</small></div>
-                    <ul class="tier-features">
-                        <li>Unlimited assessments</li>
-                        <li>Basic team dashboard</li>
-                        <li>Monthly reports</li>
-                        <li>Email support</li>
-                    </ul>
-                    <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center;">Get Started</a>
-                </div>
-
-                <div class="pricing-card featured">
-                    <h3 class="tier-name">Growth</h3>
-                    <p style="color: #8a9db5;">200-1000 employees</p>
-                    <div class="tier-price">$25K<small style="font-size: 1rem; color: #8a9db5;">/year</small></div>
-                    <ul class="tier-features">
-                        <li>Everything in Starter</li>
-                        <li>Executive dashboard</li>
-                        <li>Team optimization algorithms</li>
-                        <li>Leadership development modules</li>
-                        <li>Dedicated success manager</li>
-                    </ul>
-                    <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center;">Most Popular</a>
-                </div>
-
-                <div class="pricing-card">
-                    <h3 class="tier-name">Enterprise</h3>
-                    <p style="color: #8a9db5;">1000+ employees</p>
-                    <div class="tier-price">Custom<small style="font-size: 1rem; color: #8a9db5;"></small></div>
-                    <ul class="tier-features">
-                        <li>Everything in Growth</li>
-                        <li>Custom integrations</li>
-                        <li>White-label options</li>
-                        <li>On-site training</li>
-                        <li>Annual org health report</li>
-                    </ul>
-                    <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center;">Contact Sales</a>
-                </div>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3 class="tier-name">Starter</h3>
+            <p style="color: #8a9db5">50-200 employees</p>
+            <div class="tier-price">
+              $10K<small style="font-size: 1rem; color: #8a9db5">/year</small>
             </div>
+            <ul class="tier-features">
+              <li>Unlimited assessments</li>
+              <li>Basic team dashboard</li>
+              <li>Monthly reports</li>
+              <li>Email support</li>
+            </ul>
+            <a
+              href="#contact"
+              class="btn btn-primary"
+              style="width: 100%; text-align: center"
+              >Get Started</a
+            >
+          </div>
 
-            <p style="text-align: center; color: #8a9db5; margin-top: 40px;">
-                🎁 Free Assessment: First 25 employees mapped at no cost
-            </p>
+          <div class="pricing-card featured">
+            <h3 class="tier-name">Growth</h3>
+            <p style="color: #8a9db5">200-1000 employees</p>
+            <div class="tier-price">
+              $25K<small style="font-size: 1rem; color: #8a9db5">/year</small>
+            </div>
+            <ul class="tier-features">
+              <li>Everything in Starter</li>
+              <li>Executive dashboard</li>
+              <li>Team optimization algorithms</li>
+              <li>Leadership development modules</li>
+              <li>Dedicated success manager</li>
+            </ul>
+            <a
+              href="#contact"
+              class="btn btn-primary"
+              style="width: 100%; text-align: center"
+              >Most Popular</a
+            >
+          </div>
+
+          <div class="pricing-card">
+            <h3 class="tier-name">Enterprise</h3>
+            <p style="color: #8a9db5">1000+ employees</p>
+            <div class="tier-price">
+              Custom<small style="font-size: 1rem; color: #8a9db5"></small>
+            </div>
+            <ul class="tier-features">
+              <li>Everything in Growth</li>
+              <li>Custom integrations</li>
+              <li>White-label options</li>
+              <li>On-site training</li>
+              <li>Annual org health report</li>
+            </ul>
+            <a
+              href="#contact"
+              class="btn btn-primary"
+              style="width: 100%; text-align: center"
+              >Contact Sales</a
+            >
+          </div>
         </div>
+
+        <p style="text-align: center; color: #8a9db5; margin-top: 40px">
+          🎁 Free Assessment: First 25 employees mapped at no cost
+        </p>
+      </div>
     </section>
 
     <footer>
-        <div class="container">
-            <div style="font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; margin-bottom: 20px; background: linear-gradient(135deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                APGI_ORGANIZATIONAL
-            </div>
-            <p style="color: #8a9db5;">
-                Build teams that actually work with cognitive compatibility science
-            </p>
+      <div class="container">
+        <div
+          style="
+            font-family: &quot;JetBrains Mono&quot;, monospace;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          "
+        >
+          APGI_ORGANIZATIONAL
         </div>
+        <p style="color: #8a9db5">
+          Build teams that actually work with cognitive compatibility science
+        </p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>

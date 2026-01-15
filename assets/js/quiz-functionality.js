@@ -15,6 +15,7 @@ class APGIQuiz {
   init() {
     this.loadNavigation();
     this.setupThemeToggle();
+    this.loadSavedProgress();
     this.renderQuiz();
     this.bindEvents();
   }
@@ -25,28 +26,136 @@ class APGIQuiz {
   }
 
   // Theme toggle functionality is now handled by theme-manager.js
-    // This prevents conflicts with the centralized ThemeManager
+  // This prevents conflicts with the centralized ThemeManager
   setupThemeToggle() {
     // No longer needed - handled by ThemeManager
   }
 
   // Theme button updates are now handled by theme-manager.js
 
+  // Load saved progress from localStorage
+  loadSavedProgress() {
+    try {
+      const savedProgress = localStorage.getItem("apgi_quiz_progress");
+      if (savedProgress) {
+        const progress = JSON.parse(savedProgress);
+
+        // Check if the saved progress is still valid (not too old)
+        const savedTime = new Date(progress.timestamp);
+        const now = new Date();
+        const hoursDiff = (now - savedTime) / (1000 * 60 * 60);
+
+        // Only restore progress if it's less than 24 hours old
+        if (hoursDiff < 24 && progress.answers) {
+          this.answers = progress.answers;
+          this.currentSection = progress.currentSection || 0;
+          this.currentQuestion = progress.currentQuestion || 0;
+
+          // Show recovery message to user
+          this.showProgressRecoveryMessage();
+        } else {
+          // Clear old progress
+          localStorage.removeItem("apgi_quiz_progress");
+        }
+      }
+    } catch (error) {
+      console.warn("Could not load saved quiz progress:", error);
+      localStorage.removeItem("apgi_quiz_progress");
+    }
+  }
+
+  // Save current progress to localStorage
+  saveProgress() {
+    try {
+      const progress = {
+        answers: this.answers,
+        currentSection: this.currentSection,
+        currentQuestion: this.currentQuestion,
+        timestamp: new Date().toISOString(),
+      };
+
+      localStorage.setItem("apgi_quiz_progress", JSON.stringify(progress));
+    } catch (error) {
+      console.warn("Could not save quiz progress:", error);
+    }
+  }
+
+  // Clear saved progress (when quiz is completed)
+  clearProgress() {
+    try {
+      localStorage.removeItem("apgi_quiz_progress");
+    } catch (error) {
+      console.warn("Could not clear quiz progress:", error);
+    }
+  }
+
+  // Show progress recovery message
+  showProgressRecoveryMessage() {
+    const container = document.getElementById("question-container");
+    if (!container) return;
+
+    // Check if we have any answers to recover
+    const totalQuestions = this.quizData.sections.reduce(
+      (acc, section) => acc + section.questions.length,
+      0,
+    );
+    const answeredQuestions = Object.keys(this.answers).length;
+
+    if (answeredQuestions > 0) {
+      // Add recovery message before the first question
+      const recoveryDiv = document.createElement("div");
+      recoveryDiv.className = "progress-recovery-message";
+      recoveryDiv.innerHTML = `
+        <div style="background: var(--info, #4299e1); color: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
+          <strong>Progress Recovered!</strong><br>
+          We found your previous progress: ${answeredQuestions} of ${totalQuestions} questions answered.<br>
+          <small>You can continue where you left off or <button onclick="window.apgiQuiz.restartQuiz()" style="background: white; color: var(--info, #4299e1); border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; margin-left: 0.5rem;">restart</button></small>
+        </div>
+      `;
+
+      container.insertBefore(recoveryDiv, container.firstChild);
+
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        if (recoveryDiv.parentNode) {
+          recoveryDiv.style.opacity = "0";
+          recoveryDiv.style.transition = "opacity 0.5s ease";
+          setTimeout(() => {
+            if (recoveryDiv.parentNode) {
+              recoveryDiv.parentNode.removeChild(recoveryDiv);
+            }
+          }, 500);
+        }
+      }, 5000);
+    }
+  }
+
+  // Restart quiz method
+  restartQuiz() {
+    this.answers = {};
+    this.currentSection = 0;
+    this.currentQuestion = 0;
+    this.clearProgress();
+    this.renderQuiz();
+  }
+
   // Get quiz data - use the data from assessment-quiz.js
   getQuizData() {
     // Return the quizData from assessment-quiz.js if available
-    if (typeof quizData !== 'undefined') {
+    if (typeof quizData !== "undefined") {
       return quizData;
     }
-    
+
     // Error if quizData is not available
-    console.error('quizData not found. Please ensure assessment-quiz.js is loaded before quiz-functionality.js');
+    console.error(
+      "quizData not found. Please ensure assessment-quiz.js is loaded before quiz-functionality.js",
+    );
     return null;
   }
 
   // Render quiz
   renderQuiz() {
-    const container = document.getElementById('question-container');
+    const container = document.getElementById("question-container");
     if (!container) return;
 
     const section = this.quizData.sections[this.currentSection];
@@ -63,26 +172,25 @@ class APGIQuiz {
                     
                     <div class="options-container">
                         ${question.options
-                          .map(
-                            (option, index) => {
-                              // Handle object format from assessment-quiz.js
-                              const optionText = option.text;
-                              const optionValue = option.value;
-                              const optionNote = option.note;
-                              
-                              const savedAnswer = this.answers[question.id];
-                              const isChecked = savedAnswer === optionValue ? 'checked' : '';
-                              
-                              return `
+                          .map((option, index) => {
+                            // Handle object format from assessment-quiz.js
+                            const optionText = option.text;
+                            const optionValue = option.value;
+                            const optionNote = option.note;
+
+                            const savedAnswer = this.answers[question.id];
+                            const isChecked =
+                              savedAnswer === optionValue ? "checked" : "";
+
+                            return `
                             <label class="option-label">
                                 <input type="radio" name="quiz-question-${this.currentSection}-${this.currentQuestion}" value="${optionValue}" ${isChecked}>
                                 <span class="option-text">${optionText}</span>
-                                ${optionNote ? `<span class="option-note">${optionNote}</span>` : ''}
+                                ${optionNote ? `<span class="option-note">${optionNote}</span>` : ""}
                             </label>
                         `;
-                            }
-                          )
-                          .join('')}
+                          })
+                          .join("")}
                     </div>
                 </div>
         `;
@@ -94,31 +202,37 @@ class APGIQuiz {
   bindQuestionEvents() {
     const selector = `input[name="quiz-question-${this.currentSection}-${this.currentQuestion}"]`;
     const options = document.querySelectorAll(selector);
-    const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById("next-btn");
+    const prevBtn = document.getElementById("prev-btn");
 
     // Check if there's already a selected answer for this question
     const section = this.quizData.sections[this.currentSection];
     const question = section.questions[this.currentQuestion];
     const hasSelectedAnswer = this.answers[question.id] !== undefined;
-    
+
     // Enable next button if there's already an answer
     if (nextBtn && hasSelectedAnswer) {
       nextBtn.disabled = false;
     }
 
-    options.forEach(option => {
-      option.addEventListener('change', () => {
+    options.forEach((option) => {
+      option.addEventListener("change", () => {
         if (nextBtn) nextBtn.disabled = false;
+
+        // Save answer and progress
+        const section = this.quizData.sections[this.currentSection];
+        const question = section.questions[this.currentQuestion];
+        this.answers[question.id] = option.value;
+        this.saveProgress();
       });
     });
 
     if (nextBtn) {
-      nextBtn.addEventListener('click', () => this.nextQuestion());
+      nextBtn.addEventListener("click", () => this.nextQuestion());
     }
 
     if (prevBtn) {
-      prevBtn.addEventListener('click', () => this.previousQuestion());
+      prevBtn.addEventListener("click", () => this.previousQuestion());
     }
   }
 
@@ -126,7 +240,7 @@ class APGIQuiz {
   getProgress() {
     const totalQuestions = this.quizData.sections.reduce(
       (sum, section) => sum + section.questions.length,
-      0
+      0,
     );
     const answeredQuestions = Object.keys(this.answers).length;
     return (answeredQuestions / totalQuestions) * 100;
@@ -140,12 +254,13 @@ class APGIQuiz {
     const selectedOption = document.querySelector(selector);
 
     if (!selectedOption) {
-      this.showValidationError('Please select an answer before continuing.');
+      this.showValidationError("Please select an answer before continuing.");
       return;
     }
 
     // Save answer
     this.answers[question.id] = parseInt(selectedOption.value);
+    this.saveProgress(); // Save progress after answering
 
     // Move to next question or section
     this.currentQuestion++;
@@ -164,14 +279,14 @@ class APGIQuiz {
   // Show validation error
   showValidationError(message) {
     // Remove any existing error messages
-    const existingError = document.querySelector('.validation-error');
+    const existingError = document.querySelector(".validation-error");
     if (existingError) {
       existingError.remove();
     }
 
     // Create error message
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'validation-error';
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "validation-error";
     errorDiv.textContent = message;
     errorDiv.style.cssText = `
       background-color: #fee;
@@ -185,7 +300,7 @@ class APGIQuiz {
     `;
 
     // Insert error message before the question container
-    const questionContainer = document.querySelector('.question-container');
+    const questionContainer = document.querySelector(".question-container");
     if (questionContainer) {
       questionContainer.parentNode.insertBefore(errorDiv, questionContainer);
     }
@@ -198,7 +313,9 @@ class APGIQuiz {
     }, 3000);
 
     // Focus on the first option
-    const firstOption = document.querySelector(`input[name="quiz-question-${this.currentSection}-${this.currentQuestion}"]`);
+    const firstOption = document.querySelector(
+      `input[name="quiz-question-${this.currentSection}-${this.currentQuestion}"]`,
+    );
     if (firstOption) {
       firstOption.focus();
     }
@@ -210,8 +327,10 @@ class APGIQuiz {
       this.currentQuestion--;
     } else if (this.currentSection > 0) {
       this.currentSection--;
-      this.currentQuestion = this.quizData.sections[this.currentSection].questions.length - 1;
+      this.currentQuestion =
+        this.quizData.sections[this.currentSection].questions.length - 1;
     }
+    this.saveProgress(); // Save progress when navigating back
     this.renderQuiz();
   }
 
@@ -224,19 +343,22 @@ class APGIQuiz {
       return;
     }
 
+    // Clear saved progress since quiz is completed
+    this.clearProgress();
+
     const scores = this.calculateScores();
     const profile = this.determineProfile(scores);
 
     // Hide question container and show results
-    const questionContainer = document.getElementById('question-container');
-    const resultsContainer = document.getElementById('results-container');
-    
+    const questionContainer = document.getElementById("question-container");
+    const resultsContainer = document.getElementById("results-container");
+
     if (questionContainer) {
-      questionContainer.style.display = 'none';
+      questionContainer.style.display = "none";
     }
-    
+
     if (resultsContainer) {
-      resultsContainer.style.display = 'block';
+      resultsContainer.style.display = "block";
       resultsContainer.innerHTML = `
             <div class="results-container">
                 <h2>Your APGI Consciousness Signature</h2>
@@ -251,9 +373,9 @@ class APGIQuiz {
                                 <span class="score-label">${key}:</span>
                                 <span class="score-value">${value}</span>
                             </div>
-                        `
+                        `,
                           )
-                          .join('')}
+                          .join("")}
                     </div>
                 </div>
                 
@@ -270,40 +392,45 @@ class APGIQuiz {
   // Validate all questions are answered
   validateAllQuestionsAnswered() {
     const unansweredQuestions = [];
-    
+
     this.quizData.sections.forEach((section, sectionIndex) => {
       section.questions.forEach((question, questionIndex) => {
         if (this.answers[question.id] === undefined) {
           unansweredQuestions.push({
             sectionTitle: section.title,
             questionNumber: questionIndex + 1,
-            questionText: question.text.substring(0, 50) + (question.text.length > 50 ? '...' : ''),
+            questionText:
+              question.text.substring(0, 50) +
+              (question.text.length > 50 ? "..." : ""),
             sectionIndex,
-            questionIndex
+            questionIndex,
           });
         }
       });
     });
-    
+
     return unansweredQuestions;
   }
 
   // Show error for unanswered questions
   showUnansweredQuestionsError(unansweredQuestions) {
     // Remove any existing error messages
-    const existingError = document.querySelector('.validation-error');
+    const existingError = document.querySelector(".validation-error");
     if (existingError) {
       existingError.remove();
     }
 
     // Create detailed error message
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'validation-error';
-    
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "validation-error";
+
     const questionList = unansweredQuestions
-      .map(q => `<li><strong>${q.sectionTitle}</strong> - Question ${q.questionNumber}: ${q.questionText}</li>`)
-      .join('');
-    
+      .map(
+        (q) =>
+          `<li><strong>${q.sectionTitle}</strong> - Question ${q.questionNumber}: ${q.questionText}</li>`,
+      )
+      .join("");
+
     errorDiv.innerHTML = `
       <div style="font-weight: bold; margin-bottom: 8px;">Please answer all questions before viewing your results:</div>
       <ol style="margin: 0; padding-left: 20px;">
@@ -321,7 +448,7 @@ class APGIQuiz {
         ">Dismiss</button>
       </div>
     `;
-    
+
     errorDiv.style.cssText = `
       background-color: #fee;
       color: #c53030;
@@ -336,7 +463,7 @@ class APGIQuiz {
     `;
 
     // Insert error message at the top of the quiz section
-    const quizSection = document.getElementById('quiz-section');
+    const quizSection = document.getElementById("quiz-section");
     if (quizSection) {
       quizSection.insertBefore(errorDiv, quizSection.firstChild);
     }
@@ -356,18 +483,19 @@ class APGIQuiz {
       prediction: 0,
       precision: 0,
       threshold: 0,
-      somatic: 0
+      somatic: 0,
     };
 
     // Calculate average for each section
-    this.quizData.sections.forEach(section => {
+    this.quizData.sections.forEach((section) => {
       const sectionAnswers = section.questions
-        .map(q => this.answers[q.id])
-        .filter(answer => answer !== undefined);
+        .map((q) => this.answers[q.id])
+        .filter((answer) => answer !== undefined);
 
       if (sectionAnswers.length > 0) {
         const average =
-          sectionAnswers.reduce((sum, answer) => sum + answer, 0) / sectionAnswers.length;
+          sectionAnswers.reduce((sum, answer) => sum + answer, 0) /
+          sectionAnswers.length;
         scores[section.id] = Math.round(average);
       }
     });
@@ -382,39 +510,39 @@ class APGIQuiz {
 
     if (prediction >= 3 && precision >= 3) {
       return {
-        name: 'Sensitive Integrator',
+        name: "Sensitive Integrator",
         description:
-          'High awareness of prediction errors and precise attention to detail. You process both external surprises and internal signals deeply.'
+          "High awareness of prediction errors and precise attention to detail. You process both external surprises and internal signals deeply.",
       };
     } else if (prediction <= 2 && precision >= 3) {
       return {
-        name: 'Analytical Guard',
+        name: "Analytical Guard",
         description:
-          'Strong mental models with precise vigilance. You excel at systematic analysis and maintaining cognitive control.'
+          "Strong mental models with precise vigilance. You excel at systematic analysis and maintaining cognitive control.",
       };
     } else if (prediction >= 3 && precision <= 2) {
       return {
-        name: 'Open Explorer',
+        name: "Open Explorer",
         description:
-          'Thrives on novelty and new experiences. High curiosity with openness to unexpected information.'
+          "Thrives on novelty and new experiences. High curiosity with openness to unexpected information.",
       };
     } else {
       return {
-        name: 'Adaptive Balancer',
+        name: "Adaptive Balancer",
         description:
-          'Maintains equilibrium between exploration and stability. Flexible yet grounded in changing environments.'
+          "Maintains equilibrium between exploration and stability. Flexible yet grounded in changing environments.",
       };
     }
   }
 
   // Bind results events
   bindResultsEvents() {
-    const retakeBtn = document.getElementById('retake-btn');
-    const shareBtn = document.getElementById('share-btn');
-    const printBtn = document.getElementById('print-btn');
+    const retakeBtn = document.getElementById("retake-btn");
+    const shareBtn = document.getElementById("share-btn");
+    const printBtn = document.getElementById("print-btn");
 
     if (retakeBtn) {
-      retakeBtn.addEventListener('click', () => {
+      retakeBtn.addEventListener("click", () => {
         this.currentSection = 0;
         this.currentQuestion = 0;
         this.answers = {};
@@ -423,26 +551,26 @@ class APGIQuiz {
     }
 
     if (shareBtn) {
-      shareBtn.addEventListener('click', () => {
+      shareBtn.addEventListener("click", () => {
         const profile = this.determineProfile(this.calculateScores());
         const text = `My APGI Consciousness Signature: ${profile.name}`;
 
         if (navigator.share) {
           navigator.share({
-            title: 'APGI Assessment Results',
-            text: text
+            title: "APGI Assessment Results",
+            text: text,
           });
         } else {
           // Fallback: copy to clipboard
           navigator.clipboard.writeText(text).then(() => {
-            alert('Results copied to clipboard!');
+            alert("Results copied to clipboard!");
           });
         }
       });
     }
 
     if (printBtn) {
-      printBtn.addEventListener('click', () => {
+      printBtn.addEventListener("click", () => {
         window.print();
       });
     }
@@ -451,16 +579,16 @@ class APGIQuiz {
   // Bind initial events
   bindEvents() {
     // Start quiz button
-    const startBtn = document.getElementById('start-quiz-btn');
+    const startBtn = document.getElementById("start-quiz-btn");
     if (startBtn) {
-      startBtn.addEventListener('click', () => {
+      startBtn.addEventListener("click", () => {
         this.startQuiz();
       });
     }
 
     // Add any additional event listeners
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
         // Handle escape key if needed
       }
     });
@@ -468,29 +596,29 @@ class APGIQuiz {
 
   // Start quiz
   startQuiz() {
-    const introSection = document.getElementById('introduction-section');
-    const quizSection = document.getElementById('quiz-section');
-    const loadingSpinner = document.getElementById('loading-spinner');
-    
+    const introSection = document.getElementById("introduction-section");
+    const quizSection = document.getElementById("quiz-section");
+    const loadingSpinner = document.getElementById("loading-spinner");
+
     if (loadingSpinner) {
-      loadingSpinner.style.display = 'flex';
+      loadingSpinner.style.display = "flex";
     }
-    
+
     // Simulate loading time
     setTimeout(() => {
       if (introSection) {
-        introSection.style.display = 'none';
+        introSection.style.display = "none";
       }
       if (quizSection) {
-        quizSection.style.display = 'block';
+        quizSection.style.display = "block";
       }
       if (loadingSpinner) {
-        loadingSpinner.style.display = 'none';
+        loadingSpinner.style.display = "none";
       }
-      
+
       // Update section header
       this.updateSectionHeader();
-      
+
       // Render first question
       this.renderQuiz();
     }, 500);
@@ -499,10 +627,10 @@ class APGIQuiz {
   // Update section header
   updateSectionHeader() {
     const section = this.quizData.sections[this.currentSection];
-    const sectionIcon = document.getElementById('section-icon');
-    const sectionTitle = document.getElementById('section-title');
-    const sectionSubtitle = document.getElementById('section-subtitle');
-    
+    const sectionIcon = document.getElementById("section-icon");
+    const sectionTitle = document.getElementById("section-title");
+    const sectionSubtitle = document.getElementById("section-subtitle");
+
     if (sectionIcon) {
       sectionIcon.innerHTML = `<i class="${section.icon}"></i>`;
     }
@@ -516,11 +644,11 @@ class APGIQuiz {
 }
 
 // Initialize quiz when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  new APGIQuiz();
+document.addEventListener("DOMContentLoaded", () => {
+  window.apgiQuiz = new APGIQuiz();
 });
 
 // Export for potential use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = APGIQuiz;
 }

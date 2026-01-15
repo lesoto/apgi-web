@@ -1,174 +1,622 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/cdn-fallbacks.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/tailwind-fallback.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/tailwind-fallback.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css" />
     <style>
-        .form-input {
-            transition: all 0.3s ease;
-        }
-        .form-input:focus {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .profile-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: transform 0.3s ease;
-        }
-        .profile-card:hover {
-            transform: translateY(-2px);
-        }
-        .social-icon {
-            transition: all 0.3s ease;
-        }
-        .social-icon:hover {
-            transform: scale(1.2) rotate(5deg);
-        }
-        .action-button {
-            transition: all 0.3s ease;
-        }
-        .action-button:hover {
-            transform: translateX(5px);
-        }
-        .form-section {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-        }
+      .form-input {
+        transition: all 0.3s ease;
+      }
+      .form-input:focus {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .profile-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: transform 0.3s ease;
+      }
+      .profile-card:hover {
+        transform: translateY(-2px);
+      }
+      .social-icon {
+        transition: all 0.3s ease;
+      }
+      .social-icon:hover {
+        transform: scale(1.2) rotate(5deg);
+      }
+      .action-button {
+        transition: all 0.3s ease;
+      }
+      .action-button:hover {
+        transform: translateX(5px);
+      }
+      .form-section {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+      }
     </style>
-</head>
-<body class="font-sans">
+  </head>
+  <body class="font-sans">
     <!-- Include Navigation Component -->
     <div id="navigation-container"></div>
-    <script>
-      fetch('components/navigation.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('navigation-container').innerHTML = html;
-        })
-        .catch(error => console.error('Error loading navigation:', error));
-    </script>
-    
+    <script src="assets/js/navigation-loader.js"></script>
+
     <div class="container mx-auto p-6">
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <div class="form-section p-8 lg:col-span-2">
-      <div class="mb-8">
-        <h2 class="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Profile Settings</h2>
-      </div>
-      <div class="mb-6">
-        <label class="block text-gray-700 font-semibold mb-2" for="name">
-          <i class="fas fa-user mr-2 text-purple-600"></i>Name
-        </label>
-        <input class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200" id="name" type="text" placeholder="APGI Framework" value="APGI Framework">
-      </div>
-      <div class="mb-6">
-        <label class="block text-gray-700 font-semibold mb-2" for="about">
-          <i class="fas fa-info-circle mr-2 text-purple-600"></i>About
-        </label>
-        <textarea class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200" id="about" rows="4" placeholder="I'm APGI Framework, the king in the north. I know Nothing.">APGI Framework helps you to understand the world and yourself.</textarea>
-      </div>
-      <div class="mb-8">
-        <label class="block text-gray-700 font-semibold mb-2" for="photo">
-          <i class="fas fa-camera mr-2 text-purple-600"></i>Book URL
-        </label>
-        <input class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200" id="photo" type="text" placeholder="https://apgi-framework.com/Book-Outline.html" value="https://apgi-framework.com/Book-Outline.html">
-      </div>
-      <div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-              <label class="block text-gray-700 font-semibold mb-2" for="YouTube">
-                <i class="fab fa-youtube mr-2 text-sky-500"></i>YouTube
-              </label>
-            <input class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200" id="YouTube" type="text" placeholder="https://YouTube.com/apgi_framework" value="https://YouTube.com/apgi_framework">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="form-section p-8 lg:col-span-2">
+          <div class="mb-8">
+            <h2
+              class="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
+            >
+              Profile Settings
+            </h2>
+          </div>
+          <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-2" for="name">
+              <i class="fas fa-user mr-2 text-purple-600"></i>Name
+            </label>
+            <input
+              class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              id="name"
+              type="text"
+              placeholder="APGI Framework"
+              value="APGI Framework"
+            />
+          </div>
+          <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-2" for="about">
+              <i class="fas fa-info-circle mr-2 text-purple-600"></i>About
+            </label>
+            <textarea
+              class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              id="about"
+              rows="4"
+              placeholder="I'm APGI Framework, the king in the north. I know Nothing."
+            >
+APGI Framework helps you to understand the world and yourself.</textarea
+            >
+          </div>
+          <div class="mb-8">
+            <label class="block text-gray-700 font-semibold mb-2" for="photo">
+              <i class="fas fa-camera mr-2 text-purple-600"></i>Book URL
+            </label>
+            <input
+              class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              id="photo"
+              type="text"
+              placeholder="https://apgi-framework.com/Book-Outline.html"
+              value="https://apgi-framework.com/Book-Outline.html"
+            />
           </div>
           <div>
-            <label class="block text-gray-700 font-semibold mb-2" for="TikTok">
-              <i class="fab fa-tiktok mr-2 text-blue-700"></i>TikTok
-            </label>
-            <input class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-200" id="TikTok" type="text" placeholder="https://TikTok.com/apgi_framework" value="https://TikTok.com/apgi_framework">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  class="block text-gray-700 font-semibold mb-2"
+                  for="YouTube"
+                >
+                  <i class="fab fa-youtube mr-2 text-sky-500"></i>YouTube
+                </label>
+                <input
+                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+                  id="YouTube"
+                  type="text"
+                  placeholder="https://YouTube.com/apgi_framework"
+                  value="https://YouTube.com/apgi_framework"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-gray-700 font-semibold mb-2"
+                  for="TikTok"
+                >
+                  <i class="fab fa-tiktok mr-2 text-blue-700"></i>TikTok
+                </label>
+                <input
+                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-200"
+                  id="TikTok"
+                  type="text"
+                  placeholder="https://TikTok.com/apgi_framework"
+                  value="https://TikTok.com/apgi_framework"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-gray-700 font-semibold mb-2"
+                  for="facebook"
+                >
+                  <i class="fab fa-facebook mr-2 text-blue-600"></i>Facebook
+                </label>
+                <input
+                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  id="facebook"
+                  type="text"
+                  placeholder="https://facebook.com/apgi_framework"
+                  value="https://facebook.com/apgi_framework"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-gray-700 font-semibold mb-2"
+                  for="instagram"
+                >
+                  <i class="fab fa-instagram mr-2 text-pink-600"></i>Instagram
+                </label>
+                <input
+                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-200"
+                  id="instagram"
+                  type="text"
+                  placeholder="https://instagram.com/apgi_framework"
+                  value="https://instagram.com/apgi_framework"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-gray-700 font-semibold mb-2"
+                  for="telegram"
+                >
+                  <i class="fab fa-telegram mr-2 text-blue-500"></i>Telegram
+                </label>
+                <input
+                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  id="telegram"
+                  type="text"
+                  placeholder="https://t.me/apgi_framework"
+                  value="https://t.me/apgi_framework"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-gray-700 font-semibold mb-2"
+                  for="github"
+                >
+                  <i class="fab fa-github mr-2 text-gray-800"></i>Github
+                </label>
+                <input
+                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-gray-200"
+                  id="github"
+                  type="text"
+                  placeholder="https://github.com/apgi_framework"
+                  value="https://github.com/apgi_framework"
+                />
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex flex-col sm:flex-row gap-4 mt-8">
+              <button
+                type="button"
+                id="save-profile-btn"
+                class="bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                <i class="fas fa-save mr-2"></i>Save Profile
+              </button>
+              <button
+                type="button"
+                id="reset-profile-btn"
+                class="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition-all duration-300"
+              >
+                <i class="fas fa-undo mr-2"></i>Reset Changes
+              </button>
+            </div>
+
+            <!-- Status Messages -->
+            <div
+              id="status-message"
+              class="hidden mt-4 p-4 rounded-lg transition-all duration-300"
+            ></div>
           </div>
-          <div>
-            <label class="block text-gray-700 font-semibold mb-2" for="facebook">
-              <i class="fab fa-facebook mr-2 text-blue-600"></i>Facebook
-            </label>
-            <input class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200" id="facebook" type="text" placeholder="https://facebook.com/apgi_framework" value="https://facebook.com/apgi_framework">
+        </div>
+        <div class="profile-card rounded-2xl shadow-2xl p-8 text-white">
+          <div class="text-center mb-6">
+            <div class="relative inline-block">
+              <img
+                class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-lg"
+                src="assets/images/mismatch.jpg"
+                alt="APGI Framework"
+              />
+              <div
+                class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white"
+              ></div>
+            </div>
+            <h3 class="text-3xl font-bold mb-2">APGI Framework</h3>
+            <p class="text-white/90 text-lg">Consciousness Architecture</p>
           </div>
-          <div>
-            <label class="block text-gray-700 font-semibold mb-2" for="instagram">
-              <i class="fab fa-instagram mr-2 text-pink-600"></i>Instagram
-            </label>
-            <input class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-200" id="instagram" type="text" placeholder="https://instagram.com/apgi_framework" value="https://instagram.com/apgi_framework">
+          <div class="flex justify-center items-center mb-8 space-x-4">
+            <a
+              href="https://tiktok.com/@apgi_framework"
+              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
+              target="_blank"
+            >
+              <i class="fab fa-tiktok text-2xl"></i>
+            </a>
+            <a
+              href="https://youtube.com/@apgi_framework"
+              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
+              target="_blank"
+            >
+              <i class="fab fa-youtube text-2xl"></i>
+            </a>
+            <a
+              href="https://facebook.com/apgi_framework"
+              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
+              target="_blank"
+            >
+              <i class="fab fa-facebook text-2xl"></i>
+            </a>
+            <a
+              href="https://instagram.com/apgi_framework"
+              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
+              target="_blank"
+            >
+              <i class="fab fa-instagram text-2xl"></i>
+            </a>
+            <a
+              href="https://t.me/apgi_framework"
+              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
+              target="_blank"
+            >
+              <i class="fab fa-telegram text-2xl"></i>
+            </a>
+            <a
+              href="https://github.com/apgi-framework"
+              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
+              target="_blank"
+            >
+              <i class="fab fa-github text-2xl"></i>
+            </a>
           </div>
-          <div>
-            <label class="block text-gray-700 font-semibold mb-2" for="telegram">
-              <i class="fab fa-telegram mr-2 text-blue-500"></i>Telegram
-            </label>
-            <input class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200" id="telegram" type="text" placeholder="https://t.me/apgi_framework" value="https://t.me/apgi_framework">
-          </div>
-          <div>
-            <label class="block text-gray-700 font-semibold mb-2" for="github">
-              <i class="fab fa-github mr-2 text-gray-800"></i>Github
-            </label>
-            <input class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-gray-200" id="github" type="text" placeholder="https://github.com/apgi_framework" value="https://github.com/apgi_framework">
+          <div class="space-y-3">
+            <a
+              href="Home.html"
+              class="action-button block bg-white text-purple-600 hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg text-center shadow-lg"
+            >
+              <i class="fas fa-globe mr-2"></i>Website
+            </a>
+            <a
+              href="Book-Available-Now.html"
+              class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center"
+            >
+              <i class="fab fa-amazon mr-2"></i>Amazon book
+            </a>
+            <a
+              href="Book-Outline.html"
+              class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center"
+            >
+              <i class="fas fa-download mr-2"></i>Download outline
+            </a>
+            <img
+              src="assets/images/Evolutionary-Mismatch.svg"
+              alt="APGI Framework Evolutionary Mismatch Diagram"
+            />
           </div>
         </div>
       </div>
     </div>
-    <div class="profile-card rounded-2xl shadow-2xl p-8 text-white">
-      <div class="text-center mb-6">
-        <div class="relative inline-block">
-          <img class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-lg" src="assets/images/mismatch.jpg" alt="APGI Framework">
-          <div class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white"></div>
-        </div>
-        <h3 class="text-3xl font-bold mb-2">APGI Framework</h3>
-        <p class="text-white/90 text-lg">Consciousness Architecture</p>
-      </div>
-      <div class="flex justify-center items-center mb-8 space-x-4">
-        <a href="https://tiktok.com/@apgi_framework" class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30" target="_blank">
-          <i class="fab fa-tiktok text-2xl"></i>
-        </a>
-        <a href="https://youtube.com/@apgi_framework" class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30" target="_blank">
-          <i class="fab fa-youtube text-2xl"></i>
-        </a>
-        <a href="https://facebook.com/apgi_framework" class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30" target="_blank">
-          <i class="fab fa-facebook text-2xl"></i>
-        </a>
-        <a href="https://instagram.com/apgi_framework" class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30" target="_blank">
-          <i class="fab fa-instagram text-2xl"></i>
-        </a>
-        <a href="https://t.me/apgi_framework" class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30" target="_blank">
-          <i class="fab fa-telegram text-2xl"></i>
-        </a>
-        <a href="https://github.com/apgi-framework" class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30" target="_blank">
-          <i class="fab fa-github text-2xl"></i>
-        </a>
-      </div>
-      <div class="space-y-3">
-        <a href="Home.html" class="action-button block bg-white text-purple-600 hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg text-center shadow-lg">
-          <i class="fas fa-globe mr-2"></i>Website
-        </a>
-                <a href="Book-Available-Now.html" class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center">
-          <i class="fab fa-amazon mr-2"></i>Amazon book
-        </a>
-        <a href="Book-Outline.html" class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center">
-          <i class="fas fa-download mr-2"></i>Download outline
-        </a>
-        <img src="assets/images/Evolutionary-Mismatch.svg" alt="APGI Framework Evolutionary Mismatch Diagram">
-      </div>
-    </div>
-  </div>
-</div>
-</body>
+
+    <!-- Profile Form Interactivity Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Store original values for reset functionality
+        const originalValues = {};
+        const formInputs = document.querySelectorAll(".form-input");
+
+        // Store original values
+        formInputs.forEach((input) => {
+          originalValues[input.id] = input.value;
+
+          // Add input event listeners for real-time validation
+          input.addEventListener("input", function () {
+            validateInput(this);
+            markFormAsChanged();
+          });
+
+          // Add blur event for validation
+          input.addEventListener("blur", function () {
+            validateInput(this);
+          });
+        });
+
+        // Save profile button
+        const saveBtn = document.getElementById("save-profile-btn");
+        const resetBtn = document.getElementById("reset-profile-btn");
+        const statusMessage = document.getElementById("status-message");
+
+        if (saveBtn) {
+          saveBtn.addEventListener("click", saveProfile);
+        }
+
+        if (resetBtn) {
+          resetBtn.addEventListener("click", resetProfile);
+        }
+
+        /**
+         * Validate individual input
+         */
+        function validateInput(input) {
+          const value = input.value.trim();
+          let isValid = true;
+          let errorMessage = "";
+
+          // URL validation for link fields
+          if (
+            input.id &&
+            [
+              "photo",
+              "YouTube",
+              "TikTok",
+              "facebook",
+              "instagram",
+              "telegram",
+              "github",
+            ].includes(input.id)
+          ) {
+            if (value && !isValidUrl(value)) {
+              isValid = false;
+              errorMessage = "Please enter a valid URL";
+            }
+          }
+
+          // Name validation
+          if (input.id === "name") {
+            if (value.length < 2) {
+              isValid = false;
+              errorMessage = "Name must be at least 2 characters";
+            }
+          }
+
+          // About validation
+          if (input.id === "about") {
+            if (value.length > 500) {
+              isValid = false;
+              errorMessage = "About section must be less than 500 characters";
+            }
+          }
+
+          // Update input styling based on validation
+          updateInputValidation(input, isValid, errorMessage);
+
+          return isValid;
+        }
+
+        /**
+         * Check if string is valid URL
+         */
+        function isValidUrl(string) {
+          try {
+            const url = new URL(string);
+            return url.protocol === "http:" || url.protocol === "https:";
+          } catch (_) {
+            return false;
+          }
+        }
+
+        /**
+         * Update input validation styling
+         */
+        function updateInputValidation(input, isValid, errorMessage) {
+          // Remove existing validation classes
+          input.classList.remove(
+            "border-green-500",
+            "border-red-500",
+            "ring-green-200",
+            "ring-red-200",
+          );
+
+          if (input.value.trim()) {
+            if (isValid) {
+              input.classList.add("border-green-500", "ring-green-200");
+              removeInputError(input);
+            } else {
+              input.classList.add("border-red-500", "ring-red-200");
+              showInputError(input, errorMessage);
+            }
+          } else {
+            removeInputError(input);
+          }
+        }
+
+        /**
+         * Show input error message
+         */
+        function showInputError(input, message) {
+          removeInputError(input); // Remove existing error first
+
+          const errorDiv = document.createElement("div");
+          errorDiv.className = "text-red-500 text-sm mt-1 input-error-message";
+          errorDiv.textContent = message;
+
+          input.parentNode.appendChild(errorDiv);
+        }
+
+        /**
+         * Remove input error message
+         */
+        function removeInputError(input) {
+          const existingError = input.parentNode.querySelector(
+            ".input-error-message",
+          );
+          if (existingError) {
+            existingError.remove();
+          }
+        }
+
+        /**
+         * Mark form as changed
+         */
+        function markFormAsChanged() {
+          saveBtn.classList.add("animate-pulse");
+          saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Profile *';
+        }
+
+        /**
+         * Save profile
+         */
+        async function saveProfile() {
+          // Validate all inputs
+          let isFormValid = true;
+          formInputs.forEach((input) => {
+            if (!validateInput(input)) {
+              isFormValid = false;
+            }
+          });
+
+          if (!isFormValid) {
+            showStatusMessage("Please fix the errors before saving.", "error");
+            return;
+          }
+
+          // Show loading state
+          saveBtn.disabled = true;
+          saveBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+
+          try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+
+            // Save to localStorage
+            const profileData = {};
+            formInputs.forEach((input) => {
+              profileData[input.id] = input.value;
+            });
+            localStorage.setItem("apgiProfile", JSON.stringify(profileData));
+
+            // Update original values
+            Object.assign(originalValues, profileData);
+
+            // Reset button state
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Profile';
+            saveBtn.classList.remove("animate-pulse");
+
+            showStatusMessage("Profile saved successfully!", "success");
+
+            // Update profile card if name changed
+            const nameInput = document.getElementById("name");
+            if (nameInput) {
+              const profileName = document.querySelector(".profile-card h3");
+              if (profileName) {
+                profileName.textContent = nameInput.value || "APGI Framework";
+              }
+            }
+          } catch (error) {
+            console.error("Error saving profile:", error);
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Profile';
+            showStatusMessage(
+              "Error saving profile. Please try again.",
+              "error",
+            );
+          }
+        }
+
+        /**
+         * Reset profile
+         */
+        function resetProfile() {
+          if (!confirm("Are you sure you want to reset all changes?")) {
+            return;
+          }
+
+          formInputs.forEach((input) => {
+            input.value = originalValues[input.id] || "";
+            updateInputValidation(input, true, "");
+          });
+
+          saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Profile';
+          saveBtn.classList.remove("animate-pulse");
+
+          showStatusMessage("Profile reset to original values.", "info");
+        }
+
+        /**
+         * Show status message
+         */
+        function showStatusMessage(message, type) {
+          statusMessage.classList.remove(
+            "hidden",
+            "bg-green-100",
+            "bg-red-100",
+            "bg-blue-100",
+            "text-green-700",
+            "text-red-700",
+            "text-blue-700",
+          );
+
+          const colors = {
+            success: "bg-green-100 text-green-700 border-green-200",
+            error: "bg-red-100 text-red-700 border-red-200",
+            info: "bg-blue-100 text-blue-700 border-blue-200",
+          };
+
+          const icons = {
+            success: "fas fa-check-circle",
+            error: "fas fa-exclamation-circle",
+            info: "fas fa-info-circle",
+          };
+
+          statusMessage.className = `mt-4 p-4 rounded-lg border ${colors[type]} transition-all duration-300`;
+          statusMessage.innerHTML = `<i class="${icons[type]} mr-2"></i>${message}`;
+
+          // Auto-hide after 5 seconds
+          setTimeout(() => {
+            statusMessage.classList.add("hidden");
+          }, 5000);
+        }
+
+        // Load saved profile on page load
+        loadSavedProfile();
+
+        /**
+         * Load saved profile from localStorage
+         */
+        function loadSavedProfile() {
+          const savedProfile = localStorage.getItem("apgiProfile");
+          if (savedProfile) {
+            try {
+              const profileData = JSON.parse(savedProfile);
+              formInputs.forEach((input) => {
+                if (profileData[input.id]) {
+                  input.value = profileData[input.id];
+                  originalValues[input.id] = profileData[input.id];
+                }
+              });
+
+              // Update profile card name
+              if (profileData.name) {
+                const profileName = document.querySelector(".profile-card h3");
+                if (profileName) {
+                  profileName.textContent = profileData.name;
+                }
+              }
+
+              showStatusMessage("Profile loaded from saved data.", "info");
+            } catch (error) {
+              console.error("Error loading saved profile:", error);
+            }
+          }
+        }
+      });
+    </script>
+  </body>
 </html>

@@ -19,108 +19,120 @@ class SiteSearch {
   createSearchIndex() {
     const pages = [
       {
-        title: 'APGI Framework',
-        url: 'Home.html',
+        title: "APGI Framework",
+        url: "Home.html",
         description:
-          'Understanding consciousness through the Allostatic Precision-Gated Ignition framework',
-        keywords: ['consciousness', 'framework', 'apgi', 'home', 'introduction']
+          "Understanding consciousness through the Allostatic Precision-Gated Ignition framework",
+        keywords: [
+          "consciousness",
+          "framework",
+          "apgi",
+          "home",
+          "introduction",
+        ],
       },
       {
-        title: 'Assessment',
-        url: 'Assessment.html',
-        description: 'Take the comprehensive APGI consciousness assessment',
-        keywords: ['assessment', 'quiz', 'test', 'consciousness', 'evaluation']
+        title: "Assessment",
+        url: "Assessment.html",
+        description: "Take the comprehensive APGI consciousness assessment",
+        keywords: ["assessment", "quiz", "test", "consciousness", "evaluation"],
       },
       {
-        title: 'Quick Quiz',
-        url: 'Quiz.html',
-        description: 'Quick APGI consciousness assessment',
-        keywords: ['quiz', 'short', 'quick', 'assessment', 'test']
+        title: "Quick Quiz",
+        url: "Quiz.html",
+        description: "Quick APGI consciousness assessment",
+        keywords: ["quiz", "short", "quick", "assessment", "test"],
       },
       {
-        title: 'PsyStates Visualizer',
-        url: 'PsyStates-Visualizer.html',
-        description: 'Interactive visualization of psychological states',
-        keywords: ['psychology', 'states', 'visualization', 'interactive', 'mental']
+        title: "PsyStates Visualizer",
+        url: "PsyStates-Visualizer.html",
+        description: "Interactive visualization of psychological states",
+        keywords: [
+          "psychology",
+          "states",
+          "visualization",
+          "interactive",
+          "mental",
+        ],
       },
       {
-        title: 'Consciousness Visualization',
-        url: 'Consciousness-Visualization.html',
-        description: 'Visual representations of consciousness states',
-        keywords: ['consciousness', 'visualization', 'states', 'awareness']
+        title: "Consciousness Visualization",
+        url: "Consciousness-Visualization.html",
+        description: "Visual representations of consciousness states",
+        keywords: ["consciousness", "visualization", "states", "awareness"],
       },
       {
-        title: 'Research Paper',
-        url: 'Paper.html',
-        description: 'Scientific research on APGI framework',
-        keywords: ['research', 'paper', 'science', 'academic', 'study']
+        title: "Research Paper",
+        url: "Paper.html",
+        description: "Scientific research on APGI framework",
+        keywords: ["research", "paper", "science", "academic", "study"],
       },
       {
-        title: '3D State Network',
-        url: 'State-Network.html',
-        description: '3D visualization of consciousness networks',
-        keywords: ['3d', 'network', 'visualization', 'states', 'interactive']
+        title: "3D State Network",
+        url: "State-Network.html",
+        description: "3D visualization of consciousness networks",
+        keywords: ["3d", "network", "visualization", "states", "interactive"],
       },
       {
-        title: 'Academic Dashboard',
-        url: 'Dashboard.html',
-        description: 'Academic analysis dashboard for researchers',
-        keywords: ['dashboard', 'academic', 'research', 'analysis', 'data']
+        title: "Academic Dashboard",
+        url: "Dashboard.html",
+        description: "Academic analysis dashboard for researchers",
+        keywords: ["dashboard", "academic", "research", "analysis", "data"],
       },
       {
-        title: 'APGI Explorer',
-        url: 'App-Explorer.html',
-        description: 'macOS app for consciousness exploration',
-        keywords: ['app', 'explorer', 'macos', 'application', 'desktop']
+        title: "APGI Explorer",
+        url: "App-Explorer.html",
+        description: "macOS app for consciousness exploration",
+        keywords: ["app", "explorer", "macos", "application", "desktop"],
       },
       {
-        title: 'APGI Appendix',
-        url: 'App-Appendix.html',
-        description: 'Interactive companion to consciousness science',
-        keywords: ['appendix', 'companion', 'interactive', 'science']
+        title: "APGI Appendix",
+        url: "App-Appendix.html",
+        description: "Interactive companion to consciousness science",
+        keywords: ["appendix", "companion", "interactive", "science"],
       },
       {
-        title: 'APGI Experiments',
-        url: 'APGI-Experiments.html',
-        description: 'Computational consciousness modeling experiments',
-        keywords: ['experiments', 'computational', 'modeling', 'research']
+        title: "APGI Experiments",
+        url: "APGI-Experiments.html",
+        description: "Computational consciousness modeling experiments",
+        keywords: ["experiments", "computational", "modeling", "research"],
       },
       {
-        title: 'APGI Software System',
-        url: 'APGI-Software-System.html',
-        description: 'Software architecture for consciousness research',
-        keywords: ['software', 'system', 'architecture', 'development']
+        title: "APGI Software System",
+        url: "APGI-Software-System.html",
+        description: "Software architecture for consciousness research",
+        keywords: ["software", "system", "architecture", "development"],
       },
       {
-        title: 'Book-Available-Now.',
-        url: 'Book-Available-Now.html',
-        description: 'When Consciousness Turns On - APGI Book',
-        keywords: ['book', 'consciousness', 'publication', 'reading']
+        title: "Book-Available-Now.",
+        url: "Book-Available-Now.html",
+        description: "When Consciousness Turns On - APGI Book",
+        keywords: ["book", "consciousness", "publication", "reading"],
       },
       {
-        title: 'Book Outline',
-        url: 'Book-Outline.html',
-        description: 'Complete outline of APGI framework book',
-        keywords: ['book', 'outline', 'structure', 'chapters']
+        title: "Book Outline",
+        url: "Book-Outline.html",
+        description: "Complete outline of APGI framework book",
+        keywords: ["book", "outline", "structure", "chapters"],
       },
       {
-        title: 'Profile',
-        url: 'Profile.html',
-        description: 'APGI Framework profile and social links',
-        keywords: ['profile', 'social', 'about', 'contact']
+        title: "Profile",
+        url: "Profile.html",
+        description: "APGI Framework profile and social links",
+        keywords: ["profile", "social", "about", "contact"],
       },
       {
-        title: 'Privacy Policy',
-        url: 'Privacy-Policy.html',
-        description: 'Privacy policy and data protection',
-        keywords: ['privacy', 'policy', 'data', 'protection', 'legal']
+        title: "Privacy Policy",
+        url: "Privacy-Policy.html",
+        description: "Privacy policy and data protection",
+        keywords: ["privacy", "policy", "data", "protection", "legal"],
       },
       {
-        title: 'Terms of Service',
-        url: 'Terms-of-Service.html',
-        description: 'Terms of service and usage',
-        keywords: ['terms', 'service', 'legal', 'usage', 'conditions']
-      }
+        title: "Terms of Service",
+        url: "Terms-of-Service.html",
+        description: "Terms of service and usage",
+        keywords: ["terms", "service", "legal", "usage", "conditions"],
+      },
     ];
 
     this.searchIndex = pages;
@@ -129,8 +141,8 @@ class SiteSearch {
   // Setup search UI
   setupSearchUI() {
     // Create search container
-    const searchContainer = document.createElement('div');
-    searchContainer.className = 'search-container';
+    const searchContainer = document.createElement("div");
+    searchContainer.className = "search-container";
     searchContainer.innerHTML = `
             <div class="search-input-wrapper">
                 <input 
@@ -151,7 +163,7 @@ class SiteSearch {
         `;
 
     // Add to navigation
-    const navContainer = document.querySelector('.nav-links');
+    const navContainer = document.querySelector(".nav-links");
     if (navContainer) {
       navContainer.appendChild(searchContainer);
     }
@@ -162,7 +174,7 @@ class SiteSearch {
 
   // Add search styles
   addSearchStyles() {
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
             .search-container {
                 position: relative;
@@ -284,45 +296,45 @@ class SiteSearch {
 
   // Bind events
   bindEvents() {
-    const searchInput = document.getElementById('site-search-input');
-    const clearBtn = document.getElementById('search-clear-btn');
-    const resultsContainer = document.getElementById('search-results');
+    const searchInput = document.getElementById("site-search-input");
+    const clearBtn = document.getElementById("search-clear-btn");
+    const resultsContainer = document.getElementById("search-results");
 
     if (!searchInput || !resultsContainer) return;
 
     // Search input events
-    searchInput.addEventListener('input', e => {
+    searchInput.addEventListener("input", (e) => {
       const query = e.target.value.trim();
 
       if (query) {
-        clearBtn.style.display = 'block';
+        clearBtn.style.display = "block";
         this.performSearch(query);
       } else {
-        clearBtn.style.display = 'none';
+        clearBtn.style.display = "none";
         this.hideResults();
       }
     });
 
     // Clear button
     if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        clearBtn.style.display = 'none';
+      clearBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        clearBtn.style.display = "none";
         this.hideResults();
         searchInput.focus();
       });
     }
 
     // Click outside to close
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.search-container')) {
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".search-container")) {
         this.hideResults();
       }
     });
 
     // Keyboard navigation
-    searchInput.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
         this.hideResults();
         searchInput.blur();
       }
@@ -331,9 +343,9 @@ class SiteSearch {
 
   // Perform search
   performSearch(query) {
-    const results = this.searchIndex.filter(page => {
+    const results = this.searchIndex.filter((page) => {
       const searchText =
-        `${page.title} ${page.description} ${page.keywords.join(' ')}`.toLowerCase();
+        `${page.title} ${page.description} ${page.keywords.join(" ")}`.toLowerCase();
       return searchText.includes(query.toLowerCase());
     });
 
@@ -342,7 +354,7 @@ class SiteSearch {
 
   // Display search results
   displayResults(results, query) {
-    const resultsContainer = document.getElementById('search-results');
+    const resultsContainer = document.getElementById("search-results");
 
     if (!resultsContainer) return;
 
@@ -355,49 +367,51 @@ class SiteSearch {
     } else {
       resultsContainer.innerHTML = results
         .map(
-          page => `
+          (page) => `
                 <div class="search-result-item" role="option" data-url="${page.url}">
                     <div class="search-result-title">${this.highlightMatch(page.title, query)}</div>
                     <div class="search-result-description">${this.highlightMatch(page.description, query)}</div>
                     <div class="search-result-url">${page.url}</div>
                 </div>
-            `
+            `,
         )
-        .join('');
+        .join("");
 
       // Add click handlers
-      resultsContainer.querySelectorAll('.search-result-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const url = item.dataset.url;
-          window.location.href = url;
+      resultsContainer
+        .querySelectorAll(".search-result-item")
+        .forEach((item) => {
+          item.addEventListener("click", () => {
+            const url = item.dataset.url;
+            window.location.href = url;
+          });
         });
-      });
     }
 
-    resultsContainer.classList.add('show');
+    resultsContainer.classList.add("show");
   }
 
   // Highlight matching text
   highlightMatch(text, query) {
-    const regex = new RegExp(`(${query})`, 'gi');
-    return text.replace(regex, '<mark>$1</mark>');
+    const regex = new RegExp(`(${query})`, "gi");
+    return text.replace(regex, "<mark>$1</mark>");
   }
 
   // Hide results
   hideResults() {
-    const resultsContainer = document.getElementById('search-results');
+    const resultsContainer = document.getElementById("search-results");
     if (resultsContainer) {
-      resultsContainer.classList.remove('show');
+      resultsContainer.classList.remove("show");
     }
   }
 }
 
 // Initialize search when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   new SiteSearch();
 });
 
 // Export for potential use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = SiteSearch;
 }

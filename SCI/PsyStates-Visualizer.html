@@ -1,733 +1,1044 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <script src="../assets/js/performance-optimizer.js"></script>
     <script src="../assets/js/accessibility-enhancer.js"></script>
     <script src="../assets/js/theme-manager.js"></script>
     <script src="../assets/js/cdn-fallbacks.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI State Architecture</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/css/tailwind-fallback.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/fontawesome-fallback.css">
+    <link rel="stylesheet" href="../assets/css/tailwind-fallback.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/fontawesome-fallback.css" />
     <!-- Recharts for interactive visualizations -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
     <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
     <style>
-        /* CSS Custom Properties for Theme Colors */
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-tertiary: #e2e8f0;
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --text-tertiary: #64748b;
-            --border-primary: #e2e8f0;
-            --border-secondary: #cbd5e1;
-            --accent-cyan: #06b6d4;
-            --accent-blue: #2563eb;
-            --accent-rose: #f43f5e;
-            --accent-purple: #9333ea;
-            --accent-green: #22c55e;
-            --accent-red: #ef4444;
-            --scrollbar-thumb: #cbd5e1;
-        }
+      /* CSS Custom Properties for Theme Colors */
+      :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8fafc;
+        --bg-tertiary: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #334155;
+        --text-tertiary: #64748b;
+        --border-primary: #e2e8f0;
+        --border-secondary: #cbd5e1;
+        --accent-cyan: #06b6d4;
+        --accent-blue: #2563eb;
+        --accent-rose: #f43f5e;
+        --accent-purple: #9333ea;
+        --accent-green: #22c55e;
+        --accent-red: #ef4444;
+        --scrollbar-thumb: #cbd5e1;
+      }
 
-        /* Dark theme overrides */
-        [data-theme="dark"] {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-tertiary: #334155;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --border-primary: #334155;
-            --border-secondary: #475569;
-            --accent-cyan: #22d3ee;
-            --accent-blue: #3b82f6;
-            --accent-rose: #f43f5e;
-            --accent-purple: #a855f7;
-            --accent-green: #4ade80;
-            --accent-red: #f87171;
-            --scrollbar-thumb: #475569;
-        }
+      /* Dark theme overrides */
+      [data-theme="dark"] {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-tertiary: #334155;
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-tertiary: #94a3b8;
+        --border-primary: #334155;
+        --border-secondary: #475569;
+        --accent-cyan: #22d3ee;
+        --accent-blue: #3b82f6;
+        --accent-rose: #f43f5e;
+        --accent-purple: #a855f7;
+        --accent-green: #4ade80;
+        --accent-red: #f87171;
+        --scrollbar-thumb: #475569;
+      }
 
-        /* Theme Toggle Switch */
-        .theme-toggle {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: var(--bg-tertiary);
-            border: 2px solid var(--border-primary);
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+      /* Theme Toggle Switch */
+      .theme-toggle {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background: var(--bg-tertiary);
+        border: 2px solid var(--border-primary);
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
 
-        .theme-toggle:hover {
-            border-color: var(--accent-cyan);
-        }
+      .theme-toggle:hover {
+        border-color: var(--accent-cyan);
+      }
 
-        .theme-toggle-slider {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 22px;
-            height: 22px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .theme-toggle-slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 22px;
+        height: 22px;
+        background: var(--accent-cyan);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        [data-theme="dark"] .theme-toggle-slider {
-            transform: translateX(30px);
-        }
+      [data-theme="dark"] .theme-toggle-slider {
+        transform: translateX(30px);
+      }
 
-        .theme-toggle-slider i {
-            font-size: 12px;
-            color: var(--bg-primary);
-        }
+      .theme-toggle-slider i {
+        font-size: 12px;
+        color: var(--bg-primary);
+      }
 
-        /* Apply theme colors to existing classes */
-        body {
-            background-color: var(--bg-primary) !important;
-            color: var(--text-primary) !important;
-        }
+      /* Apply theme colors to existing classes */
+      body {
+        background-color: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
+      }
 
-        .bg-slate-800 { background-color: var(--bg-secondary) !important; }
-        .bg-slate-900 { background-color: var(--bg-primary) !important; }
-        .bg-slate-900\/50 { background-color: var(--bg-primary) !important; opacity: 0.5; }
-        .text-slate-100 { color: var(--text-primary) !important; }
-        .text-slate-200 { color: var(--text-secondary) !important; }
-        .text-slate-300 { color: var(--text-secondary) !important; }
-        .text-slate-400 { color: var(--text-tertiary) !important; }
-        .text-slate-500 { color: var(--text-tertiary) !important; }
-        .border-slate-600 { border-color: var(--border-secondary) !important; }
-        .border-slate-700 { border-color: var(--border-primary) !important; }
-        .border-slate-700\/50 { border-color: var(--border-primary) !important; opacity: 0.5; }
-        .text-cyan-300 { color: var(--accent-cyan) !important; }
-        .text-cyan-400 { color: var(--accent-cyan) !important; }
-        .text-blue-400 { color: var(--accent-blue) !important; }
-        .text-rose-400 { color: var(--accent-rose) !important; }
-        .text-purple-400 { color: var(--accent-purple) !important; }
-        .text-green-400 { color: var(--accent-green) !important; }
-        .text-red-400 { color: var(--accent-red) !important; }
-        .bg-green-900\/30 { background-color: rgba(34, 197, 94, 0.3) !important; }
-        .bg-red-900\/30 { background-color: rgba(239, 68, 68, 0.3) !important; }
-        .bg-blue-900\/30 { background-color: rgba(37, 99, 235, 0.3) !important; }
-        .selection\:bg-cyan-900::selection { background-color: var(--accent-cyan) !important; opacity: 0.9; }
-        .selection\:text-cyan-100::selection { color: var(--text-primary) !important; }
-        .focus\:border-cyan-500:focus { border-color: var(--accent-cyan) !important; }
-        .hover\:bg-slate-700:hover { background-color: var(--bg-tertiary) !important; }
+      .bg-slate-800 {
+        background-color: var(--bg-secondary) !important;
+      }
+      .bg-slate-900 {
+        background-color: var(--bg-primary) !important;
+      }
+      .bg-slate-900\/50 {
+        background-color: var(--bg-primary) !important;
+        opacity: 0.5;
+      }
+      .text-slate-100 {
+        color: var(--text-primary) !important;
+      }
+      .text-slate-200 {
+        color: var(--text-secondary) !important;
+      }
+      .text-slate-300 {
+        color: var(--text-secondary) !important;
+      }
+      .text-slate-400 {
+        color: var(--text-tertiary) !important;
+      }
+      .text-slate-500 {
+        color: var(--text-tertiary) !important;
+      }
+      .border-slate-600 {
+        border-color: var(--border-secondary) !important;
+      }
+      .border-slate-700 {
+        border-color: var(--border-primary) !important;
+      }
+      .border-slate-700\/50 {
+        border-color: var(--border-primary) !important;
+        opacity: 0.5;
+      }
+      .text-cyan-300 {
+        color: var(--accent-cyan) !important;
+      }
+      .text-cyan-400 {
+        color: var(--accent-cyan) !important;
+      }
+      .text-blue-400 {
+        color: var(--accent-blue) !important;
+      }
+      .text-rose-400 {
+        color: var(--accent-rose) !important;
+      }
+      .text-purple-400 {
+        color: var(--accent-purple) !important;
+      }
+      .text-green-400 {
+        color: var(--accent-green) !important;
+      }
+      .text-red-400 {
+        color: var(--accent-red) !important;
+      }
+      .bg-green-900\/30 {
+        background-color: rgba(34, 197, 94, 0.3) !important;
+      }
+      .bg-red-900\/30 {
+        background-color: rgba(239, 68, 68, 0.3) !important;
+      }
+      .bg-blue-900\/30 {
+        background-color: rgba(37, 99, 235, 0.3) !important;
+      }
+      .selection\:bg-cyan-900::selection {
+        background-color: var(--accent-cyan) !important;
+        opacity: 0.9;
+      }
+      .selection\:text-cyan-100::selection {
+        color: var(--text-primary) !important;
+      }
+      .focus\:border-cyan-500:focus {
+        border-color: var(--accent-cyan) !important;
+      }
+      .hover\:bg-slate-700:hover {
+        background-color: var(--bg-tertiary) !important;
+      }
 
-        /* Custom scrollbar */
-        .scrollbar-thin::-webkit-scrollbar {
-            width: 6px;
+      /* Custom scrollbar */
+      .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+      }
+      .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 3px;
+      }
+
+      /* Custom styles for the visualizations */
+      .scatter-plot-container {
+        height: 400px;
+        width: 100%;
+      }
+
+      .radar-chart-container {
+        height: 256px;
+        width: 100%;
+      }
+
+      /* Animation for active state */
+      @keyframes pulse-glow {
+        0% {
+          box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4);
         }
-        .scrollbar-thin::-webkit-scrollbar-track {
-            background: transparent;
+        70% {
+          box-shadow: 0 0 0 6px rgba(34, 211, 238, 0);
         }
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 3px;
+        100% {
+          box-shadow: 0 0 0 0 rgba(34, 211, 238, 0);
         }
-        
-        /* Custom styles for the visualizations */
-        .scatter-plot-container {
-            height: 400px;
-            width: 100%;
-        }
-        
-        .radar-chart-container {
-            height: 256px;
-            width: 100%;
-        }
-        
-        /* Animation for active state */
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(34, 211, 238, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
-        }
-        
-        .active-state {
-            animation: pulse-glow 2s infinite;
-        }
-        
-        /* Quadrant labels */
-        .quadrant-label {
-            position: absolute;
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-            font-family: monospace;
-            z-index: 0;
-            pointer-events: none;
-        }
+      }
+
+      .active-state {
+        animation: pulse-glow 2s infinite;
+      }
+
+      /* Quadrant labels */
+      .quadrant-label {
+        position: absolute;
+        font-size: 0.7rem;
+        color: var(--text-tertiary);
+        font-family: monospace;
+        z-index: 0;
+        pointer-events: none;
+      }
     </style>
-</head>
-<body class="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-cyan-900 selection:text-cyan-100 p-4 lg:p-8">
+  </head>
+  <body
+    class="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-cyan-900 selection:text-cyan-100 p-4 lg:p-8"
+  >
     <!-- Include Navigation Component -->
     <div id="navigation-container"></div>
-    <script>
-      fetch('../components/navigation.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('navigation-container').innerHTML = html;
-        })
-        .catch(error => console.error('Error loading navigation:', error));
-    </script>
-    
+    <script src="assets/js/navigation-loader.js"></script>
+
     <!-- Header -->
     <header class="mb-8 border-b border-slate-700 pb-4 relative">
-        <button id="theme-toggle" class="theme-toggle absolute right-0 top-0" aria-label="Toggle theme" title="Toggle light/dark">
-            <span class="theme-toggle-slider"><i class="fas fa-moon"></i></span>
-        </button>
-        <h1 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent flex items-center gap-2">
-            <i class="fas fa-brain text-cyan-400 w-8 h-8"></i>
-            APGI State Architecture
-        </h1>
-        <p class="text-slate-400 mt-2 text-sm max-w-3xl">
-            Active Predictive Geometric Intelligence Framework. Visualizing the dynamic relationship between 
-            <span class="text-cyan-400 font-bold mx-1">Precision (Π)</span>, 
-            <span class="text-rose-400 font-bold mx-1">Ignition Threshold (θₜ)</span>, and 
-            <span class="text-purple-400 font-bold mx-1">Interoceptive Bias (β)</span> across psychological states.
-        </p>
+      <button
+        id="theme-toggle"
+        class="theme-toggle absolute right-0 top-0"
+        aria-label="Toggle theme"
+        title="Toggle light/dark"
+      >
+        <span class="theme-toggle-slider"><i class="fas fa-moon"></i></span>
+      </button>
+      <h1
+        class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent flex items-center gap-2"
+      >
+        <i class="fas fa-brain text-cyan-400 w-8 h-8"></i>
+        APGI State Architecture
+      </h1>
+      <p class="text-slate-400 mt-2 text-sm max-w-3xl">
+        Active Predictive Geometric Intelligence Framework. Visualizing the
+        dynamic relationship between
+        <span class="text-cyan-400 font-bold mx-1">Precision (Π)</span>,
+        <span class="text-rose-400 font-bold mx-1">Ignition Threshold (θₜ)</span
+        >, and
+        <span class="text-purple-400 font-bold mx-1"
+          >Interoceptive Bias (β)</span
+        >
+        across psychological states.
+      </p>
     </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- LEFT COLUMN: Visualization (Phase Space) -->
-        <div class="lg:col-span-7 flex flex-col gap-6">
-            
-            <!-- Main Scatter Plot Card -->
-            <div class="bg-slate-800 rounded-xl border border-slate-700 p-4 shadow-xl relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-rose-500 opacity-50"></div>
-                
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold flex items-center gap-2">
-                        <i class="fas fa-wave-square text-cyan-400"></i>
-                        Phase Space: Precision vs. Threshold
-                    </h2>
-                    <div class="flex gap-4 text-xs">
-                        <span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-green-400"></div> Positive</span>
-                        <span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-red-400"></div> Negative</span>
-                        <span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-blue-400"></div> Neutral</span>
-                    </div>
-                </div>
+      <!-- LEFT COLUMN: Visualization (Phase Space) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        <!-- Main Scatter Plot Card -->
+        <div
+          class="bg-slate-800 rounded-xl border border-slate-700 p-4 shadow-xl relative overflow-hidden"
+        >
+          <div
+            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-rose-500 opacity-50"
+          ></div>
 
-                <div class="h-[400px] w-full bg-slate-900/50 rounded-lg relative">
-                    <!-- Labels for Quadrants (Background) -->
-                    <div class="quadrant-label top-4 left-4">
-                        HIGH THRESHOLD / BLOCKED<br/>(Stoic, Bored, Depressed)
-                    </div>
-                    <div class="quadrant-label bottom-4 right-4 text-right">
-                        HIGH PRECISION / REACTIVE<br/>(Flow, Fear, Anger)
-                    </div>
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold flex items-center gap-2">
+              <i class="fas fa-wave-square text-cyan-400"></i>
+              Phase Space: Precision vs. Threshold
+            </h2>
+            <div class="flex gap-4 text-xs">
+              <span class="flex items-center gap-1"
+                ><div class="w-2 h-2 rounded-full bg-green-400"></div>
+                Positive</span
+              >
+              <span class="flex items-center gap-1"
+                ><div class="w-2 h-2 rounded-full bg-red-400"></div>
+                Negative</span
+              >
+              <span class="flex items-center gap-1"
+                ><div class="w-2 h-2 rounded-full bg-blue-400"></div>
+                Neutral</span
+              >
+            </div>
+          </div>
 
-                    <!-- Scatter Plot SVG -->
-                    <svg class="w-full h-full" id="scatter-plot" viewBox="0 0 500 400" preserveAspectRatio="xMidYMid meet">
-                        <!-- X-axis -->
-                        <line x1="50" y1="350" x2="450" y2="350" stroke="#334155" stroke-width="1" />
-                        <text x="250" y="390" text-anchor="middle" fill="#94a3b8" font-size="12">Net Precision (Π)</text>
-                        
-                        <!-- Y-axis -->
-                        <line x1="50" y1="50" x2="50" y2="350" stroke="#334155" stroke-width="1" />
-                        <text x="10" y="200" text-anchor="middle" fill="#94a3b8" font-size="12" transform="rotate(-90, 10, 200)">Ignition Threshold (θₜ)</text>
-                        
-                        <!-- Grid lines -->
-                        <line x1="50" y1="275" x2="450" y2="275" stroke="#334155" stroke-width="0.5" stroke-dasharray="3,3" />
-                        <line x1="50" y1="200" x2="450" y2="200" stroke="#334155" stroke-width="0.5" stroke-dasharray="3,3" />
-                        <line x1="50" y1="125" x2="450" y2="125" stroke="#334155" stroke-width="0.5" stroke-dasharray="3,3" />
-                        
-                        <line x1="150" y1="50" x2="150" y2="350" stroke="#334155" stroke-width="0.5" stroke-dasharray="3,3" />
-                        <line x1="250" y1="50" x2="250" y2="350" stroke="#334155" stroke-width="0.5" stroke-dasharray="3,3" />
-                        <line x1="350" y1="50" x2="350" y2="350" stroke="#334155" stroke-width="0.5" stroke-dasharray="3,3" />
-                        
-                        <!-- Center lines -->
-                        <line x1="50" y1="200" x2="450" y2="200" stroke="#4b5563" stroke-width="1" stroke-dasharray="5,5" />
-                        <line x1="250" y1="50" x2="250" y2="350" stroke="#4b5563" stroke-width="1" stroke-dasharray="5,5" />
-                        
-                        <!-- Points will be added by JavaScript -->
-                    </svg>
-                </div>
-                <p class="text-xs text-slate-500 mt-2 text-center">
-                    Click a node to view detailed parameter breakdown.
-                </p>
+          <div class="h-[400px] w-full bg-slate-900/50 rounded-lg relative">
+            <!-- Labels for Quadrants (Background) -->
+            <div class="quadrant-label top-4 left-4">
+              HIGH THRESHOLD / BLOCKED<br />(Stoic, Bored, Depressed)
+            </div>
+            <div class="quadrant-label bottom-4 right-4 text-right">
+              HIGH PRECISION / REACTIVE<br />(Flow, Fear, Anger)
             </div>
 
-            <!-- Encyclopedia / List View -->
-            <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-xl flex-1 flex flex-col min-h-[400px]">
-                 <div class="p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 bg-slate-800 z-10 rounded-t-xl">
-                    <h2 class="text-lg font-semibold flex items-center gap-2">
-                        <i class="fas fa-layer-group text-purple-400"></i>
-                        State Library
-                    </h2>
-                    <div class="relative">
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                        <input 
-                            type="text" 
-                            id="search-input"
-                            placeholder="Search states..." 
-                            class="bg-slate-900 border border-slate-600 rounded-full pl-9 pr-4 py-1 text-sm focus:outline-none focus:border-cyan-500 w-48 transition-all"
-                        />
-                    </div>
-                 </div>
-                 
-                 <div id="states-list" class="overflow-y-auto p-2 space-y-2 max-h-[500px] scrollbar-thin">
-                    <!-- States will be populated by JavaScript -->
-                 </div>
-            </div>
+            <!-- Scatter Plot SVG -->
+            <svg
+              class="w-full h-full"
+              id="scatter-plot"
+              viewBox="0 0 500 400"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <!-- X-axis -->
+              <line
+                x1="50"
+                y1="350"
+                x2="450"
+                y2="350"
+                stroke="#334155"
+                stroke-width="1"
+              />
+              <text
+                x="250"
+                y="390"
+                text-anchor="middle"
+                fill="#94a3b8"
+                font-size="12"
+              >
+                Net Precision (Π)
+              </text>
+
+              <!-- Y-axis -->
+              <line
+                x1="50"
+                y1="50"
+                x2="50"
+                y2="350"
+                stroke="#334155"
+                stroke-width="1"
+              />
+              <text
+                x="10"
+                y="200"
+                text-anchor="middle"
+                fill="#94a3b8"
+                font-size="12"
+                transform="rotate(-90, 10, 200)"
+              >
+                Ignition Threshold (θₜ)
+              </text>
+
+              <!-- Grid lines -->
+              <line
+                x1="50"
+                y1="275"
+                x2="450"
+                y2="275"
+                stroke="#334155"
+                stroke-width="0.5"
+                stroke-dasharray="3,3"
+              />
+              <line
+                x1="50"
+                y1="200"
+                x2="450"
+                y2="200"
+                stroke="#334155"
+                stroke-width="0.5"
+                stroke-dasharray="3,3"
+              />
+              <line
+                x1="50"
+                y1="125"
+                x2="450"
+                y2="125"
+                stroke="#334155"
+                stroke-width="0.5"
+                stroke-dasharray="3,3"
+              />
+
+              <line
+                x1="150"
+                y1="50"
+                x2="150"
+                y2="350"
+                stroke="#334155"
+                stroke-width="0.5"
+                stroke-dasharray="3,3"
+              />
+              <line
+                x1="250"
+                y1="50"
+                x2="250"
+                y2="350"
+                stroke="#334155"
+                stroke-width="0.5"
+                stroke-dasharray="3,3"
+              />
+              <line
+                x1="350"
+                y1="50"
+                x2="350"
+                y2="350"
+                stroke="#334155"
+                stroke-width="0.5"
+                stroke-dasharray="3,3"
+              />
+
+              <!-- Center lines -->
+              <line
+                x1="50"
+                y1="200"
+                x2="450"
+                y2="200"
+                stroke="#4b5563"
+                stroke-width="1"
+                stroke-dasharray="5,5"
+              />
+              <line
+                x1="250"
+                y1="50"
+                x2="250"
+                y2="350"
+                stroke="#4b5563"
+                stroke-width="1"
+                stroke-dasharray="5,5"
+              />
+
+              <!-- Points will be added by JavaScript -->
+            </svg>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 text-center">
+            Click a node to view detailed parameter breakdown.
+          </p>
         </div>
 
-        <!-- RIGHT COLUMN: Detail View -->
-        <div class="lg:col-span-5 flex flex-col h-full">
-            <div id="detail-view" class="bg-slate-800 rounded-xl border border-slate-700 shadow-xl p-6 sticky top-6 h-full flex flex-col overflow-hidden">
-                
-                <!-- Title & Badge -->
-                <div class="mb-6">
-                    <div class="flex items-center gap-3 mb-2">
-                        <i id="detail-icon" class="fas fa-bolt text-green-400 w-6 h-6"></i>
-                        <h2 id="detail-title" class="text-2xl font-bold text-slate-100">Flow State</h2>
-                    </div>
-                    <div id="detail-params" class="inline-block bg-slate-900 border border-slate-600 rounded px-3 py-1 text-xs font-mono text-cyan-400">
-                        Π_task > 5σ | θₜ -15%
-                    </div>
-                </div>
-
-                <!-- Radar Chart Section -->
-                <div class="bg-slate-900/50 rounded-lg p-2 mb-6 border border-slate-700/50">
-                   <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest text-center mb-2">Parameter Fingerprint</h3>
-                   <div class="radar-chart-container flex justify-center items-center">
-                       <svg id="radar-chart" width="100%" height="100%" viewBox="0 0 300 250"></svg>
-                   </div>
-                </div>
-
-                <!-- Description Area -->
-                <div class="flex-1 overflow-y-auto pr-2 scrollbar-thin">
-                    <h3 class="text-sm font-bold text-slate-300 mb-2 flex items-center gap-2">
-                        <i class="fas fa-info-circle"></i> Description
-                    </h3>
-                    <p id="detail-description" class="text-slate-300 text-sm leading-relaxed mb-6 border-l-2 border-slate-600 pl-4">
-                        Prediction accuracy approaches 95%+ for task-relevant inputs; precision Π_task > 5σ above baseline while Π_distractor < 0.5σ; ignition threshold θₜ maintained 10-15% below resting baseline with <5% variance over time. Flow represents an optimal ignition regime where the cortical reservoir achieves maximal task-relevant coherence with minimal metabolic overhead.
-                    </p>
-
-                    <h3 class="text-sm font-bold text-slate-300 mb-2 flex items-center gap-2">
-                        <i class="fas fa-brain"></i> Neural Dynamics & Mechanisms
-                    </h3>
-                    <p id="detail-fulltext" class="text-slate-400 text-sm leading-relaxed">
-                        Flow represents an optimal ignition regime where the cortical reservoir achieves maximal task-relevant coherence with minimal metabolic overhead. The precision-threshold architecture enters a transient attractor state characterized by: (1) tight temporal coupling between prediction and sensory input (lag <100ms), (2) sustained dopaminergic tone maintaining stable but accessible threshold, (3) selective noradrenergic enhancement of task-relevant precision weights, and (4) reduced global competition for ignition—creating uninterrupted access for goal-aligned content. This configuration maximizes the information-theoretic efficiency ratio: relevant information accessed per unit metabolic cost. Unlike mere engagement, flow exhibits temporal entrainment (rhythmic precision-threshold oscillations phase-locked to task structure) and metacognitive suppression (reduced self-monitoring precision, enabling automatic execution).
-                    </p>
-                </div>
-                
+        <!-- Encyclopedia / List View -->
+        <div
+          class="bg-slate-800 rounded-xl border border-slate-700 shadow-xl flex-1 flex flex-col min-h-[400px]"
+        >
+          <div
+            class="p-4 border-b border-slate-700 flex justify-between items-center sticky top-0 bg-slate-800 z-10 rounded-t-xl"
+          >
+            <h2 class="text-lg font-semibold flex items-center gap-2">
+              <i class="fas fa-layer-group text-purple-400"></i>
+              State Library
+            </h2>
+            <div class="relative">
+              <i
+                class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+              ></i>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Search states..."
+                class="bg-slate-900 border border-slate-600 rounded-full pl-9 pr-4 py-1 text-sm focus:outline-none focus:border-cyan-500 w-48 transition-all"
+              />
             </div>
+          </div>
+
+          <div
+            id="states-list"
+            class="overflow-y-auto p-2 space-y-2 max-h-[500px] scrollbar-thin"
+          >
+            <!-- States will be populated by JavaScript -->
+          </div>
         </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Detail View -->
+      <div class="lg:col-span-5 flex flex-col h-full">
+        <div
+          id="detail-view"
+          class="bg-slate-800 rounded-xl border border-slate-700 shadow-xl p-6 sticky top-6 h-full flex flex-col overflow-hidden"
+        >
+          <!-- Title & Badge -->
+          <div class="mb-6">
+            <div class="flex items-center gap-3 mb-2">
+              <i
+                id="detail-icon"
+                class="fas fa-bolt text-green-400 w-6 h-6"
+              ></i>
+              <h2 id="detail-title" class="text-2xl font-bold text-slate-100">
+                Flow State
+              </h2>
+            </div>
+            <div
+              id="detail-params"
+              class="inline-block bg-slate-900 border border-slate-600 rounded px-3 py-1 text-xs font-mono text-cyan-400"
+            >
+              Π_task > 5σ | θₜ -15%
+            </div>
+          </div>
+
+          <!-- Radar Chart Section -->
+          <div
+            class="bg-slate-900/50 rounded-lg p-2 mb-6 border border-slate-700/50"
+          >
+            <h3
+              class="text-xs font-bold text-slate-400 uppercase tracking-widest text-center mb-2"
+            >
+              Parameter Fingerprint
+            </h3>
+            <div class="radar-chart-container flex justify-center items-center">
+              <svg
+                id="radar-chart"
+                width="100%"
+                height="100%"
+                viewBox="0 0 300 250"
+              ></svg>
+            </div>
+          </div>
+
+          <!-- Description Area -->
+          <div class="flex-1 overflow-y-auto pr-2 scrollbar-thin">
+            <h3
+              class="text-sm font-bold text-slate-300 mb-2 flex items-center gap-2"
+            >
+              <i class="fas fa-info-circle"></i> Description
+            </h3>
+            <p
+              id="detail-description"
+              class="text-slate-300 text-sm leading-relaxed mb-6 border-l-2 border-slate-600 pl-4"
+            >
+              Prediction accuracy approaches 95%+ for task-relevant inputs;
+              precision Π_task > 5σ above baseline while Π_distractor < 0.5σ;
+              ignition threshold θₜ maintained 10-15% below resting baseline
+              with <5% variance over time. Flow represents an optimal ignition
+              regime where the cortical reservoir achieves maximal task-relevant
+              coherence with minimal metabolic overhead.
+            </p>
+
+            <h3
+              class="text-sm font-bold text-slate-300 mb-2 flex items-center gap-2"
+            >
+              <i class="fas fa-brain"></i> Neural Dynamics & Mechanisms
+            </h3>
+            <p
+              id="detail-fulltext"
+              class="text-slate-400 text-sm leading-relaxed"
+            >
+              Flow represents an optimal ignition regime where the cortical
+              reservoir achieves maximal task-relevant coherence with minimal
+              metabolic overhead. The precision-threshold architecture enters a
+              transient attractor state characterized by: (1) tight temporal
+              coupling between prediction and sensory input (lag <100ms), (2)
+              sustained dopaminergic tone maintaining stable but accessible
+              threshold, (3) selective noradrenergic enhancement of
+              task-relevant precision weights, and (4) reduced global
+              competition for ignition—creating uninterrupted access for
+              goal-aligned content. This configuration maximizes the
+              information-theoretic efficiency ratio: relevant information
+              accessed per unit metabolic cost. Unlike mere engagement, flow
+              exhibits temporal entrainment (rhythmic precision-threshold
+              oscillations phase-locked to task structure) and metacognitive
+              suppression (reduced self-monitoring precision, enabling automatic
+              execution).
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        // --- DATA PARSING & PREPARATION ---
-        const APGI_DATA = [
-            {
-                id: 'flow',
-                name: 'Flow State',
-                category: 'Optimal',
-                precision: 95,
-                threshold: 35,
-                internalBias: 30,
-                valence: 'positive',
-                shortParams: "Π_task > 5σ | θₜ -15%",
-                description: "Prediction accuracy approaches 95%+ for task-relevant inputs; precision Π_task > 5σ above baseline while Π_distractor < 0.5σ; ignition threshold θₜ maintained 10-15% below resting baseline with <5% variance over time. Flow represents an optimal ignition regime where the cortical reservoir achieves maximal task-relevant coherence with minimal metabolic overhead.",
-                fullText: "Flow represents an optimal ignition regime where the cortical reservoir achieves maximal task-relevant coherence with minimal metabolic overhead. The precision-threshold architecture enters a transient attractor state characterized by: (1) tight temporal coupling between prediction and sensory input (lag <100ms), (2) sustained dopaminergic tone maintaining stable but accessible threshold, (3) selective noradrenergic enhancement of task-relevant precision weights, and (4) reduced global competition for ignition—creating uninterrupted access for goal-aligned content. This configuration maximizes the information-theoretic efficiency ratio: relevant information accessed per unit metabolic cost. Unlike mere engagement, flow exhibits temporal entrainment (rhythmic precision-threshold oscillations phase-locked to task structure) and metacognitive suppression (reduced self-monitoring precision, enabling automatic execution)."
-            },
-            {
-                id: 'joy',
-                name: 'Joy / Happiness',
-                category: 'Positive',
-                precision: 75,
-                threshold: 30,
-                internalBias: 50,
-                valence: 'positive',
-                shortParams: "Π_positive +3σ | θₜ -20%",
-                description: "Prediction accuracy exceeds prior expectations by >20%; precision Π_positive amplified 2-3σ above baseline for reward-related content; threshold θₜ reduced 15-20% for positively-valenced inputs.",
-                fullText: "Dopamine-mediated elevation of expected value signals increases precision weighting on reward prediction errors. When actual outcomes exceed predicted value (positive RPE: reward prediction error), the resulting surprise is amplified by heightened precision, readily crossing the lowered threshold. Ventral striatal-vmPFC circuits maintain sustained low-threshold access to positively-valenced content through tonic dopamine elevation. P3b amplitude to positive stimuli increased; gamma-band synchrony in reward networks; sustained ventral striatal activation."
-            },
-            {
-                id: 'gratitude',
-                name: 'Gratitude',
-                category: 'Positive',
-                precision: 70,
-                threshold: 35,
-                internalBias: 65,
-                valence: 'positive',
-                shortParams: "Π_social +4σ | Π_i amplified",
-                description: "Precision Π_social elevated 2-4σ for attachment/reciprocity signals; interoceptive precision Π_i amplified for safety-related visceral states; threshold θₜ lowered 10-15% for social-affiliative content.",
-                fullText: "Resolution of social prediction errors in a favorable direction (receiving unexpected prosocial behavior) generates amplified positive prediction errors in attachment-monitoring circuits. Oxytocin release enhances precision on social-bonding cues while simultaneously lowering ignition threshold through modulation of anterior cingulate-insula connectivity. The interoceptive component reflects somatic markers of safety and connection (reduced heart rate variability, muscle relaxation) that anchor gratitude in embodied states. Requires temporally extended social prediction (expectation of non-reciprocation) followed by violation through received kindness—distinct from joy's simpler outcome-expectation mismatch."
-            },
-            {
-                id: 'hope',
-                name: 'Hope',
-                category: 'Positive',
-                precision: 65,
-                threshold: 40,
-                internalBias: 40,
-                valence: 'positive',
-                shortParams: "Π_future +3σ | Confidence 60-75%",
-                description: "Prediction confidence moderate (60-75%); expected value high despite uncertainty; precision Π_future elevated 2-3σ for outcome-relevant cues; threshold θₜ lowered 12-18% by sustained dopaminergic tone.",
-                fullText: "Hope represents a computationally sophisticated state balancing uncertainty and expected value. Mesolimbic dopamine maintains elevated precision on future-oriented prediction errors despite acknowledged uncertainty, effectively implementing a \"explore with positive prior\" policy. The anterior cingulate cortex monitors the uncertainty level while the ventromedial prefrontal cortex maintains the positive valuation. Threshold reduction is actively sustained through tonic (not phasic) dopamine, creating persistent accessibility for goal-relevant planning content. Unlike optimism (high confidence), hope explicitly represents uncertainty; unlike anxiety (high uncertainty + negative valence), hope maintains positive expected value through active dopaminergic maintenance. Enables persistent goal pursuit under uncertainty—a critical adaptive capacity for long-term planning."
-            },
-            {
-                id: 'optimism',
-                name: 'Optimism',
-                category: 'Positive',
-                precision: 60,
-                threshold: 45,
-                internalBias: 45,
-                valence: 'positive',
-                shortParams: "Positive Prior >70% | θₜ -10%",
-                description: "Prior probability on positive outcomes elevated (>70%); expected prediction error magnitude low; precision Π_positive constitutively elevated 1.5-2σ; threshold θₜ reduced 8-12% for confirmatory evidence.",
-                fullText: "Optimism reflects a generalized positive prior distribution that systematically underweights negative prediction errors while amplifying positive ones—a form of Bayesian bias. Trait-level serotonergic tone influences the prior distribution itself (not just precision), creating stable positive expectations. The threshold reduction is less dynamic than in hope, representing a constitutional accessibility bias rather than active maintenance. Mild optimism bias may be adaptive (Taylor & Brown, 1988); extreme forms predict depression vulnerability when outcomes persistently violate expectations. Differs from hope by higher confidence and less explicit uncertainty representation; differs from joy by its anticipatory rather than consummatory nature."
-            },
-            {
-                id: 'awe',
-                name: 'Awe',
-                category: 'Transcendent',
-                precision: 90,
-                threshold: 20,
-                internalBias: 20,
-                valence: 'positive',
-                shortParams: "PE > 4σ | θₜ suppressed 30%",
-                description: "Sudden prediction error magnitude >4σ from vastness/novelty; global precision Π_global transiently elevated across all sensory domains; threshold θₜ suppressed 20-30% for 2-10 seconds, then gradually restored.",
-                fullText: "Initial ignition surge (<1s), sustained low-threshold window (2-10s), gradual recovery (20-60s) to baseline. Awe emerges when stimuli violate size/complexity priors (vast landscapes, profound ideas, extreme beauty) by orders of magnitude. This triggers a \"model inadequacy\" signal that globally elevates precision (preparing all sensory channels for information gathering) while dramatically lowering threshold (enabling rapid incorporation of schema-violating content). The default mode network shows characteristic transient suppression (Stellar et al., 2017) as self-focused processing is displaced by stimulus-focused ignition. Awe's brief threshold suppression enables rapid updating of inadequate world-models when encountering magnitude-mismatched stimuli, while the subsequent gradual threshold restoration prevents prolonged vulnerability to disruption."
-            },
-            {
-                id: 'inspiration',
-                name: 'Inspiration',
-                category: 'Transcendent',
-                precision: 80,
-                threshold: 35,
-                internalBias: 40,
-                valence: 'positive',
-                shortParams: "Π_pattern +4σ | DMN-FPN Coupling",
-                description: "Parameters: Precision Π_pattern elevated 2-4σ for abstract/analogical matches; threshold θₜ lowered 10-15% for associations beyond immediate task constraints; default mode-frontoparietal coupling increased 40-60%.",
-                fullText: "Inspiration represents detection of latent pattern similarities that weren't explicitly sought—serendipitous matching between current input and distant memory traces or conceptual schemas. The anterior temporal lobe (conceptual hub) and posterior cingulate (episodic retrieval) show increased functional connectivity, while precision elevation on weak-but-coherent pattern matches enables these remote associations to cross threshold despite low bottom-up signal strength. High-precision weighting on coherence metrics (pattern consistency) rather than strength metrics (signal amplitude)—enabling weak but structured signals to ignite. Differs from creativity by its receptive rather than generative character; differs from insight by less explicit problem-solving context."
-            },
-            {
-                id: 'serenity',
-                name: 'Serenity',
-                category: 'Calm',
-                precision: 85,
-                threshold: 70,
-                internalBias: 80,
-                valence: 'positive',
-                shortParams: "θₜ_ext +25% | θₜ_int -15%",
-                description: "Prediction accuracy >90% (low-surprise environment); precision Π_threat minimized (<0.3σ below baseline); external threshold θₜ_ext elevated 15-25% for perturbations; interoceptive threshold θₜ_int lowered 10-15% for calm visceral states.",
-                fullText: "Serenity exemplifies APGI's dual-threshold architecture. When predictions are consistently accurate and threat-related precision is suppressed (low amygdala reactivity, high prefrontal inhibition), two simultaneous threshold adjustments occur: (1) external inputs require larger prediction errors to trigger ignition (high-pass filtering of environmental disturbances), (2) interoceptive signals of safety and calm (slow heart rate, deep breathing, muscle relaxation) gain privileged access via β-parameter amplification. This creates a paradoxical state: externally stable yet internally accessible. Parasympathetic dominance; elevated GABA tone in amygdala; endogenous opioid release enhancing interoceptive wellbeing signals. Serene states can sustain for extended periods (minutes to hours) due to self-reinforcing dynamics—calm interoception maintains low surprise, which maintains serenity."
-            },
-            {
-                id: 'pride',
-                name: 'Pride',
-                category: 'Self',
-                precision: 75,
-                threshold: 40,
-                internalBias: 70,
-                valence: 'positive',
-                shortParams: "Π_self +4σ | β > 1.5",
-                description: "Self-model prediction confirmed or exceeded; precision Π_self elevated 3-4σ for achievement-related content; interoceptive (somatic) precision Π_i amplified 2-3σ for postural expansion and autonomic arousal; threshold θₜ lowered 12-18% for self-referential content.",
-                fullText: "Pride emerges when performance exceeds self-model predictions, generating positive prediction errors in self-evaluative circuits (medial prefrontal cortex, posterior cingulate). Critically, pride includes strong somatic components—chest expansion, upright posture, increased heart rate—that are precision-weighted as confirmatory signals of status/competence. The interoceptive amplification (β > 1.5) ensures these embodied markers readily cross threshold, binding the cognitive achievement to visceral experience. Pride functions as a social broadcast signal (Tracy & Robins, 2007), with postural expansion increasing visibility. The somatic precision amplification ensures the achievement-signal is felt, not just known. Unlike joy (which may lack self-referential content), pride specifically updates self-models; unlike arrogance, pride responds to actual performance-prediction mismatches rather than constitutively inflated priors."
-            },
-            {
-                id: 'amusement',
-                name: 'Amusement',
-                category: 'Positive',
-                precision: 65,
-                threshold: 25,
-                internalBias: 40,
-                valence: 'positive',
-                shortParams: "Surprise 1-2σ | θₜ -20%",
-                description: "Mild prediction violation (1-2σ surprise) in safe context; precision Π_social elevated 2-3σ for incongruity detection; threat-related precision Π_threat <0.5σ (safety signal); threshold θₜ lowered 15-20% enabling rapid, playful ignition.",
-                fullText: "Amusement implements Veatch's \"benign violation\" theory within APGI: a prediction error that would normally signal threat instead gets safety-tagged, creating incongruity. The anterior medial prefrontal cortex rapidly appraises violation magnitude and threat content; when violation is small and threat precision is suppressed (safe social context), the threshold dramatically lowers, enabling rapid ignition of the incongruous content without defensive mobilization. The mesolimbic reward system reinforces social incongruity detection, making humor intrinsically rewarding. Rapid ignition (<200ms from punchline to laughter initiation) reflects the pre-lowered threshold in social-playful contexts. Humor may train prediction error systems in safe contexts, building cognitive flexibility for genuine threat contexts."
-            },
-            {
-                id: 'love',
-                name: 'Love (Romantic)',
-                category: 'Intense',
-                precision: 95,
-                threshold: 15,
-                internalBias: 90,
-                valence: 'positive',
-                shortParams: "Π_attach +6σ | β ~ 2.0",
-                description: "Precision Π_attachment elevated 4-6σ for partner-specific cues; interoceptive bias β amplified 1.8-2.5 (soma heavily weighted); threshold θₜ lowered 20-30% for attachment-relevant content; temporal integration window extended 40-60% for partner-related predictions.",
-                fullText: "Romantic love represents one of the most extreme precision-threshold reconfigurations in the APGI framework. Oxytocin and vasopressin release amplify precision on attachment-object cues while simultaneously modulating anterior cingulate-insula connectivity to lower ignition threshold. The elevated β parameter ensures interoceptive states (heart rate changes, \"butterflies,\" visceral warmth) dominate conscious access when partner is present or imagined. Nucleus accumbens and ventral tegmental area show sustained activation, maintaining dopaminergic threshold suppression. Love's extreme parameter configuration imposes significant metabolic demand and reduces cognitive flexibility for non-attachment content—explaining love's \"obsessive\" quality. Initial phase (1-3 months): extreme parameter values; stable phase (3+ months): gradually moderated precision but sustained low threshold; maintenance phase: threshold returns toward baseline but partner-cues retain elevated precision. Nucleus accumbens activation to partner photos (Aron et al., 2005); increased cortisol and decreased serotonin in early-stage love (Marazziti et al., 1999); oxytocin-correlated threshold modulation."
-            },
-            {
-                id: 'curiosity',
-                name: 'Curiosity',
-                category: 'Optimal',
-                precision: 80,
-                threshold: 30,
-                internalBias: 20,
-                valence: 'positive',
-                shortParams: "Π_uncertainty +4σ | Expl > Exploit",
-                description: "Precision Π_uncertainty elevated 2-4σ on information-gap signals; prediction error ε_uncertainty actively amplified rather than minimized; threshold θₜ lowered 10-18% for exploratory/investigative content; behavioral policy shifts from exploitation to exploration.",
-                fullText: "Curiosity inverts the typical prediction error response. Rather than minimizing uncertainty through top-down prediction strengthening, curiosity amplifies precision on the gaps themselves, making uncertainty signals salient enough to cross threshold and drive information-seeking behavior. The anterior cingulate cortex computes information gain expected from exploration, while the dorsolateral prefrontal cortex maintains elevated precision on unresolved questions. Dopamine release is triggered not by reward delivery but by anticipated information gain (Gruber et al., 2014). Implements active learning—seeking information that maximally reduces expected uncertainty rather than expected error. Unlike anxiety (uncertainty with negative valence), curiosity treats uncertainty as positively valenced opportunity; unlike confusion (diffuse uncertainty), curiosity has directed, answerable questions."
-            },
-            {
-                id: 'engagement',
-                name: 'Engagement',
-                category: 'Optimal',
-                precision: 75,
-                threshold: 40,
-                internalBias: 40,
-                valence: 'positive',
-                shortParams: "Π_task +3σ | No entrainment",
-                description: "Similar to flow—Π_task elevated 3-4σ, Π_distractor <0.8σ, θₜ lowered 10-15%—but lacks flow's temporal fluency and metacognitive suppression.",
-                fullText: "Engagement represents partial flow: high task-relevant precision and lowered threshold without the temporal entrainment or automaticity. The reservoir state shows task-coherence but with intermittent self-monitoring (dorsolateral prefrontal \"checking\" prevents complete absorption). Threshold may show 10-20% fluctuation rather than flow's <5% stability. Flow has rhythmic, phase-locked dynamics; engagement maintains deliberate control. Flow suppresses metacognition; engagement retains effortful monitoring. Engagement is sustainable longer (hours) than flow's intense but brief windows (minutes). Engagement can transition to flow if task difficulty matches skill precisely and metacognitive monitoring naturally fades; conversely, flow degrades to engagement when difficulty-skill mismatch introduces effortful control."
-            },
-            {
-                id: 'mindfulness',
-                name: 'Mindfulness',
-                category: 'Calm',
-                precision: 60,
-                threshold: 45,
-                internalBias: 50,
-                valence: 'neutral',
-                shortParams: "Π_ext ≈ Π_int | θₜ_habit +30%",
-                description: "Precision equalized across internal/external domains (Π_ext ≈ Π_int ±10%); threshold θₜ_habitual elevated 20-30% for automatic predictions but lowered 15-20% for present-moment signals; top-down prediction strength reduced 30-40%; prediction error acceptance increased.",
-                fullText: "Mindfulness implements a radical shift in the prediction-precision architecture: rather than optimizing predictions to minimize error, mindfulness accepts errors as information while equalizing attention across all inputs. The posterior cingulate (default mode hub) shows reduced activity while the insula (interoceptive awareness) and lateral prefrontal cortex (monitoring) show increased activation. Crucially, mindfulness raises the threshold for habitual predictions (suppressing automatic schemas) while lowering threshold for novel present-moment content, creating non-judgmental awareness. Mindfulness doesn't reduce total precision—it redistributes it from top-down predictions to bottom-up sensory detail. This enables awareness of typically subliminal interoceptive and exteroceptive content. By temporarily suspending aggressive error minimization, mindfulness enables detection of prediction error patterns that would normally be immediately corrected—potentially revealing persistent model inadequacies. Reduced default mode connectivity; increased insula-prefrontal coherence; theta-band synchrony in frontal-midline regions (meditation studies: Lutz et al., 2008). Sustained practice (years) leads to trait-level changes in baseline precision allocation; acute practice (minutes) creates transient shifts."
-            },
-            {
-                id: 'neutrality',
-                name: 'Neutrality',
-                category: 'Neutral',
-                precision: 50,
-                threshold: 50,
-                internalBias: 50,
-                valence: 'neutral',
-                shortParams: "Π Baseline | PE < 1σ",
-                description: "All precision weights at baseline (±0.3σ deviation); threshold at resting set-point (individual-typical value); prediction error magnitude low across all domains (<1σ); reservoir in stable, low-energy attractor.",
-                fullText: "True neutrality represents homeostatic equilibrium in the APGI system—no dominant prediction error drives ignition, no emotional valence biases precision, no urgency modulates threshold. This is computationally the \"resting state\" but is phenomenologically rare, as even minimal interoceptive fluctuations (breathing, heartbeat awareness) can create mild precision variations. Two forms are (1) Passive neutrality—low arousal, minimal engagement, default mode dominance; (2) Active neutrality—alert but non-reactive, similar to mindfulness but without deliberate equalization of precision. Differs from boredom (which has suppressed precision from low expected value) and from serenity (which has asymmetric threshold adjustments favoring internal calm)."
-            },
-            {
-                id: 'boredom',
-                name: 'Boredom',
-                category: 'Negative',
-                precision: 20,
-                threshold: 80,
-                internalBias: 60,
-                valence: 'negative',
-                shortParams: "Π suppressed | θₜ +30%",
-                description: "Prediction error magnitude near-zero (<0.5σ)—stimulus over-learned or impoverished; precision Π globally suppressed 2-3σ due to low expected value/information gain; threshold θₜ elevated 20-35%, blocking ignition despite continued sensory input.",
-                fullText: "Boredom implements a resource-conservation policy: when stimuli provide no new information (prediction errors approach zero) and have low expected value, the system elevates threshold to prevent metabolic waste on processing redundant content. The anterior insula (salience detection) shows reduced activation; the ventral striatum signals low reward expectation, which suppresses dopamine-mediated threshold lowering. Crucially, boredom generates its own aversive signal—mild frustration from threshold elevation—that motivates exploration. Boredom is an anti-stagnation mechanism, creating discomfort that drives novelty-seeking when the current environment provides insufficient information or reward. Boredom requires awareness of the absence of engaging content, meaning some content must cross threshold to signal \"nothing interesting is crossing threshold\"—suggesting meta-level monitoring with lower threshold than object-level content. Trait boredom susceptibility correlates with dopaminergic receptor density (predicting threshold responsiveness to expected value)."
-            },
-            {
-                id: 'daydreaming',
-                name: 'Daydreaming',
-                category: 'Cognitive',
-                precision: 30,
-                threshold: 30,
-                internalBias: 90,
-                valence: 'neutral',
-                shortParams: "Π_ext < 0.4σ | Π_int +3σ",
-                description: "Endogenously-generated predictions dominate; external precision Π_ext suppressed to <0.4σ baseline; internal precision Π_int elevated 2-3σ for memory/imagination; threshold θₜ_internal lowered 15-25% enabling spontaneous ignition from memory traces or simulated scenarios; default mode network highly active.",
-                fullText: "Daydreaming inverts the typical precision hierarchy: external sensory input is deprioritized (suppressed precision) while internal generative models gain heightened precision. The posterior cingulate and medial prefrontal cortex (default mode hubs) show elevated activity, maintaining autobiographical and prospective simulations. The lowered internal threshold means even weak memory traces or imagined scenarios can trigger ignition, creating the \"drift\" quality of daydreaming. (1) Constructive daydreaming—future planning, creative combination; (2) Guilty-dysphoric daydreaming—rumination, negative simulations; (3) Poor attentional control—unintended mind-wandering during tasks. Mind-wandering episodes typically last 5-20 seconds before meta-awareness triggers external precision restoration or deliberate task-reengagement. ~30-50% of waking thought involves mind-wandering (Killingsworth & Gilbert, 2010); correlates with unhappiness but also with creativity depending on content."
-            },
-            {
-                id: 'distraction',
-                name: 'Distraction',
-                category: 'Negative',
-                precision: 50,
-                threshold: 20,
-                internalBias: 50,
-                valence: 'negative',
-                shortParams: "Multiple Π peaks | No Attractor",
-                description: "Multiple high-precision inputs (Π₁, Π₂, Π₃... each 2-3σ above baseline) compete for ignition; task-irrelevant signals have elevated precision; threshold θₜ crossed repeatedly by different inputs (rapid switching); reservoir state coherence degraded—no stable attractor maintained.",
-                fullText: "Distraction occurs when precision allocation fails to selectively enhance task-relevant content. Multiple signals—both external (notifications, background sounds) and internal (worries, memories)—maintain high precision, each episodically crossing threshold but preventing sustained coherence on any single content domain. The anterior cingulate shows increased conflict monitoring activity; the frontoparietal control network attempts but fails to stabilize precision allocation. Distraction is metabolically expensive—constant threshold crossings and attractor switching consume resources without productive output. Performance degrades as task-relevant reservoir states are continuously disrupted before completion. Distraction is addressed by reducing precision on irrelevant inputs (not increasing focus on relevant ones)—attentional filtering rather than attentional intensification. Distraction involves constitutively elevated precision on novelty/interruption plus lower-threshold responsiveness to unexpected stimuli."
-            },
-            {
-                id: 'fatigue',
-                name: 'Fatigue (Cognitive)',
-                category: 'Negative',
-                precision: 30,
-                threshold: 85,
-                internalBias: 70,
-                valence: 'negative',
-                shortParams: "θₜ +30% | Adenosine accumulation",
-                description: "Metabolic constraint elevates ignition threshold θₜ by 20-40%; precision weights Π globally reduced 2-4σ; prediction error accumulation rate slowed; temporal integration window shortened (working memory span decreased).",
-                fullText: "Cognitive fatigue reflects adenosine accumulation and glucose depletion in the prefrontal cortex and thalamus. Rising adenosine directly raises the ignition threshold by suppressing thalamocortical arousal, while glucose depletion reduces the metabolic capacity to sustain high-precision weighting. Prediction errors fail to accumulate sufficiently to cross the elevated threshold, creating subjective \"dulling\" and reduced capacity for effortful cognition. Threshold elevation is proportional to time-on-task and cognitive load; recovery follows rest or glucose replenishment with ~20-minute lag (reflecting adenosine clearance kinetics). Distinguishing fatigue types: (1) Cognitive fatigue—elevated threshold for abstract/planning content; (2) Sensory fatigue—locally reduced precision in overused sensory channels; (3) Motivational fatigue—reduced expected value suppressing dopamine-mediated threshold lowering. Fatigue is a protection mechanism preventing catastrophic resource depletion—forcing rest before critical systems fail. Chronic fatigue syndrome may involve dysregulated adenosine signaling or abnormal precision-threshold coupling."
-            },
-            {
-                id: 'anxiety',
-                name: 'Anxiety',
-                category: 'Negative',
-                precision: 90,
-                threshold: 10,
-                internalBias: 85,
-                valence: 'negative',
-                shortParams: "Π_threat +5σ | θₜ -35%",
-                description: "Expected precision on threat-related inputs elevated 3-6σ (Π_threat >> baseline); interoceptive precision Π_i amplified 2-4σ (elevated β parameter); ignition threshold θₜ_threat lowered 25-40% for danger-relevant cues; temporal focus biased toward future threats.",
-                fullText: "Anxiety represents threat-detection hypersensitivity—a false alarm generator. Noradrenergic hyperactivity elevates precision broadly but especially on threat-relevant channels (threat-selective attention). Critically, anxiety amplifies interoceptive precision: normal physiological fluctuations (heartbeat, breathing, muscle tension) are misinterpreted as danger signals, crossing the lowered threat-threshold and triggering further anxious ignition in a self-reinforcing cycle. Anxiety over-weights false alarms relative to misses (better to flee from shadows than miss real predators), but chronic anxiety suggests miscalibrated threshold or runaway precision amplification. Amygdala hyperreactivity; reduced prefrontal inhibition; heightened insula (interoceptive cortex) activity; elevated locus coeruleus (NE) output. SSRIs reduce overall NE/5-HT imbalance, normalizing precision; CBT challenges threat predictions, updating priors; interoceptive exposure habituates β amplification."
-            },
-            {
-                id: 'stress',
-                name: 'Stress',
-                category: 'Negative',
-                precision: 85,
-                threshold: 25,
-                internalBias: 60,
-                valence: 'negative',
-                shortParams: "Π global +3σ | θₜ Unstable",
-                description: "Norepinephrine elevation raises precision globally but non-selectively (all Π elevated 2-4σ); threshold θₜ becomes unstable (±15-25% fluctuation); cortisol release alters long-term precision calibration; reservoir saturated—processing capacity exceeded.",
-                fullText: "Stress differs from anxiety by being non-selective: all inputs gain precision, not just threats. This reflects undifferentiated arousal (sympathetic activation) overwhelming the precision allocation system. Cortisol further disrupts hippocampal function, impairing context-dependent precision modulation. The threshold becomes unstable because conflicting high-precision signals compete chaotically. Ignition becomes noisy—irrelevant content intermittently crosses threshold while relevant content may be blocked. Temporal phases are acute stress (minutes-hours): adaptive arousal, heightened alertness; Chronic stress (days-weeks): dysregulated precision, impaired threshold control. Burnout (months): exhausted arousal systems, elevated baseline threshold (fatigue-like state). Chronic stress is catastrophically inefficient—maintaining high precision across all domains while threshold instability prevents coherent processing. HPA axis activation → glucocorticoid receptor saturation → hippocampal LTP impairment → precision calibration failure. Stress involves arousal (unlike depression's low arousal); non-selective precision (unlike anxiety's threat-focus); performance initially enhanced then degraded (inverted-U curve)."
-            },
-            {
-                id: 'depression',
-                name: 'Depression',
-                category: 'Negative',
-                precision: 40,
-                threshold: 80,
-                internalBias: 80,
-                valence: 'negative',
-                shortParams: "Π_reward -4σ | θₜ_pos +40%",
-                description: "Expected value on reward-related content suppressed 3-5σ (anhedonia); precision Π_reward constitutively reduced while Π_negative elevated; ignition threshold θₛ_positive elevated 30-50% for positively-valenced content, effectively filtering hope/joy from access; threshold θₜ_negative lowered 10-20% for self-critical content.",
-                fullText: "Depression implements a computational trap: low expected reward suppresses dopamine release, which reduces precision on reward prediction errors and elevates threshold for positive content. Simultaneously, serotonergic deficits impair the \"dampening\" of negative precision, allowing self-critical and hopeless content to dominate. The result is a self-reinforcing cycle: negative content ignites easily while positive content is blocked, confirming the depressive prior and further suppressing dopamine. Depression is not merely \"low mood\"—it's a fundamental reconfiguration of the precision-threshold architecture that filters reality to confirm negative priors. Positive experiences still occur but fail to cross threshold into awareness. Reduced ventral striatal (reward) activity. Elevated subgenual anterior cingulate (negative self-focus). Decreased dorsolateral prefrontal activity (reduced cognitive control). Increased default mode network connectivity (rumination). Blunted P3b response to positive stimuli (threshold elevation marker). SSRIs gradually restore 5-HT-mediated precision dampening (4-6 weeks). Behavioral activation forces engagement with reward, building prediction error evidence. Cognitive therapy challenges negative priors through Bayesian updating. The model predicts treatment-resistant depression when threshold elevation exceeds compensatory capacity of monoamine restoration—suggesting need for threshold-targeted interventions (e.g., ketamine's rapid threshold modulation)."
-            },
-            {
-                id: 'anger',
-                name: 'Anger',
-                category: 'Intense',
-                precision: 90,
-                threshold: 20,
-                internalBias: 80,
-                valence: 'negative',
-                shortParams: "Π_injustice +4σ | Motor ready",
-                description: "High precision Π_injustice on obstruction/norm-violation prediction errors (3-5σ elevation); interoceptive (somatic) gain amplified 2-3σ (β elevated); threshold θₜ lowered 20-35% for action-preparation content; temporal focus on immediate situation; motor readiness increased.",
-                fullText: "Anger emerges when goal-directed predictions are repeatedly violated by perceived intentional obstruction. The anterior cingulate detects goal-conflict; the orbitofrontal cortex assigns blame/agency to external sources. Noradrenergic surge amplifies precision on injustice-related errors while lowering threshold for aggressive action schemas. Importantly, anger includes strong somatic components (muscle tension, cardiovascular arousal) that are precision-amplified via β elevation, binding the cognitive appraisal to embodied action-readiness. Anger mobilizes resources for obstacle removal—lowered threshold for aggressive action enables rapid behavioral response. The precision elevation on injustice helps detect and remember norm violations (social contract enforcement). Anger intensity scales with: (1) magnitude of goal obstruction (PE size), (2) perceived intentionality (precision on agency), (3) perceived power to respond (expected value of action). Initial surge (<1s), sustained plateau (10s-minutes), gradual decay (minutes-hours) or rumination-sustained persistence (hours-days). Trait anger reflects lower baseline θₜ for aggressive content and higher baseline Π on potential injustices (vigilance for disrespect)."
-            },
-            {
-                id: 'fear',
-                name: 'Fear',
-                category: 'Intense',
-                precision: 95,
-                threshold: 5,
-                internalBias: 100,
-                valence: 'negative',
-                shortParams: "θₜ -50% | β > 3.0",
-                description: "Extreme interoceptive precision Π_i (β parameter 2.5-4.0—somatic signals dominate awareness); threat-related prediction errors ε_threat amplified 4-7σ; ignition threshold θₜ_threat reduced 40-60%, triggering ignition with minimal evidence; temporal integration collapsed (<1s).",
-                fullText: "Fear represents the APGI system's maximum urgency configuration. Amygdala activation amplifies precision on threat-relevant cues while dramatically lowering threshold via direct projections to cortex and thalamus. The extreme β elevation means interoceptive signals—racing heart, rapid breathing, trembling—completely dominate conscious access, often to the exclusion of external detail. This creates fear's characteristic tunnel vision: somatic arousal monopolizes awareness. In true threat contexts, interoceptive signals (physiological preparation for action) are genuinely more informative than detailed environmental analysis. The collapsed temporal integration (immediate reactive mode) prioritizes speed over accuracy—evolutionarily adaptive for mortal threats. Threshold mechanics are θₜ lowering is so extreme that even ambiguous stimuli (shadows, loud sounds) can trigger ignition. The resulting false alarm rate is evolutionarily acceptable—better to flee from 10 shadows than ignore 1 real threat. The neural circuit is Amygdala → bed nucleus stria terminalis → locus coeruleus (NE surge) → cortical/thalamic gain modulation. Parallel: hypothalamus → sympathetic activation → interoceptive sensory explosion. Trait anxiety involves constitutively lowered θₜ_threat; PTSD involves persistently dysregulated β (interoceptive over-amplification) and overgeneralized threat precision."
-            },
-            {
-                id: 'guilt',
-                name: 'Guilt',
-                category: 'Self',
-                precision: 70,
-                threshold: 30,
-                internalBias: 75,
-                valence: 'negative',
-                shortParams: "Π_self +4σ | β_int 1.8",
-                description: "High precision Π_self-model on self-monitoring/norm-violation detection (3-5σ); internal prediction errors ε_moral strongly weighted (β_internal elevated 1.8-2.5); threshold θₜ_self-monitoring lowered 20-30%, enabling recurrent ignition of transgression-related content.",
-                fullText: "Guilt emerges when one's own behavior violates internalized moral predictions (self-model expectations). The anterior cingulate detects the self-action error; the medial prefrontal cortex amplifies precision on self-evaluative content. Crucially, guilt involves elevated precision on internal signals (β_internal > 1)—the felt sense of moral wrongness—which readily crosses the lowered self-monitoring threshold. This creates recurrent ignition: guilty thoughts trigger interoceptive discomfort, which amplifies precision, which triggers more guilty thoughts. Guilt serves as a self-correction mechanism—the recurrent, aversive ignition motivates reparative behavior and strengthens moral predictions to prevent future violations. The discomfort is the teaching signal. Appropriate guilt: proportional to actual violation, motivates repair. Excessive guilt: precision-threshold imbalance creates rumination without behavior change. Survivor guilt: self-model predicts one should have been harmed; \"escaped\" prediction error generates guilt despite no controllable action. Anterior cingulate (conflict/error monitoring), medial prefrontal (self-evaluation), anterior insula (interoceptive discomfort). Differs from shame (which involves external observers) by focusing on internal violation detection; differs from regret (which may lack moral valence) by engaging normative self-model."
-            },
-            {
-                id: 'shame',
-                name: 'Shame',
-                category: 'Self',
-                precision: 85,
-                threshold: 15,
-                internalBias: 90,
-                valence: 'negative',
-                shortParams: "Π_social-threat +5σ",
-                description: "Social prediction error—self-in-group model violated (perceived negative evaluation by others); precision Π_social-threat elevated 4-6σ on imagined observer signals; threshold θₜ_social-threat lowered 25-40%.",
-                fullText: "Shame differs from guilt by its focus on the 'global self' as perceived by others, rather than a specific action. The precision allocation is directed towards social threat cues and internal models of the observing 'other'. The threshold for negative self-evaluation is catastrophically lowered, while the urge to hide reflects a motor-output suppression. Physiologically, the parasympathetic 'freeze' response competes with sympathetic arousal, creating a unique and disorienting interoceptive signature."
-            }
-        ];
+      // --- DATA PARSING & PREPARATION ---
+      const APGI_DATA = [
+        {
+          id: "flow",
+          name: "Flow State",
+          category: "Optimal",
+          precision: 95,
+          threshold: 35,
+          internalBias: 30,
+          valence: "positive",
+          shortParams: "Π_task > 5σ | θₜ -15%",
+          description:
+            "Prediction accuracy approaches 95%+ for task-relevant inputs; precision Π_task > 5σ above baseline while Π_distractor < 0.5σ; ignition threshold θₜ maintained 10-15% below resting baseline with <5% variance over time. Flow represents an optimal ignition regime where the cortical reservoir achieves maximal task-relevant coherence with minimal metabolic overhead.",
+          fullText:
+            "Flow represents an optimal ignition regime where the cortical reservoir achieves maximal task-relevant coherence with minimal metabolic overhead. The precision-threshold architecture enters a transient attractor state characterized by: (1) tight temporal coupling between prediction and sensory input (lag <100ms), (2) sustained dopaminergic tone maintaining stable but accessible threshold, (3) selective noradrenergic enhancement of task-relevant precision weights, and (4) reduced global competition for ignition—creating uninterrupted access for goal-aligned content. This configuration maximizes the information-theoretic efficiency ratio: relevant information accessed per unit metabolic cost. Unlike mere engagement, flow exhibits temporal entrainment (rhythmic precision-threshold oscillations phase-locked to task structure) and metacognitive suppression (reduced self-monitoring precision, enabling automatic execution).",
+        },
+        {
+          id: "joy",
+          name: "Joy / Happiness",
+          category: "Positive",
+          precision: 75,
+          threshold: 30,
+          internalBias: 50,
+          valence: "positive",
+          shortParams: "Π_positive +3σ | θₜ -20%",
+          description:
+            "Prediction accuracy exceeds prior expectations by >20%; precision Π_positive amplified 2-3σ above baseline for reward-related content; threshold θₜ reduced 15-20% for positively-valenced inputs.",
+          fullText:
+            "Dopamine-mediated elevation of expected value signals increases precision weighting on reward prediction errors. When actual outcomes exceed predicted value (positive RPE: reward prediction error), the resulting surprise is amplified by heightened precision, readily crossing the lowered threshold. Ventral striatal-vmPFC circuits maintain sustained low-threshold access to positively-valenced content through tonic dopamine elevation. P3b amplitude to positive stimuli increased; gamma-band synchrony in reward networks; sustained ventral striatal activation.",
+        },
+        {
+          id: "gratitude",
+          name: "Gratitude",
+          category: "Positive",
+          precision: 70,
+          threshold: 35,
+          internalBias: 65,
+          valence: "positive",
+          shortParams: "Π_social +4σ | Π_i amplified",
+          description:
+            "Precision Π_social elevated 2-4σ for attachment/reciprocity signals; interoceptive precision Π_i amplified for safety-related visceral states; threshold θₜ lowered 10-15% for social-affiliative content.",
+          fullText:
+            "Resolution of social prediction errors in a favorable direction (receiving unexpected prosocial behavior) generates amplified positive prediction errors in attachment-monitoring circuits. Oxytocin release enhances precision on social-bonding cues while simultaneously lowering ignition threshold through modulation of anterior cingulate-insula connectivity. The interoceptive component reflects somatic markers of safety and connection (reduced heart rate variability, muscle relaxation) that anchor gratitude in embodied states. Requires temporally extended social prediction (expectation of non-reciprocation) followed by violation through received kindness—distinct from joy's simpler outcome-expectation mismatch.",
+        },
+        {
+          id: "hope",
+          name: "Hope",
+          category: "Positive",
+          precision: 65,
+          threshold: 40,
+          internalBias: 40,
+          valence: "positive",
+          shortParams: "Π_future +3σ | Confidence 60-75%",
+          description:
+            "Prediction confidence moderate (60-75%); expected value high despite uncertainty; precision Π_future elevated 2-3σ for outcome-relevant cues; threshold θₜ lowered 12-18% by sustained dopaminergic tone.",
+          fullText:
+            'Hope represents a computationally sophisticated state balancing uncertainty and expected value. Mesolimbic dopamine maintains elevated precision on future-oriented prediction errors despite acknowledged uncertainty, effectively implementing a "explore with positive prior" policy. The anterior cingulate cortex monitors the uncertainty level while the ventromedial prefrontal cortex maintains the positive valuation. Threshold reduction is actively sustained through tonic (not phasic) dopamine, creating persistent accessibility for goal-relevant planning content. Unlike optimism (high confidence), hope explicitly represents uncertainty; unlike anxiety (high uncertainty + negative valence), hope maintains positive expected value through active dopaminergic maintenance. Enables persistent goal pursuit under uncertainty—a critical adaptive capacity for long-term planning.',
+        },
+        {
+          id: "optimism",
+          name: "Optimism",
+          category: "Positive",
+          precision: 60,
+          threshold: 45,
+          internalBias: 45,
+          valence: "positive",
+          shortParams: "Positive Prior >70% | θₜ -10%",
+          description:
+            "Prior probability on positive outcomes elevated (>70%); expected prediction error magnitude low; precision Π_positive constitutively elevated 1.5-2σ; threshold θₜ reduced 8-12% for confirmatory evidence.",
+          fullText:
+            "Optimism reflects a generalized positive prior distribution that systematically underweights negative prediction errors while amplifying positive ones—a form of Bayesian bias. Trait-level serotonergic tone influences the prior distribution itself (not just precision), creating stable positive expectations. The threshold reduction is less dynamic than in hope, representing a constitutional accessibility bias rather than active maintenance. Mild optimism bias may be adaptive (Taylor & Brown, 1988); extreme forms predict depression vulnerability when outcomes persistently violate expectations. Differs from hope by higher confidence and less explicit uncertainty representation; differs from joy by its anticipatory rather than consummatory nature.",
+        },
+        {
+          id: "awe",
+          name: "Awe",
+          category: "Transcendent",
+          precision: 90,
+          threshold: 20,
+          internalBias: 20,
+          valence: "positive",
+          shortParams: "PE > 4σ | θₜ suppressed 30%",
+          description:
+            "Sudden prediction error magnitude >4σ from vastness/novelty; global precision Π_global transiently elevated across all sensory domains; threshold θₜ suppressed 20-30% for 2-10 seconds, then gradually restored.",
+          fullText:
+            'Initial ignition surge (<1s), sustained low-threshold window (2-10s), gradual recovery (20-60s) to baseline. Awe emerges when stimuli violate size/complexity priors (vast landscapes, profound ideas, extreme beauty) by orders of magnitude. This triggers a "model inadequacy" signal that globally elevates precision (preparing all sensory channels for information gathering) while dramatically lowering threshold (enabling rapid incorporation of schema-violating content). The default mode network shows characteristic transient suppression (Stellar et al., 2017) as self-focused processing is displaced by stimulus-focused ignition. Awe\'s brief threshold suppression enables rapid updating of inadequate world-models when encountering magnitude-mismatched stimuli, while the subsequent gradual threshold restoration prevents prolonged vulnerability to disruption.',
+        },
+        {
+          id: "inspiration",
+          name: "Inspiration",
+          category: "Transcendent",
+          precision: 80,
+          threshold: 35,
+          internalBias: 40,
+          valence: "positive",
+          shortParams: "Π_pattern +4σ | DMN-FPN Coupling",
+          description:
+            "Parameters: Precision Π_pattern elevated 2-4σ for abstract/analogical matches; threshold θₜ lowered 10-15% for associations beyond immediate task constraints; default mode-frontoparietal coupling increased 40-60%.",
+          fullText:
+            "Inspiration represents detection of latent pattern similarities that weren't explicitly sought—serendipitous matching between current input and distant memory traces or conceptual schemas. The anterior temporal lobe (conceptual hub) and posterior cingulate (episodic retrieval) show increased functional connectivity, while precision elevation on weak-but-coherent pattern matches enables these remote associations to cross threshold despite low bottom-up signal strength. High-precision weighting on coherence metrics (pattern consistency) rather than strength metrics (signal amplitude)—enabling weak but structured signals to ignite. Differs from creativity by its receptive rather than generative character; differs from insight by less explicit problem-solving context.",
+        },
+        {
+          id: "serenity",
+          name: "Serenity",
+          category: "Calm",
+          precision: 85,
+          threshold: 70,
+          internalBias: 80,
+          valence: "positive",
+          shortParams: "θₜ_ext +25% | θₜ_int -15%",
+          description:
+            "Prediction accuracy >90% (low-surprise environment); precision Π_threat minimized (<0.3σ below baseline); external threshold θₜ_ext elevated 15-25% for perturbations; interoceptive threshold θₜ_int lowered 10-15% for calm visceral states.",
+          fullText:
+            "Serenity exemplifies APGI's dual-threshold architecture. When predictions are consistently accurate and threat-related precision is suppressed (low amygdala reactivity, high prefrontal inhibition), two simultaneous threshold adjustments occur: (1) external inputs require larger prediction errors to trigger ignition (high-pass filtering of environmental disturbances), (2) interoceptive signals of safety and calm (slow heart rate, deep breathing, muscle relaxation) gain privileged access via β-parameter amplification. This creates a paradoxical state: externally stable yet internally accessible. Parasympathetic dominance; elevated GABA tone in amygdala; endogenous opioid release enhancing interoceptive wellbeing signals. Serene states can sustain for extended periods (minutes to hours) due to self-reinforcing dynamics—calm interoception maintains low surprise, which maintains serenity.",
+        },
+        {
+          id: "pride",
+          name: "Pride",
+          category: "Self",
+          precision: 75,
+          threshold: 40,
+          internalBias: 70,
+          valence: "positive",
+          shortParams: "Π_self +4σ | β > 1.5",
+          description:
+            "Self-model prediction confirmed or exceeded; precision Π_self elevated 3-4σ for achievement-related content; interoceptive (somatic) precision Π_i amplified 2-3σ for postural expansion and autonomic arousal; threshold θₜ lowered 12-18% for self-referential content.",
+          fullText:
+            "Pride emerges when performance exceeds self-model predictions, generating positive prediction errors in self-evaluative circuits (medial prefrontal cortex, posterior cingulate). Critically, pride includes strong somatic components—chest expansion, upright posture, increased heart rate—that are precision-weighted as confirmatory signals of status/competence. The interoceptive amplification (β > 1.5) ensures these embodied markers readily cross threshold, binding the cognitive achievement to visceral experience. Pride functions as a social broadcast signal (Tracy & Robins, 2007), with postural expansion increasing visibility. The somatic precision amplification ensures the achievement-signal is felt, not just known. Unlike joy (which may lack self-referential content), pride specifically updates self-models; unlike arrogance, pride responds to actual performance-prediction mismatches rather than constitutively inflated priors.",
+        },
+        {
+          id: "amusement",
+          name: "Amusement",
+          category: "Positive",
+          precision: 65,
+          threshold: 25,
+          internalBias: 40,
+          valence: "positive",
+          shortParams: "Surprise 1-2σ | θₜ -20%",
+          description:
+            "Mild prediction violation (1-2σ surprise) in safe context; precision Π_social elevated 2-3σ for incongruity detection; threat-related precision Π_threat <0.5σ (safety signal); threshold θₜ lowered 15-20% enabling rapid, playful ignition.",
+          fullText:
+            'Amusement implements Veatch\'s "benign violation" theory within APGI: a prediction error that would normally signal threat instead gets safety-tagged, creating incongruity. The anterior medial prefrontal cortex rapidly appraises violation magnitude and threat content; when violation is small and threat precision is suppressed (safe social context), the threshold dramatically lowers, enabling rapid ignition of the incongruous content without defensive mobilization. The mesolimbic reward system reinforces social incongruity detection, making humor intrinsically rewarding. Rapid ignition (<200ms from punchline to laughter initiation) reflects the pre-lowered threshold in social-playful contexts. Humor may train prediction error systems in safe contexts, building cognitive flexibility for genuine threat contexts.',
+        },
+        {
+          id: "love",
+          name: "Love (Romantic)",
+          category: "Intense",
+          precision: 95,
+          threshold: 15,
+          internalBias: 90,
+          valence: "positive",
+          shortParams: "Π_attach +6σ | β ~ 2.0",
+          description:
+            "Precision Π_attachment elevated 4-6σ for partner-specific cues; interoceptive bias β amplified 1.8-2.5 (soma heavily weighted); threshold θₜ lowered 20-30% for attachment-relevant content; temporal integration window extended 40-60% for partner-related predictions.",
+          fullText:
+            'Romantic love represents one of the most extreme precision-threshold reconfigurations in the APGI framework. Oxytocin and vasopressin release amplify precision on attachment-object cues while simultaneously modulating anterior cingulate-insula connectivity to lower ignition threshold. The elevated β parameter ensures interoceptive states (heart rate changes, "butterflies," visceral warmth) dominate conscious access when partner is present or imagined. Nucleus accumbens and ventral tegmental area show sustained activation, maintaining dopaminergic threshold suppression. Love\'s extreme parameter configuration imposes significant metabolic demand and reduces cognitive flexibility for non-attachment content—explaining love\'s "obsessive" quality. Initial phase (1-3 months): extreme parameter values; stable phase (3+ months): gradually moderated precision but sustained low threshold; maintenance phase: threshold returns toward baseline but partner-cues retain elevated precision. Nucleus accumbens activation to partner photos (Aron et al., 2005); increased cortisol and decreased serotonin in early-stage love (Marazziti et al., 1999); oxytocin-correlated threshold modulation.',
+        },
+        {
+          id: "curiosity",
+          name: "Curiosity",
+          category: "Optimal",
+          precision: 80,
+          threshold: 30,
+          internalBias: 20,
+          valence: "positive",
+          shortParams: "Π_uncertainty +4σ | Expl > Exploit",
+          description:
+            "Precision Π_uncertainty elevated 2-4σ on information-gap signals; prediction error ε_uncertainty actively amplified rather than minimized; threshold θₜ lowered 10-18% for exploratory/investigative content; behavioral policy shifts from exploitation to exploration.",
+          fullText:
+            "Curiosity inverts the typical prediction error response. Rather than minimizing uncertainty through top-down prediction strengthening, curiosity amplifies precision on the gaps themselves, making uncertainty signals salient enough to cross threshold and drive information-seeking behavior. The anterior cingulate cortex computes information gain expected from exploration, while the dorsolateral prefrontal cortex maintains elevated precision on unresolved questions. Dopamine release is triggered not by reward delivery but by anticipated information gain (Gruber et al., 2014). Implements active learning—seeking information that maximally reduces expected uncertainty rather than expected error. Unlike anxiety (uncertainty with negative valence), curiosity treats uncertainty as positively valenced opportunity; unlike confusion (diffuse uncertainty), curiosity has directed, answerable questions.",
+        },
+        {
+          id: "engagement",
+          name: "Engagement",
+          category: "Optimal",
+          precision: 75,
+          threshold: 40,
+          internalBias: 40,
+          valence: "positive",
+          shortParams: "Π_task +3σ | No entrainment",
+          description:
+            "Similar to flow—Π_task elevated 3-4σ, Π_distractor <0.8σ, θₜ lowered 10-15%—but lacks flow's temporal fluency and metacognitive suppression.",
+          fullText:
+            "Engagement represents partial flow: high task-relevant precision and lowered threshold without the temporal entrainment or automaticity. The reservoir state shows task-coherence but with intermittent self-monitoring (dorsolateral prefrontal \"checking\" prevents complete absorption). Threshold may show 10-20% fluctuation rather than flow's <5% stability. Flow has rhythmic, phase-locked dynamics; engagement maintains deliberate control. Flow suppresses metacognition; engagement retains effortful monitoring. Engagement is sustainable longer (hours) than flow's intense but brief windows (minutes). Engagement can transition to flow if task difficulty matches skill precisely and metacognitive monitoring naturally fades; conversely, flow degrades to engagement when difficulty-skill mismatch introduces effortful control.",
+        },
+        {
+          id: "mindfulness",
+          name: "Mindfulness",
+          category: "Calm",
+          precision: 60,
+          threshold: 45,
+          internalBias: 50,
+          valence: "neutral",
+          shortParams: "Π_ext ≈ Π_int | θₜ_habit +30%",
+          description:
+            "Precision equalized across internal/external domains (Π_ext ≈ Π_int ±10%); threshold θₜ_habitual elevated 20-30% for automatic predictions but lowered 15-20% for present-moment signals; top-down prediction strength reduced 30-40%; prediction error acceptance increased.",
+          fullText:
+            "Mindfulness implements a radical shift in the prediction-precision architecture: rather than optimizing predictions to minimize error, mindfulness accepts errors as information while equalizing attention across all inputs. The posterior cingulate (default mode hub) shows reduced activity while the insula (interoceptive awareness) and lateral prefrontal cortex (monitoring) show increased activation. Crucially, mindfulness raises the threshold for habitual predictions (suppressing automatic schemas) while lowering threshold for novel present-moment content, creating non-judgmental awareness. Mindfulness doesn't reduce total precision—it redistributes it from top-down predictions to bottom-up sensory detail. This enables awareness of typically subliminal interoceptive and exteroceptive content. By temporarily suspending aggressive error minimization, mindfulness enables detection of prediction error patterns that would normally be immediately corrected—potentially revealing persistent model inadequacies. Reduced default mode connectivity; increased insula-prefrontal coherence; theta-band synchrony in frontal-midline regions (meditation studies: Lutz et al., 2008). Sustained practice (years) leads to trait-level changes in baseline precision allocation; acute practice (minutes) creates transient shifts.",
+        },
+        {
+          id: "neutrality",
+          name: "Neutrality",
+          category: "Neutral",
+          precision: 50,
+          threshold: 50,
+          internalBias: 50,
+          valence: "neutral",
+          shortParams: "Π Baseline | PE < 1σ",
+          description:
+            "All precision weights at baseline (±0.3σ deviation); threshold at resting set-point (individual-typical value); prediction error magnitude low across all domains (<1σ); reservoir in stable, low-energy attractor.",
+          fullText:
+            'True neutrality represents homeostatic equilibrium in the APGI system—no dominant prediction error drives ignition, no emotional valence biases precision, no urgency modulates threshold. This is computationally the "resting state" but is phenomenologically rare, as even minimal interoceptive fluctuations (breathing, heartbeat awareness) can create mild precision variations. Two forms are (1) Passive neutrality—low arousal, minimal engagement, default mode dominance; (2) Active neutrality—alert but non-reactive, similar to mindfulness but without deliberate equalization of precision. Differs from boredom (which has suppressed precision from low expected value) and from serenity (which has asymmetric threshold adjustments favoring internal calm).',
+        },
+        {
+          id: "boredom",
+          name: "Boredom",
+          category: "Negative",
+          precision: 20,
+          threshold: 80,
+          internalBias: 60,
+          valence: "negative",
+          shortParams: "Π suppressed | θₜ +30%",
+          description:
+            "Prediction error magnitude near-zero (<0.5σ)—stimulus over-learned or impoverished; precision Π globally suppressed 2-3σ due to low expected value/information gain; threshold θₜ elevated 20-35%, blocking ignition despite continued sensory input.",
+          fullText:
+            'Boredom implements a resource-conservation policy: when stimuli provide no new information (prediction errors approach zero) and have low expected value, the system elevates threshold to prevent metabolic waste on processing redundant content. The anterior insula (salience detection) shows reduced activation; the ventral striatum signals low reward expectation, which suppresses dopamine-mediated threshold lowering. Crucially, boredom generates its own aversive signal—mild frustration from threshold elevation—that motivates exploration. Boredom is an anti-stagnation mechanism, creating discomfort that drives novelty-seeking when the current environment provides insufficient information or reward. Boredom requires awareness of the absence of engaging content, meaning some content must cross threshold to signal "nothing interesting is crossing threshold"—suggesting meta-level monitoring with lower threshold than object-level content. Trait boredom susceptibility correlates with dopaminergic receptor density (predicting threshold responsiveness to expected value).',
+        },
+        {
+          id: "daydreaming",
+          name: "Daydreaming",
+          category: "Cognitive",
+          precision: 30,
+          threshold: 30,
+          internalBias: 90,
+          valence: "neutral",
+          shortParams: "Π_ext < 0.4σ | Π_int +3σ",
+          description:
+            "Endogenously-generated predictions dominate; external precision Π_ext suppressed to <0.4σ baseline; internal precision Π_int elevated 2-3σ for memory/imagination; threshold θₜ_internal lowered 15-25% enabling spontaneous ignition from memory traces or simulated scenarios; default mode network highly active.",
+          fullText:
+            'Daydreaming inverts the typical precision hierarchy: external sensory input is deprioritized (suppressed precision) while internal generative models gain heightened precision. The posterior cingulate and medial prefrontal cortex (default mode hubs) show elevated activity, maintaining autobiographical and prospective simulations. The lowered internal threshold means even weak memory traces or imagined scenarios can trigger ignition, creating the "drift" quality of daydreaming. (1) Constructive daydreaming—future planning, creative combination; (2) Guilty-dysphoric daydreaming—rumination, negative simulations; (3) Poor attentional control—unintended mind-wandering during tasks. Mind-wandering episodes typically last 5-20 seconds before meta-awareness triggers external precision restoration or deliberate task-reengagement. ~30-50% of waking thought involves mind-wandering (Killingsworth & Gilbert, 2010); correlates with unhappiness but also with creativity depending on content.',
+        },
+        {
+          id: "distraction",
+          name: "Distraction",
+          category: "Negative",
+          precision: 50,
+          threshold: 20,
+          internalBias: 50,
+          valence: "negative",
+          shortParams: "Multiple Π peaks | No Attractor",
+          description:
+            "Multiple high-precision inputs (Π₁, Π₂, Π₃... each 2-3σ above baseline) compete for ignition; task-irrelevant signals have elevated precision; threshold θₜ crossed repeatedly by different inputs (rapid switching); reservoir state coherence degraded—no stable attractor maintained.",
+          fullText:
+            "Distraction occurs when precision allocation fails to selectively enhance task-relevant content. Multiple signals—both external (notifications, background sounds) and internal (worries, memories)—maintain high precision, each episodically crossing threshold but preventing sustained coherence on any single content domain. The anterior cingulate shows increased conflict monitoring activity; the frontoparietal control network attempts but fails to stabilize precision allocation. Distraction is metabolically expensive—constant threshold crossings and attractor switching consume resources without productive output. Performance degrades as task-relevant reservoir states are continuously disrupted before completion. Distraction is addressed by reducing precision on irrelevant inputs (not increasing focus on relevant ones)—attentional filtering rather than attentional intensification. Distraction involves constitutively elevated precision on novelty/interruption plus lower-threshold responsiveness to unexpected stimuli.",
+        },
+        {
+          id: "fatigue",
+          name: "Fatigue (Cognitive)",
+          category: "Negative",
+          precision: 30,
+          threshold: 85,
+          internalBias: 70,
+          valence: "negative",
+          shortParams: "θₜ +30% | Adenosine accumulation",
+          description:
+            "Metabolic constraint elevates ignition threshold θₜ by 20-40%; precision weights Π globally reduced 2-4σ; prediction error accumulation rate slowed; temporal integration window shortened (working memory span decreased).",
+          fullText:
+            'Cognitive fatigue reflects adenosine accumulation and glucose depletion in the prefrontal cortex and thalamus. Rising adenosine directly raises the ignition threshold by suppressing thalamocortical arousal, while glucose depletion reduces the metabolic capacity to sustain high-precision weighting. Prediction errors fail to accumulate sufficiently to cross the elevated threshold, creating subjective "dulling" and reduced capacity for effortful cognition. Threshold elevation is proportional to time-on-task and cognitive load; recovery follows rest or glucose replenishment with ~20-minute lag (reflecting adenosine clearance kinetics). Distinguishing fatigue types: (1) Cognitive fatigue—elevated threshold for abstract/planning content; (2) Sensory fatigue—locally reduced precision in overused sensory channels; (3) Motivational fatigue—reduced expected value suppressing dopamine-mediated threshold lowering. Fatigue is a protection mechanism preventing catastrophic resource depletion—forcing rest before critical systems fail. Chronic fatigue syndrome may involve dysregulated adenosine signaling or abnormal precision-threshold coupling.',
+        },
+        {
+          id: "anxiety",
+          name: "Anxiety",
+          category: "Negative",
+          precision: 90,
+          threshold: 10,
+          internalBias: 85,
+          valence: "negative",
+          shortParams: "Π_threat +5σ | θₜ -35%",
+          description:
+            "Expected precision on threat-related inputs elevated 3-6σ (Π_threat >> baseline); interoceptive precision Π_i amplified 2-4σ (elevated β parameter); ignition threshold θₜ_threat lowered 25-40% for danger-relevant cues; temporal focus biased toward future threats.",
+          fullText:
+            "Anxiety represents threat-detection hypersensitivity—a false alarm generator. Noradrenergic hyperactivity elevates precision broadly but especially on threat-relevant channels (threat-selective attention). Critically, anxiety amplifies interoceptive precision: normal physiological fluctuations (heartbeat, breathing, muscle tension) are misinterpreted as danger signals, crossing the lowered threat-threshold and triggering further anxious ignition in a self-reinforcing cycle. Anxiety over-weights false alarms relative to misses (better to flee from shadows than miss real predators), but chronic anxiety suggests miscalibrated threshold or runaway precision amplification. Amygdala hyperreactivity; reduced prefrontal inhibition; heightened insula (interoceptive cortex) activity; elevated locus coeruleus (NE) output. SSRIs reduce overall NE/5-HT imbalance, normalizing precision; CBT challenges threat predictions, updating priors; interoceptive exposure habituates β amplification.",
+        },
+        {
+          id: "stress",
+          name: "Stress",
+          category: "Negative",
+          precision: 85,
+          threshold: 25,
+          internalBias: 60,
+          valence: "negative",
+          shortParams: "Π global +3σ | θₜ Unstable",
+          description:
+            "Norepinephrine elevation raises precision globally but non-selectively (all Π elevated 2-4σ); threshold θₜ becomes unstable (±15-25% fluctuation); cortisol release alters long-term precision calibration; reservoir saturated—processing capacity exceeded.",
+          fullText:
+            "Stress differs from anxiety by being non-selective: all inputs gain precision, not just threats. This reflects undifferentiated arousal (sympathetic activation) overwhelming the precision allocation system. Cortisol further disrupts hippocampal function, impairing context-dependent precision modulation. The threshold becomes unstable because conflicting high-precision signals compete chaotically. Ignition becomes noisy—irrelevant content intermittently crosses threshold while relevant content may be blocked. Temporal phases are acute stress (minutes-hours): adaptive arousal, heightened alertness; Chronic stress (days-weeks): dysregulated precision, impaired threshold control. Burnout (months): exhausted arousal systems, elevated baseline threshold (fatigue-like state). Chronic stress is catastrophically inefficient—maintaining high precision across all domains while threshold instability prevents coherent processing. HPA axis activation → glucocorticoid receptor saturation → hippocampal LTP impairment → precision calibration failure. Stress involves arousal (unlike depression's low arousal); non-selective precision (unlike anxiety's threat-focus); performance initially enhanced then degraded (inverted-U curve).",
+        },
+        {
+          id: "depression",
+          name: "Depression",
+          category: "Negative",
+          precision: 40,
+          threshold: 80,
+          internalBias: 80,
+          valence: "negative",
+          shortParams: "Π_reward -4σ | θₜ_pos +40%",
+          description:
+            "Expected value on reward-related content suppressed 3-5σ (anhedonia); precision Π_reward constitutively reduced while Π_negative elevated; ignition threshold θₛ_positive elevated 30-50% for positively-valenced content, effectively filtering hope/joy from access; threshold θₜ_negative lowered 10-20% for self-critical content.",
+          fullText:
+            'Depression implements a computational trap: low expected reward suppresses dopamine release, which reduces precision on reward prediction errors and elevates threshold for positive content. Simultaneously, serotonergic deficits impair the "dampening" of negative precision, allowing self-critical and hopeless content to dominate. The result is a self-reinforcing cycle: negative content ignites easily while positive content is blocked, confirming the depressive prior and further suppressing dopamine. Depression is not merely "low mood"—it\'s a fundamental reconfiguration of the precision-threshold architecture that filters reality to confirm negative priors. Positive experiences still occur but fail to cross threshold into awareness. Reduced ventral striatal (reward) activity. Elevated subgenual anterior cingulate (negative self-focus). Decreased dorsolateral prefrontal activity (reduced cognitive control). Increased default mode network connectivity (rumination). Blunted P3b response to positive stimuli (threshold elevation marker). SSRIs gradually restore 5-HT-mediated precision dampening (4-6 weeks). Behavioral activation forces engagement with reward, building prediction error evidence. Cognitive therapy challenges negative priors through Bayesian updating. The model predicts treatment-resistant depression when threshold elevation exceeds compensatory capacity of monoamine restoration—suggesting need for threshold-targeted interventions (e.g., ketamine\'s rapid threshold modulation).',
+        },
+        {
+          id: "anger",
+          name: "Anger",
+          category: "Intense",
+          precision: 90,
+          threshold: 20,
+          internalBias: 80,
+          valence: "negative",
+          shortParams: "Π_injustice +4σ | Motor ready",
+          description:
+            "High precision Π_injustice on obstruction/norm-violation prediction errors (3-5σ elevation); interoceptive (somatic) gain amplified 2-3σ (β elevated); threshold θₜ lowered 20-35% for action-preparation content; temporal focus on immediate situation; motor readiness increased.",
+          fullText:
+            "Anger emerges when goal-directed predictions are repeatedly violated by perceived intentional obstruction. The anterior cingulate detects goal-conflict; the orbitofrontal cortex assigns blame/agency to external sources. Noradrenergic surge amplifies precision on injustice-related errors while lowering threshold for aggressive action schemas. Importantly, anger includes strong somatic components (muscle tension, cardiovascular arousal) that are precision-amplified via β elevation, binding the cognitive appraisal to embodied action-readiness. Anger mobilizes resources for obstacle removal—lowered threshold for aggressive action enables rapid behavioral response. The precision elevation on injustice helps detect and remember norm violations (social contract enforcement). Anger intensity scales with: (1) magnitude of goal obstruction (PE size), (2) perceived intentionality (precision on agency), (3) perceived power to respond (expected value of action). Initial surge (<1s), sustained plateau (10s-minutes), gradual decay (minutes-hours) or rumination-sustained persistence (hours-days). Trait anger reflects lower baseline θₜ for aggressive content and higher baseline Π on potential injustices (vigilance for disrespect).",
+        },
+        {
+          id: "fear",
+          name: "Fear",
+          category: "Intense",
+          precision: 95,
+          threshold: 5,
+          internalBias: 100,
+          valence: "negative",
+          shortParams: "θₜ -50% | β > 3.0",
+          description:
+            "Extreme interoceptive precision Π_i (β parameter 2.5-4.0—somatic signals dominate awareness); threat-related prediction errors ε_threat amplified 4-7σ; ignition threshold θₜ_threat reduced 40-60%, triggering ignition with minimal evidence; temporal integration collapsed (<1s).",
+          fullText:
+            "Fear represents the APGI system's maximum urgency configuration. Amygdala activation amplifies precision on threat-relevant cues while dramatically lowering threshold via direct projections to cortex and thalamus. The extreme β elevation means interoceptive signals—racing heart, rapid breathing, trembling—completely dominate conscious access, often to the exclusion of external detail. This creates fear's characteristic tunnel vision: somatic arousal monopolizes awareness. In true threat contexts, interoceptive signals (physiological preparation for action) are genuinely more informative than detailed environmental analysis. The collapsed temporal integration (immediate reactive mode) prioritizes speed over accuracy—evolutionarily adaptive for mortal threats. Threshold mechanics are θₜ lowering is so extreme that even ambiguous stimuli (shadows, loud sounds) can trigger ignition. The resulting false alarm rate is evolutionarily acceptable—better to flee from 10 shadows than ignore 1 real threat. The neural circuit is Amygdala → bed nucleus stria terminalis → locus coeruleus (NE surge) → cortical/thalamic gain modulation. Parallel: hypothalamus → sympathetic activation → interoceptive sensory explosion. Trait anxiety involves constitutively lowered θₜ_threat; PTSD involves persistently dysregulated β (interoceptive over-amplification) and overgeneralized threat precision.",
+        },
+        {
+          id: "guilt",
+          name: "Guilt",
+          category: "Self",
+          precision: 70,
+          threshold: 30,
+          internalBias: 75,
+          valence: "negative",
+          shortParams: "Π_self +4σ | β_int 1.8",
+          description:
+            "High precision Π_self-model on self-monitoring/norm-violation detection (3-5σ); internal prediction errors ε_moral strongly weighted (β_internal elevated 1.8-2.5); threshold θₜ_self-monitoring lowered 20-30%, enabling recurrent ignition of transgression-related content.",
+          fullText:
+            'Guilt emerges when one\'s own behavior violates internalized moral predictions (self-model expectations). The anterior cingulate detects the self-action error; the medial prefrontal cortex amplifies precision on self-evaluative content. Crucially, guilt involves elevated precision on internal signals (β_internal > 1)—the felt sense of moral wrongness—which readily crosses the lowered self-monitoring threshold. This creates recurrent ignition: guilty thoughts trigger interoceptive discomfort, which amplifies precision, which triggers more guilty thoughts. Guilt serves as a self-correction mechanism—the recurrent, aversive ignition motivates reparative behavior and strengthens moral predictions to prevent future violations. The discomfort is the teaching signal. Appropriate guilt: proportional to actual violation, motivates repair. Excessive guilt: precision-threshold imbalance creates rumination without behavior change. Survivor guilt: self-model predicts one should have been harmed; "escaped" prediction error generates guilt despite no controllable action. Anterior cingulate (conflict/error monitoring), medial prefrontal (self-evaluation), anterior insula (interoceptive discomfort). Differs from shame (which involves external observers) by focusing on internal violation detection; differs from regret (which may lack moral valence) by engaging normative self-model.',
+        },
+        {
+          id: "shame",
+          name: "Shame",
+          category: "Self",
+          precision: 85,
+          threshold: 15,
+          internalBias: 90,
+          valence: "negative",
+          shortParams: "Π_social-threat +5σ",
+          description:
+            "Social prediction error—self-in-group model violated (perceived negative evaluation by others); precision Π_social-threat elevated 4-6σ on imagined observer signals; threshold θₜ_social-threat lowered 25-40%.",
+          fullText:
+            "Shame differs from guilt by its focus on the 'global self' as perceived by others, rather than a specific action. The precision allocation is directed towards social threat cues and internal models of the observing 'other'. The threshold for negative self-evaluation is catastrophically lowered, while the urge to hide reflects a motor-output suppression. Physiologically, the parasympathetic 'freeze' response competes with sympathetic arousal, creating a unique and disorienting interoceptive signature.",
+        },
+      ];
 
-        // State management
-        let selectedState = APGI_DATA[0];
-        let filteredData = [...APGI_DATA];
+      // State management
+      let selectedState = APGI_DATA[0];
+      let filteredData = [...APGI_DATA];
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize theme
-            const storedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
-            setTheme(initialTheme);
+      // Initialize the page
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize theme
+        const storedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
+        setTheme(initialTheme);
 
-            const toggleBtn = document.getElementById('theme-toggle');
-            toggleBtn.addEventListener('click', () => {
-                const current = document.documentElement.hasAttribute('data-theme') ? 'dark' : 'light';
-                const next = current === 'dark' ? 'light' : 'dark';
-                setTheme(next);
-            });
-
-            renderStatesList();
-            renderScatterPlot();
-            updateDetailView();
-            renderRadarChart();
-            
-            // Add search functionality
-            document.getElementById('search-input').addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase();
-                filteredData = APGI_DATA.filter(s => 
-                    s.name.toLowerCase().includes(searchTerm) || 
-                    s.fullText.toLowerCase().includes(searchTerm)
-                );
-                renderStatesList();
-            });
+        const toggleBtn = document.getElementById("theme-toggle");
+        toggleBtn.addEventListener("click", () => {
+          const current = document.documentElement.hasAttribute("data-theme")
+            ? "dark"
+            : "light";
+          const next = current === "dark" ? "light" : "dark";
+          setTheme(next);
         });
 
-        function setTheme(theme) {
-            if (theme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            } else {
-                document.documentElement.removeAttribute('data-theme');
-            }
-            localStorage.setItem('theme', theme);
-            updateToggleIcon(theme);
-        }
+        renderStatesList();
+        renderScatterPlot();
+        updateDetailView();
+        renderRadarChart();
 
-        function updateToggleIcon(theme) {
-            const icon = document.querySelector('.theme-toggle-slider i');
-            if (!icon) return;
-            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        }
+        // Add search functionality
+        document
+          .getElementById("search-input")
+          .addEventListener("input", function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            filteredData = APGI_DATA.filter(
+              (s) =>
+                s.name.toLowerCase().includes(searchTerm) ||
+                s.fullText.toLowerCase().includes(searchTerm),
+            );
+            renderStatesList();
+          });
+      });
 
-        // Helper function to get color based on valence
-        function getColor(valence) {
-            switch(valence) {
-                case 'positive': return '#4ade80'; // Green
-                case 'negative': return '#f87171'; // Red
-                case 'neutral': return '#60a5fa'; // Blue
-                default: return '#9ca3af';
-            }
+      function setTheme(theme) {
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
         }
+        localStorage.setItem("theme", theme);
+        updateToggleIcon(theme);
+      }
 
-        // Render the states list
-        function renderStatesList() {
-            const statesList = document.getElementById('states-list');
-            statesList.innerHTML = '';
-            
-            filteredData.forEach(state => {
-                const button = document.createElement('button');
-                button.className = `w-full text-left p-3 rounded-lg border transition-all duration-200 flex flex-col gap-1 ${
-                    selectedState.id === state.id 
-                    ? 'bg-slate-700/50 border-cyan-500/50 shadow-md active-state' 
-                    : 'bg-slate-800 border-transparent hover:bg-slate-700'
-                }`;
-                
-                button.innerHTML = `
+      function updateToggleIcon(theme) {
+        const icon = document.querySelector(".theme-toggle-slider i");
+        if (!icon) return;
+        icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+      }
+
+      // Helper function to get color based on valence
+      function getColor(valence) {
+        switch (valence) {
+          case "positive":
+            return "#4ade80"; // Green
+          case "negative":
+            return "#f87171"; // Red
+          case "neutral":
+            return "#60a5fa"; // Blue
+          default:
+            return "#9ca3af";
+        }
+      }
+
+      // Render the states list
+      function renderStatesList() {
+        const statesList = document.getElementById("states-list");
+        statesList.innerHTML = "";
+
+        filteredData.forEach((state) => {
+          const button = document.createElement("button");
+          button.className = `w-full text-left p-3 rounded-lg border transition-all duration-200 flex flex-col gap-1 ${
+            selectedState.id === state.id
+              ? "bg-slate-700/50 border-cyan-500/50 shadow-md active-state"
+              : "bg-slate-800 border-transparent hover:bg-slate-700"
+          }`;
+
+          button.innerHTML = `
                     <div class="flex justify-between items-center w-full">
-                        <span class="${selectedState.id === state.id ? 'text-cyan-300' : 'text-slate-200'} font-semibold">
+                        <span class="${selectedState.id === state.id ? "text-cyan-300" : "text-slate-200"} font-semibold">
                             ${state.name}
                         </span>
                         <span class="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-bold ${
-                            state.valence === 'positive' ? 'bg-green-900/30 text-green-400' : 
-                            state.valence === 'negative' ? 'bg-red-900/30 text-red-400' : 'bg-blue-900/30 text-blue-400'
+                          state.valence === "positive"
+                            ? "bg-green-900/30 text-green-400"
+                            : state.valence === "negative"
+                              ? "bg-red-900/30 text-red-400"
+                              : "bg-blue-900/30 text-blue-400"
                         }">
                             ${state.category}
                         </span>
@@ -736,170 +1047,218 @@
                         ${state.shortParams}
                     </span>
                 `;
-                
-                button.addEventListener('click', () => {
-                    selectState(state);
-                });
-                
-                statesList.appendChild(button);
-            });
-        }
 
-        // Render scatter plot
-        function renderScatterPlot() {
-            const svg = document.getElementById('scatter-plot');
-            
-            // Clear existing points
-            const existingPoints = svg.querySelectorAll('.data-point');
-            existingPoints.forEach(point => point.remove());
-            
-            // Add data points
-            APGI_DATA.forEach(state => {
-                // Scale precision (0-100) to x coordinate (50-450)
-                const x = 50 + (state.precision / 100) * 400;
-                // Scale threshold (0-100) to y coordinate (50-350, inverted)
-                const y = 350 - (state.threshold / 100) * 300;
-                
-                // Calculate circle size based on internalBias
-                const r = 5 + (state.internalBias / 100) * 6;
-                
-                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                circle.setAttribute('cx', x);
-                circle.setAttribute('cy', y);
-                circle.setAttribute('r', r);
-                circle.setAttribute('fill', getColor(state.valence));
-                circle.setAttribute('stroke', selectedState.id === state.id ? '#fff' : 'none');
-                circle.setAttribute('stroke-width', selectedState.id === state.id ? '2' : '0');
-                circle.setAttribute('data-id', state.id);
-                circle.classList.add('data-point', 'cursor-pointer', 'transition-all', 'duration-300');
-                circle.style.opacity = '0.9';
-                
-                // Add hover effect
-                circle.addEventListener('mouseenter', function() {
-                    this.style.opacity = '1';
-                    this.setAttribute('stroke', '#fff');
-                    this.setAttribute('stroke-width', '1');
-                });
-                
-                circle.addEventListener('mouseleave', function() {
-                    this.style.opacity = '0.9';
-                    if (selectedState.id !== state.id) {
-                        this.setAttribute('stroke', 'none');
-                        this.setAttribute('stroke-width', '0');
-                    }
-                });
-                
-                circle.addEventListener('click', () => {
-                    selectState(state);
-                });
-                
-                svg.appendChild(circle);
-            });
-        }
+          button.addEventListener("click", () => {
+            selectState(state);
+          });
 
-        // Render radar chart for selected state
-        function renderRadarChart() {
-            const svg = document.getElementById('radar-chart');
-            svg.innerHTML = '';
-            
-            const centerX = 150;
-            const centerY = 125;
-            const radius = 80;
-            
-            // Radar chart dimensions
-            const dimensions = [
-                { subject: 'Ext. Precision', A: selectedState.precision },
-                { subject: 'Reactivity', A: 100 - selectedState.threshold },
-                { subject: 'Somatic Bias', A: selectedState.internalBias },
-                { subject: 'Focus Stability', A: selectedState.id === 'distraction' || selectedState.id === 'stress' ? 20 : 80 },
-                { subject: 'Cognitive Load', A: selectedState.id === 'flow' ? 40 : selectedState.id === 'fatigue' ? 90 : 50 }
-            ];
-            
-            // Draw polar grid
-            const levels = 5;
-            for (let i = 0; i < levels; i++) {
-                const r = radius * (i + 1) / levels;
-                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                circle.setAttribute('cx', centerX);
-                circle.setAttribute('cy', centerY);
-                circle.setAttribute('r', r);
-                circle.setAttribute('fill', 'none');
-                circle.setAttribute('stroke', '#374151');
-                circle.setAttribute('stroke-width', '0.5');
-                svg.appendChild(circle);
+          statesList.appendChild(button);
+        });
+      }
+
+      // Render scatter plot
+      function renderScatterPlot() {
+        const svg = document.getElementById("scatter-plot");
+
+        // Clear existing points
+        const existingPoints = svg.querySelectorAll(".data-point");
+        existingPoints.forEach((point) => point.remove());
+
+        // Add data points
+        APGI_DATA.forEach((state) => {
+          // Scale precision (0-100) to x coordinate (50-450)
+          const x = 50 + (state.precision / 100) * 400;
+          // Scale threshold (0-100) to y coordinate (50-350, inverted)
+          const y = 350 - (state.threshold / 100) * 300;
+
+          // Calculate circle size based on internalBias
+          const r = 5 + (state.internalBias / 100) * 6;
+
+          const circle = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle",
+          );
+          circle.setAttribute("cx", x);
+          circle.setAttribute("cy", y);
+          circle.setAttribute("r", r);
+          circle.setAttribute("fill", getColor(state.valence));
+          circle.setAttribute(
+            "stroke",
+            selectedState.id === state.id ? "#fff" : "none",
+          );
+          circle.setAttribute(
+            "stroke-width",
+            selectedState.id === state.id ? "2" : "0",
+          );
+          circle.setAttribute("data-id", state.id);
+          circle.classList.add(
+            "data-point",
+            "cursor-pointer",
+            "transition-all",
+            "duration-300",
+          );
+          circle.style.opacity = "0.9";
+
+          // Add hover effect
+          circle.addEventListener("mouseenter", function () {
+            this.style.opacity = "1";
+            this.setAttribute("stroke", "#fff");
+            this.setAttribute("stroke-width", "1");
+          });
+
+          circle.addEventListener("mouseleave", function () {
+            this.style.opacity = "0.9";
+            if (selectedState.id !== state.id) {
+              this.setAttribute("stroke", "none");
+              this.setAttribute("stroke-width", "0");
             }
-            
-            // Draw axes
-            const angleStep = (2 * Math.PI) / dimensions.length;
-            for (let i = 0; i < dimensions.length; i++) {
-                const angle = i * angleStep - Math.PI / 2;
-                const x = centerX + radius * Math.cos(angle);
-                const y = centerY + radius * Math.sin(angle);
-                
-                // Axis line
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', centerX);
-                line.setAttribute('y1', centerY);
-                line.setAttribute('x2', x);
-                line.setAttribute('y2', y);
-                line.setAttribute('stroke', '#374151');
-                line.setAttribute('stroke-width', '0.5');
-                svg.appendChild(line);
-                
-                // Axis label
-                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                label.setAttribute('x', centerX + (radius + 20) * Math.cos(angle));
-                label.setAttribute('y', centerY + (radius + 20) * Math.sin(angle));
-                label.setAttribute('text-anchor', 'middle');
-                label.setAttribute('fill', '#9ca3af');
-                label.setAttribute('font-size', '10');
-                label.textContent = dimensions[i].subject;
-                svg.appendChild(label);
-            }
-            
-            // Draw radar polygon
-            const points = [];
-            for (let i = 0; i < dimensions.length; i++) {
-                const angle = i * angleStep - Math.PI / 2;
-                const value = dimensions[i].A / 100;
-                const r = radius * value;
-                const x = centerX + r * Math.cos(angle);
-                const y = centerY + r * Math.sin(angle);
-                points.push(`${x},${y}`);
-            }
-            
-            const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-            polygon.setAttribute('points', points.join(' '));
-            polygon.setAttribute('stroke', getColor(selectedState.valence));
-            polygon.setAttribute('stroke-width', '2');
-            polygon.setAttribute('fill', getColor(selectedState.valence));
-            polygon.setAttribute('fill-opacity', '0.4');
-            svg.appendChild(polygon);
+          });
+
+          circle.addEventListener("click", () => {
+            selectState(state);
+          });
+
+          svg.appendChild(circle);
+        });
+      }
+
+      // Render radar chart for selected state
+      function renderRadarChart() {
+        const svg = document.getElementById("radar-chart");
+        svg.innerHTML = "";
+
+        const centerX = 150;
+        const centerY = 125;
+        const radius = 80;
+
+        // Radar chart dimensions
+        const dimensions = [
+          { subject: "Ext. Precision", A: selectedState.precision },
+          { subject: "Reactivity", A: 100 - selectedState.threshold },
+          { subject: "Somatic Bias", A: selectedState.internalBias },
+          {
+            subject: "Focus Stability",
+            A:
+              selectedState.id === "distraction" ||
+              selectedState.id === "stress"
+                ? 20
+                : 80,
+          },
+          {
+            subject: "Cognitive Load",
+            A:
+              selectedState.id === "flow"
+                ? 40
+                : selectedState.id === "fatigue"
+                  ? 90
+                  : 50,
+          },
+        ];
+
+        // Draw polar grid
+        const levels = 5;
+        for (let i = 0; i < levels; i++) {
+          const r = (radius * (i + 1)) / levels;
+          const circle = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle",
+          );
+          circle.setAttribute("cx", centerX);
+          circle.setAttribute("cy", centerY);
+          circle.setAttribute("r", r);
+          circle.setAttribute("fill", "none");
+          circle.setAttribute("stroke", "#374151");
+          circle.setAttribute("stroke-width", "0.5");
+          svg.appendChild(circle);
         }
 
-        // Update detail view
-        function updateDetailView() {
-            document.getElementById('detail-title').textContent = selectedState.name;
-            document.getElementById('detail-params').textContent = selectedState.shortParams;
-            document.getElementById('detail-description').textContent = selectedState.description;
-            document.getElementById('detail-fulltext').textContent = selectedState.fullText;
-            
-            // Update icon color based on valence
-            const icon = document.getElementById('detail-icon');
-            icon.className = `fas fa-bolt w-6 h-6 ${
-                selectedState.valence === 'positive' ? 'text-green-400' : 
-                selectedState.valence === 'negative' ? 'text-red-400' : 'text-blue-400'
-            }`;
+        // Draw axes
+        const angleStep = (2 * Math.PI) / dimensions.length;
+        for (let i = 0; i < dimensions.length; i++) {
+          const angle = i * angleStep - Math.PI / 2;
+          const x = centerX + radius * Math.cos(angle);
+          const y = centerY + radius * Math.sin(angle);
+
+          // Axis line
+          const line = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line",
+          );
+          line.setAttribute("x1", centerX);
+          line.setAttribute("y1", centerY);
+          line.setAttribute("x2", x);
+          line.setAttribute("y2", y);
+          line.setAttribute("stroke", "#374151");
+          line.setAttribute("stroke-width", "0.5");
+          svg.appendChild(line);
+
+          // Axis label
+          const label = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text",
+          );
+          label.setAttribute("x", centerX + (radius + 20) * Math.cos(angle));
+          label.setAttribute("y", centerY + (radius + 20) * Math.sin(angle));
+          label.setAttribute("text-anchor", "middle");
+          label.setAttribute("fill", "#9ca3af");
+          label.setAttribute("font-size", "10");
+          label.textContent = dimensions[i].subject;
+          svg.appendChild(label);
         }
 
-        // Select a state
-        function selectState(state) {
-            selectedState = state;
-            renderStatesList();
-            renderScatterPlot();
-            updateDetailView();
-            renderRadarChart();
+        // Draw radar polygon
+        const points = [];
+        for (let i = 0; i < dimensions.length; i++) {
+          const angle = i * angleStep - Math.PI / 2;
+          const value = dimensions[i].A / 100;
+          const r = radius * value;
+          const x = centerX + r * Math.cos(angle);
+          const y = centerY + r * Math.sin(angle);
+          points.push(`${x},${y}`);
         }
+
+        const polygon = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "polygon",
+        );
+        polygon.setAttribute("points", points.join(" "));
+        polygon.setAttribute("stroke", getColor(selectedState.valence));
+        polygon.setAttribute("stroke-width", "2");
+        polygon.setAttribute("fill", getColor(selectedState.valence));
+        polygon.setAttribute("fill-opacity", "0.4");
+        svg.appendChild(polygon);
+      }
+
+      // Update detail view
+      function updateDetailView() {
+        document.getElementById("detail-title").textContent =
+          selectedState.name;
+        document.getElementById("detail-params").textContent =
+          selectedState.shortParams;
+        document.getElementById("detail-description").textContent =
+          selectedState.description;
+        document.getElementById("detail-fulltext").textContent =
+          selectedState.fullText;
+
+        // Update icon color based on valence
+        const icon = document.getElementById("detail-icon");
+        icon.className = `fas fa-bolt w-6 h-6 ${
+          selectedState.valence === "positive"
+            ? "text-green-400"
+            : selectedState.valence === "negative"
+              ? "text-red-400"
+              : "text-blue-400"
+        }`;
+      }
+
+      // Select a state
+      function selectState(state) {
+        selectedState = state;
+        renderStatesList();
+        renderScatterPlot();
+        updateDetailView();
+        renderRadarChart();
+      }
     </script>
-</body>
+  </body>
 </html>

@@ -1,922 +1,1000 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Therapists & Coaches - APGI User Journey Path</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary: #1e40af;
-            --secondary: #0d9488;
-            --accent: #7c3aed;
-            --text: #0f172a;
-            --text-secondary: #334155;
-            --bg: #ffffff;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      :root {
+        --primary: #1e40af;
+        --secondary: #0d9488;
+        --accent: #7c3aed;
+        --text: #0f172a;
+        --text-secondary: #334155;
+        --bg: #ffffff;
+        --gradient: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--accent) 100%
+        );
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Inter", sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .header p {
+        font-size: 18px;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .platform-nav {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
+
+      .platform-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        background: white;
+        color: var(--text);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .platform-btn:hover,
+      .platform-btn.active {
+        background: var(--gradient);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .ad-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .ad-section {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .ad-section h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24px;
+        margin-bottom: 16px;
+        color: var(--text);
+      }
+
+      .ad-templates {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .ad-template {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .ad-template:hover {
+        border-color: var(--primary);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .ad-info {
+        padding: 12px;
+        background: #f8fafc;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .ad-size {
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 4px;
+      }
+
+      .ad-description {
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      /* Facebook Ad Templates */
+      .facebook-cover {
+        width: 851px;
+        height: 315px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      .facebook-feed {
+        width: 500px;
+        height: 500px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      .facebook-story {
+        width: 1080px;
+        height: 1920px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Instagram Ad Templates */
+      .instagram-feed {
+        width: 1080px;
+        height: 1080px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      .instagram-story {
+        width: 1080px;
+        height: 1920px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .instagram-reel {
+        width: 1080px;
+        height: 1920px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* X/Twitter Ad Templates */
+      .twitter-feed {
+        width: 1200px;
+        height: 675px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      .twitter-header {
+        width: 1500px;
+        height: 500px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      /* TikTok Ad Templates */
+      .tiktok-feed {
+        width: 1080px;
+        height: 1920px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tiktok-brand {
+        width: 1080px;
+        height: 1920px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* YouTube Ad Templates */
+      .youtube-preroll {
+        width: 1920px;
+        height: 1080px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      .youtube-bumper {
+        width: 640px;
+        height: 360px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      .youtube-display {
+        width: 300px;
+        height: 250px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      /* Telegram Ad Templates */
+      .telegram-post {
+        width: 640px;
+        height: 360px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      .telegram-story {
+        width: 1080px;
+        height: 1920px;
+        background: var(--gradient);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Common Ad Content Styles */
+      .ad-content {
+        flex: 1;
+        padding: 20px 40px;
+        position: relative;
+        z-index: 2;
+        color: white;
+        display: flex;
+        align-items: center;
+        height: 100%;
+      }
+
+      .ad-content-vertical {
+        flex: 1;
+        padding: 40px;
+        position: relative;
+        z-index: 2;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+      }
+
+      .ad-text {
+        flex: 2;
+      }
+
+      .ad-logo {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        letter-spacing: 1px;
+      }
+
+      .ad-headline {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 12px;
+      }
+
+      .ad-subheadline {
+        font-size: 16px;
+        font-weight: 500;
+        opacity: 0.9;
+        line-height: 1.4;
+        margin-bottom: 20px;
+      }
+
+      .ad-stats {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 20px;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+
+      .ad-cta {
+        display: inline-block;
+        background: white;
+        color: var(--primary);
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .ad-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .ad-visual {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .brain-graphic {
+        width: 120px;
+        height: 120px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        position: relative;
+      }
+
+      .brain-graphic::before {
+        content: "";
+        position: absolute;
+        width: 140px;
+        height: 140px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
         }
-        
-        * {
-            box-sizing: border-box;
+        50% {
+          transform: scale(1.1);
+          opacity: 0.5;
         }
-        
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
+        100% {
+          transform: scale(1);
+          opacity: 1;
         }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        
-        .header h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .header p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .platform-nav {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .platform-btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            background: white;
-            color: var(--text);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .platform-btn:hover, .platform-btn.active {
-            background: var(--gradient);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-        
+      }
+
+      .accent-shape {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        top: -100px;
+        right: -50px;
+      }
+
+      .accent-shape-2 {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 50%;
+        bottom: -75px;
+        left: 50px;
+      }
+
+      .grid-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+
+      .ad-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
         .ad-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+          grid-template-columns: 1fr;
         }
-        
-        .ad-section {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+
+        .platform-nav {
+          flex-direction: column;
+          align-items: center;
         }
-        
-        .ad-section h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 24px;
-            margin-bottom: 16px;
-            color: var(--text);
+
+        .platform-btn {
+          width: 200px;
         }
-        
-        .ad-templates {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .ad-template {
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .ad-template:hover {
-            border-color: var(--primary);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        }
-        
-        .ad-info {
-            padding: 12px;
-            background: #f8fafc;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .ad-size {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 4px;
-        }
-        
-        .ad-description {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        /* Facebook Ad Templates */
-        .facebook-cover {
-            width: 851px;
-            height: 315px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        .facebook-feed {
-            width: 500px;
-            height: 500px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        .facebook-story {
-            width: 1080px;
-            height: 1920px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        /* Instagram Ad Templates */
-        .instagram-feed {
-            width: 1080px;
-            height: 1080px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        .instagram-story {
-            width: 1080px;
-            height: 1920px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .instagram-reel {
-            width: 1080px;
-            height: 1920px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        /* X/Twitter Ad Templates */
-        .twitter-feed {
-            width: 1200px;
-            height: 675px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        .twitter-header {
-            width: 1500px;
-            height: 500px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        /* TikTok Ad Templates */
-        .tiktok-feed {
-            width: 1080px;
-            height: 1920px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .tiktok-brand {
-            width: 1080px;
-            height: 1920px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        /* YouTube Ad Templates */
-        .youtube-preroll {
-            width: 1920px;
-            height: 1080px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        .youtube-bumper {
-            width: 640px;
-            height: 360px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        .youtube-display {
-            width: 300px;
-            height: 250px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        /* Telegram Ad Templates */
-        .telegram-post {
-            width: 640px;
-            height: 360px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        .telegram-story {
-            width: 1080px;
-            height: 1920px;
-            background: var(--gradient);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        /* Common Ad Content Styles */
-        .ad-content {
-            flex: 1;
-            padding: 20px 40px;
-            position: relative;
-            z-index: 2;
-            color: white;
-            display: flex;
-            align-items: center;
-            height: 100%;
-        }
-        
-        .ad-content-vertical {
-            flex: 1;
-            padding: 40px;
-            position: relative;
-            z-index: 2;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            height: 100%;
-        }
-        
-        .ad-text {
-            flex: 2;
-        }
-        
-        .ad-logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            letter-spacing: 1px;
-        }
-        
-        .ad-headline {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 12px;
-        }
-        
-        .ad-subheadline {
-            font-size: 16px;
-            font-weight: 500;
-            opacity: 0.9;
-            line-height: 1.4;
-            margin-bottom: 20px;
-        }
-        
-        .ad-stats {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-        
-        .ad-cta {
-            display: inline-block;
-            background: white;
-            color: var(--primary);
-            padding: 12px 24px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        
-        .ad-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-        
-        .ad-visual {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .brain-graphic {
-            width: 120px;
-            height: 120px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            position: relative;
-        }
-        
-        .brain-graphic::before {
-            content: '';
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .accent-shape {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50%;
-            top: -100px;
-            right: -50px;
-        }
-        
-        .accent-shape-2 {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 50%;
-            bottom: -75px;
-            left: 50px;
-        }
-        
-        .grid-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        
-        .ad-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        @media (max-width: 768px) {
-            .ad-gallery {
-                grid-template-columns: 1fr;
-            }
-            
-            .platform-nav {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .platform-btn {
-                width: 200px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <h1>Therapists & Coaches - APGI Journey</h1>
-        <p>Professional consciousness enhancement tools for therapeutic and coaching practices</p>
+      <h1>Therapists & Coaches - APGI Journey</h1>
+      <p>
+        Professional consciousness enhancement tools for therapeutic and
+        coaching practices
+      </p>
     </div>
-    
+
     <nav class="platform-nav">
-        <button class="platform-btn active" onclick="showPlatform('all')">All Platforms</button>
-        <button class="platform-btn" onclick="showPlatform('facebook')">Facebook</button>
-        <button class="platform-btn" onclick="showPlatform('instagram')">Instagram</button>
-        <button class="platform-btn" onclick="showPlatform('twitter')">X/Twitter</button>
-        <button class="platform-btn" onclick="showPlatform('tiktok')">TikTok</button>
-        <button class="platform-btn" onclick="showPlatform('youtube')">YouTube</button>
-        <button class="platform-btn" onclick="showPlatform('telegram')">Telegram</button>
+      <button class="platform-btn active" onclick="showPlatform('all')">
+        All Platforms
+      </button>
+      <button class="platform-btn" onclick="showPlatform('facebook')">
+        Facebook
+      </button>
+      <button class="platform-btn" onclick="showPlatform('instagram')">
+        Instagram
+      </button>
+      <button class="platform-btn" onclick="showPlatform('twitter')">
+        X/Twitter
+      </button>
+      <button class="platform-btn" onclick="showPlatform('tiktok')">
+        TikTok
+      </button>
+      <button class="platform-btn" onclick="showPlatform('youtube')">
+        YouTube
+      </button>
+      <button class="platform-btn" onclick="showPlatform('telegram')">
+        Telegram
+      </button>
     </nav>
-    
+
     <div class="ad-gallery">
-        <!-- Facebook Ad Templates -->
-        <div class="ad-section" data-platform="facebook">
-            <h2>Facebook</h2>
-            <div class="ad-templates">
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">851x315px - Page Cover</div>
-                        <div class="ad-description">Facebook page cover photo for brand presence</div>
-                    </div>
-                    <div class="facebook-cover">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="accent-shape-2"></div>
-                        <div class="ad-content">
-                            <div class="ad-text">
-                                <div class="ad-logo">APGI FOR PRACTITIONERS</div>
-                                <h1 class="ad-headline">Enhance Your Practice</h1>
-                                <p class="ad-subheadline">Scientific consciousness enhancement tools for therapeutic and coaching professionals</p>
-                                <div class="ad-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">50K+</div>
-                                        <div class="stat-label">Practitioners</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">94%</div>
-                                        <div class="stat-label">Success Rate</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">87%</div>
-                                        <div class="stat-label">Cognitive Gain</div>
-                                    </div>
-                                </div>
-                                <a href="#" class="ad-cta">Join the Revolution</a>
-                            </div>
-                            <div class="ad-visual">
-                                <div class="brain-graphic">🧠</div>
-                            </div>
-                        </div>
-                        <div class="ad-badge">Research Backed</div>
-                    </div>
-                </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">500x500px - Feed Post</div>
-                        <div class="ad-description">Square ad for Facebook feed and marketplace</div>
-                    </div>
-                    <div class="facebook-feed">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI PROFESSIONAL</div>
-                            <h1 class="ad-headline">Transform Client Outcomes</h1>
-                            <p class="ad-subheadline">Advanced consciousness tools for your practice</p>
-                            <div class="brain-graphic">🧠</div>
-                            <a href="#" class="ad-cta">Start Now</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1080x1920px - Story</div>
-                        <div class="ad-description">Full-screen vertical story ad</div>
-                    </div>
-                    <div class="facebook-story">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI THERAPY TOOLS</div>
-                            <h1 class="ad-headline">Elevate Your Practice</h1>
-                            <p class="ad-subheadline">Professional-grade consciousness enhancement for client sessions</p>
-                            <div class="brain-graphic">🧠</div>
-                            <a href="#" class="ad-cta">Try Free</a>
-                            <div class="ad-badge">Swipe Up</div>
-                        </div>
-                    </div>
-                </div>
+      <!-- Facebook Ad Templates -->
+      <div class="ad-section" data-platform="facebook">
+        <h2>Facebook</h2>
+        <div class="ad-templates">
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">851x315px - Page Cover</div>
+              <div class="ad-description">
+                Facebook page cover photo for brand presence
+              </div>
             </div>
-        </div>
-        
-        <!-- Instagram Ad Templates -->
-        <div class="ad-section" data-platform="instagram">
-            <h2>Instagram</h2>
-            <div class="ad-templates">
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1080x1080px - Feed Post</div>
-                        <div class="ad-description">Square post for Instagram feed</div>
+            <div class="facebook-cover">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="accent-shape-2"></div>
+              <div class="ad-content">
+                <div class="ad-text">
+                  <div class="ad-logo">APGI FOR PRACTITIONERS</div>
+                  <h1 class="ad-headline">Enhance Your Practice</h1>
+                  <p class="ad-subheadline">
+                    Scientific consciousness enhancement tools for therapeutic
+                    and coaching professionals
+                  </p>
+                  <div class="ad-stats">
+                    <div class="stat-item">
+                      <div class="stat-number">50K+</div>
+                      <div class="stat-label">Practitioners</div>
                     </div>
-                    <div class="instagram-feed">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI</div>
-                            <h1 class="ad-headline">Elevate Your Mind</h1>
-                            <p class="ad-subheadline">Revolutionary consciousness enhancement</p>
-                            <div class="brain-graphic">🧠</div>
-                            <a href="#" class="ad-cta">Learn More</a>
-                        </div>
+                    <div class="stat-item">
+                      <div class="stat-number">94%</div>
+                      <div class="stat-label">Success Rate</div>
                     </div>
+                    <div class="stat-item">
+                      <div class="stat-number">87%</div>
+                      <div class="stat-label">Cognitive Gain</div>
+                    </div>
+                  </div>
+                  <a href="#" class="ad-cta">Join the Revolution</a>
                 </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1080x1920px - Story</div>
-                        <div class="ad-description">Full-screen vertical story ad</div>
-                    </div>
-                    <div class="instagram-story">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI FRAMEWORK</div>
-                            <h1 class="ad-headline">Transform Today</h1>
-                            <p class="ad-subheadline">Join 50K+ practitioners enhancing their consciousness</p>
-                            <div class="brain-graphic">🧠</div>
-                            <a href="#" class="ad-cta">Start Journey</a>
-                            <div class="ad-badge">Swipe Up</div>
-                        </div>
-                    </div>
+                <div class="ad-visual">
+                  <div class="brain-graphic">🧠</div>
                 </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1080x1920px - Reel</div>
-                        <div class="ad-description">Vertical video reel ad template</div>
-                    </div>
-                    <div class="instagram-reel">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI</div>
-                            <h1 class="ad-headline">10-Minute Transformation</h1>
-                            <p class="ad-subheadline">Experience the power of predictive coding</p>
-                            <div class="brain-graphic">🧠</div>
-                            <a href="#" class="ad-cta">Watch Now</a>
-                        </div>
-                    </div>
-                </div>
+              </div>
+              <div class="ad-badge">Research Backed</div>
             </div>
-        </div>
-        
-        <!-- X/Twitter Ad Templates -->
-        <div class="ad-section" data-platform="twitter">
-            <h2>X/Twitter</h2>
-            <div class="ad-templates">
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1200x675px - Feed Card</div>
-                        <div class="ad-description">Promoted tweet with image</div>
-                    </div>
-                    <div class="twitter-feed">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content">
-                            <div class="ad-text">
-                                <div class="ad-logo">APGI FRAMEWORK</div>
-                                <h1 class="ad-headline">Revolutionary Consciousness Enhancement</h1>
-                                <p class="ad-subheadline">Unlock your mind's potential with scientifically-proven techniques</p>
-                                <div class="ad-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">50K+</div>
-                                        <div class="stat-label">Users</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">94%</div>
-                                        <div class="stat-label">Success</div>
-                                    </div>
-                                </div>
-                                <a href="#" class="ad-cta">Join Now</a>
-                            </div>
-                            <div class="ad-visual">
-                                <div class="brain-graphic">🧠</div>
-                            </div>
-                        </div>
-                        <div class="ad-badge">Promoted</div>
-                    </div>
-                </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1500x500px - Header</div>
-                        <div class="ad-description">Profile header banner</div>
-                    </div>
-                    <div class="twitter-header">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="accent-shape-2"></div>
-                        <div class="ad-content">
-                            <div class="ad-text">
-                                <div class="ad-logo">APGI FRAMEWORK</div>
-                                <h1 class="ad-headline">Consciousness Enhancement Revolution</h1>
-                                <p class="ad-subheadline">Scientifically-proven predictive coding for mind transformation</p>
-                                <a href="#" class="ad-cta">Join 50K+ Users</a>
-                            </div>
-                            <div class="ad-visual">
-                                <div class="brain-graphic">🧠</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">500x500px - Feed Post</div>
+              <div class="ad-description">
+                Square ad for Facebook feed and marketplace
+              </div>
             </div>
-        </div>
-        
-        <!-- TikTok Ad Templates -->
-        <div class="ad-section" data-platform="tiktok">
-            <h2>TikTok</h2>
-            <div class="ad-templates">
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1080x1920px - Feed Ad</div>
-                        <div class="ad-description">In-feed vertical video ad</div>
-                    </div>
-                    <div class="tiktok-feed">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI</div>
-                            <h1 class="ad-headline">Mind Hack 10min</h1>
-                            <p class="ad-subheadline">Transform your consciousness with science 🔬</p>
-                            <div class="brain-graphic">🧠</div>
-                            <a href="#" class="ad-cta">Try Now</a>
-                            <div class="ad-badge">Trending</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1080x1920px - Brand Takeover</div>
-                        <div class="ad-description">Full-screen brand takeover ad</div>
-                    </div>
-                    <div class="tiktok-brand">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI FRAMEWORK</div>
-                            <h1 class="ad-headline">Revolutionize Your Mind</h1>
-                            <p class="ad-subheadline">Join the consciousness enhancement movement</p>
-                            <div class="brain-graphic">🧠</div>
-                            <a href="#" class="ad-cta">Start Free</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="facebook-feed">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI PROFESSIONAL</div>
+                <h1 class="ad-headline">Transform Client Outcomes</h1>
+                <p class="ad-subheadline">
+                  Advanced consciousness tools for your practice
+                </p>
+                <div class="brain-graphic">🧠</div>
+                <a href="#" class="ad-cta">Start Now</a>
+              </div>
             </div>
-        </div>
-        
-        <!-- YouTube Ad Templates -->
-        <div class="ad-section" data-platform="youtube">
-            <h2>YouTube</h2>
-            <div class="ad-templates">
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1920x1080px - Pre-roll</div>
-                        <div class="ad-description">Skippable pre-roll video ad</div>
-                    </div>
-                    <div class="youtube-preroll">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="accent-shape-2"></div>
-                        <div class="ad-content">
-                            <div class="ad-text">
-                                <div class="ad-logo">APGI FRAMEWORK</div>
-                                <h1 class="ad-headline">Transform Your Consciousness</h1>
-                                <p class="ad-subheadline">Scientifically-proven mind enhancement techniques</p>
-                                <div class="ad-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">50K+</div>
-                                        <div class="stat-label">Practitioners</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">94%</div>
-                                        <div class="stat-label">Success Rate</div>
-                                    </div>
-                                </div>
-                                <a href="#" class="ad-cta">Start Free Trial</a>
-                            </div>
-                            <div class="ad-visual">
-                                <div class="brain-graphic">🧠</div>
-                            </div>
-                        </div>
-                        <div class="ad-badge">Skip in 5s</div>
-                    </div>
-                </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">640x360px - Bumper Ad</div>
-                        <div class="ad-description">6-second non-skippable bumper ad</div>
-                    </div>
-                    <div class="youtube-bumper">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content">
-                            <div class="ad-text">
-                                <div class="ad-logo">APGI</div>
-                                <h1 class="ad-headline">Mind Enhancement</h1>
-                                <p class="ad-subheadline">Transform in 10min/day</p>
-                                <a href="#" class="ad-cta">Try Now</a>
-                            </div>
-                            <div class="ad-visual">
-                                <div class="brain-graphic">🧠</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">300x250px - Display Ad</div>
-                        <div class="ad-description">Sidebar display ad</div>
-                    </div>
-                    <div class="youtube-display">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI</div>
-                            <h1 class="ad-headline">Mind Boost</h1>
-                            <p class="ad-subheadline">94% Success Rate</p>
-                            <div class="brain-graphic" style="width: 60px; height: 60px; font-size: 30px;">🧠</div>
-                            <a href="#" class="ad-cta">Learn More</a>
-                        </div>
-                    </div>
-                </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1080x1920px - Story</div>
+              <div class="ad-description">Full-screen vertical story ad</div>
             </div>
-        </div>
-        
-        <!-- Telegram Ad Templates -->
-        <div class="ad-section" data-platform="telegram">
-            <h2>Telegram</h2>
-            <div class="ad-templates">
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">640x360px - Channel Post</div>
-                        <div class="ad-description">Sponsored channel post with image</div>
-                    </div>
-                    <div class="telegram-post">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content">
-                            <div class="ad-text">
-                                <div class="ad-logo">APGI FRAMEWORK</div>
-                                <h1 class="ad-headline">Consciousness Enhancement</h1>
-                                <p class="ad-subheadline">Scientific mind transformation</p>
-                                <a href="#" class="ad-cta">Join Channel</a>
-                            </div>
-                            <div class="ad-visual">
-                                <div class="brain-graphic">🧠</div>
-                            </div>
-                        </div>
-                        <div class="ad-badge">Sponsored</div>
-                    </div>
-                </div>
-                
-                <div class="ad-template">
-                    <div class="ad-info">
-                        <div class="ad-size">1080x1920px - Story</div>
-                        <div class="ad-description">Telegram Stories full-screen ad</div>
-                    </div>
-                    <div class="telegram-story">
-                        <div class="grid-pattern"></div>
-                        <div class="accent-shape"></div>
-                        <div class="ad-content-vertical">
-                            <div class="ad-logo">APGI</div>
-                            <h1 class="ad-headline">Transform Your Mind</h1>
-                            <p class="ad-subheadline">Join 50K+ practitioners</p>
-                            <div class="brain-graphic">🧠</div>
-                            <a href="#" class="ad-cta">Start Now</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="facebook-story">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI THERAPY TOOLS</div>
+                <h1 class="ad-headline">Elevate Your Practice</h1>
+                <p class="ad-subheadline">
+                  Professional-grade consciousness enhancement for client
+                  sessions
+                </p>
+                <div class="brain-graphic">🧠</div>
+                <a href="#" class="ad-cta">Try Free</a>
+                <div class="ad-badge">Swipe Up</div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Instagram Ad Templates -->
+      <div class="ad-section" data-platform="instagram">
+        <h2>Instagram</h2>
+        <div class="ad-templates">
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1080x1080px - Feed Post</div>
+              <div class="ad-description">Square post for Instagram feed</div>
+            </div>
+            <div class="instagram-feed">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI</div>
+                <h1 class="ad-headline">Elevate Your Mind</h1>
+                <p class="ad-subheadline">
+                  Revolutionary consciousness enhancement
+                </p>
+                <div class="brain-graphic">🧠</div>
+                <a href="#" class="ad-cta">Learn More</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1080x1920px - Story</div>
+              <div class="ad-description">Full-screen vertical story ad</div>
+            </div>
+            <div class="instagram-story">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI FRAMEWORK</div>
+                <h1 class="ad-headline">Transform Today</h1>
+                <p class="ad-subheadline">
+                  Join 50K+ practitioners enhancing their consciousness
+                </p>
+                <div class="brain-graphic">🧠</div>
+                <a href="#" class="ad-cta">Start Journey</a>
+                <div class="ad-badge">Swipe Up</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1080x1920px - Reel</div>
+              <div class="ad-description">Vertical video reel ad template</div>
+            </div>
+            <div class="instagram-reel">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI</div>
+                <h1 class="ad-headline">10-Minute Transformation</h1>
+                <p class="ad-subheadline">
+                  Experience the power of predictive coding
+                </p>
+                <div class="brain-graphic">🧠</div>
+                <a href="#" class="ad-cta">Watch Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- X/Twitter Ad Templates -->
+      <div class="ad-section" data-platform="twitter">
+        <h2>X/Twitter</h2>
+        <div class="ad-templates">
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1200x675px - Feed Card</div>
+              <div class="ad-description">Promoted tweet with image</div>
+            </div>
+            <div class="twitter-feed">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content">
+                <div class="ad-text">
+                  <div class="ad-logo">APGI FRAMEWORK</div>
+                  <h1 class="ad-headline">
+                    Revolutionary Consciousness Enhancement
+                  </h1>
+                  <p class="ad-subheadline">
+                    Unlock your mind's potential with scientifically-proven
+                    techniques
+                  </p>
+                  <div class="ad-stats">
+                    <div class="stat-item">
+                      <div class="stat-number">50K+</div>
+                      <div class="stat-label">Users</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number">94%</div>
+                      <div class="stat-label">Success</div>
+                    </div>
+                  </div>
+                  <a href="#" class="ad-cta">Join Now</a>
+                </div>
+                <div class="ad-visual">
+                  <div class="brain-graphic">🧠</div>
+                </div>
+              </div>
+              <div class="ad-badge">Promoted</div>
+            </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1500x500px - Header</div>
+              <div class="ad-description">Profile header banner</div>
+            </div>
+            <div class="twitter-header">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="accent-shape-2"></div>
+              <div class="ad-content">
+                <div class="ad-text">
+                  <div class="ad-logo">APGI FRAMEWORK</div>
+                  <h1 class="ad-headline">
+                    Consciousness Enhancement Revolution
+                  </h1>
+                  <p class="ad-subheadline">
+                    Scientifically-proven predictive coding for mind
+                    transformation
+                  </p>
+                  <a href="#" class="ad-cta">Join 50K+ Users</a>
+                </div>
+                <div class="ad-visual">
+                  <div class="brain-graphic">🧠</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TikTok Ad Templates -->
+      <div class="ad-section" data-platform="tiktok">
+        <h2>TikTok</h2>
+        <div class="ad-templates">
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1080x1920px - Feed Ad</div>
+              <div class="ad-description">In-feed vertical video ad</div>
+            </div>
+            <div class="tiktok-feed">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI</div>
+                <h1 class="ad-headline">Mind Hack 10min</h1>
+                <p class="ad-subheadline">
+                  Transform your consciousness with science 🔬
+                </p>
+                <div class="brain-graphic">🧠</div>
+                <a href="#" class="ad-cta">Try Now</a>
+                <div class="ad-badge">Trending</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1080x1920px - Brand Takeover</div>
+              <div class="ad-description">Full-screen brand takeover ad</div>
+            </div>
+            <div class="tiktok-brand">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI FRAMEWORK</div>
+                <h1 class="ad-headline">Revolutionize Your Mind</h1>
+                <p class="ad-subheadline">
+                  Join the consciousness enhancement movement
+                </p>
+                <div class="brain-graphic">🧠</div>
+                <a href="#" class="ad-cta">Start Free</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YouTube Ad Templates -->
+      <div class="ad-section" data-platform="youtube">
+        <h2>YouTube</h2>
+        <div class="ad-templates">
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1920x1080px - Pre-roll</div>
+              <div class="ad-description">Skippable pre-roll video ad</div>
+            </div>
+            <div class="youtube-preroll">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="accent-shape-2"></div>
+              <div class="ad-content">
+                <div class="ad-text">
+                  <div class="ad-logo">APGI FRAMEWORK</div>
+                  <h1 class="ad-headline">Transform Your Consciousness</h1>
+                  <p class="ad-subheadline">
+                    Scientifically-proven mind enhancement techniques
+                  </p>
+                  <div class="ad-stats">
+                    <div class="stat-item">
+                      <div class="stat-number">50K+</div>
+                      <div class="stat-label">Practitioners</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number">94%</div>
+                      <div class="stat-label">Success Rate</div>
+                    </div>
+                  </div>
+                  <a href="#" class="ad-cta">Start Free Trial</a>
+                </div>
+                <div class="ad-visual">
+                  <div class="brain-graphic">🧠</div>
+                </div>
+              </div>
+              <div class="ad-badge">Skip in 5s</div>
+            </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">640x360px - Bumper Ad</div>
+              <div class="ad-description">6-second non-skippable bumper ad</div>
+            </div>
+            <div class="youtube-bumper">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content">
+                <div class="ad-text">
+                  <div class="ad-logo">APGI</div>
+                  <h1 class="ad-headline">Mind Enhancement</h1>
+                  <p class="ad-subheadline">Transform in 10min/day</p>
+                  <a href="#" class="ad-cta">Try Now</a>
+                </div>
+                <div class="ad-visual">
+                  <div class="brain-graphic">🧠</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">300x250px - Display Ad</div>
+              <div class="ad-description">Sidebar display ad</div>
+            </div>
+            <div class="youtube-display">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI</div>
+                <h1 class="ad-headline">Mind Boost</h1>
+                <p class="ad-subheadline">94% Success Rate</p>
+                <div
+                  class="brain-graphic"
+                  style="width: 60px; height: 60px; font-size: 30px"
+                >
+                  🧠
+                </div>
+                <a href="#" class="ad-cta">Learn More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Telegram Ad Templates -->
+      <div class="ad-section" data-platform="telegram">
+        <h2>Telegram</h2>
+        <div class="ad-templates">
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">640x360px - Channel Post</div>
+              <div class="ad-description">
+                Sponsored channel post with image
+              </div>
+            </div>
+            <div class="telegram-post">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content">
+                <div class="ad-text">
+                  <div class="ad-logo">APGI FRAMEWORK</div>
+                  <h1 class="ad-headline">Consciousness Enhancement</h1>
+                  <p class="ad-subheadline">Scientific mind transformation</p>
+                  <a href="#" class="ad-cta">Join Channel</a>
+                </div>
+                <div class="ad-visual">
+                  <div class="brain-graphic">🧠</div>
+                </div>
+              </div>
+              <div class="ad-badge">Sponsored</div>
+            </div>
+          </div>
+
+          <div class="ad-template">
+            <div class="ad-info">
+              <div class="ad-size">1080x1920px - Story</div>
+              <div class="ad-description">Telegram Stories full-screen ad</div>
+            </div>
+            <div class="telegram-story">
+              <div class="grid-pattern"></div>
+              <div class="accent-shape"></div>
+              <div class="ad-content-vertical">
+                <div class="ad-logo">APGI</div>
+                <h1 class="ad-headline">Transform Your Mind</h1>
+                <p class="ad-subheadline">Join 50K+ practitioners</p>
+                <div class="brain-graphic">🧠</div>
+                <a href="#" class="ad-cta">Start Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
+
     <script>
-        function showPlatform(platform) {
-            const sections = document.querySelectorAll('.ad-section');
-            const buttons = document.querySelectorAll('.platform-btn');
-            
-            // Update button states
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Show/hide sections
-            sections.forEach(section => {
-                if (platform === 'all') {
-                    section.classList.remove('hidden');
-                } else {
-                    section.classList.toggle('hidden', section.dataset.platform !== platform);
-                }
-            });
-        }
-        
-        // Initialize with all platforms visible
-        document.addEventListener('DOMContentLoaded', () => {
-            const allButton = document.querySelector('.platform-btn');
-            allButton.classList.add('active');
+      function showPlatform(platform) {
+        const sections = document.querySelectorAll(".ad-section");
+        const buttons = document.querySelectorAll(".platform-btn");
+
+        // Update button states
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        // Show/hide sections
+        sections.forEach((section) => {
+          if (platform === "all") {
+            section.classList.remove("hidden");
+          } else {
+            section.classList.toggle(
+              "hidden",
+              section.dataset.platform !== platform,
+            );
+          }
         });
+      }
+
+      // Initialize with all platforms visible
+      document.addEventListener("DOMContentLoaded", () => {
+        const allButton = document.querySelector(".platform-btn");
+        allButton.classList.add("active");
+      });
     </script>
-</body>
+  </body>
 </html>

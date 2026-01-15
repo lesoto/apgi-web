@@ -4,143 +4,153 @@
  */
 
 class APGIThemeManager {
-    constructor() {
-        this.storageKey = 'apgi-theme';
-        this.defaultTheme = 'dark';
-        this.themes = {
-            dark: {
-                name: 'Dark Mode',
-                icon: 'fas fa-moon',
-                dataTheme: 'dark'
-            },
-            light: {
-                name: 'Light Mode', 
-                icon: 'fas fa-sun',
-                dataTheme: 'light'
-            }
-        };
-        
-        this.init();
+  constructor() {
+    this.storageKey = "theme"; // Changed from 'apgi-theme' to 'theme' for consistency
+    this.defaultTheme = "dark";
+    this.themes = {
+      dark: {
+        name: "Dark Mode",
+        icon: "fas fa-moon",
+        dataTheme: "dark",
+      },
+      light: {
+        name: "Light Mode",
+        icon: "fas fa-sun",
+        dataTheme: "light",
+      },
+    };
+
+    this.init();
+  }
+
+  init() {
+    // Load saved theme or use default
+    const savedTheme = this.getSavedTheme();
+    this.setTheme(savedTheme);
+
+    // Create theme toggle if it doesn't exist
+    this.createThemeToggle();
+
+    // Listen for system theme changes
+    this.setupSystemThemeListener();
+  }
+
+  getSavedTheme() {
+    try {
+      // First check for old 'apgi-theme' key and migrate it
+      const oldTheme = localStorage.getItem("apgi-theme");
+      if (oldTheme) {
+        localStorage.removeItem("apgi-theme");
+        localStorage.setItem(this.storageKey, oldTheme);
+        return oldTheme;
+      }
+
+      return localStorage.getItem(this.storageKey) || this.defaultTheme;
+    } catch (error) {
+      console.warn("Could not access localStorage for theme:", error);
+      return this.defaultTheme;
     }
-    
-    init() {
-        // Load saved theme or use default
-        const savedTheme = this.getSavedTheme();
-        this.setTheme(savedTheme);
-        
-        // Create theme toggle if it doesn't exist
-        this.createThemeToggle();
-        
-        // Listen for system theme changes
-        this.setupSystemThemeListener();
+  }
+
+  setTheme(themeName) {
+    if (!this.themes[themeName]) {
+      console.warn(`Unknown theme: ${themeName}`);
+      return;
     }
-    
-    getSavedTheme() {
-        try {
-            return localStorage.getItem(this.storageKey) || this.defaultTheme;
-        } catch (error) {
-            console.warn('Could not access localStorage for theme:', error);
-            return this.defaultTheme;
-        }
+
+    const theme = this.themes[themeName];
+
+    // Update HTML data attribute
+    document.documentElement.setAttribute("data-theme", theme.dataTheme);
+
+    // Update body class for additional styling
+    document.body.className = document.body.className.replace(/theme-\w+/g, "");
+    document.body.classList.add(`theme-${theme.dataTheme}`);
+
+    // Save preference
+    try {
+      localStorage.setItem(this.storageKey, themeName);
+    } catch (error) {
+      console.warn("Could not save theme preference:", error);
     }
-    
-    setTheme(themeName) {
-        if (!this.themes[themeName]) {
-            console.warn(`Unknown theme: ${themeName}`);
-            return;
-        }
-        
-        const theme = this.themes[themeName];
-        
-        // Update HTML data attribute
-        document.documentElement.setAttribute('data-theme', theme.dataTheme);
-        
-        // Update body class for additional styling
-        document.body.className = document.body.className.replace(/theme-\w+/g, '');
-        document.body.classList.add(`theme-${theme.dataTheme}`);
-        
-        // Save preference
-        try {
-            localStorage.setItem(this.storageKey, themeName);
-        } catch (error) {
-            console.warn('Could not save theme preference:', error);
-        }
-        
-        // Update toggle button
-        this.updateThemeToggle(themeName);
-        
-        // Dispatch custom event
-        this.dispatchThemeChange(themeName);
+
+    // Update toggle button
+    this.updateThemeToggle(themeName);
+
+    // Dispatch custom event
+    this.dispatchThemeChange(themeName);
+  }
+
+  toggleTheme() {
+    const currentTheme = this.getCurrentTheme();
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    this.setTheme(newTheme);
+  }
+
+  getCurrentTheme() {
+    return (
+      document.documentElement.getAttribute("data-theme") || this.defaultTheme
+    );
+  }
+
+  createThemeToggle() {
+    // Check if toggle already exists
+    if (document.getElementById("apgi-theme-toggle")) {
+      return;
     }
-    
-    toggleTheme() {
-        const currentTheme = this.getCurrentTheme();
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        this.setTheme(newTheme);
-    }
-    
-    getCurrentTheme() {
-        return document.documentElement.getAttribute('data-theme') || this.defaultTheme;
-    }
-    
-    createThemeToggle() {
-        // Check if toggle already exists
-        if (document.getElementById('apgi-theme-toggle')) {
-            return;
-        }
-        
-        const toggle = document.createElement('div');
-        toggle.id = 'apgi-theme-toggle';
-        toggle.className = 'apgi-theme-toggle';
-        toggle.innerHTML = `
+
+    const toggle = document.createElement("div");
+    toggle.id = "apgi-theme-toggle";
+    toggle.className = "apgi-theme-toggle";
+    toggle.innerHTML = `
             <button class="apgi-theme-toggle-btn" aria-label="Toggle theme">
                 <i class="apgi-theme-icon apgi-theme-icon-moon fas fa-moon"></i>
                 <div class="apgi-theme-toggle-slider"></div>
                 <i class="apgi-theme-icon apgi-theme-icon-sun fas fa-sun"></i>
             </button>
         `;
-        
-        // Add styles
-        this.addThemeStyles();
-        
-        // Add click handler
-        toggle.addEventListener('click', () => this.toggleTheme());
-        
-        // Insert into page
-        document.body.appendChild(toggle);
-        
-        // Update initial state
-        this.updateThemeToggle(this.getCurrentTheme());
+
+    // Add styles
+    this.addThemeStyles();
+
+    // Add click handler
+    toggle.addEventListener("click", () => this.toggleTheme());
+
+    // Insert into page
+    document.body.appendChild(toggle);
+
+    // Update initial state
+    this.updateThemeToggle(this.getCurrentTheme());
+  }
+
+  updateThemeToggle(themeName) {
+    const toggle = document.getElementById("apgi-theme-toggle");
+    if (!toggle) return;
+
+    const theme = this.themes[themeName];
+    const slider = toggle.querySelector(".apgi-theme-toggle-slider");
+    const moonIcon = toggle.querySelector(".apgi-theme-icon-moon");
+    const sunIcon = toggle.querySelector(".apgi-theme-icon-sun");
+
+    if (themeName === "light") {
+      slider?.classList.add("apgi-theme-toggle-slider-light");
+      moonIcon?.classList.add("apgi-theme-icon-hidden");
+      sunIcon?.classList.remove("apgi-theme-icon-hidden");
+    } else {
+      slider?.classList.remove("apgi-theme-toggle-slider-light");
+      moonIcon?.classList.remove("apgi-theme-icon-hidden");
+      sunIcon?.classList.add("apgi-theme-icon-hidden");
     }
-    
-    updateThemeToggle(themeName) {
-        const toggle = document.getElementById('apgi-theme-toggle');
-        if (!toggle) return;
-        
-        const theme = this.themes[themeName];
-        const slider = toggle.querySelector('.apgi-theme-toggle-slider');
-        const moonIcon = toggle.querySelector('.apgi-theme-icon-moon');
-        const sunIcon = toggle.querySelector('.apgi-theme-icon-sun');
-        
-        if (themeName === 'light') {
-            slider?.classList.add('apgi-theme-toggle-slider-light');
-            moonIcon?.classList.add('apgi-theme-icon-hidden');
-            sunIcon?.classList.remove('apgi-theme-icon-hidden');
-        } else {
-            slider?.classList.remove('apgi-theme-toggle-slider-light');
-            moonIcon?.classList.remove('apgi-theme-icon-hidden');
-            sunIcon?.classList.add('apgi-theme-icon-hidden');
-        }
+  }
+
+  addThemeStyles() {
+    if (document.getElementById("apgi-theme-styles")) {
+      return;
     }
-    
-    addThemeStyles() {
-        if (document.getElementById('apgi-theme-styles')) {
-            return;
-        }
-        
-        const styles = document.createElement('style');
-        styles.id = 'apgi-theme-styles';
-        styles.textContent = `
+
+    const styles = document.createElement("style");
+    styles.id = "apgi-theme-styles";
+    styles.textContent = `
             .apgi-theme-toggle {
                 position: fixed;
                 top: 20px;
@@ -266,66 +276,66 @@ class APGIThemeManager {
                 }
             }
         `;
-        
-        document.head.appendChild(styles);
-    }
-    
-    setupSystemThemeListener() {
-        if (!window.matchMedia) return;
-        
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        
-        mediaQuery.addEventListener('change', (e) => {
-            // Only auto-switch if user hasn't manually set a preference
-            if (!localStorage.getItem(this.storageKey)) {
-                const systemTheme = e.matches ? 'dark' : 'light';
-                this.setTheme(systemTheme);
-            }
-        });
-    }
-    
-    dispatchThemeChange(themeName) {
-        const event = new CustomEvent('apgi-theme-change', {
-            detail: {
-                theme: themeName,
-                themeData: this.themes[themeName]
-            }
-        });
-        document.dispatchEvent(event);
-    }
-    
-    // Public API for other scripts
-    getThemeData(themeName) {
-        return this.themes[themeName];
-    }
-    
-    getAllThemes() {
-        return this.themes;
-    }
-    
-    resetToDefault() {
-        localStorage.removeItem(this.storageKey);
-        this.setTheme(this.defaultTheme);
-    }
+
+    document.head.appendChild(styles);
+  }
+
+  setupSystemThemeListener() {
+    if (!window.matchMedia) return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    mediaQuery.addEventListener("change", (e) => {
+      // Only auto-switch if user hasn't manually set a preference
+      if (!localStorage.getItem(this.storageKey)) {
+        const systemTheme = e.matches ? "dark" : "light";
+        this.setTheme(systemTheme);
+      }
+    });
+  }
+
+  dispatchThemeChange(themeName) {
+    const event = new CustomEvent("apgi-theme-change", {
+      detail: {
+        theme: themeName,
+        themeData: this.themes[themeName],
+      },
+    });
+    document.dispatchEvent(event);
+  }
+
+  // Public API for other scripts
+  getThemeData(themeName) {
+    return this.themes[themeName];
+  }
+
+  getAllThemes() {
+    return this.themes;
+  }
+
+  resetToDefault() {
+    localStorage.removeItem(this.storageKey);
+    this.setTheme(this.defaultTheme);
+  }
 }
 
 // Auto-initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        window.apgiThemeManager = new APGIThemeManager();
-    });
-} else {
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
     window.apgiThemeManager = new APGIThemeManager();
+  });
+} else {
+  window.apgiThemeManager = new APGIThemeManager();
 }
 
 // Global function for compatibility with existing code
-window.toggleTheme = function() {
-    if (window.apgiThemeManager) {
-        window.apgiThemeManager.toggleTheme();
-    }
+window.toggleTheme = function () {
+  if (window.apgiThemeManager) {
+    window.apgiThemeManager.toggleTheme();
+  }
 };
 
 // Export for module systems
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = APGIThemeManager;
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = APGIThemeManager;
 }

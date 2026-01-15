@@ -1,1407 +1,2135 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI Psychological State Assessment</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        :root {
-            --bg-color: #fafafa;
-            --text-color: #1a1a1a;
-            --accent-blue: #3b82f6;
-            --accent-red: #ef4444;
-            --accent-green: #10b981;
-            --accent-purple: #8b5cf6;
+      :root {
+        --bg-color: #fafafa;
+        --text-color: #1a1a1a;
+        --accent-blue: #3b82f6;
+        --accent-red: #ef4444;
+        --accent-green: #10b981;
+        --accent-purple: #8b5cf6;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: var(--text-color);
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        min-height: 100vh;
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 6px;
+        border-radius: 5px;
+        background: #e5e7eb;
+        outline: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--accent-blue);
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--accent-blue);
+        cursor: pointer;
+      }
+
+      .param-box {
+        transition: all 0.3s ease;
+      }
+
+      .param-box:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .state-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 20px;
+      }
+
+      .question-pulse {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 1;
         }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: var(--text-color);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            min-height: 100vh;
+        50% {
+          opacity: 0.8;
         }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        100% {
+          opacity: 1;
         }
-        
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
-            border-radius: 5px;
-            background: #e5e7eb;
-            outline: none;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
-        
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--accent-blue);
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--accent-blue);
-            cursor: pointer;
-        }
-        
-        .param-box {
-            transition: all 0.3s ease;
-        }
-        
-        .param-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .state-icon {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            font-size: 20px;
-        }
-        
-        .question-pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+      }
     </style>
-</head>
-<body class="p-4 md:p-8">
+  </head>
+  <body class="p-4 md:p-8">
     <div id="app" class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <header class="mb-10 text-center fade-in">
-            <div class="mb-4">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl mb-3">
-                    <i class="fas fa-brain text-white text-2xl"></i>
-                </div>
-                <h1 class="text-4xl font-bold text-white mb-2">APGI State Mapper</h1>
-                <p class="text-white/80 font-medium">Active Inference Psychological State Assessment</p>
-            </div>
-            <div class="text-sm text-white/60 max-w-2xl mx-auto">
-                Maps experience to <span class="font-semibold">Prediction Error (ε)</span>, 
-                <span class="font-semibold">Precision (π)</span>, 
-                <span class="font-semibold">Threshold (θ)</span>, 
-                <span class="font-semibold">Somatic Bias (β)</span> parameters
-            </div>
-        </header>
+      <!-- Header -->
+      <header class="mb-10 text-center fade-in">
+        <div class="mb-4">
+          <div
+            class="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl mb-3"
+          >
+            <i class="fas fa-brain text-white text-2xl"></i>
+          </div>
+          <h1 class="text-4xl font-bold text-white mb-2">APGI State Mapper</h1>
+          <p class="text-white/80 font-medium">
+            Active Inference Psychological State Assessment
+          </p>
+        </div>
+        <div class="text-sm text-white/60 max-w-2xl mx-auto">
+          Maps experience to
+          <span class="font-semibold">Prediction Error (ε)</span>,
+          <span class="font-semibold">Precision (π)</span>,
+          <span class="font-semibold">Threshold (θ)</span>,
+          <span class="font-semibold">Somatic Bias (β)</span> parameters
+        </div>
+      </header>
 
-        <!-- Welcome View -->
-        <div id="welcome-view" class="glass-card rounded-3xl p-8 mb-8 fade-in">
-            <div class="grid md:grid-cols-2 gap-8 items-center">
+      <!-- Welcome View -->
+      <div id="welcome-view" class="glass-card rounded-3xl p-8 mb-8 fade-in">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-2xl font-bold mb-4">How It Works</h2>
+            <ul class="space-y-3 text-gray-600">
+              <li class="flex items-start">
+                <i class="fas fa-bolt text-blue-500 mt-1 mr-3"></i>
+                <span
+                  ><strong>Prediction Error (ε)</strong> – Magnitude of
+                  expectation mismatch</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-weight-hanging text-purple-500 mt-1 mr-3"></i>
+                <span
+                  ><strong>Precision (π)</strong> – Gain applied to specific
+                  information channels</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-fire text-red-500 mt-1 mr-3"></i>
+                <span
+                  ><strong>Threshold (θ)</strong> – Dynamic barrier for thought
+                  ignition</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i
+                  class="fas fa-compress-arrows-alt text-green-500 mt-1 mr-3"
+                ></i>
+                <span
+                  ><strong>Somatic Bias (β)</strong> – Inward/outward
+                  attentional ratio</span
+                >
+              </li>
+            </ul>
+            <p class="mt-6 text-gray-500 text-sm italic">
+              Based on Active Inference and Predictive Processing frameworks
+            </p>
+          </div>
+          <div class="text-center">
+            <div class="mb-6">
+              <div
+                class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full mb-4"
+              >
+                <i class="fas fa-chart-line text-white text-2xl"></i>
+              </div>
+              <h3 class="font-semibold text-lg">50+ Psychological States</h3>
+              <p class="text-gray-500 text-sm mt-1">
+                Comprehensive APGI parameter mapping with full data integration
+              </p>
+            </div>
+            <button
+              onclick="startAssessment()"
+              class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl text-lg font-medium"
+            >
+              <i class="fas fa-play mr-2"></i> Begin Assessment
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question View -->
+      <div id="question-view" class="hidden">
+        <!-- Progress -->
+        <div class="mb-8">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-white text-sm font-medium"
+              >Question <span id="current-q">1</span> of
+              <span id="total-q">4</span></span
+            >
+            <span class="text-white text-sm font-medium" id="progress-percent"
+              >0%</span
+            >
+          </div>
+          <div class="w-full h-2 bg-white/20 rounded-full overflow-hidden">
+            <div
+              id="progress-fill"
+              class="h-full bg-gradient-to-r from-blue-400 to-purple-400 transition-all duration-500 ease-out"
+              style="width: 0%"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="glass-card rounded-3xl p-8 mb-6 question-pulse">
+          <div
+            class="mb-2 text-blue-600 font-semibold uppercase text-xs tracking-widest"
+            id="param-label"
+          >
+            PREDICTION ERROR
+          </div>
+          <div
+            id="question-text"
+            class="text-2xl font-medium mb-8 leading-relaxed"
+          ></div>
+
+          <!-- Slider Container -->
+          <div class="space-y-6">
+            <div class="relative">
+              <input
+                type="range"
+                id="param-input"
+                min="0"
+                max="100"
+                step="1"
+                value="50"
+                class="w-full"
+              />
+              <div class="flex justify-between mt-2">
+                <span
+                  id="label-low"
+                  class="text-xs text-gray-500 font-medium"
+                ></span>
+                <span id="label-mid" class="text-xs text-gray-500 font-medium"
+                  >Neutral</span
+                >
+                <span
+                  id="label-high"
+                  class="text-xs text-gray-500 font-medium"
+                ></span>
+              </div>
+            </div>
+
+            <!-- Value Display -->
+            <div class="text-center">
+              <div
+                class="inline-flex items-center justify-center px-6 py-3 bg-gray-50 rounded-full"
+              >
+                <span
+                  id="param-value-display"
+                  class="text-2xl font-bold text-blue-600"
+                  >0.0</span
+                >
+                <span id="param-unit" class="ml-2 text-gray-500 font-medium"
+                  >σ</span
+                >
+              </div>
+              <p id="param-description" class="text-sm text-gray-500 mt-2"></p>
+            </div>
+          </div>
+
+          <!-- Navigation -->
+          <div class="mt-12 flex justify-between items-center">
+            <button
+              id="prev-btn"
+              onclick="prevQuestion()"
+              class="flex items-center text-gray-500 hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled
+            >
+              <i class="fas fa-arrow-left mr-2"></i> Back
+            </button>
+            <button
+              onclick="nextQuestion()"
+              id="next-btn"
+              class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-3 rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              Next <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Parameter Indicators -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div
+            id="indicator-e"
+            class="param-box glass-card rounded-xl p-4 text-center opacity-50"
+          >
+            <div class="text-xs text-gray-400 uppercase mb-1">ε (PE)</div>
+            <div class="text-lg font-mono">--</div>
+          </div>
+          <div
+            id="indicator-p"
+            class="param-box glass-card rounded-xl p-4 text-center opacity-50"
+          >
+            <div class="text-xs text-gray-400 uppercase mb-1">
+              π (Precision)
+            </div>
+            <div class="text-lg font-mono">--</div>
+          </div>
+          <div
+            id="indicator-t"
+            class="param-box glass-card rounded-xl p-4 text-center opacity-50"
+          >
+            <div class="text-xs text-gray-400 uppercase mb-1">
+              θ (Threshold)
+            </div>
+            <div class="text-lg font-mono">--</div>
+          </div>
+          <div
+            id="indicator-b"
+            class="param-box glass-card rounded-xl p-4 text-center opacity-50"
+          >
+            <div class="text-xs text-gray-400 uppercase mb-1">β (Somatic)</div>
+            <div class="text-lg font-mono">--</div>
+          </div>
+        </div>
+
+        <!-- Extended Parameter Indicators -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div
+            id="indicator-e2"
+            class="param-box glass-card rounded-xl p-4 text-center opacity-50"
+          >
+            <div class="text-xs text-gray-400 uppercase mb-1">ε (Temporal)</div>
+            <div class="text-lg font-mono">--</div>
+          </div>
+          <div
+            id="indicator-p2"
+            class="param-box glass-card rounded-xl p-4 text-center opacity-50"
+          >
+            <div class="text-xs text-gray-400 uppercase mb-1">π (Social)</div>
+            <div class="text-lg font-mono">--</div>
+          </div>
+          <div
+            id="indicator-t2"
+            class="param-box glass-card rounded-xl p-4 text-center opacity-50"
+          >
+            <div class="text-xs text-gray-400 uppercase mb-1">θ (Load)</div>
+            <div class="text-lg font-mono">--</div>
+          </div>
+          <div
+            id="indicator-b2"
+            class="param-box glass-card rounded-xl p-4 text-center opacity-50"
+          >
+            <div class="text-xs text-gray-400 uppercase mb-1">
+              β (Emotional)
+            </div>
+            <div class="text-lg font-mono">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result View -->
+      <div id="result-view" class="hidden fade-in">
+        <div class="glass-card rounded-3xl p-8 mb-8">
+          <!-- State Header -->
+          <div class="flex items-start justify-between mb-8">
+            <div>
+              <div class="text-gray-500 uppercase text-xs tracking-widest mb-1">
+                Detected Psychological State
+              </div>
+              <h2 id="state-name" class="text-4xl font-bold mb-2">---</h2>
+              <div
+                id="state-category"
+                class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold"
+              >
+                --
+              </div>
+            </div>
+            <div
+              id="state-icon"
+              class="state-icon bg-gradient-to-br from-blue-500 to-purple-500 text-white"
+            >
+              <i class="fas fa-brain"></i>
+            </div>
+          </div>
+
+          <!-- State Description -->
+          <div class="mb-8">
+            <p id="state-desc" class="text-gray-600 mb-4 italic"></p>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fas fa-info-circle mr-2"></i>
+              <span id="state-note" class="font-medium"></span>
+            </div>
+          </div>
+
+          <!-- Parameter Grid -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div
+              class="param-box bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4"
+            >
+              <div class="flex justify-between items-start mb-2">
                 <div>
-                    <h2 class="text-2xl font-bold mb-4">How It Works</h2>
-                    <ul class="space-y-3 text-gray-600">
-                        <li class="flex items-start">
-                            <i class="fas fa-bolt text-blue-500 mt-1 mr-3"></i>
-                            <span><strong>Prediction Error (ε)</strong> – Magnitude of expectation mismatch</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-weight-hanging text-purple-500 mt-1 mr-3"></i>
-                            <span><strong>Precision (π)</strong> – Gain applied to specific information channels</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-fire text-red-500 mt-1 mr-3"></i>
-                            <span><strong>Threshold (θ)</strong> – Dynamic barrier for thought ignition</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-compress-arrows-alt text-green-500 mt-1 mr-3"></i>
-                            <span><strong>Somatic Bias (β)</strong> – Inward/outward attentional ratio</span>
-                        </li>
-                    </ul>
-                    <p class="mt-6 text-gray-500 text-sm italic">
-                        Based on Active Inference and Predictive Processing frameworks
-                    </p>
+                  <div class="text-xs text-blue-600 uppercase font-semibold">
+                    Pred. Error (ε)
+                  </div>
+                  <div class="text-lg font-mono font-bold" id="val-e">0.0σ</div>
                 </div>
-                <div class="text-center">
-                    <div class="mb-6">
-                        <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full mb-4">
-                            <i class="fas fa-chart-line text-white text-2xl"></i>
-                        </div>
-                        <h3 class="font-semibold text-lg">50+ Psychological States</h3>
-                        <p class="text-gray-500 text-sm mt-1">Comprehensive APGI parameter mapping with full data integration</p>
-                    </div>
-                    <button onclick="startAssessment()" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl text-lg font-medium">
-                        <i class="fas fa-play mr-2"></i> Begin Assessment
-                    </button>
+                <div class="text-blue-400 text-xl">
+                  <i class="fas fa-bolt"></i>
                 </div>
-            </div>
-        </div>
-
-        <!-- Question View -->
-        <div id="question-view" class="hidden">
-            <!-- Progress -->
-            <div class="mb-8">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-white text-sm font-medium">Question <span id="current-q">1</span> of <span id="total-q">4</span></span>
-                    <span class="text-white text-sm font-medium" id="progress-percent">0%</span>
-                </div>
-                <div class="w-full h-2 bg-white/20 rounded-full overflow-hidden">
-                    <div id="progress-fill" class="h-full bg-gradient-to-r from-blue-400 to-purple-400 transition-all duration-500 ease-out" style="width: 0%"></div>
-                </div>
-            </div>
-            
-            <!-- Question Card -->
-            <div class="glass-card rounded-3xl p-8 mb-6 question-pulse">
-                <div class="mb-2 text-blue-600 font-semibold uppercase text-xs tracking-widest" id="param-label">PREDICTION ERROR</div>
-                <div id="question-text" class="text-2xl font-medium mb-8 leading-relaxed"></div>
-                
-                <!-- Slider Container -->
-                <div class="space-y-6">
-                    <div class="relative">
-                        <input type="range" id="param-input" min="0" max="100" step="1" value="50" class="w-full">
-                        <div class="flex justify-between mt-2">
-                            <span id="label-low" class="text-xs text-gray-500 font-medium"></span>
-                            <span id="label-mid" class="text-xs text-gray-500 font-medium">Neutral</span>
-                            <span id="label-high" class="text-xs text-gray-500 font-medium"></span>
-                        </div>
-                    </div>
-                    
-                    <!-- Value Display -->
-                    <div class="text-center">
-                        <div class="inline-flex items-center justify-center px-6 py-3 bg-gray-50 rounded-full">
-                            <span id="param-value-display" class="text-2xl font-bold text-blue-600">0.0</span>
-                            <span id="param-unit" class="ml-2 text-gray-500 font-medium">σ</span>
-                        </div>
-                        <p id="param-description" class="text-sm text-gray-500 mt-2"></p>
-                    </div>
-                </div>
-
-                <!-- Navigation -->
-                <div class="mt-12 flex justify-between items-center">
-                    <button id="prev-btn" onclick="prevQuestion()" class="flex items-center text-gray-500 hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                        <i class="fas fa-arrow-left mr-2"></i> Back
-                    </button>
-                    <button onclick="nextQuestion()" id="next-btn" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-3 rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                        Next <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
+              </div>
+              <div class="text-xs text-gray-600" id="desc-e">
+                Magnitude of prediction mismatch
+              </div>
             </div>
 
-            <!-- Parameter Indicators -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div id="indicator-e" class="param-box glass-card rounded-xl p-4 text-center opacity-50">
-                    <div class="text-xs text-gray-400 uppercase mb-1">ε (PE)</div>
-                    <div class="text-lg font-mono">--</div>
-                </div>
-                <div id="indicator-p" class="param-box glass-card rounded-xl p-4 text-center opacity-50">
-                    <div class="text-xs text-gray-400 uppercase mb-1">π (Precision)</div>
-                    <div class="text-lg font-mono">--</div>
-                </div>
-                <div id="indicator-t" class="param-box glass-card rounded-xl p-4 text-center opacity-50">
-                    <div class="text-xs text-gray-400 uppercase mb-1">θ (Threshold)</div>
-                    <div class="text-lg font-mono">--</div>
-                </div>
-                <div id="indicator-b" class="param-box glass-card rounded-xl p-4 text-center opacity-50">
-                    <div class="text-xs text-gray-400 uppercase mb-1">β (Somatic)</div>
-                    <div class="text-lg font-mono">--</div>
-                </div>
-            </div>
-            
-            <!-- Extended Parameter Indicators -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div id="indicator-e2" class="param-box glass-card rounded-xl p-4 text-center opacity-50">
-                    <div class="text-xs text-gray-400 uppercase mb-1">ε (Temporal)</div>
-                    <div class="text-lg font-mono">--</div>
-                </div>
-                <div id="indicator-p2" class="param-box glass-card rounded-xl p-4 text-center opacity-50">
-                    <div class="text-xs text-gray-400 uppercase mb-1">π (Social)</div>
-                    <div class="text-lg font-mono">--</div>
-                </div>
-                <div id="indicator-t2" class="param-box glass-card rounded-xl p-4 text-center opacity-50">
-                    <div class="text-xs text-gray-400 uppercase mb-1">θ (Load)</div>
-                    <div class="text-lg font-mono">--</div>
-                </div>
-                <div id="indicator-b2" class="param-box glass-card rounded-xl p-4 text-center opacity-50">
-                    <div class="text-xs text-gray-400 uppercase mb-1">β (Emotional)</div>
-                    <div class="text-lg font-mono">--</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Result View -->
-        <div id="result-view" class="hidden fade-in">
-            <div class="glass-card rounded-3xl p-8 mb-8">
-                <!-- State Header -->
-                <div class="flex items-start justify-between mb-8">
-                    <div>
-                        <div class="text-gray-500 uppercase text-xs tracking-widest mb-1">Detected Psychological State</div>
-                        <h2 id="state-name" class="text-4xl font-bold mb-2">---</h2>
-                        <div id="state-category" class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">--</div>
-                    </div>
-                    <div id="state-icon" class="state-icon bg-gradient-to-br from-blue-500 to-purple-500 text-white">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                </div>
-                
-                <!-- State Description -->
-                <div class="mb-8">
-                    <p id="state-desc" class="text-gray-600 mb-4 italic"></p>
-                    <div class="flex items-center text-sm text-gray-500">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        <span id="state-note" class="font-medium"></span>
-                    </div>
-                </div>
-                
-                <!-- Parameter Grid -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                    <div class="param-box bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <div class="text-xs text-blue-600 uppercase font-semibold">Pred. Error (ε)</div>
-                                <div class="text-lg font-mono font-bold" id="val-e">0.0σ</div>
-                            </div>
-                            <div class="text-blue-400 text-xl">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-600" id="desc-e">Magnitude of prediction mismatch</div>
-                    </div>
-                    
-                    <div class="param-box bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <div class="text-xs text-purple-600 uppercase font-semibold">Precision (π)</div>
-                                <div class="text-lg font-mono font-bold" id="val-p">0.0σ</div>
-                            </div>
-                            <div class="text-purple-400 text-xl">
-                                <i class="fas fa-weight-hanging"></i>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-600" id="desc-p">Channel-specific gain/weighting</div>
-                    </div>
-                    
-                    <div class="param-box bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <div class="text-xs text-red-600 uppercase font-semibold">Threshold (θ)</div>
-                                <div class="text-lg font-mono font-bold" id="val-t">0.0%</div>
-                            </div>
-                            <div class="text-red-400 text-xl">
-                                <i class="fas fa-fire"></i>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-600" id="desc-t">Ignition barrier deviation</div>
-                    </div>
-                    
-                    <div class="param-box bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <div class="text-xs text-green-600 uppercase font-semibold">Somatic Bias (β)</div>
-                                <div class="text-lg font-mono font-bold" id="val-b">1.0</div>
-                            </div>
-                            <div class="text-green-400 text-xl">
-                                <i class="fas fa-compress-arrows-alt"></i>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-600" id="desc-b">Inward/outward attention ratio</div>
-                    </div>
-                </div>
-                
-                <!-- Confidence & Similar States -->
-                <div class="border-t pt-8">
-                    <div class="flex flex-wrap justify-between items-center mb-6">
-                        <div>
-                            <div class="text-sm text-gray-500 mb-1">Detection Confidence</div>
-                            <div class="flex items-center">
-                                <div class="w-32 h-2 bg-gray-200 rounded-full overflow-hidden mr-3">
-                                    <div id="confidence-bar" class="h-full bg-gradient-to-r from-green-400 to-blue-400 transition-all duration-1000" style="width: 0%"></div>
-                                </div>
-                                <span id="confidence-value" class="text-lg font-bold">0%</span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm text-gray-500 mb-1">Similar States</div>
-                            <div id="similar-states" class="text-sm font-medium"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Parameter Explanation -->
-                    <div class="bg-gray-50 rounded-xl p-4">
-                        <h4 class="font-semibold mb-2 text-gray-700">What This Means</h4>
-                        <p id="state-interpretation" class="text-sm text-gray-600"></p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Actions -->
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button onclick="location.reload()" class="glass-card px-8 py-3 rounded-full hover:bg-white transition-all duration-300 text-center">
-                    <i class="fas fa-redo mr-2"></i> Restart Assessment
-                </button>
-                <button onclick="showDetails()" id="details-btn" class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-3 rounded-full hover:from-blue-600 hover:to-purple-600 transition-all duration-300">
-                    <i class="fas fa-chart-bar mr-2"></i> View Detailed Analysis
-                </button>
-            </div>
-        </div>
-
-        <!-- Detailed Analysis View -->
-        <div id="details-view" class="hidden fade-in">
-            <div class="glass-card rounded-3xl p-8 mb-8">
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold">Detailed State Analysis</h2>
-                    <button onclick="hideDetails()" class="text-gray-500 hover:text-black">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-8 mb-8">
-                    <!-- Parameter Radar -->
-                    <div>
-                        <h3 class="font-semibold mb-4">Parameter Profile</h3>
-                        <canvas id="radar-chart" class="w-full"></canvas>
-                    </div>
-                    
-                    <!-- Top Matches -->
-                    <div>
-                        <h3 class="font-semibold mb-4">Closest States</h3>
-                        <div id="top-matches" class="space-y-3"></div>
-                    </div>
-                </div>
-                
-                <!-- All States Comparison -->
+            <div
+              class="param-box bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4"
+            >
+              <div class="flex justify-between items-start mb-2">
                 <div>
-                    <h3 class="font-semibold mb-4">Complete State Space</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr class="border-b">
-                                    <th class="text-left py-2">State</th>
-                                    <th class="text-center py-2">ε</th>
-                                    <th class="text-center py-2">π</th>
-                                    <th class="text-center py-2">θ</th>
-                                    <th class="text-center py-2">β</th>
-                                    <th class="text-center py-2">Match</th>
-                                </tr>
-                            </thead>
-                            <tbody id="states-table" class="divide-y">
-                            </tbody>
-                        </table>
-                    </div>
+                  <div class="text-xs text-purple-600 uppercase font-semibold">
+                    Precision (π)
+                  </div>
+                  <div class="text-lg font-mono font-bold" id="val-p">0.0σ</div>
                 </div>
+                <div class="text-purple-400 text-xl">
+                  <i class="fas fa-weight-hanging"></i>
+                </div>
+              </div>
+              <div class="text-xs text-gray-600" id="desc-p">
+                Channel-specific gain/weighting
+              </div>
             </div>
+
+            <div
+              class="param-box bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4"
+            >
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <div class="text-xs text-red-600 uppercase font-semibold">
+                    Threshold (θ)
+                  </div>
+                  <div class="text-lg font-mono font-bold" id="val-t">0.0%</div>
+                </div>
+                <div class="text-red-400 text-xl">
+                  <i class="fas fa-fire"></i>
+                </div>
+              </div>
+              <div class="text-xs text-gray-600" id="desc-t">
+                Ignition barrier deviation
+              </div>
+            </div>
+
+            <div
+              class="param-box bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4"
+            >
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <div class="text-xs text-green-600 uppercase font-semibold">
+                    Somatic Bias (β)
+                  </div>
+                  <div class="text-lg font-mono font-bold" id="val-b">1.0</div>
+                </div>
+                <div class="text-green-400 text-xl">
+                  <i class="fas fa-compress-arrows-alt"></i>
+                </div>
+              </div>
+              <div class="text-xs text-gray-600" id="desc-b">
+                Inward/outward attention ratio
+              </div>
+            </div>
+          </div>
+
+          <!-- Confidence & Similar States -->
+          <div class="border-t pt-8">
+            <div class="flex flex-wrap justify-between items-center mb-6">
+              <div>
+                <div class="text-sm text-gray-500 mb-1">
+                  Detection Confidence
+                </div>
+                <div class="flex items-center">
+                  <div
+                    class="w-32 h-2 bg-gray-200 rounded-full overflow-hidden mr-3"
+                  >
+                    <div
+                      id="confidence-bar"
+                      class="h-full bg-gradient-to-r from-green-400 to-blue-400 transition-all duration-1000"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                  <span id="confidence-value" class="text-lg font-bold"
+                    >0%</span
+                  >
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-500 mb-1">Similar States</div>
+                <div id="similar-states" class="text-sm font-medium"></div>
+              </div>
+            </div>
+
+            <!-- Parameter Explanation -->
+            <div class="bg-gray-50 rounded-xl p-4">
+              <h4 class="font-semibold mb-2 text-gray-700">What This Means</h4>
+              <p id="state-interpretation" class="text-sm text-gray-600"></p>
+            </div>
+          </div>
         </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col md:flex-row justify-center gap-4">
+          <button
+            onclick="location.reload()"
+            class="glass-card px-8 py-3 rounded-full hover:bg-white transition-all duration-300 text-center"
+          >
+            <i class="fas fa-redo mr-2"></i> Restart Assessment
+          </button>
+          <button
+            onclick="showDetails()"
+            id="details-btn"
+            class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-3 rounded-full hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+          >
+            <i class="fas fa-chart-bar mr-2"></i> View Detailed Analysis
+          </button>
+        </div>
+      </div>
+
+      <!-- Detailed Analysis View -->
+      <div id="details-view" class="hidden fade-in">
+        <div class="glass-card rounded-3xl p-8 mb-8">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold">Detailed State Analysis</h2>
+            <button
+              onclick="hideDetails()"
+              class="text-gray-500 hover:text-black"
+            >
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Parameter Radar -->
+            <div>
+              <h3 class="font-semibold mb-4">Parameter Profile</h3>
+              <canvas id="radar-chart" class="w-full"></canvas>
+            </div>
+
+            <!-- Top Matches -->
+            <div>
+              <h3 class="font-semibold mb-4">Closest States</h3>
+              <div id="top-matches" class="space-y-3"></div>
+            </div>
+          </div>
+
+          <!-- All States Comparison -->
+          <div>
+            <h3 class="font-semibold mb-4">Complete State Space</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b">
+                    <th class="text-left py-2">State</th>
+                    <th class="text-center py-2">ε</th>
+                    <th class="text-center py-2">π</th>
+                    <th class="text-center py-2">θ</th>
+                    <th class="text-center py-2">β</th>
+                    <th class="text-center py-2">Match</th>
+                  </tr>
+                </thead>
+                <tbody id="states-table" class="divide-y"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // ===== COMPREHENSIVE APGI PARAMETER DATA =====
-        const states = [
-            // POSITIVE STATES
-            { name: "Flow state", e: 4.5, p: 5.0, t: -12.5, b: 1.0, 
-              category: "Optimal", icon: "fas fa-water", color: "from-blue-500 to-cyan-500",
-              sig: "Temporal entrainment, metacognitive suppression",
-              note: "Highly accurate (>95%), task-aligned predictions with <5% variance" },
-            
-            { name: "Joy/Happiness", e: 2.5, p: 2.5, t: -17.5, b: 1.15,
-              category: "Positive", icon: "fas fa-smile", color: "from-yellow-400 to-orange-400",
-              sig: "Ventral striatal activation, sustained positive RPE",
-              note: "Predictions meet/exceed expectations by >20%" },
-            
-            { name: "Gratitude", e: 3.0, p: 3.0, t: -12.5, b: 1.35,
-              category: "Positive", icon: "fas fa-heart", color: "from-pink-400 to-red-400",
-              sig: "Oxytocin-mediated, requires temporal extension",
-              note: "Social predictions resolved favorably" },
-            
-            { name: "Hope", e: 2.5, p: 2.5, t: -15.0, b: 1.1,
-              category: "Positive", icon: "fas fa-sun", color: "from-yellow-500 to-amber-500",
-              sig: "Sustained tonic DA maintaining accessibility",
-              note: "Moderate confidence (60-75%), high expected value despite uncertainty" },
-            
-            { name: "Optimism", e: 1.75, p: 1.75, t: -10.0, b: 1.0,
-              category: "Positive", icon: "fas fa-rainbow", color: "from-green-400 to-blue-400",
-              sig: "Stable positive prior distribution, trait-like",
-              note: "Generalized positive priors (>70% positive outcomes)" },
-            
-            { name: "Awe", e: 4.0, p: 4.0, t: -25.0, b: 0.9,
-              category: "Transcendent", icon: "fas fa-star", color: "from-purple-500 to-pink-500",
-              sig: "DMN suppression, model inadequacy signal",
-              note: "Massive prediction error (>4σ) from vastness/novelty" },
-            
-            { name: "Inspiration", e: 3.0, p: 3.0, t: -12.5, b: 1.0,
-              category: "Creative", icon: "fas fa-lightbulb", color: "from-yellow-300 to-orange-400",
-              sig: "DMN-FPN coupling, coherence > strength weighting",
-              note: "Latent pattern detection, remote associations" },
-            
-            { name: "Serenity", e: 0.3, p: 0.3, t: 20.0, b: 1.3,
-              category: "Positive", icon: "fas fa-dove", color: "from-blue-300 to-green-300",
-              sig: "Dual-threshold architecture, parasympathetic dominant",
-              note: "High accuracy (>90%), low-surprise environment" },
-            
-            { name: "Pride", e: 3.5, p: 3.5, t: -15.0, b: 1.75,
-              category: "Positive", icon: "fas fa-trophy", color: "from-yellow-500 to-gold-500",
-              sig: "Strong embodied component, somatic confirmation",
-              note: "Self-model prediction confirmed/exceeded" },
-            
-            { name: "Amusement", e: 2.5, p: 2.5, t: -17.5, b: 1.1,
-              category: "Positive", icon: "fas fa-laugh", color: "from-pink-300 to-purple-300",
-              sig: "Rapid ignition (<200ms), mesolimbic reinforcement",
-              note: "Benign violation (1-2σ surprise in safe context)" },
-            
-            { name: "Love (romantic)", e: 5.0, p: 5.0, t: -25.0, b: 2.15,
-              category: "Social", icon: "fas fa-heart", color: "from-pink-500 to-red-500",
-              sig: "Extreme metabolic cost, oxytocin/vasopressin mediated",
-              note: "Long-term attachment predictions, partner-focus" },
-            
-            // EXPLORATORY/COGNITIVE STATES
-            { name: "Curiosity", e: 3.0, p: 3.0, t: -14.0, b: 1.0,
-              category: "Exploratory", icon: "fas fa-question-circle", color: "from-yellow-500 to-green-500",
-              sig: "Inverted PE response—uncertainty valued",
-              note: "Information gaps actively detected" },
-            
-            { name: "Engagement", e: 3.5, p: 3.5, t: -12.5, b: 1.1,
-              category: "Optimal", icon: "fas fa-bullseye", color: "from-blue-600 to-indigo-600",
-              sig: "Effortful control maintained, no metacognitive suppression",
-              note: "Task-aligned, sustained accuracy" },
-            
-            { name: "Mindfulness", e: 0.5, p: 0.5, t: 25.0, b: 1.45,
-              category: "Regulatory", icon: "fas fa-spa", color: "from-green-400 to-teal-500",
-              sig: "Non-judgmental, dual threshold adjustment",
-              note: "Reduced top-down strength (-30-40%), error acceptance" },
-            
-            { name: "Creativity", e: 3.0, p: 3.0, t: -15.0, b: 1.0,
-              category: "Creative", icon: "fas fa-palette", color: "from-purple-500 to-indigo-500",
-              sig: "Near-critical dynamics, DMN-ECN coupling",
-              note: "Loosened constraints, remote associations" },
-            
-            { name: "Focus", e: 4.0, p: 4.0, t: -12.5, b: 1.1,
-              category: "Optimal", icon: "fas fa-crosshairs", color: "from-blue-600 to-indigo-600",
-              sig: "Tuned filter, LC-NE signal-to-noise optimization",
-              note: "Singular, task-aligned attention" },
-            
-            { name: "Hyperfocus", e: 6.5, p: 8.0, t: -40.0, b: 0.9,
-              category: "Intense", icon: "fas fa-hourglass-half", color: "from-indigo-600 to-purple-700",
-              sig: "Time distortion, complete absorption, post-crash",
-              note: "Locked on single target, automatic" },
-            
-            // NEUTRAL/BASELINE STATES
-            { name: "Neutrality", e: 0, p: 0, t: 0, b: 1.0,
-              category: "Baseline", icon: "fas fa-balance-scale", color: "from-gray-400 to-gray-600",
-              sig: "Homeostatic equilibrium, rare phenomenologically",
-              note: "Balanced, accurate priors" },
-            
-            { name: "Boredom", e: 0.25, p: -2.5, t: 27.5, b: 0.9,
-              category: "Low Arousal", icon: "fas fa-meh", color: "from-gray-400 to-blue-300",
-              sig: "Aversive meta-signal motivates exploration",
-              note: "Over-learned, near-zero PE (<0.5σ)" },
-            
-            { name: "Daydreaming", e: 1.5, p: 1.5, t: -20.0, b: 0.9,
-              category: "Internal", icon: "fas fa-cloud", color: "from-purple-300 to-blue-300",
-              sig: "DMN dominance, spontaneous ignition",
-              note: "Endogenously generated predictions dominate" },
-            
-            { name: "Distraction", e: 2.5, p: 2.5, t: 0, b: 1.1,
-              category: "Fragmented", icon: "fas fa-random", color: "from-orange-300 to-red-300",
-              sig: "Reservoir coherence degraded, rapid switching",
-              note: "Fragmented, competing accurate predictions" },
-            
-            { name: "Fatigue", e: -3.0, p: -3.0, t: 30.0, b: 1.0,
-              category: "Low Energy", icon: "fas fa-battery-quarter", color: "from-gray-500 to-gray-700",
-              sig: "Metabolic constraint protection mechanism",
-              note: "Slowed PE accumulation, shortened integration window" },
-            
-            // NEGATIVE STATES
-            { name: "Anxiety", e: 4.5, p: 4.5, t: -32.5, b: 2.0,
-              category: "Negative", icon: "fas fa-exclamation-triangle", color: "from-orange-500 to-red-500",
-              sig: "False alarm generator, self-reinforcing cycle",
-              note: "Threat-biased expectations" },
-            
-            { name: "Stress", e: 3.0, p: 3.0, t: 5.0, b: 1.55,
-              category: "Negative", icon: "fas fa-bolt", color: "from-yellow-600 to-orange-600",
-              sig: "NE-mediated saturation, eventual burnout",
-              note: "Persistently violated, non-selective arousal" },
-            
-            { name: "Depression", e: -4.0, p: -2.5, t: 40.0, b: 0.8,
-              category: "Negative", icon: "fas fa-cloud-rain", color: "from-gray-500 to-gray-700",
-              sig: "Computational trap, asymmetric filtering",
-              note: "Pessimistic, rigid negative priors" },
-            
-            { name: "Anger", e: 4.0, p: 4.0, t: -27.5, b: 2.15,
-              category: "Negative", icon: "fas fa-fire", color: "from-red-500 to-red-700",
-              sig: "NE surge, rapid behavioral mobilization",
-              note: "Goal obstruction, injustice detection" },
-            
-            { name: "Fear", e: 5.5, p: 5.5, t: -50.0, b: 3.25,
-              category: "Negative", icon: "fas fa-skull-crossbones", color: "from-red-700 to-purple-800",
-              sig: "Amygdala-driven, extreme urgency configuration",
-              note: "Imminent threat, immediate reactive mode" },
-            
-            { name: "Guilt", e: 4.0, p: 4.0, t: -25.0, b: 2.15,
-              category: "Moral", icon: "fas fa-gavel", color: "from-purple-600 to-indigo-700",
-              sig: "Recurrent ignition, self-correction function",
-              note: "Self-model violation, moral error replay" },
-            
-            { name: "Shame", e: 5.0, p: 5.0, t: -32.5, b: 2.5,
-              category: "Social", icon: "fas fa-user-slash", color: "from-red-600 to-purple-700",
-              sig: "Global ignition, self-devaluation, MPF-TPJ network",
-              note: "Social self-model violated, imagined observers" },
-            
-            { name: "Loneliness", e: 3.0, p: 3.0, t: -20.0, b: 1.35,
-              category: "Social", icon: "fas fa-user-friends", color: "from-blue-600 to-gray-600",
-              sig: "Paradoxical rejection sensitivity, self-fulfilling",
-              note: "Social predictions unmet, persistent absence" },
-            
-            { name: "Frustration", e: 3.0, p: 3.0, t: 5.0, b: 1.4,
-              category: "Negative", icon: "fas fa-fist-raised", color: "from-orange-600 to-red-700",
-              sig: "Unstable threshold, escalation/abandonment negotiation",
-              note: "Repeated goal-blocking, maintained effort" },
-            
-            { name: "Confusion", e: 2.0, p: 2.0, t: 0, b: 1.1,
-              category: "Cognitive", icon: "fas fa-question", color: "from-purple-400 to-gray-500",
-              sig: "Model selection failure, high-entropy state",
-              note: "Competing models, ambiguous evidence" },
-            
-            { name: "Disgust", e: 4.0, p: 4.0, t: -25.0, b: 2.5,
-              category: "Aversive", icon: "fas fa-skull", color: "from-green-700 to-green-900",
-              sig: "Anterior insula-driven, visceral dominance",
-              note: "Contamination/pathogen detection confirmed" },
-            
-            { name: "Envy", e: 3.0, p: 3.0, t: -20.0, b: 1.25,
-              category: "Social", icon: "fas fa-eye", color: "from-green-600 to-yellow-600",
-              sig: "Desire + resentment, self-model threatened",
-              note: "Social comparison mismatch, status threat" },
-            
-            { name: "Jealousy", e: 4.0, p: 4.0, t: -27.5, b: 1.75,
-              category: "Social", icon: "fas fa-heart-broken", color: "from-red-500 to-pink-600",
-              sig: "Mate-guarding function, hypervigilance for betrayal",
-              note: "Attachment security threatened, rival detected" },
-            
-            { name: "Regret", e: 4.0, p: 4.0, t: -20.0, b: 1.35,
-              category: "Cognitive", icon: "fas fa-history", color: "from-purple-500 to-gray-600",
-              sig: "Learning signal, recurrent 'what if' ignition",
-              note: "Counterfactual error (past ≠ optimal)" },
-            
-            { name: "Pessimism", e: -2.5, p: -2.5, t: 27.5, b: 1.0,
-              category: "Cognitive", icon: "fas fa-cloud-showers-heavy", color: "from-gray-600 to-gray-800",
-              sig: "Prior distribution bias, anticipatory not current",
-              note: "Negative outcome priors (>60%)" },
-            
-            { name: "Overwhelm", e: 5.0, p: 12.5, t: -50.0, b: 1.75,
-              category: "Negative", icon: "fas fa-exclamation-circle", color: "from-red-600 to-orange-600",
-              sig: "Reservoir saturation, computational collapse",
-              note: "Excessive concurrent demands" },
-            
-            // ALTERED/PROTECTIVE STATES
-            { name: "Dissociation", e: 0, p: 0, t: 55.0, b: 0.15,
-              category: "Protective", icon: "fas fa-ghost", color: "from-gray-300 to-gray-500",
-              sig: "Prefrontal-insula uncoupling, protective detachment",
-              note: "Prediction-body coupling severed" },
-            
-            { name: "Trance", e: 0.3, p: 0.3, t: -27.5, b: 0.85,
-              category: "Altered", icon: "fas fa-moon", color: "from-indigo-400 to-purple-500",
-              sig: "Self-sustained ignition, reduced sensory gating",
-              note: "Top-down predictions dominate (>3× posterior)" },
-            
-            { name: "Hallucination", e: 4.5, p: 4.5, t: 0, b: 1.5,
-              category: "Altered", icon: "fas fa-eye", color: "from-purple-600 to-red-600",
-              sig: "Reality monitoring failure, source confusion",
-              note: "Internal predictions misattributed as sensory" },
-            
-            { name: "Déjà Vu", e: 0.5, p: 0.5, t: 0, b: 1.1,
-              category: "Temporal", icon: "fas fa-clock", color: "from-blue-400 to-purple-400",
-              sig: "Temporal-binding error, 2-10s duration",
-              note: "Temporal misalignment, false familiarity" },
-            
-            { name: "Hypnagogia", e: 0, p: 0, t: -30.0, b: 1.0,
-              category: "Transitional", icon: "fas fa-bed", color: "from-purple-300 to-blue-400",
-              sig: "Extended memory window, sleep transition",
-              note: "Sensory-decoupled, fragments blend" },
-            
-            // SOCIAL STATES
-            { name: "Empathy", e: 4.0, p: 4.0, t: -25.0, b: 2.0,
-              category: "Social", icon: "fas fa-hands-helping", color: "from-teal-500 to-blue-500",
-              sig: "Insula-mediated somatic mapping, shared feeling",
-              note: "Other's emotional state simulated in self" },
-            
-            { name: "Sympathy", e: 2.5, p: 2.5, t: 20.0, b: 1.1,
-              category: "Social", icon: "fas fa-hand-holding-heart", color: "from-pink-400 to-red-400",
-              sig: "Sustainable care without overwhelm",
-              note: "Other's distress recognized, concern generated" },
-            
-            { name: "Belonging", e: 3.0, p: 3.0, t: -20.0, b: 1.35,
-              category: "Social", icon: "fas fa-users", color: "from-green-500 to-blue-500",
-              sig: "Reduced social vigilance, oxytocin-sustained",
-              note: "Social inclusion predictions confirmed" },
-            
-            { name: "Rejection", e: 4.0, p: 4.0, t: -27.5, b: 1.5,
-              category: "Social", icon: "fas fa-user-times", color: "from-red-500 to-orange-600",
-              sig: "dACC activation, pain system overlap",
-              note: "Social exclusion, large social PE" },
-            
-            { name: "Trust", e: -0.5, p: -2.5, t: 25.0, b: 1.1,
-              category: "Social", icon: "fas fa-shield-alt", color: "from-green-500 to-blue-500",
-              sig: "Computational commitment, oxytocin-mediated",
-              note: "Positive social priors, vulnerability accepted" },
-            
-            // COGNITIVE/EXECUTIVE STATES
-            { name: "Decision Fatigue", e: 0, p: 0, t: 32.5, b: 1.1,
-              category: "Executive", icon: "fas fa-brain", color: "from-gray-500 to-purple-600",
-              sig: "Glucose depletion, prefrontal exhaustion",
-              note: "Model comparison impaired" },
-            
-            { name: "Cognitive Dissonance", e: 3.0, p: 3.0, t: 5.0, b: 1.4,
-              category: "Cognitive", icon: "fas fa-balance-scale-right", color: "from-orange-500 to-red-600",
-              sig: "ACC conflict signal, aversive instability",
-              note: "Incompatible high-precision models" },
-            
-            // HOMEOSTATIC STATES
-            { name: "Hunger", e: 3.0, p: 3.0, t: -20.0, b: 1.55,
-              category: "Homeostatic", icon: "fas fa-utensils", color: "from-orange-500 to-red-500",
-              sig: "Ghrelin-mediated, attentional hijacking",
-              note: "Homeostatic deficit (caloric)" },
-            
-            { name: "Thirst", e: 2.5, p: 2.5, t: -17.5, b: 1.35,
-              category: "Homeostatic", icon: "fas fa-tint", color: "from-blue-500 to-cyan-500",
-              sig: "Angiotensin signaling, cognitive impairment",
-              note: "Homeostatic deficit (hydration)" }
-        ];
+      // ===== COMPREHENSIVE APGI PARAMETER DATA =====
+      const states = [
+        // POSITIVE STATES
+        {
+          name: "Flow state",
+          e: 4.5,
+          p: 5.0,
+          t: -12.5,
+          b: 1.0,
+          category: "Optimal",
+          icon: "fas fa-water",
+          color: "from-blue-500 to-cyan-500",
+          sig: "Temporal entrainment, metacognitive suppression",
+          note: "Highly accurate (>95%), task-aligned predictions with <5% variance",
+        },
 
-        const questions = [
-            {
-                id: 1,
-                param: 'e',
-                label: 'PREDICTION ERROR',
-                text: 'How much is reality currently matching your expectations?',
-                low: 'Reality far exceeds expectations',
-                mid: 'Reality meets expectations',
-                high: 'Reality falls short of expectations',
-                map: (val) => ((val / 100) * 12) - 6, // -6 to +6 sigma
-                description: (val) => {
-                    if (val < -3) return "Large negative prediction error (reality far exceeds expectations)";
-                    if (val < -1) return "Moderate negative PE (better than expected)";
-                    if (val < 1) return "Balanced predictions (reality matches expectations)";
-                    if (val < 3) return "Moderate positive PE (worse than expected)";
-                    return "Large positive prediction error (reality falls far short)";
-                },
-                unit: "σ"
-            },
-            {
-                id: 2,
-                param: 'p',
-                label: 'PRECISION',
-                text: 'How strongly are you focusing on specific information right now?',
-                low: 'Broad, diffuse attention',
-                mid: 'Balanced focus',
-                high: 'Intense, narrow focus',
-                map: (val) => ((val / 100) * 20) - 5, // -5 to +15 sigma
-                description: (val) => {
-                    if (val < -2) return "Low precision (broad, unfocused attention)";
-                    if (val < 2) return "Moderate precision (balanced attention)";
-                    if (val < 6) return "High precision (focused attention)";
-                    return "Extreme precision gain (channel dominance)";
-                },
-                unit: "σ"
-            },
-            {
-                id: 3,
-                param: 't',
-                label: 'IGNITION THRESHOLD',
-                text: 'How easily do new thoughts, reactions, or emotions ignite right now?',
-                low: 'Rigid/Blocked<br>(harder ignition)',
-                mid: 'Normal threshold',
-                high: 'Highly Sensitive<br>(easier ignition)',
-                map: (val) => ((val / 100) * 130) - 60, // -60% to +70%
-                description: (val) => {
-                    if (val < -40) return "Extremely low threshold (hyper-sensitive)";
-                    if (val < -20) return "Low threshold (easy ignition)";
-                    if (val < 20) return "Normal threshold range";
-                    if (val < 40) return "Elevated threshold (harder ignition)";
-                    return "Extremely high threshold (blocked)";
-                },
-                unit: "%"
-            },
-            {
-                id: 4,
-                param: 'b',
-                label: 'SOMATIC BIAS',
-                text: 'Where is your attention primarily located right now?',
-                low: 'Outward Focus<br>(environment/social)',
-                mid: 'Balanced attention',
-                high: 'Inward Focus<br>(bodily/self-referential)',
-                map: (val) => ((val / 100) * 3.9) + 0.1, // 0.1 to 4.0 ratio
-                description: (val) => {
-                    if (val < 0.5) return "Extreme outward bias (environment dominant)";
-                    if (val < 0.9) return "Outward bias";
-                    if (val < 1.1) return "Balanced attention";
-                    if (val < 2.0) return "Inward bias";
-                    return "Extreme inward bias (somatic dominance)";
-                },
-                unit: "ratio"
-            },
-            {
-                id: 5,
-                param: 'e2',
-                label: 'TEMPORAL STABILITY',
-                text: 'How stable or consistent are your predictions over time?',
-                low: 'Highly Variable<br>(unstable predictions)',
-                mid: 'Average stability',
-                high: 'Very Stable<br>(consistent predictions)',
-                map: (val) => ((val / 100) * 8) - 4, // -4 to +4 sigma
-                description: (val) => {
-                    if (val < -2) return "Highly volatile prediction patterns";
-                    if (val < -0.5) return "Moderately variable";
-                    if (val < 0.5) return "Average stability";
-                    if (val < 2) return "Good stability";
-                    return "Excellent stability (highly consistent)";
-                },
-                unit: "σ"
-            },
-            {
-                id: 6,
-                param: 'p2',
-                label: 'SOCIAL PRECISION',
-                text: 'How much weight do you give to social information compared to other inputs?',
-                low: 'Socially Ignored<br>(low social weighting)',
-                mid: 'Balanced social attention',
-                high: 'Socially Dominant<br>(high social weighting)',
-                map: (val) => ((val / 100) * 16) - 8, // -8 to +8 sigma
-                description: (val) => {
-                    if (val < -4) return "Social information heavily filtered out";
-                    if (val < -1) return "Reduced social attention";
-                    if (val < 1) return "Balanced social attention";
-                    if (val < 4) return "Enhanced social awareness";
-                    return "Social information dominates processing";
-                },
-                unit: "σ"
-            },
-            {
-                id: 7,
-                param: 't2',
-                label: 'COGNITIVE LOAD',
-                text: 'How mentally overloaded or resource-constrained do you feel?',
-                low: 'Light Load<br>(plenty of resources)',
-                mid: 'Moderate load',
-                high: 'Heavy Load<br>(resource depleted)',
-                map: (val) => ((val / 100) * 80) - 30, // -30% to +50%
-                description: (val) => {
-                    if (val < -15) return "Very low cognitive load (ample resources)";
-                    if (val < 0) return "Light load (comfortable capacity)";
-                    if (val < 15) return "Moderate load (normal functioning)";
-                    if (val < 30) return "High load (approaching limits)";
-                    return "Overloaded (resource depletion)";
-                },
-                unit: "%"
-            },
-            {
-                id: 8,
-                param: 'b2',
-                label: 'EMOTIONAL INTENSITY',
-                text: 'How strongly are you experiencing emotions right now?',
-                low: 'Very Calm<br>(low emotional intensity)',
-                mid: 'Moderate emotions',
-                high: 'Very Intense<br>(high emotional intensity)',
-                map: (val) => ((val / 100) * 4.8) + 0.2, // 0.2 to 5.0 ratio
-                description: (val) => {
-                    if (val < 1) return "Minimal emotional activation";
-                    if (val < 2) return "Mild emotional response";
-                    if (val < 3) return "Moderate emotional intensity";
-                    if (val < 4) return "Strong emotional experience";
-                    return "Intense emotional activation";
-                },
-                unit: "ratio"
-            },
-            {
-                id: 9,
-                param: 'e',
-                label: 'PREDICTION ERROR',
-                text: 'How aligned are your current feelings with what you expected to feel?',
-                low: 'Feelings much better than expected',
-                mid: 'Feelings match expectations',
-                high: 'Feelings worse than expected',
-                map: (val) => ((val / 100) * 12) - 6,
-                description: (val) => {
-                    if (val < -3) return "Positive emotional surprise (much better than expected)";
-                    if (val < -1) return "Mildly positive (better than expected)";
-                    if (val < 1) return "Emotionally aligned (as expected)";
-                    if (val < 3) return "Mildly negative (worse than expected)";
-                    return "Negative emotional surprise (much worse than expected)";
-                },
-                unit: "σ",
-                weight: 0.8
-            },
-            {
-                id: 10,
-                param: 'p',
-                label: 'PRECISION',
-                text: 'How selectively are you filtering information right now?',
-                low: 'Taking in everything',
-                mid: 'Some filtering',
-                high: 'Highly selective filtering',
-                map: (val) => ((val / 100) * 20) - 5,
-                description: (val) => {
-                    if (val < -2) return "Very open (minimal filtering)";
-                    if (val < 2) return "Moderately selective";
-                    if (val < 6) return "Highly selective";
-                    return "Extremely focused (intense filtering)";
-                },
-                unit: "σ",
-                weight: 0.8
-            },
-            {
-                id: 11,
-                param: 't',
-                label: 'THRESHOLD',
-                text: 'How reactive are you to new stimuli in your environment?',
-                low: 'Highly reactive',
-                mid: 'Moderately reactive',
-                high: 'Low reactivity',
-                map: (val) => ((val / 100) * 130) - 60,
-                description: (val) => {
-                    if (val < -40) return "Hyper-reactive (easily triggered)";
-                    if (val < -20) return "Highly reactive";
-                    if (val < 20) return "Normal reactivity";
-                    if (val < 40) return "Low reactivity (hard to trigger)";
-                    return "Very low reactivity (blocked)";
-                },
-                unit: "%",
-                weight: 0.8
-            },
-            {
-                id: 12,
-                param: 'b',
-                label: 'SOMATIC BIAS',
-                text: 'How much is your attention on your own thoughts vs. the outside world?',
-                low: 'Outward-focused',
-                mid: 'Balanced self/world',
-                high: 'Inward-focused on self',
-                map: (val) => ((val / 100) * 3.9) + 0.1,
-                description: (val) => {
-                    if (val < 0.5) return "Strongly outward (environment-focused)";
-                    if (val < 0.9) return "Outward-leaning";
-                    if (val < 1.1) return "Balanced internal/external";
-                    if (val < 2.0) return "Inward-leaning";
-                    return "Strongly inward (self-focused)";
-                },
-                unit: "ratio",
-                weight: 0.8
-            }
-        ];
+        {
+          name: "Joy/Happiness",
+          e: 2.5,
+          p: 2.5,
+          t: -17.5,
+          b: 1.15,
+          category: "Positive",
+          icon: "fas fa-smile",
+          color: "from-yellow-400 to-orange-400",
+          sig: "Ventral striatal activation, sustained positive RPE",
+          note: "Predictions meet/exceed expectations by >20%",
+        },
 
-        // ===== ENHANCED APP STATE =====
-        let currentQuestion = 0;
-        let responses = { e: 0, p: 0, t: 0, b: 1.0, e2: 0, p2: 0, t2: 0, b2: 1.0 };
-        let radarChart = null;
-        let detectionResult = null;
+        {
+          name: "Gratitude",
+          e: 3.0,
+          p: 3.0,
+          t: -12.5,
+          b: 1.35,
+          category: "Positive",
+          icon: "fas fa-heart",
+          color: "from-pink-400 to-red-400",
+          sig: "Oxytocin-mediated, requires temporal extension",
+          note: "Social predictions resolved favorably",
+        },
 
-        // ===== ENHANCED CORE FUNCTIONS =====
-        function startAssessment() {
-            document.getElementById('welcome-view').classList.add('hidden');
-            document.getElementById('question-view').classList.remove('hidden');
-            document.getElementById('total-q').textContent = questions.length;
-            showQuestion();
-            updateParamIndicators();
-        }
+        {
+          name: "Hope",
+          e: 2.5,
+          p: 2.5,
+          t: -15.0,
+          b: 1.1,
+          category: "Positive",
+          icon: "fas fa-sun",
+          color: "from-yellow-500 to-amber-500",
+          sig: "Sustained tonic DA maintaining accessibility",
+          note: "Moderate confidence (60-75%), high expected value despite uncertainty",
+        },
 
-        function showQuestion() {
-            const q = questions[currentQuestion];
-            document.getElementById('question-text').innerHTML = q.text;
-            document.getElementById('param-label').textContent = q.label;
-            document.getElementById('label-low').innerHTML = q.low;
-            document.getElementById('label-mid').textContent = q.mid || 'Neutral';
-            document.getElementById('label-high').innerHTML = q.high;
-            
-            const slider = document.getElementById('param-input');
-            slider.value = 50;
-            
-            // Update progress
-            const progress = ((currentQuestion) / questions.length) * 100;
-            document.getElementById('progress-fill').style.width = `${progress}%`;
-            document.getElementById('progress-percent').textContent = `${Math.round(progress)}%`;
-            document.getElementById('current-q').textContent = currentQuestion + 1;
-            document.getElementById('total-q').textContent = questions.length;
-            
-            // Update button states
-            document.getElementById('prev-btn').disabled = currentQuestion === 0;
-            
-            // Trigger initial update
-            updateValueDisplay();
-            
-            // Focus slider for accessibility
-            setTimeout(() => slider.focus(), 100);
-        }
+        {
+          name: "Optimism",
+          e: 1.75,
+          p: 1.75,
+          t: -10.0,
+          b: 1.0,
+          category: "Positive",
+          icon: "fas fa-rainbow",
+          color: "from-green-400 to-blue-400",
+          sig: "Stable positive prior distribution, trait-like",
+          note: "Generalized positive priors (>70% positive outcomes)",
+        },
 
-        function updateValueDisplay() {
-            const q = questions[currentQuestion];
-            const slider = document.getElementById('param-input');
-            const value = q.map(Number(slider.value));
-            
-            document.getElementById('param-value-display').textContent = value.toFixed(1);
-            document.getElementById('param-unit').textContent = q.unit;
-            document.getElementById('param-description').textContent = q.description(value);
-            
-            // Store response
-            responses[q.param] = value;
-            updateParamIndicators();
-        }
+        {
+          name: "Awe",
+          e: 4.0,
+          p: 4.0,
+          t: -25.0,
+          b: 0.9,
+          category: "Transcendent",
+          icon: "fas fa-star",
+          color: "from-purple-500 to-pink-500",
+          sig: "DMN suppression, model inadequacy signal",
+          note: "Massive prediction error (>4σ) from vastness/novelty",
+        },
 
-        function updateParamIndicators() {
-            questions.forEach(q => {
-                const value = responses[q.param];
-                const indicator = document.getElementById(`indicator-${q.param}`);
-                const display = indicator.querySelector('.text-lg');
-                
-                if (value !== undefined && value !== 0) {
-                    indicator.classList.remove('opacity-50');
-                    display.textContent = `${value > 0 ? '+' : ''}${value.toFixed(1)}${q.unit}`;
-                    
-                    // Color code based on value and parameter type
-                    const colorClass = getParamColor(q.param, value);
-                    indicator.className = indicator.className.replace(/bg-[\w-]+/g, '').replace(/from-[\w-]+/g, '').replace(/to-[\w-]+/g, '');
-                    // Ensure multiple classes are added as separate tokens to avoid DOMTokenList errors
-                    colorClass.split(' ').forEach(cls => {
-                        if (cls && !/\s/.test(cls)) {
-                            indicator.classList.add(cls);
-                        }
-                    });
-                } else {
-                    indicator.classList.add('opacity-50');
-                    display.textContent = '--';
-                }
+        {
+          name: "Inspiration",
+          e: 3.0,
+          p: 3.0,
+          t: -12.5,
+          b: 1.0,
+          category: "Creative",
+          icon: "fas fa-lightbulb",
+          color: "from-yellow-300 to-orange-400",
+          sig: "DMN-FPN coupling, coherence > strength weighting",
+          note: "Latent pattern detection, remote associations",
+        },
+
+        {
+          name: "Serenity",
+          e: 0.3,
+          p: 0.3,
+          t: 20.0,
+          b: 1.3,
+          category: "Positive",
+          icon: "fas fa-dove",
+          color: "from-blue-300 to-green-300",
+          sig: "Dual-threshold architecture, parasympathetic dominant",
+          note: "High accuracy (>90%), low-surprise environment",
+        },
+
+        {
+          name: "Pride",
+          e: 3.5,
+          p: 3.5,
+          t: -15.0,
+          b: 1.75,
+          category: "Positive",
+          icon: "fas fa-trophy",
+          color: "from-yellow-500 to-gold-500",
+          sig: "Strong embodied component, somatic confirmation",
+          note: "Self-model prediction confirmed/exceeded",
+        },
+
+        {
+          name: "Amusement",
+          e: 2.5,
+          p: 2.5,
+          t: -17.5,
+          b: 1.1,
+          category: "Positive",
+          icon: "fas fa-laugh",
+          color: "from-pink-300 to-purple-300",
+          sig: "Rapid ignition (<200ms), mesolimbic reinforcement",
+          note: "Benign violation (1-2σ surprise in safe context)",
+        },
+
+        {
+          name: "Love (romantic)",
+          e: 5.0,
+          p: 5.0,
+          t: -25.0,
+          b: 2.15,
+          category: "Social",
+          icon: "fas fa-heart",
+          color: "from-pink-500 to-red-500",
+          sig: "Extreme metabolic cost, oxytocin/vasopressin mediated",
+          note: "Long-term attachment predictions, partner-focus",
+        },
+
+        // EXPLORATORY/COGNITIVE STATES
+        {
+          name: "Curiosity",
+          e: 3.0,
+          p: 3.0,
+          t: -14.0,
+          b: 1.0,
+          category: "Exploratory",
+          icon: "fas fa-question-circle",
+          color: "from-yellow-500 to-green-500",
+          sig: "Inverted PE response—uncertainty valued",
+          note: "Information gaps actively detected",
+        },
+
+        {
+          name: "Engagement",
+          e: 3.5,
+          p: 3.5,
+          t: -12.5,
+          b: 1.1,
+          category: "Optimal",
+          icon: "fas fa-bullseye",
+          color: "from-blue-600 to-indigo-600",
+          sig: "Effortful control maintained, no metacognitive suppression",
+          note: "Task-aligned, sustained accuracy",
+        },
+
+        {
+          name: "Mindfulness",
+          e: 0.5,
+          p: 0.5,
+          t: 25.0,
+          b: 1.45,
+          category: "Regulatory",
+          icon: "fas fa-spa",
+          color: "from-green-400 to-teal-500",
+          sig: "Non-judgmental, dual threshold adjustment",
+          note: "Reduced top-down strength (-30-40%), error acceptance",
+        },
+
+        {
+          name: "Creativity",
+          e: 3.0,
+          p: 3.0,
+          t: -15.0,
+          b: 1.0,
+          category: "Creative",
+          icon: "fas fa-palette",
+          color: "from-purple-500 to-indigo-500",
+          sig: "Near-critical dynamics, DMN-ECN coupling",
+          note: "Loosened constraints, remote associations",
+        },
+
+        {
+          name: "Focus",
+          e: 4.0,
+          p: 4.0,
+          t: -12.5,
+          b: 1.1,
+          category: "Optimal",
+          icon: "fas fa-crosshairs",
+          color: "from-blue-600 to-indigo-600",
+          sig: "Tuned filter, LC-NE signal-to-noise optimization",
+          note: "Singular, task-aligned attention",
+        },
+
+        {
+          name: "Hyperfocus",
+          e: 6.5,
+          p: 8.0,
+          t: -40.0,
+          b: 0.9,
+          category: "Intense",
+          icon: "fas fa-hourglass-half",
+          color: "from-indigo-600 to-purple-700",
+          sig: "Time distortion, complete absorption, post-crash",
+          note: "Locked on single target, automatic",
+        },
+
+        // NEUTRAL/BASELINE STATES
+        {
+          name: "Neutrality",
+          e: 0,
+          p: 0,
+          t: 0,
+          b: 1.0,
+          category: "Baseline",
+          icon: "fas fa-balance-scale",
+          color: "from-gray-400 to-gray-600",
+          sig: "Homeostatic equilibrium, rare phenomenologically",
+          note: "Balanced, accurate priors",
+        },
+
+        {
+          name: "Boredom",
+          e: 0.25,
+          p: -2.5,
+          t: 27.5,
+          b: 0.9,
+          category: "Low Arousal",
+          icon: "fas fa-meh",
+          color: "from-gray-400 to-blue-300",
+          sig: "Aversive meta-signal motivates exploration",
+          note: "Over-learned, near-zero PE (<0.5σ)",
+        },
+
+        {
+          name: "Daydreaming",
+          e: 1.5,
+          p: 1.5,
+          t: -20.0,
+          b: 0.9,
+          category: "Internal",
+          icon: "fas fa-cloud",
+          color: "from-purple-300 to-blue-300",
+          sig: "DMN dominance, spontaneous ignition",
+          note: "Endogenously generated predictions dominate",
+        },
+
+        {
+          name: "Distraction",
+          e: 2.5,
+          p: 2.5,
+          t: 0,
+          b: 1.1,
+          category: "Fragmented",
+          icon: "fas fa-random",
+          color: "from-orange-300 to-red-300",
+          sig: "Reservoir coherence degraded, rapid switching",
+          note: "Fragmented, competing accurate predictions",
+        },
+
+        {
+          name: "Fatigue",
+          e: -3.0,
+          p: -3.0,
+          t: 30.0,
+          b: 1.0,
+          category: "Low Energy",
+          icon: "fas fa-battery-quarter",
+          color: "from-gray-500 to-gray-700",
+          sig: "Metabolic constraint protection mechanism",
+          note: "Slowed PE accumulation, shortened integration window",
+        },
+
+        // NEGATIVE STATES
+        {
+          name: "Anxiety",
+          e: 4.5,
+          p: 4.5,
+          t: -32.5,
+          b: 2.0,
+          category: "Negative",
+          icon: "fas fa-exclamation-triangle",
+          color: "from-orange-500 to-red-500",
+          sig: "False alarm generator, self-reinforcing cycle",
+          note: "Threat-biased expectations",
+        },
+
+        {
+          name: "Stress",
+          e: 3.0,
+          p: 3.0,
+          t: 5.0,
+          b: 1.55,
+          category: "Negative",
+          icon: "fas fa-bolt",
+          color: "from-yellow-600 to-orange-600",
+          sig: "NE-mediated saturation, eventual burnout",
+          note: "Persistently violated, non-selective arousal",
+        },
+
+        {
+          name: "Depression",
+          e: -4.0,
+          p: -2.5,
+          t: 40.0,
+          b: 0.8,
+          category: "Negative",
+          icon: "fas fa-cloud-rain",
+          color: "from-gray-500 to-gray-700",
+          sig: "Computational trap, asymmetric filtering",
+          note: "Pessimistic, rigid negative priors",
+        },
+
+        {
+          name: "Anger",
+          e: 4.0,
+          p: 4.0,
+          t: -27.5,
+          b: 2.15,
+          category: "Negative",
+          icon: "fas fa-fire",
+          color: "from-red-500 to-red-700",
+          sig: "NE surge, rapid behavioral mobilization",
+          note: "Goal obstruction, injustice detection",
+        },
+
+        {
+          name: "Fear",
+          e: 5.5,
+          p: 5.5,
+          t: -50.0,
+          b: 3.25,
+          category: "Negative",
+          icon: "fas fa-skull-crossbones",
+          color: "from-red-700 to-purple-800",
+          sig: "Amygdala-driven, extreme urgency configuration",
+          note: "Imminent threat, immediate reactive mode",
+        },
+
+        {
+          name: "Guilt",
+          e: 4.0,
+          p: 4.0,
+          t: -25.0,
+          b: 2.15,
+          category: "Moral",
+          icon: "fas fa-gavel",
+          color: "from-purple-600 to-indigo-700",
+          sig: "Recurrent ignition, self-correction function",
+          note: "Self-model violation, moral error replay",
+        },
+
+        {
+          name: "Shame",
+          e: 5.0,
+          p: 5.0,
+          t: -32.5,
+          b: 2.5,
+          category: "Social",
+          icon: "fas fa-user-slash",
+          color: "from-red-600 to-purple-700",
+          sig: "Global ignition, self-devaluation, MPF-TPJ network",
+          note: "Social self-model violated, imagined observers",
+        },
+
+        {
+          name: "Loneliness",
+          e: 3.0,
+          p: 3.0,
+          t: -20.0,
+          b: 1.35,
+          category: "Social",
+          icon: "fas fa-user-friends",
+          color: "from-blue-600 to-gray-600",
+          sig: "Paradoxical rejection sensitivity, self-fulfilling",
+          note: "Social predictions unmet, persistent absence",
+        },
+
+        {
+          name: "Frustration",
+          e: 3.0,
+          p: 3.0,
+          t: 5.0,
+          b: 1.4,
+          category: "Negative",
+          icon: "fas fa-fist-raised",
+          color: "from-orange-600 to-red-700",
+          sig: "Unstable threshold, escalation/abandonment negotiation",
+          note: "Repeated goal-blocking, maintained effort",
+        },
+
+        {
+          name: "Confusion",
+          e: 2.0,
+          p: 2.0,
+          t: 0,
+          b: 1.1,
+          category: "Cognitive",
+          icon: "fas fa-question",
+          color: "from-purple-400 to-gray-500",
+          sig: "Model selection failure, high-entropy state",
+          note: "Competing models, ambiguous evidence",
+        },
+
+        {
+          name: "Disgust",
+          e: 4.0,
+          p: 4.0,
+          t: -25.0,
+          b: 2.5,
+          category: "Aversive",
+          icon: "fas fa-skull",
+          color: "from-green-700 to-green-900",
+          sig: "Anterior insula-driven, visceral dominance",
+          note: "Contamination/pathogen detection confirmed",
+        },
+
+        {
+          name: "Envy",
+          e: 3.0,
+          p: 3.0,
+          t: -20.0,
+          b: 1.25,
+          category: "Social",
+          icon: "fas fa-eye",
+          color: "from-green-600 to-yellow-600",
+          sig: "Desire + resentment, self-model threatened",
+          note: "Social comparison mismatch, status threat",
+        },
+
+        {
+          name: "Jealousy",
+          e: 4.0,
+          p: 4.0,
+          t: -27.5,
+          b: 1.75,
+          category: "Social",
+          icon: "fas fa-heart-broken",
+          color: "from-red-500 to-pink-600",
+          sig: "Mate-guarding function, hypervigilance for betrayal",
+          note: "Attachment security threatened, rival detected",
+        },
+
+        {
+          name: "Regret",
+          e: 4.0,
+          p: 4.0,
+          t: -20.0,
+          b: 1.35,
+          category: "Cognitive",
+          icon: "fas fa-history",
+          color: "from-purple-500 to-gray-600",
+          sig: "Learning signal, recurrent 'what if' ignition",
+          note: "Counterfactual error (past ≠ optimal)",
+        },
+
+        {
+          name: "Pessimism",
+          e: -2.5,
+          p: -2.5,
+          t: 27.5,
+          b: 1.0,
+          category: "Cognitive",
+          icon: "fas fa-cloud-showers-heavy",
+          color: "from-gray-600 to-gray-800",
+          sig: "Prior distribution bias, anticipatory not current",
+          note: "Negative outcome priors (>60%)",
+        },
+
+        {
+          name: "Overwhelm",
+          e: 5.0,
+          p: 12.5,
+          t: -50.0,
+          b: 1.75,
+          category: "Negative",
+          icon: "fas fa-exclamation-circle",
+          color: "from-red-600 to-orange-600",
+          sig: "Reservoir saturation, computational collapse",
+          note: "Excessive concurrent demands",
+        },
+
+        // ALTERED/PROTECTIVE STATES
+        {
+          name: "Dissociation",
+          e: 0,
+          p: 0,
+          t: 55.0,
+          b: 0.15,
+          category: "Protective",
+          icon: "fas fa-ghost",
+          color: "from-gray-300 to-gray-500",
+          sig: "Prefrontal-insula uncoupling, protective detachment",
+          note: "Prediction-body coupling severed",
+        },
+
+        {
+          name: "Trance",
+          e: 0.3,
+          p: 0.3,
+          t: -27.5,
+          b: 0.85,
+          category: "Altered",
+          icon: "fas fa-moon",
+          color: "from-indigo-400 to-purple-500",
+          sig: "Self-sustained ignition, reduced sensory gating",
+          note: "Top-down predictions dominate (>3× posterior)",
+        },
+
+        {
+          name: "Hallucination",
+          e: 4.5,
+          p: 4.5,
+          t: 0,
+          b: 1.5,
+          category: "Altered",
+          icon: "fas fa-eye",
+          color: "from-purple-600 to-red-600",
+          sig: "Reality monitoring failure, source confusion",
+          note: "Internal predictions misattributed as sensory",
+        },
+
+        {
+          name: "Déjà Vu",
+          e: 0.5,
+          p: 0.5,
+          t: 0,
+          b: 1.1,
+          category: "Temporal",
+          icon: "fas fa-clock",
+          color: "from-blue-400 to-purple-400",
+          sig: "Temporal-binding error, 2-10s duration",
+          note: "Temporal misalignment, false familiarity",
+        },
+
+        {
+          name: "Hypnagogia",
+          e: 0,
+          p: 0,
+          t: -30.0,
+          b: 1.0,
+          category: "Transitional",
+          icon: "fas fa-bed",
+          color: "from-purple-300 to-blue-400",
+          sig: "Extended memory window, sleep transition",
+          note: "Sensory-decoupled, fragments blend",
+        },
+
+        // SOCIAL STATES
+        {
+          name: "Empathy",
+          e: 4.0,
+          p: 4.0,
+          t: -25.0,
+          b: 2.0,
+          category: "Social",
+          icon: "fas fa-hands-helping",
+          color: "from-teal-500 to-blue-500",
+          sig: "Insula-mediated somatic mapping, shared feeling",
+          note: "Other's emotional state simulated in self",
+        },
+
+        {
+          name: "Sympathy",
+          e: 2.5,
+          p: 2.5,
+          t: 20.0,
+          b: 1.1,
+          category: "Social",
+          icon: "fas fa-hand-holding-heart",
+          color: "from-pink-400 to-red-400",
+          sig: "Sustainable care without overwhelm",
+          note: "Other's distress recognized, concern generated",
+        },
+
+        {
+          name: "Belonging",
+          e: 3.0,
+          p: 3.0,
+          t: -20.0,
+          b: 1.35,
+          category: "Social",
+          icon: "fas fa-users",
+          color: "from-green-500 to-blue-500",
+          sig: "Reduced social vigilance, oxytocin-sustained",
+          note: "Social inclusion predictions confirmed",
+        },
+
+        {
+          name: "Rejection",
+          e: 4.0,
+          p: 4.0,
+          t: -27.5,
+          b: 1.5,
+          category: "Social",
+          icon: "fas fa-user-times",
+          color: "from-red-500 to-orange-600",
+          sig: "dACC activation, pain system overlap",
+          note: "Social exclusion, large social PE",
+        },
+
+        {
+          name: "Trust",
+          e: -0.5,
+          p: -2.5,
+          t: 25.0,
+          b: 1.1,
+          category: "Social",
+          icon: "fas fa-shield-alt",
+          color: "from-green-500 to-blue-500",
+          sig: "Computational commitment, oxytocin-mediated",
+          note: "Positive social priors, vulnerability accepted",
+        },
+
+        // COGNITIVE/EXECUTIVE STATES
+        {
+          name: "Decision Fatigue",
+          e: 0,
+          p: 0,
+          t: 32.5,
+          b: 1.1,
+          category: "Executive",
+          icon: "fas fa-brain",
+          color: "from-gray-500 to-purple-600",
+          sig: "Glucose depletion, prefrontal exhaustion",
+          note: "Model comparison impaired",
+        },
+
+        {
+          name: "Cognitive Dissonance",
+          e: 3.0,
+          p: 3.0,
+          t: 5.0,
+          b: 1.4,
+          category: "Cognitive",
+          icon: "fas fa-balance-scale-right",
+          color: "from-orange-500 to-red-600",
+          sig: "ACC conflict signal, aversive instability",
+          note: "Incompatible high-precision models",
+        },
+
+        // HOMEOSTATIC STATES
+        {
+          name: "Hunger",
+          e: 3.0,
+          p: 3.0,
+          t: -20.0,
+          b: 1.55,
+          category: "Homeostatic",
+          icon: "fas fa-utensils",
+          color: "from-orange-500 to-red-500",
+          sig: "Ghrelin-mediated, attentional hijacking",
+          note: "Homeostatic deficit (caloric)",
+        },
+
+        {
+          name: "Thirst",
+          e: 2.5,
+          p: 2.5,
+          t: -17.5,
+          b: 1.35,
+          category: "Homeostatic",
+          icon: "fas fa-tint",
+          color: "from-blue-500 to-cyan-500",
+          sig: "Angiotensin signaling, cognitive impairment",
+          note: "Homeostatic deficit (hydration)",
+        },
+      ];
+
+      const questions = [
+        {
+          id: 1,
+          param: "e",
+          label: "PREDICTION ERROR",
+          text: "How much is reality currently matching your expectations?",
+          low: "Reality far exceeds expectations",
+          mid: "Reality meets expectations",
+          high: "Reality falls short of expectations",
+          map: (val) => (val / 100) * 12 - 6, // -6 to +6 sigma
+          description: (val) => {
+            if (val < -3)
+              return "Large negative prediction error (reality far exceeds expectations)";
+            if (val < -1) return "Moderate negative PE (better than expected)";
+            if (val < 1)
+              return "Balanced predictions (reality matches expectations)";
+            if (val < 3) return "Moderate positive PE (worse than expected)";
+            return "Large positive prediction error (reality falls far short)";
+          },
+          unit: "σ",
+        },
+        {
+          id: 2,
+          param: "p",
+          label: "PRECISION",
+          text: "How strongly are you focusing on specific information right now?",
+          low: "Broad, diffuse attention",
+          mid: "Balanced focus",
+          high: "Intense, narrow focus",
+          map: (val) => (val / 100) * 20 - 5, // -5 to +15 sigma
+          description: (val) => {
+            if (val < -2) return "Low precision (broad, unfocused attention)";
+            if (val < 2) return "Moderate precision (balanced attention)";
+            if (val < 6) return "High precision (focused attention)";
+            return "Extreme precision gain (channel dominance)";
+          },
+          unit: "σ",
+        },
+        {
+          id: 3,
+          param: "t",
+          label: "IGNITION THRESHOLD",
+          text: "How easily do new thoughts, reactions, or emotions ignite right now?",
+          low: "Rigid/Blocked<br>(harder ignition)",
+          mid: "Normal threshold",
+          high: "Highly Sensitive<br>(easier ignition)",
+          map: (val) => (val / 100) * 130 - 60, // -60% to +70%
+          description: (val) => {
+            if (val < -40) return "Extremely low threshold (hyper-sensitive)";
+            if (val < -20) return "Low threshold (easy ignition)";
+            if (val < 20) return "Normal threshold range";
+            if (val < 40) return "Elevated threshold (harder ignition)";
+            return "Extremely high threshold (blocked)";
+          },
+          unit: "%",
+        },
+        {
+          id: 4,
+          param: "b",
+          label: "SOMATIC BIAS",
+          text: "Where is your attention primarily located right now?",
+          low: "Outward Focus<br>(environment/social)",
+          mid: "Balanced attention",
+          high: "Inward Focus<br>(bodily/self-referential)",
+          map: (val) => (val / 100) * 3.9 + 0.1, // 0.1 to 4.0 ratio
+          description: (val) => {
+            if (val < 0.5) return "Extreme outward bias (environment dominant)";
+            if (val < 0.9) return "Outward bias";
+            if (val < 1.1) return "Balanced attention";
+            if (val < 2.0) return "Inward bias";
+            return "Extreme inward bias (somatic dominance)";
+          },
+          unit: "ratio",
+        },
+        {
+          id: 5,
+          param: "e2",
+          label: "TEMPORAL STABILITY",
+          text: "How stable or consistent are your predictions over time?",
+          low: "Highly Variable<br>(unstable predictions)",
+          mid: "Average stability",
+          high: "Very Stable<br>(consistent predictions)",
+          map: (val) => (val / 100) * 8 - 4, // -4 to +4 sigma
+          description: (val) => {
+            if (val < -2) return "Highly volatile prediction patterns";
+            if (val < -0.5) return "Moderately variable";
+            if (val < 0.5) return "Average stability";
+            if (val < 2) return "Good stability";
+            return "Excellent stability (highly consistent)";
+          },
+          unit: "σ",
+        },
+        {
+          id: 6,
+          param: "p2",
+          label: "SOCIAL PRECISION",
+          text: "How much weight do you give to social information compared to other inputs?",
+          low: "Socially Ignored<br>(low social weighting)",
+          mid: "Balanced social attention",
+          high: "Socially Dominant<br>(high social weighting)",
+          map: (val) => (val / 100) * 16 - 8, // -8 to +8 sigma
+          description: (val) => {
+            if (val < -4) return "Social information heavily filtered out";
+            if (val < -1) return "Reduced social attention";
+            if (val < 1) return "Balanced social attention";
+            if (val < 4) return "Enhanced social awareness";
+            return "Social information dominates processing";
+          },
+          unit: "σ",
+        },
+        {
+          id: 7,
+          param: "t2",
+          label: "COGNITIVE LOAD",
+          text: "How mentally overloaded or resource-constrained do you feel?",
+          low: "Light Load<br>(plenty of resources)",
+          mid: "Moderate load",
+          high: "Heavy Load<br>(resource depleted)",
+          map: (val) => (val / 100) * 80 - 30, // -30% to +50%
+          description: (val) => {
+            if (val < -15) return "Very low cognitive load (ample resources)";
+            if (val < 0) return "Light load (comfortable capacity)";
+            if (val < 15) return "Moderate load (normal functioning)";
+            if (val < 30) return "High load (approaching limits)";
+            return "Overloaded (resource depletion)";
+          },
+          unit: "%",
+        },
+        {
+          id: 8,
+          param: "b2",
+          label: "EMOTIONAL INTENSITY",
+          text: "How strongly are you experiencing emotions right now?",
+          low: "Very Calm<br>(low emotional intensity)",
+          mid: "Moderate emotions",
+          high: "Very Intense<br>(high emotional intensity)",
+          map: (val) => (val / 100) * 4.8 + 0.2, // 0.2 to 5.0 ratio
+          description: (val) => {
+            if (val < 1) return "Minimal emotional activation";
+            if (val < 2) return "Mild emotional response";
+            if (val < 3) return "Moderate emotional intensity";
+            if (val < 4) return "Strong emotional experience";
+            return "Intense emotional activation";
+          },
+          unit: "ratio",
+        },
+        {
+          id: 9,
+          param: "e",
+          label: "PREDICTION ERROR",
+          text: "How aligned are your current feelings with what you expected to feel?",
+          low: "Feelings much better than expected",
+          mid: "Feelings match expectations",
+          high: "Feelings worse than expected",
+          map: (val) => (val / 100) * 12 - 6,
+          description: (val) => {
+            if (val < -3)
+              return "Positive emotional surprise (much better than expected)";
+            if (val < -1) return "Mildly positive (better than expected)";
+            if (val < 1) return "Emotionally aligned (as expected)";
+            if (val < 3) return "Mildly negative (worse than expected)";
+            return "Negative emotional surprise (much worse than expected)";
+          },
+          unit: "σ",
+          weight: 0.8,
+        },
+        {
+          id: 10,
+          param: "p",
+          label: "PRECISION",
+          text: "How selectively are you filtering information right now?",
+          low: "Taking in everything",
+          mid: "Some filtering",
+          high: "Highly selective filtering",
+          map: (val) => (val / 100) * 20 - 5,
+          description: (val) => {
+            if (val < -2) return "Very open (minimal filtering)";
+            if (val < 2) return "Moderately selective";
+            if (val < 6) return "Highly selective";
+            return "Extremely focused (intense filtering)";
+          },
+          unit: "σ",
+          weight: 0.8,
+        },
+        {
+          id: 11,
+          param: "t",
+          label: "THRESHOLD",
+          text: "How reactive are you to new stimuli in your environment?",
+          low: "Highly reactive",
+          mid: "Moderately reactive",
+          high: "Low reactivity",
+          map: (val) => (val / 100) * 130 - 60,
+          description: (val) => {
+            if (val < -40) return "Hyper-reactive (easily triggered)";
+            if (val < -20) return "Highly reactive";
+            if (val < 20) return "Normal reactivity";
+            if (val < 40) return "Low reactivity (hard to trigger)";
+            return "Very low reactivity (blocked)";
+          },
+          unit: "%",
+          weight: 0.8,
+        },
+        {
+          id: 12,
+          param: "b",
+          label: "SOMATIC BIAS",
+          text: "How much is your attention on your own thoughts vs. the outside world?",
+          low: "Outward-focused",
+          mid: "Balanced self/world",
+          high: "Inward-focused on self",
+          map: (val) => (val / 100) * 3.9 + 0.1,
+          description: (val) => {
+            if (val < 0.5) return "Strongly outward (environment-focused)";
+            if (val < 0.9) return "Outward-leaning";
+            if (val < 1.1) return "Balanced internal/external";
+            if (val < 2.0) return "Inward-leaning";
+            return "Strongly inward (self-focused)";
+          },
+          unit: "ratio",
+          weight: 0.8,
+        },
+      ];
+
+      // ===== ENHANCED APP STATE =====
+      let currentQuestion = 0;
+      let responses = {
+        e: 0,
+        p: 0,
+        t: 0,
+        b: 1.0,
+        e2: 0,
+        p2: 0,
+        t2: 0,
+        b2: 1.0,
+      };
+      let radarChart = null;
+      let detectionResult = null;
+
+      // ===== ENHANCED CORE FUNCTIONS =====
+      function startAssessment() {
+        document.getElementById("welcome-view").classList.add("hidden");
+        document.getElementById("question-view").classList.remove("hidden");
+        document.getElementById("total-q").textContent = questions.length;
+        showQuestion();
+        updateParamIndicators();
+      }
+
+      function showQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById("question-text").innerHTML = q.text;
+        document.getElementById("param-label").textContent = q.label;
+        document.getElementById("label-low").innerHTML = q.low;
+        document.getElementById("label-mid").textContent = q.mid || "Neutral";
+        document.getElementById("label-high").innerHTML = q.high;
+
+        const slider = document.getElementById("param-input");
+        slider.value = 50;
+
+        // Update progress
+        const progress = (currentQuestion / questions.length) * 100;
+        document.getElementById("progress-fill").style.width = `${progress}%`;
+        document.getElementById("progress-percent").textContent =
+          `${Math.round(progress)}%`;
+        document.getElementById("current-q").textContent = currentQuestion + 1;
+        document.getElementById("total-q").textContent = questions.length;
+
+        // Update button states
+        document.getElementById("prev-btn").disabled = currentQuestion === 0;
+
+        // Trigger initial update
+        updateValueDisplay();
+
+        // Focus slider for accessibility
+        setTimeout(() => slider.focus(), 100);
+      }
+
+      function updateValueDisplay() {
+        const q = questions[currentQuestion];
+        const slider = document.getElementById("param-input");
+        const value = q.map(Number(slider.value));
+
+        document.getElementById("param-value-display").textContent =
+          value.toFixed(1);
+        document.getElementById("param-unit").textContent = q.unit;
+        document.getElementById("param-description").textContent =
+          q.description(value);
+
+        // Store response
+        responses[q.param] = value;
+        updateParamIndicators();
+      }
+
+      function updateParamIndicators() {
+        questions.forEach((q) => {
+          const value = responses[q.param];
+          const indicator = document.getElementById(`indicator-${q.param}`);
+          const display = indicator.querySelector(".text-lg");
+
+          if (value !== undefined && value !== 0) {
+            indicator.classList.remove("opacity-50");
+            display.textContent = `${value > 0 ? "+" : ""}${value.toFixed(1)}${q.unit}`;
+
+            // Color code based on value and parameter type
+            const colorClass = getParamColor(q.param, value);
+            indicator.className = indicator.className
+              .replace(/bg-[\w-]+/g, "")
+              .replace(/from-[\w-]+/g, "")
+              .replace(/to-[\w-]+/g, "");
+            // Ensure multiple classes are added as separate tokens to avoid DOMTokenList errors
+            colorClass.split(" ").forEach((cls) => {
+              if (cls && !/\s/.test(cls)) {
+                indicator.classList.add(cls);
+              }
             });
+          } else {
+            indicator.classList.add("opacity-50");
+            display.textContent = "--";
+          }
+        });
+      }
+
+      function getParamColor(param, value) {
+        if (param === "e") {
+          if (value < -2) return "bg-gradient-to-br from-blue-50 to-blue-100";
+          if (value > 2) return "bg-gradient-to-br from-red-50 to-red-100";
+          return "bg-gradient-to-br from-gray-50 to-gray-100";
         }
-
-        function getParamColor(param, value) {
-            if (param === 'e') {
-                if (value < -2) return 'bg-gradient-to-br from-blue-50 to-blue-100';
-                if (value > 2) return 'bg-gradient-to-br from-red-50 to-red-100';
-                return 'bg-gradient-to-br from-gray-50 to-gray-100';
-            }
-            if (param === 'p') {
-                if (value < -2) return 'bg-gradient-to-br from-gray-50 to-gray-100';
-                if (value > 5) return 'bg-gradient-to-br from-purple-50 to-purple-100';
-                return 'bg-gradient-to-br from-blue-50 to-blue-100';
-            }
-            if (param === 't') {
-                if (value < -20) return 'bg-gradient-to-br from-red-50 to-red-100';
-                if (value > 20) return 'bg-gradient-to-br from-blue-50 to-blue-100';
-                return 'bg-gradient-to-br from-gray-50 to-gray-100';
-            }
-            if (param === 'b') {
-                if (value < 0.9) return 'bg-gradient-to-br from-green-50 to-green-100';
-                if (value > 1.1) return 'bg-gradient-to-br from-orange-50 to-orange-100';
-                return 'bg-gradient-to-br from-gray-50 to-gray-100';
-            }
-            // Extended parameters
-            if (param === 'e2') {
-                if (value < -1) return 'bg-gradient-to-br from-orange-50 to-orange-100';
-                if (value > 1) return 'bg-gradient-to-br from-green-50 to-green-100';
-                return 'bg-gradient-to-br from-gray-50 to-gray-100';
-            }
-            if (param === 'p2') {
-                if (value < -2) return 'bg-gradient-to-br from-gray-50 to-gray-100';
-                if (value > 2) return 'bg-gradient-to-br from-pink-50 to-pink-100';
-                return 'bg-gradient-to-br from-blue-50 to-blue-100';
-            }
-            if (param === 't2') {
-                if (value < -10) return 'bg-gradient-to-br from-red-50 to-red-100';
-                if (value > 15) return 'bg-gradient-to-br from-yellow-50 to-yellow-100';
-                return 'bg-gradient-to-br from-gray-50 to-gray-100';
-            }
-            if (param === 'b2') {
-                if (value < 1.5) return 'bg-gradient-to-br from-blue-50 to-blue-100';
-                if (value > 3) return 'bg-gradient-to-br from-red-50 to-red-100';
-                return 'bg-gradient-to-br from-purple-50 to-purple-100';
-            }
-            return 'glass-card';
+        if (param === "p") {
+          if (value < -2) return "bg-gradient-to-br from-gray-50 to-gray-100";
+          if (value > 5)
+            return "bg-gradient-to-br from-purple-50 to-purple-100";
+          return "bg-gradient-to-br from-blue-50 to-blue-100";
         }
-
-        function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                showQuestion();
-            } else {
-                calculateResult();
-            }
+        if (param === "t") {
+          if (value < -20) return "bg-gradient-to-br from-red-50 to-red-100";
+          if (value > 20) return "bg-gradient-to-br from-blue-50 to-blue-100";
+          return "bg-gradient-to-br from-gray-50 to-gray-100";
         }
-
-        function prevQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                showQuestion();
-            }
+        if (param === "b") {
+          if (value < 0.9)
+            return "bg-gradient-to-br from-green-50 to-green-100";
+          if (value > 1.1)
+            return "bg-gradient-to-br from-orange-50 to-orange-100";
+          return "bg-gradient-to-br from-gray-50 to-gray-100";
         }
-
-        // Enhanced state matching with weighted Euclidean distance
-        function calculateResult() {
-            let minDistance = Infinity;
-            let closestState = null;
-            let distances = [];
-            let confidence = 0;
-
-            // Aggregate responses by parameter (weighted average for repeated params)
-            const aggregatedResponses = {
-                e: [], p: [], t: [], b: [], e2: [], p2: [], t2: [], b2: []
-            };
-            
-            questions.forEach(q => {
-                const value = responses[q.param];
-                const weight = q.weight || 1.0;
-                aggregatedResponses[q.param].push({ value, weight });
-            });
-            
-            // Calculate weighted averages
-            const avgResponses = {};
-            Object.keys(aggregatedResponses).forEach(param => {
-                const values = aggregatedResponses[param];
-                if (values.length > 0) {
-                    const totalWeight = values.reduce((sum, v) => sum + v.weight, 0);
-                    const weightedSum = values.reduce((sum, v) => sum + (v.value * v.weight), 0);
-                    avgResponses[param] = weightedSum / totalWeight;
-                } else {
-                    avgResponses[param] = 0;
-                }
-            });
-
-            states.forEach(state => {
-                // Weighted Euclidean distance with parameter-specific weights
-                const weights = { e: 1.2, p: 1.0, t: 1.1, b: 1.5, e2: 0.8, p2: 0.9, t2: 0.7, b2: 1.0 };
-                
-                // Calculate composite scores for state matching
-                const stateComposite = {
-                    e: state.e,
-                    p: state.p,
-                    t: state.t,
-                    b: state.b,
-                    // Derive additional parameters from state characteristics
-                    e2: state.category === "Optimal" || state.category === "Positive" ? 2.0 : 
-                         state.category === "Negative" ? -1.5 : 0.5,
-                    p2: state.category.includes("Social") ? 3.0 : 
-                         state.category.includes("Cognitive") ? 1.0 : 0.5,
-                    t2: state.category === "Low Energy" || state.category === "Executive" ? 25.0 :
-                         state.category === "Intense" ? -20.0 : 0.0,
-                    b2: state.category === "Positive" ? 2.5 :
-                         state.category === "Negative" ? 3.5 :
-                         state.category === "Baseline" ? 1.0 : 2.0
-                };
-                
-                const de = Math.pow((avgResponses.e - stateComposite.e) / 6, 2) * weights.e;
-                const dp = Math.pow((avgResponses.p - stateComposite.p) / 20, 2) * weights.p;
-                const dt = Math.pow((avgResponses.t - stateComposite.t) / 130, 2) * weights.t;
-                const db = Math.pow((avgResponses.b - stateComposite.b) / 4, 2) * weights.b;
-                const de2 = Math.pow((avgResponses.e2 - stateComposite.e2) / 8, 2) * weights.e2;
-                const dp2 = Math.pow((avgResponses.p2 - stateComposite.p2) / 16, 2) * weights.p2;
-                const dt2 = Math.pow((avgResponses.t2 - stateComposite.t2) / 80, 2) * weights.t2;
-                const db2 = Math.pow((avgResponses.b2 - stateComposite.b2) / 5, 2) * weights.b2;
-                
-                const distance = Math.sqrt(de + dp + dt + db + de2 + dp2 + dt2 + db2);
-                distances.push({ state, distance });
-                
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestState = state;
-                }
-            });
-
-            // Calculate confidence (inverse of normalized distance)
-            confidence = Math.max(0, 100 - (minDistance * 80));
-            
-            // Sort distances for similar states
-            distances.sort((a, b) => a.distance - b.distance);
-            
-            detectionResult = {
-                state: closestState,
-                confidence: Math.round(confidence),
-                similar: distances.slice(1, 4).map(d => ({
-                    name: d.state.name,
-                    distance: d.distance
-                })),
-                distances: distances,
-                avgResponses: avgResponses
-            };
-
-            renderResult();
+        // Extended parameters
+        if (param === "e2") {
+          if (value < -1)
+            return "bg-gradient-to-br from-orange-50 to-orange-100";
+          if (value > 1) return "bg-gradient-to-br from-green-50 to-green-100";
+          return "bg-gradient-to-br from-gray-50 to-gray-100";
         }
+        if (param === "p2") {
+          if (value < -2) return "bg-gradient-to-br from-gray-50 to-gray-100";
+          if (value > 2) return "bg-gradient-to-br from-pink-50 to-pink-100";
+          return "bg-gradient-to-br from-blue-50 to-blue-100";
+        }
+        if (param === "t2") {
+          if (value < -10) return "bg-gradient-to-br from-red-50 to-red-100";
+          if (value > 15)
+            return "bg-gradient-to-br from-yellow-50 to-yellow-100";
+          return "bg-gradient-to-br from-gray-50 to-gray-100";
+        }
+        if (param === "b2") {
+          if (value < 1.5) return "bg-gradient-to-br from-blue-50 to-blue-100";
+          if (value > 3) return "bg-gradient-to-br from-red-50 to-red-100";
+          return "bg-gradient-to-br from-purple-50 to-purple-100";
+        }
+        return "glass-card";
+      }
 
-        // Long-form state descriptions (progressively extendable)
-        const stateDetails = {
-            "Flow state": "Prediction accuracy approaches 95%+ for task-relevant inputs; precision Π_task > 5σ above baseline while Π_distractor < 0.5σ; ignition threshold θₜ maintained 10-15% below resting baseline with <5% variance over time. Flow represents an optimal ignition regime where the cortical reservoir achieves maximal task-relevant coherence with minimal metabolic overhead. The precision-threshold architecture enters a transient attractor state characterized by: (1) tight temporal coupling between prediction and sensory input (lag <100ms), (2) sustained dopaminergic tone maintaining stable but accessible threshold, (3) selective noradrenergic enhancement of task-relevant precision weights, and (4) reduced global competition for ignition—creating uninterrupted access for goal-aligned content. This configuration maximizes the information-theoretic efficiency ratio: relevant information accessed per unit metabolic cost. Unlike mere engagement, flow exhibits temporal entrainment (rhythmic precision-threshold oscillations phase-locked to task structure) and metacognitive suppression (reduced self-monitoring precision, enabling automatic execution)."
+      function nextQuestion() {
+        if (currentQuestion < questions.length - 1) {
+          currentQuestion++;
+          showQuestion();
+        } else {
+          calculateResult();
+        }
+      }
+
+      function prevQuestion() {
+        if (currentQuestion > 0) {
+          currentQuestion--;
+          showQuestion();
+        }
+      }
+
+      // Enhanced state matching with weighted Euclidean distance
+      function calculateResult() {
+        let minDistance = Infinity;
+        let closestState = null;
+        let distances = [];
+        let confidence = 0;
+
+        // Aggregate responses by parameter (weighted average for repeated params)
+        const aggregatedResponses = {
+          e: [],
+          p: [],
+          t: [],
+          b: [],
+          e2: [],
+          p2: [],
+          t2: [],
+          b2: [],
         };
 
-        function renderResult() {
-            const { state, confidence, similar, avgResponses } = detectionResult;
-            
-            document.getElementById('question-view').classList.add('hidden');
-            document.getElementById('result-view').classList.remove('hidden');
-            
-            // Update state info
-            document.getElementById('state-name').textContent = state.name;
-            document.getElementById('state-category').textContent = state.category;
-            document.getElementById('state-desc').textContent = state.sig;
-            // Prefer long-form detail if available, otherwise fall back to concise note
-            document.getElementById('state-note').textContent = stateDetails[state.name] || state.note;
-            document.getElementById('state-interpretation').textContent = 
-                `This state represents ${state.name.toLowerCase()} characterized by ${state.sig.toLowerCase()}. ` +
-                `The parameter profile suggests ${getStateInterpretation(state)} ` +
-                `Your responses indicate ${getParameterInterpretation(avgResponses)}`;
-            
-            // Update icon
-            const iconEl = document.getElementById('state-icon');
-            iconEl.className = `state-icon bg-gradient-to-br ${state.color} text-white`;
-            iconEl.innerHTML = `<i class="${state.icon}"></i>`;
-            
-            // Update parameter values with aggregated responses
-            document.getElementById('val-e').textContent = `${avgResponses.e > 0 ? '+' : ''}${avgResponses.e.toFixed(1)}σ`;
-            document.getElementById('val-p').textContent = `${avgResponses.p > 0 ? '+' : ''}${avgResponses.p.toFixed(1)}σ`;
-            document.getElementById('val-t').textContent = `${avgResponses.t > 0 ? '+' : ''}${avgResponses.t.toFixed(1)}%`;
-            document.getElementById('val-b').textContent = avgResponses.b.toFixed(2);
-            
-            // Update parameter descriptions
-            document.getElementById('desc-e').textContent = getParameterDescription('e', avgResponses.e);
-            document.getElementById('desc-p').textContent = getParameterDescription('p', avgResponses.p);
-            document.getElementById('desc-t').textContent = getParameterDescription('t', avgResponses.t);
-            document.getElementById('desc-b').textContent = getParameterDescription('b', avgResponses.b);
-            
-            // Update confidence
-            document.getElementById('confidence-value').textContent = `${confidence}%`;
-            setTimeout(() => {
-                document.getElementById('confidence-bar').style.width = `${confidence}%`;
-            }, 100);
-            
-            // Update similar states
-            const similarEl = document.getElementById('similar-states');
-            similarEl.innerHTML = similar.map(s => 
-                `<span class="inline-block bg-gray-100 px-2 py-1 rounded text-xs mr-2">${s.name}</span>`
-            ).join('');
-            
-            // Initialize details button
-            document.getElementById('details-btn').onclick = showDetails;
+        questions.forEach((q) => {
+          const value = responses[q.param];
+          const weight = q.weight || 1.0;
+          aggregatedResponses[q.param].push({ value, weight });
+        });
+
+        // Calculate weighted averages
+        const avgResponses = {};
+        Object.keys(aggregatedResponses).forEach((param) => {
+          const values = aggregatedResponses[param];
+          if (values.length > 0) {
+            const totalWeight = values.reduce((sum, v) => sum + v.weight, 0);
+            const weightedSum = values.reduce(
+              (sum, v) => sum + v.value * v.weight,
+              0,
+            );
+            avgResponses[param] = weightedSum / totalWeight;
+          } else {
+            avgResponses[param] = 0;
+          }
+        });
+
+        states.forEach((state) => {
+          // Weighted Euclidean distance with parameter-specific weights
+          const weights = {
+            e: 1.2,
+            p: 1.0,
+            t: 1.1,
+            b: 1.5,
+            e2: 0.8,
+            p2: 0.9,
+            t2: 0.7,
+            b2: 1.0,
+          };
+
+          // Calculate composite scores for state matching
+          const stateComposite = {
+            e: state.e,
+            p: state.p,
+            t: state.t,
+            b: state.b,
+            // Derive additional parameters from state characteristics
+            e2:
+              state.category === "Optimal" || state.category === "Positive"
+                ? 2.0
+                : state.category === "Negative"
+                  ? -1.5
+                  : 0.5,
+            p2: state.category.includes("Social")
+              ? 3.0
+              : state.category.includes("Cognitive")
+                ? 1.0
+                : 0.5,
+            t2:
+              state.category === "Low Energy" || state.category === "Executive"
+                ? 25.0
+                : state.category === "Intense"
+                  ? -20.0
+                  : 0.0,
+            b2:
+              state.category === "Positive"
+                ? 2.5
+                : state.category === "Negative"
+                  ? 3.5
+                  : state.category === "Baseline"
+                    ? 1.0
+                    : 2.0,
+          };
+
+          const de =
+            Math.pow((avgResponses.e - stateComposite.e) / 6, 2) * weights.e;
+          const dp =
+            Math.pow((avgResponses.p - stateComposite.p) / 20, 2) * weights.p;
+          const dt =
+            Math.pow((avgResponses.t - stateComposite.t) / 130, 2) * weights.t;
+          const db =
+            Math.pow((avgResponses.b - stateComposite.b) / 4, 2) * weights.b;
+          const de2 =
+            Math.pow((avgResponses.e2 - stateComposite.e2) / 8, 2) * weights.e2;
+          const dp2 =
+            Math.pow((avgResponses.p2 - stateComposite.p2) / 16, 2) *
+            weights.p2;
+          const dt2 =
+            Math.pow((avgResponses.t2 - stateComposite.t2) / 80, 2) *
+            weights.t2;
+          const db2 =
+            Math.pow((avgResponses.b2 - stateComposite.b2) / 5, 2) * weights.b2;
+
+          const distance = Math.sqrt(de + dp + dt + db + de2 + dp2 + dt2 + db2);
+          distances.push({ state, distance });
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestState = state;
+          }
+        });
+
+        // Calculate confidence (inverse of normalized distance)
+        confidence = Math.max(0, 100 - minDistance * 80);
+
+        // Sort distances for similar states
+        distances.sort((a, b) => a.distance - b.distance);
+
+        detectionResult = {
+          state: closestState,
+          confidence: Math.round(confidence),
+          similar: distances.slice(1, 4).map((d) => ({
+            name: d.state.name,
+            distance: d.distance,
+          })),
+          distances: distances,
+          avgResponses: avgResponses,
+        };
+
+        renderResult();
+      }
+
+      // Long-form state descriptions (progressively extendable)
+      const stateDetails = {
+        "Flow state":
+          "Prediction accuracy approaches 95%+ for task-relevant inputs; precision Π_task > 5σ above baseline while Π_distractor < 0.5σ; ignition threshold θₜ maintained 10-15% below resting baseline with <5% variance over time. Flow represents an optimal ignition regime where the cortical reservoir achieves maximal task-relevant coherence with minimal metabolic overhead. The precision-threshold architecture enters a transient attractor state characterized by: (1) tight temporal coupling between prediction and sensory input (lag <100ms), (2) sustained dopaminergic tone maintaining stable but accessible threshold, (3) selective noradrenergic enhancement of task-relevant precision weights, and (4) reduced global competition for ignition—creating uninterrupted access for goal-aligned content. This configuration maximizes the information-theoretic efficiency ratio: relevant information accessed per unit metabolic cost. Unlike mere engagement, flow exhibits temporal entrainment (rhythmic precision-threshold oscillations phase-locked to task structure) and metacognitive suppression (reduced self-monitoring precision, enabling automatic execution).",
+      };
+
+      function renderResult() {
+        const { state, confidence, similar, avgResponses } = detectionResult;
+
+        document.getElementById("question-view").classList.add("hidden");
+        document.getElementById("result-view").classList.remove("hidden");
+
+        // Update state info
+        document.getElementById("state-name").textContent = state.name;
+        document.getElementById("state-category").textContent = state.category;
+        document.getElementById("state-desc").textContent = state.sig;
+        // Prefer long-form detail if available, otherwise fall back to concise note
+        document.getElementById("state-note").textContent =
+          stateDetails[state.name] || state.note;
+        document.getElementById("state-interpretation").textContent =
+          `This state represents ${state.name.toLowerCase()} characterized by ${state.sig.toLowerCase()}. ` +
+          `The parameter profile suggests ${getStateInterpretation(state)} ` +
+          `Your responses indicate ${getParameterInterpretation(avgResponses)}`;
+
+        // Update icon
+        const iconEl = document.getElementById("state-icon");
+        iconEl.className = `state-icon bg-gradient-to-br ${state.color} text-white`;
+        iconEl.innerHTML = `<i class="${state.icon}"></i>`;
+
+        // Update parameter values with aggregated responses
+        document.getElementById("val-e").textContent =
+          `${avgResponses.e > 0 ? "+" : ""}${avgResponses.e.toFixed(1)}σ`;
+        document.getElementById("val-p").textContent =
+          `${avgResponses.p > 0 ? "+" : ""}${avgResponses.p.toFixed(1)}σ`;
+        document.getElementById("val-t").textContent =
+          `${avgResponses.t > 0 ? "+" : ""}${avgResponses.t.toFixed(1)}%`;
+        document.getElementById("val-b").textContent =
+          avgResponses.b.toFixed(2);
+
+        // Update parameter descriptions
+        document.getElementById("desc-e").textContent = getParameterDescription(
+          "e",
+          avgResponses.e,
+        );
+        document.getElementById("desc-p").textContent = getParameterDescription(
+          "p",
+          avgResponses.p,
+        );
+        document.getElementById("desc-t").textContent = getParameterDescription(
+          "t",
+          avgResponses.t,
+        );
+        document.getElementById("desc-b").textContent = getParameterDescription(
+          "b",
+          avgResponses.b,
+        );
+
+        // Update confidence
+        document.getElementById("confidence-value").textContent =
+          `${confidence}%`;
+        setTimeout(() => {
+          document.getElementById("confidence-bar").style.width =
+            `${confidence}%`;
+        }, 100);
+
+        // Update similar states
+        const similarEl = document.getElementById("similar-states");
+        similarEl.innerHTML = similar
+          .map(
+            (s) =>
+              `<span class="inline-block bg-gray-100 px-2 py-1 rounded text-xs mr-2">${s.name}</span>`,
+          )
+          .join("");
+
+        // Initialize details button
+        document.getElementById("details-btn").onclick = showDetails;
+      }
+
+      function getStateInterpretation(state) {
+        const interpretations = {
+          "Flow state":
+            "optimal task engagement with suppressed metacognition.",
+          Anxiety: "threat-biased processing with lowered ignition thresholds.",
+          Depression:
+            "negative filtering with elevated thresholds for positive content.",
+          Mindfulness: "balanced awareness with reduced top-down control.",
+          Focus: "signal-to-noise optimization for task-relevant information.",
+          "Joy/Happiness":
+            "positive reward prediction errors with sustained ventral striatal activation.",
+          Stress: "non-selective arousal with unstable thresholds.",
+          Fear: "imminent threat detection with extreme somatic dominance.",
+          "Love (romantic)":
+            "long-term attachment predictions with extreme metabolic investment.",
+          Creativity: "loosened constraints enabling remote associations.",
+          Empathy:
+            "insula-mediated somatic simulation of others' emotional states.",
+          Loneliness:
+            "social prediction errors with paradoxical rejection sensitivity.",
+          Anger:
+            "goal obstruction detection with rapid behavioral mobilization.",
+          Serenity: "high prediction accuracy with parasympathetic dominance.",
+          Curiosity:
+            "inverted prediction error response where uncertainty is valued.",
+          Overwhelm: "reservoir saturation from excessive concurrent demands.",
+          Dissociation:
+            "protective detachment through prefrontal-insula uncoupling.",
+          Hyperfocus:
+            "complete absorption with suppressed metacognition and time distortion.",
+        };
+        return (
+          interpretations[state.name] ||
+          "a specific configuration of prediction, precision, threshold, and somatic parameters."
+        );
+      }
+
+      function getParameterInterpretation(responses) {
+        const interpretations = [];
+
+        if (responses.e > 3)
+          interpretations.push(
+            "large prediction errors (reality far from expectations)",
+          );
+        else if (responses.e < -2)
+          interpretations.push(
+            "negative prediction errors (reality exceeding expectations)",
+          );
+        else if (Math.abs(responses.e) < 1)
+          interpretations.push("well-calibrated predictions");
+
+        if (responses.p > 6)
+          interpretations.push("extremely focused attention");
+        else if (responses.p < -1)
+          interpretations.push("diffuse, unfocused attention");
+        else if (responses.p > 2) interpretations.push("enhanced precision");
+
+        if (responses.t < -30) interpretations.push("hyper-reactive state");
+        else if (responses.t > 30)
+          interpretations.push("elevated ignition threshold");
+        else if (responses.t < -15)
+          interpretations.push("lowered threshold for ignition");
+
+        if (responses.b > 2) interpretations.push("strong inward somatic bias");
+        else if (responses.b < 0.7)
+          interpretations.push("outward environmental focus");
+        else if (responses.b > 1.3)
+          interpretations.push("increased body awareness");
+
+        if (interpretations.length === 0)
+          return "balanced parameters across all dimensions.";
+        return interpretations.join(", ") + ".";
+      }
+
+      function getParameterDescription(param, value) {
+        const descriptions = {
+          e: () => {
+            if (value < -2) return "Reality exceeds expectations";
+            if (value < 1) return "Predictions well-calibrated";
+            if (value < 3) return "Reality falls short";
+            return "Large prediction mismatch";
+          },
+          p: () => {
+            if (value < -1) return "Diffuse attention";
+            if (value < 3) return "Moderate focus";
+            if (value < 6) return "High precision";
+            return "Channel dominance";
+          },
+          t: () => {
+            if (value < -30) return "Hyper-sensitive";
+            if (value < -10) return "Low threshold";
+            if (value < 20) return "Normal range";
+            if (value < 40) return "Elevated threshold";
+            return "Blocked ignition";
+          },
+          b: () => {
+            if (value < 0.7) return "Outward focus";
+            if (value < 1.2) return "Balanced attention";
+            if (value < 2) return "Inward bias";
+            return "Somatic dominance";
+          },
+        };
+        return descriptions[param]?.() || "";
+      }
+
+      function showDetails() {
+        document.getElementById("result-view").classList.add("hidden");
+        document.getElementById("details-view").classList.remove("hidden");
+
+        renderRadarChart();
+        renderTopMatches();
+        renderStatesTable();
+      }
+
+      function hideDetails() {
+        document.getElementById("details-view").classList.add("hidden");
+        document.getElementById("result-view").classList.remove("hidden");
+      }
+
+      function renderRadarChart() {
+        const ctx = document.getElementById("radar-chart").getContext("2d");
+
+        if (radarChart) {
+          radarChart.destroy();
         }
 
-        function getStateInterpretation(state) {
-            const interpretations = {
-                "Flow state": "optimal task engagement with suppressed metacognition.",
-                "Anxiety": "threat-biased processing with lowered ignition thresholds.",
-                "Depression": "negative filtering with elevated thresholds for positive content.",
-                "Mindfulness": "balanced awareness with reduced top-down control.",
-                "Focus": "signal-to-noise optimization for task-relevant information.",
-                "Joy/Happiness": "positive reward prediction errors with sustained ventral striatal activation.",
-                "Stress": "non-selective arousal with unstable thresholds.",
-                "Fear": "imminent threat detection with extreme somatic dominance.",
-                "Love (romantic)": "long-term attachment predictions with extreme metabolic investment.",
-                "Creativity": "loosened constraints enabling remote associations.",
-                "Empathy": "insula-mediated somatic simulation of others' emotional states.",
-                "Loneliness": "social prediction errors with paradoxical rejection sensitivity.",
-                "Anger": "goal obstruction detection with rapid behavioral mobilization.",
-                "Serenity": "high prediction accuracy with parasympathetic dominance.",
-                "Curiosity": "inverted prediction error response where uncertainty is valued.",
-                "Overwhelm": "reservoir saturation from excessive concurrent demands.",
-                "Dissociation": "protective detachment through prefrontal-insula uncoupling.",
-                "Hyperfocus": "complete absorption with suppressed metacognition and time distortion."
-            };
-            return interpretations[state.name] || "a specific configuration of prediction, precision, threshold, and somatic parameters.";
-        }
+        const avgResponses = detectionResult.avgResponses;
 
-        function getParameterInterpretation(responses) {
-            const interpretations = [];
-            
-            if (responses.e > 3) interpretations.push("large prediction errors (reality far from expectations)");
-            else if (responses.e < -2) interpretations.push("negative prediction errors (reality exceeding expectations)");
-            else if (Math.abs(responses.e) < 1) interpretations.push("well-calibrated predictions");
-            
-            if (responses.p > 6) interpretations.push("extremely focused attention");
-            else if (responses.p < -1) interpretations.push("diffuse, unfocused attention");
-            else if (responses.p > 2) interpretations.push("enhanced precision");
-            
-            if (responses.t < -30) interpretations.push("hyper-reactive state");
-            else if (responses.t > 30) interpretations.push("elevated ignition threshold");
-            else if (responses.t < -15) interpretations.push("lowered threshold for ignition");
-            
-            if (responses.b > 2) interpretations.push("strong inward somatic bias");
-            else if (responses.b < 0.7) interpretations.push("outward environmental focus");
-            else if (responses.b > 1.3) interpretations.push("increased body awareness");
-            
-            if (interpretations.length === 0) return "balanced parameters across all dimensions.";
-            return interpretations.join(", ") + ".";
-        }
+        // Normalize responses for radar chart (using primary 4 parameters)
+        const normalizedResponses = {
+          e: (avgResponses.e + 6) / 12, // Normalize -6 to +6 to 0-1
+          p: (avgResponses.p + 5) / 20, // Normalize -5 to +15 to 0-1
+          t: (avgResponses.t + 60) / 130, // Normalize -60 to +70 to 0-1
+          b: (avgResponses.b - 0.1) / 3.9, // Normalize 0.1 to 4.0 to 0-1
+        };
 
-        function getParameterDescription(param, value) {
-            const descriptions = {
-                e: () => {
-                    if (value < -2) return "Reality exceeds expectations";
-                    if (value < 1) return "Predictions well-calibrated";
-                    if (value < 3) return "Reality falls short";
-                    return "Large prediction mismatch";
+        const closestState = detectionResult.state;
+        const normalizedState = {
+          e: (closestState.e + 6) / 12,
+          p: (closestState.p + 5) / 20,
+          t: (closestState.t + 60) / 130,
+          b: (closestState.b - 0.1) / 3.9,
+        };
+
+        radarChart = new Chart(ctx, {
+          type: "radar",
+          data: {
+            labels: [
+              "Prediction Error (ε)",
+              "Precision (π)",
+              "Threshold (θ)",
+              "Somatic Bias (β)",
+            ],
+            datasets: [
+              {
+                label: "Your Response",
+                data: [
+                  normalizedResponses.e,
+                  normalizedResponses.p,
+                  normalizedResponses.t,
+                  normalizedResponses.b,
+                ],
+                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                borderColor: "rgb(59, 130, 246)",
+                pointBackgroundColor: "rgb(59, 130, 246)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgb(59, 130, 246)",
+                borderWidth: 2,
+              },
+              {
+                label: closestState.name,
+                data: [
+                  normalizedState.e,
+                  normalizedState.p,
+                  normalizedState.t,
+                  normalizedState.b,
+                ],
+                backgroundColor: "rgba(139, 92, 246, 0.2)",
+                borderColor: "rgb(139, 92, 246)",
+                pointBackgroundColor: "rgb(139, 92, 246)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgb(139, 92, 246)",
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 1,
+                ticks: {
+                  display: false,
+                  stepSize: 0.25,
                 },
-                p: () => {
-                    if (value < -1) return "Diffuse attention";
-                    if (value < 3) return "Moderate focus";
-                    if (value < 6) return "High precision";
-                    return "Channel dominance";
+                pointLabels: {
+                  font: {
+                    size: 12,
+                    weight: "bold",
+                  },
                 },
-                t: () => {
-                    if (value < -30) return "Hyper-sensitive";
-                    if (value < -10) return "Low threshold";
-                    if (value < 20) return "Normal range";
-                    if (value < 40) return "Elevated threshold";
-                    return "Blocked ignition";
+                grid: {
+                  color: "rgba(0, 0, 0, 0.1)",
                 },
-                b: () => {
-                    if (value < 0.7) return "Outward focus";
-                    if (value < 1.2) return "Balanced attention";
-                    if (value < 2) return "Inward bias";
-                    return "Somatic dominance";
-                }
-            };
-            return descriptions[param]?.() || "";
-        }
-
-        function showDetails() {
-            document.getElementById('result-view').classList.add('hidden');
-            document.getElementById('details-view').classList.remove('hidden');
-            
-            renderRadarChart();
-            renderTopMatches();
-            renderStatesTable();
-        }
-
-        function hideDetails() {
-            document.getElementById('details-view').classList.add('hidden');
-            document.getElementById('result-view').classList.remove('hidden');
-        }
-
-        function renderRadarChart() {
-            const ctx = document.getElementById('radar-chart').getContext('2d');
-            
-            if (radarChart) {
-                radarChart.destroy();
-            }
-            
-            const avgResponses = detectionResult.avgResponses;
-            
-            // Normalize responses for radar chart (using primary 4 parameters)
-            const normalizedResponses = {
-                e: (avgResponses.e + 6) / 12, // Normalize -6 to +6 to 0-1
-                p: (avgResponses.p + 5) / 20, // Normalize -5 to +15 to 0-1
-                t: (avgResponses.t + 60) / 130, // Normalize -60 to +70 to 0-1
-                b: (avgResponses.b - 0.1) / 3.9 // Normalize 0.1 to 4.0 to 0-1
-            };
-            
-            const closestState = detectionResult.state;
-            const normalizedState = {
-                e: (closestState.e + 6) / 12,
-                p: (closestState.p + 5) / 20,
-                t: (closestState.t + 60) / 130,
-                b: (closestState.b - 0.1) / 3.9
-            };
-            
-            radarChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Prediction Error (ε)', 'Precision (π)', 'Threshold (θ)', 'Somatic Bias (β)'],
-                    datasets: [
-                        {
-                            label: 'Your Response',
-                            data: [normalizedResponses.e, normalizedResponses.p, normalizedResponses.t, normalizedResponses.b],
-                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                            borderColor: 'rgb(59, 130, 246)',
-                            pointBackgroundColor: 'rgb(59, 130, 246)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgb(59, 130, 246)',
-                            borderWidth: 2
-                        },
-                        {
-                            label: closestState.name,
-                            data: [normalizedState.e, normalizedState.p, normalizedState.t, normalizedState.b],
-                            backgroundColor: 'rgba(139, 92, 246, 0.2)',
-                            borderColor: 'rgb(139, 92, 246)',
-                            pointBackgroundColor: 'rgb(139, 92, 246)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgb(139, 92, 246)',
-                            borderWidth: 2
-                        }
-                    ]
+                angleLines: {
+                  color: "rgba(0, 0, 0, 0.1)",
                 },
-                options: {
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            max: 1,
-                            ticks: {
-                                display: false,
-                                stepSize: 0.25
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: 12,
-                                    weight: 'bold'
-                                }
-                            },
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            angleLines: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                font: {
-                                    size: 12
-                                },
-                                padding: 20
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            padding: 12,
-                            titleFont: {
-                                size: 14
-                            },
-                            bodyFont: {
-                                size: 12
-                            }
-                        }
-                    },
-                    responsive: true,
-                    maintainAspectRatio: true
-                }
-            });
-        }
+              },
+            },
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  font: {
+                    size: 12,
+                  },
+                  padding: 20,
+                },
+              },
+              tooltip: {
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                padding: 12,
+                titleFont: {
+                  size: 14,
+                },
+                bodyFont: {
+                  size: 12,
+                },
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+          },
+        });
+      }
 
-        function renderTopMatches() {
-            const matchesEl = document.getElementById('top-matches');
-            const top5 = detectionResult.distances.slice(0, 5);
-            
-            matchesEl.innerHTML = top5.map((match, index) => {
-                const matchPercent = Math.max(0, 100 - (match.distance * 100));
-                return `
+      function renderTopMatches() {
+        const matchesEl = document.getElementById("top-matches");
+        const top5 = detectionResult.distances.slice(0, 5);
+
+        matchesEl.innerHTML = top5
+          .map((match, index) => {
+            const matchPercent = Math.max(0, 100 - match.distance * 100);
+            return `
                     <div class="flex items-center justify-between p-3 glass-card rounded-xl">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center ${index === 0 ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' : 'bg-gray-100'} mr-3">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center ${index === 0 ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white" : "bg-gray-100"} mr-3">
                                 ${index + 1}
                             </div>
                             <div>
@@ -1415,19 +2143,21 @@
                         </div>
                     </div>
                 `;
-            }).join('');
-        }
+          })
+          .join("");
+      }
 
-        function renderStatesTable() {
-            const tableEl = document.getElementById('states-table');
-            tableEl.innerHTML = detectionResult.distances.map(match => {
-                const matchPercent = Math.max(0, 100 - (match.distance * 100));
-                return `
+      function renderStatesTable() {
+        const tableEl = document.getElementById("states-table");
+        tableEl.innerHTML = detectionResult.distances
+          .map((match) => {
+            const matchPercent = Math.max(0, 100 - match.distance * 100);
+            return `
                     <tr class="hover:bg-gray-50">
                         <td class="py-2 font-medium">${match.state.name}</td>
-                        <td class="text-center py-2">${match.state.e > 0 ? '+' : ''}${match.state.e.toFixed(1)}σ</td>
-                        <td class="text-center py-2">${match.state.p > 0 ? '+' : ''}${match.state.p.toFixed(1)}σ</td>
-                        <td class="text-center py-2">${match.state.t > 0 ? '+' : ''}${match.state.t.toFixed(1)}%</td>
+                        <td class="text-center py-2">${match.state.e > 0 ? "+" : ""}${match.state.e.toFixed(1)}σ</td>
+                        <td class="text-center py-2">${match.state.p > 0 ? "+" : ""}${match.state.p.toFixed(1)}σ</td>
+                        <td class="text-center py-2">${match.state.t > 0 ? "+" : ""}${match.state.t.toFixed(1)}%</td>
                         <td class="text-center py-2">${match.state.b.toFixed(2)}</td>
                         <td class="text-center py-2">
                             <div class="inline-flex items-center">
@@ -1439,29 +2169,35 @@
                         </td>
                     </tr>
                 `;
-            }).join('');
-        }
+          })
+          .join("");
+      }
 
-        // Initialize event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            const slider = document.getElementById('param-input');
-            slider.addEventListener('input', updateValueDisplay);
-            
-            // Add keyboard navigation
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight') {
-                    const slider = document.getElementById('param-input');
-                    slider.value = Math.min(100, parseInt(slider.value) + 5);
-                    updateValueDisplay();
-                } else if (e.key === 'ArrowLeft') {
-                    const slider = document.getElementById('param-input');
-                    slider.value = Math.max(0, parseInt(slider.value) - 5);
-                    updateValueDisplay();
-                } else if (e.key === 'Enter' && !document.getElementById('question-view').classList.contains('hidden')) {
-                    nextQuestion();
-                }
-            });
+      // Initialize event listeners
+      document.addEventListener("DOMContentLoaded", () => {
+        const slider = document.getElementById("param-input");
+        slider.addEventListener("input", updateValueDisplay);
+
+        // Add keyboard navigation
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowRight") {
+            const slider = document.getElementById("param-input");
+            slider.value = Math.min(100, parseInt(slider.value) + 5);
+            updateValueDisplay();
+          } else if (e.key === "ArrowLeft") {
+            const slider = document.getElementById("param-input");
+            slider.value = Math.max(0, parseInt(slider.value) - 5);
+            updateValueDisplay();
+          } else if (
+            e.key === "Enter" &&
+            !document
+              .getElementById("question-view")
+              .classList.contains("hidden")
+          ) {
+            nextQuestion();
+          }
         });
+      });
     </script>
-</body>
+  </body>
 </html>

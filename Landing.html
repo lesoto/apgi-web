@@ -1,1204 +1,1729 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APGI Framework - Understand Why Your Mind Works The Way It Does</title>
-    <meta name="description" content="Discover the APGI Framework that explains consciousness through predictive processing. Learn about your cognitive architecture and take our assessment to understand your unique mind.">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      APGI Framework - Understand Why Your Mind Works The Way It Does
+    </title>
+    <meta
+      name="description"
+      content="Discover the APGI Framework that explains consciousness through predictive processing. Learn about your cognitive architecture and take our assessment to understand your unique mind."
+    />
+
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="alternate icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
     <script src="assets/js/enhanced-cdn-fallbacks.js"></script>
     <script src="assets/js/unified-theme-manager.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://js.stripe.com/v3/"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/buttons.css">
+    <script src="assets/js/payment-service.js"></script>
+    <script src="assets/js/webhook-tester.js"></script>
+    <script src="assets/js/form-handler.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/buttons.css" />
     <script src="assets/js/api-services.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        
-        :root {
-            --bg-primary: #000000;
-            --bg-secondary: rgba(20, 20, 40, 0.8);
-            --text-primary: #ffffff;
-            --text-secondary: #e0e0e0;
-            --text-muted: #a0a0a0;
-            --border-color: rgba(255, 255, 255, 0.2);
-            --accent-blue: #00B4FF;
-            --accent-purple: #9966FF;
-            --accent-red: #FF3366;
-            --accent-emerald: #00CC99;
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+      :root {
+        --bg-primary: #000000;
+        --bg-secondary: rgba(20, 20, 40, 0.8);
+        --text-primary: #ffffff;
+        --text-secondary: #e0e0e0;
+        --text-muted: #a0a0a0;
+        --border-color: rgba(255, 255, 255, 0.2);
+        --accent-blue: #00b4ff;
+        --accent-purple: #9966ff;
+        --accent-red: #ff3366;
+        --accent-emerald: #00cc99;
+      }
+
+      [data-theme="light"] {
+        --bg-primary: #ffffff;
+        --bg-secondary: rgba(240, 240, 245, 0.95);
+        --text-primary: #0a0a0a;
+        --text-secondary: #1a1a1a;
+        --text-muted: #444444;
+        --border-color: rgba(0, 0, 0, 0.25);
+        --accent-blue: #0066cc;
+        --accent-purple: #6600cc;
+        --accent-red: #cc0033;
+        --accent-emerald: #008855;
+      }
+
+      * {
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+
+      .gradient-text {
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue) 0%,
+          var(--accent-red) 50%,
+          var(--accent-purple) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
         }
-        
-        [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: rgba(240, 240, 245, 0.95);
-            --text-primary: #0a0a0a;
-            --text-secondary: #1a1a1a;
-            --text-muted: #444444;
-            --border-color: rgba(0, 0, 0, 0.25);
-            --accent-blue: #0066CC;
-            --accent-purple: #6600CC;
-            --accent-red: #CC0033;
-            --accent-emerald: #008855;
+        50% {
+          transform: translateY(-20px);
         }
-        
-        * {
-            font-family: 'Inter', sans-serif;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.3;
+          stroke-width: 2;
         }
-        
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: background-color 0.3s ease, color 0.3s ease;
+        50% {
+          opacity: 1;
+          stroke-width: 3;
         }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-red) 50%, var(--accent-purple) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+      }
+
+      @keyframes flow {
+        0%,
+        100% {
+          opacity: 0.4;
         }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        50% {
+          opacity: 1;
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; stroke-width: 2; }
-            50% { opacity: 1; stroke-width: 3; }
+      }
+
+      @keyframes expand {
+        0%,
+        100% {
+          r: 20;
+          opacity: 0.6;
         }
-        
-        @keyframes flow {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+        50% {
+          r: 28;
+          opacity: 0.3;
         }
-        
-        @keyframes expand {
-            0%, 100% { r: 20; opacity: 0.6; }
-            50% { r: 28; opacity: 0.3; }
+      }
+
+      .glass-card {
+        background: var(--bg-secondary);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+      }
+
+      .segment-card {
+        background: var(--bg-secondary);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+      }
+
+      .segment-card:hover {
+        border-color: var(--accent-blue);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 180, 255, 0.15) 0%,
+          rgba(153, 102, 255, 0.15) 100%
+        );
+        transform: scale(1.05);
+      }
+
+      .testimonial-card {
+        background: var(--bg-secondary);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .testimonial-card:hover {
+        border-color: var(--accent-purple);
+      }
+
+      .testimonial-card:hover::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(153, 102, 255, 0.05) 0%,
+          rgba(0, 180, 255, 0.05) 100%
+        );
+        opacity: 1;
+      }
+
+      .brain-visual {
+        filter: drop-shadow(0 0 40px rgba(0, 180, 255, 0.3));
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .feature-border {
+        border-left: 4px solid var(--accent-blue);
+        transition: border-color 0.3s ease;
+      }
+
+      .feature-border:hover {
+        border-color: var(--accent-blue);
+      }
+
+      /* Button styles are now handled by assets/css/buttons.css */
+
+      .icon-bg {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 180, 255, 0.2) 0%,
+          rgba(153, 102, 255, 0.2) 100%
+        );
+        transition: all 0.3s ease;
+      }
+
+      .segment-card:hover .icon-bg {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 180, 255, 0.4) 0%,
+          rgba(153, 102, 255, 0.4) 100%
+        );
+      }
+
+      .footer-link {
+        color: var(--text-muted);
+        transition: color 0.3s ease;
+      }
+
+      .footer-link:hover {
+        color: var(--accent-blue);
+      }
+
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
         }
-        
-        .glass-card {
-            background: var(--bg-secondary);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-        }
-        
-        .segment-card {
-            background: var(--bg-secondary);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-        
-        .segment-card:hover {
-            border-color: var(--accent-blue);
-            background: linear-gradient(135deg, rgba(0, 180, 255, 0.15) 0%, rgba(153, 102, 255, 0.15) 100%);
-            transform: scale(1.05);
-        }
-        
-        .testimonial-card {
-            background: var(--bg-secondary);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .testimonial-card:hover {
-            border-color: var(--accent-purple);
-        }
-        
-        .testimonial-card:hover::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(153, 102, 255, 0.05) 0%, rgba(0, 180, 255, 0.05) 100%);
-            opacity: 1;
-        }
-        
+
         .brain-visual {
-            filter: drop-shadow(0 0 40px rgba(0, 180, 255, 0.3));
-            animation: float 6s ease-in-out infinite;
+          animation: none;
         }
-        
-        .feature-border {
-            border-left: 4px solid var(--accent-blue);
-            transition: border-color 0.3s ease;
+
+        [style*="animation"] {
+          animation: none !important;
         }
-        
-        .feature-border:hover {
-            border-color: var(--accent-blue);
-        }
-        
-        /* Button styles are now handled by assets/css/buttons.css */
-        
-        .icon-bg {
-            background: linear-gradient(135deg, rgba(0, 180, 255, 0.2) 0%, rgba(153, 102, 255, 0.2) 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .segment-card:hover .icon-bg {
-            background: linear-gradient(135deg, rgba(0, 180, 255, 0.4) 0%, rgba(153, 102, 255, 0.4) 100%);
-        }
-        
-        .footer-link {
-            color: var(--text-muted);
-            transition: color 0.3s ease;
-        }
-        
-        .footer-link:hover {
-            color: var(--accent-blue);
-        }
-        
-        /* Reduced motion support */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            
-            .brain-visual {
-                animation: none;
-            }
-            
-            [style*="animation"] {
-                animation: none !important;
-            }
-        }
-        
-        /* Theme Toggle Styles */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 50px;
-            padding: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .theme-toggle:hover {
-            transform: scale(1.05);
-        }
-        
-        .theme-toggle-slider {
-            width: 50px;
-            height: 26px;
-            background: var(--border-color);
-            border-radius: 13px;
-            position: relative;
-            transition: background 0.3s ease;
-        }
-        
-        .theme-toggle-slider::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-blue);
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-        
-        [data-theme="light"] .theme-toggle-slider::after {
-            transform: translateX(24px);
-        }
-        
-        [data-theme="light"] .theme-toggle-slider {
-            background: var(--accent-blue);
-        }
-        
-        .theme-icon {
-            font-size: 14px;
-            color: var(--text-primary);
-        }
-        
-        /* Improved contrast for light mode text colors */
-        [data-theme="light"] .text-gray-300 { color: var(--text-secondary) !important; }
-        [data-theme="light"] .text-gray-400 { color: var(--text-muted) !important; }
-        [data-theme="light"] .text-blue-400 { color: var(--accent-blue) !important; }
-        [data-theme="light"] .text-purple-400 { color: var(--accent-purple) !important; }
-        [data-theme="light"] .text-red-400 { color: var(--accent-red) !important; }
-        [data-theme="light"] .text-emerald-400 { color: var(--accent-emerald) !important; }
-        [data-theme="light"] .text-blue-300 { color: var(--accent-blue) !important; }
-        [data-theme="light"] .text-red-300 { color: var(--accent-red) !important; }
-        [data-theme="light"] .text-emerald-300 { color: var(--accent-emerald) !important; }
-        [data-theme="light"] .text-purple-300 { color: var(--accent-purple) !important; }
-        [data-theme="light"] .text-yellow-400 { color: #b8860b !important; }
-        [data-theme="light"] .border-gray-700 { border-color: var(--border-color) !important; }
-        [data-theme="light"] .border-gray-800 { border-color: var(--border-color) !important; }
-        [data-theme="light"] .bg-black { background: var(--bg-primary) !important; }
-        [data-theme="light"] .bg-gradient-to-br { opacity: 0.8; }
-        
-        /* Enhanced contrast for all text elements */
-        .text-high-contrast {
-            color: var(--text-primary);
-        }
-        
-        .text-medium-contrast {
-            color: var(--text-secondary);
-        }
-        
-        .text-low-contrast {
-            color: var(--text-muted);
-        }
-        
-        /* Ensure proper contrast for specific elements */
-        [data-theme="light"] .segment-card p,
-        [data-theme="light"] .testimonial-card p,
-        [data-theme="light"] .glass-card p {
-            color: var(--text-secondary);
-        }
-        
-        /* Fix for gradient text in light mode */
-        [data-theme="light"] .gradient-text {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-red) 50%, var(--accent-purple) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+      }
+
+      /* Theme Toggle Styles */
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 50px;
+        padding: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .theme-toggle:hover {
+        transform: scale(1.05);
+      }
+
+      .theme-toggle-slider {
+        width: 50px;
+        height: 26px;
+        background: var(--border-color);
+        border-radius: 13px;
+        position: relative;
+        transition: background 0.3s ease;
+      }
+
+      .theme-toggle-slider::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        background: var(--accent-blue);
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+      }
+
+      [data-theme="light"] .theme-toggle-slider::after {
+        transform: translateX(24px);
+      }
+
+      [data-theme="light"] .theme-toggle-slider {
+        background: var(--accent-blue);
+      }
+
+      .theme-icon {
+        font-size: 14px;
+        color: var(--text-primary);
+      }
+
+      /* Improved contrast for light mode text colors */
+      [data-theme="light"] .text-gray-300 {
+        color: var(--text-secondary) !important;
+      }
+      [data-theme="light"] .text-gray-400 {
+        color: var(--text-muted) !important;
+      }
+      [data-theme="light"] .text-blue-400 {
+        color: var(--accent-blue) !important;
+      }
+      [data-theme="light"] .text-purple-400 {
+        color: var(--accent-purple) !important;
+      }
+      [data-theme="light"] .text-red-400 {
+        color: var(--accent-red) !important;
+      }
+      [data-theme="light"] .text-emerald-400 {
+        color: var(--accent-emerald) !important;
+      }
+      [data-theme="light"] .text-blue-300 {
+        color: var(--accent-blue) !important;
+      }
+      [data-theme="light"] .text-red-300 {
+        color: var(--accent-red) !important;
+      }
+      [data-theme="light"] .text-emerald-300 {
+        color: var(--accent-emerald) !important;
+      }
+      [data-theme="light"] .text-purple-300 {
+        color: var(--accent-purple) !important;
+      }
+      [data-theme="light"] .text-yellow-400 {
+        color: #b8860b !important;
+      }
+      [data-theme="light"] .border-gray-700 {
+        border-color: var(--border-color) !important;
+      }
+      [data-theme="light"] .border-gray-800 {
+        border-color: var(--border-color) !important;
+      }
+      [data-theme="light"] .bg-black {
+        background: var(--bg-primary) !important;
+      }
+      [data-theme="light"] .bg-gradient-to-br {
+        opacity: 0.8;
+      }
+
+      /* Enhanced contrast for all text elements */
+      .text-high-contrast {
+        color: var(--text-primary);
+      }
+
+      .text-medium-contrast {
+        color: var(--text-secondary);
+      }
+
+      .text-low-contrast {
+        color: var(--text-muted);
+      }
+
+      /* Ensure proper contrast for specific elements */
+      [data-theme="light"] .segment-card p,
+      [data-theme="light"] .testimonial-card p,
+      [data-theme="light"] .glass-card p {
+        color: var(--text-secondary);
+      }
+
+      /* Fix for gradient text in light mode */
+      [data-theme="light"] .gradient-text {
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue) 0%,
+          var(--accent-red) 50%,
+          var(--accent-purple) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
     </style>
-</head>
-<body class="bg-black text-white overflow-x-hidden">
-    
+  </head>
+  <body class="bg-black text-white overflow-x-hidden">
     <!-- Animated gradient background -->
     <div class="fixed inset-0 pointer-events-none opacity-40">
-        <div id="gradientBg" class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20"></div>
+      <div
+        id="gradientBg"
+        class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20"
+      ></div>
     </div>
 
-      <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center pt-20 pb-32 overflow-hidden">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        
-        <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-12">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <!-- Left: Headline & Copy -->
-                <div class="space-y-8">
-                    <div class="space-y-4">
-                        <p class="text-sm font-semibold tracking-widest text-blue-400 uppercase">
-                            The Neuroscience Framework
-                        </p>
-                        <h1 class="text-5xl lg:text-7xl font-black leading-tight tracking-tight gradient-text">
-                            Understand Why Your Mind Works The Way It Does
-                        </h1>
-                    </div>
+    <!-- Hero Section -->
+    <section
+      class="relative min-h-screen flex items-center justify-center pt-20 pb-32 overflow-hidden"
+    >
+      <div
+        class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
+      ></div>
 
-                    <p class="text-xl text-gray-300 leading-relaxed max-w-md">
-                        Move beyond personality labels to measurable cognitive architecture. Used by 1,200+ professionals across psychology, neuroscience, and organizational development.
-                    </p>
-
-                    <!-- Email Capture Form -->
-                    <div class="space-y-4">
-                        <form id="snapshotForm" class="space-y-4">
-                            <div class="flex flex-col sm:flex-row gap-3">
-                                <input 
-                                    type="email" 
-                                    id="emailInput"
-                                    placeholder="Enter your email" 
-                                    class="flex-1 px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required
-                                >
-                                <button 
-                                    type="submit" 
-                                    class="btn btn-primary"
-                                >
-                                    Get Free Snapshot
-                                    <i class="fas fa-chevron-right"></i>
-                                </button>
-                            </div>
-                            <div id="formMessage" class="hidden text-sm"></div>
-                        </form>
-                        
-                        <button 
-                            onclick="showPricingModal()" 
-                            class="btn btn-secondary"
-                        >
-                            Explore All Paths
-                        </button>
-                    </div>
-
-                    <!-- Social Proof Bar -->
-                    <div class="pt-8 border-t border-gray-700">
-                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-4">Featured & Validated</p>
-                        <div class="space-y-3">
-                            <p class="text-sm text-gray-300">
-                                <span class="text-blue-400 font-semibold">Educational Psychology Review</span> • 
-                                <span class="text-red-400 font-semibold"> Journal of Psychosomatic Research</span> • 
-                                <span class="text-purple-400 font-semibold"> Organizational Science</span>
-                            </p>
-                            <div class="grid grid-cols-3 gap-4 text-sm">
-                                <div><p class="text-emerald-400 font-bold text-lg">2,847</p><p class="text-gray-400">Participants Validated</p></div>
-                                <div><p class="text-blue-400 font-bold text-lg">40%</p><p class="text-gray-400">Faster Client Insight</p></div>
-                                <div><p class="text-purple-400 font-bold text-lg">28%</p><p class="text-gray-400">Lower Probation Rate</p></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right: Animated Brain Visual -->
-                <div class="relative h-96 lg:h-full flex items-center justify-center">
-                    <div class="relative w-full h-96">
-                        <!-- Animated SVG Brain -->
-                        <svg viewBox="0 0 200 280" class="w-full h-full mx-auto brain-visual">
-                            <!-- Brain outline -->
-                            <defs>
-                                <filter id="glow">
-                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                    <feMerge>
-                                        <feMergeNode in="coloredBlur"/>
-                                        <feMergeNode in="SourceGraphic"/>
-                                    </feMerge>
-                                </filter>
-                                <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color: '#1a1a2e'; stop-opacity: 0.8" />
-                                    <stop offset="100%" style="stop-color: '#2c3e50'; stop-opacity: 0.8" />
-                                </linearGradient>
-                            </defs>
-
-                            <!-- Brain shape (simplified) -->
-                            <ellipse cx="100" cy="100" rx="65" ry="80" fill="url(#brainGrad)" filter="url(#glow)" opacity="0.9"/>
-
-                            <!-- Neural pathways with different colors -->
-                            <!-- Blue threshold pathways -->
-                            <path d="M 100 50 Q 90 80 100 110" stroke="#00B4FF" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.7" style="animation: pulse 3s ease-in-out infinite"/>
-                            <path d="M 100 50 Q 110 80 100 110" stroke="#00B4FF" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.5" style="animation: pulse 3s ease-in-out infinite 0.5s"/>
-
-                            <!-- Red interoceptive pathways -->
-                            <path d="M 70 120 Q 85 140 100 160" stroke="#FF3366" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.7" style="animation: pulse 2.5s ease-in-out infinite 1s"/>
-                            <path d="M 130 120 Q 115 140 100 160" stroke="#FF3366" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.5" style="animation: pulse 2.5s ease-in-out infinite 1.5s"/>
-
-                            <!-- Green modulatory pathways -->
-                            <path d="M 100 160 Q 100 190 100 220" stroke="#00CC99" stroke-width="2" fill="none" filter="url(#glow)" opacity="0.6" style="animation: flow 4s ease-in-out infinite"/>
-
-                            <!-- Purple global workspace -->
-                            <circle cx="100" cy="100" r="20" fill="none" stroke="#9966FF" stroke-width="1.5" filter="url(#glow)" opacity="0.8" style="animation: expand 4s ease-in-out infinite"/>
-                            <circle cx="100" cy="100" r="12" fill="#9966FF" opacity="0.3" filter="url(#glow)"/>
-
-                            <!-- Accent points -->
-                            <circle cx="100" cy="60" r="3" fill="#00B4FF" filter="url(#glow)"/>
-                            <circle cx="75" cy="130" r="3" fill="#FF3366" filter="url(#glow)"/>
-                            <circle cx="125" cy="130" r="3" fill="#FF3366" filter="url(#glow)"/>
-                            <circle cx="100" cy="220" r="3" fill="#00CC99" filter="url(#glow)"/>
-                        </svg>
-
-                        <!-- Floating labels -->
-                        <div class="absolute inset-0 pointer-events-none">
-                            <div class="absolute top-12 left-8 text-xs font-semibold text-blue-300 tracking-widest">THRESHOLD</div>
-                            <div class="absolute bottom-20 left-4 text-xs font-semibold text-red-300 tracking-widest">PRECISION</div>
-                            <div class="absolute bottom-8 right-8 text-xs font-semibold text-emerald-300 tracking-widest">MODULATION</div>
-                            <div class="absolute top-1/3 right-6 text-xs font-semibold text-purple-300 tracking-widest">BROADCAST</div>
-                        </div>
-                    </div>
-                </div>
+      <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-12">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <!-- Left: Headline & Copy -->
+          <div class="space-y-8">
+            <div class="space-y-4">
+              <p
+                class="text-sm font-semibold tracking-widest text-blue-400 uppercase"
+              >
+                The Neuroscience Framework
+              </p>
+              <h1
+                class="text-5xl lg:text-7xl font-black leading-tight tracking-tight gradient-text"
+              >
+                Understand Why Your Mind Works The Way It Does
+              </h1>
             </div>
+
+            <p class="text-xl text-gray-300 leading-relaxed max-w-md">
+              Move beyond personality labels to measurable cognitive
+              architecture. Used by 1,200+ professionals across psychology,
+              neuroscience, and organizational development.
+            </p>
+
+            <!-- Email Capture Form -->
+            <div class="space-y-4">
+              <form id="snapshotForm" class="space-y-4" data-form-handler>
+                <div class="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="email"
+                    id="emailInput"
+                    placeholder="Enter your email"
+                    class="flex-1 px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                  <button type="submit" class="btn btn-primary">
+                    Get Free Snapshot
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+                <div id="formMessage" class="hidden text-sm"></div>
+              </form>
+
+              <button onclick="showPricingModal()" class="btn btn-secondary">
+                Explore All Paths
+              </button>
+            </div>
+
+            <!-- Social Proof Bar -->
+            <div class="pt-8 border-t border-gray-700">
+              <p class="text-xs text-gray-400 uppercase tracking-widest mb-4">
+                Featured & Validated
+              </p>
+              <div class="space-y-3">
+                <p class="text-sm text-gray-300">
+                  <span class="text-blue-400 font-semibold"
+                    >Educational Psychology Review</span
+                  >
+                  •
+                  <span class="text-red-400 font-semibold">
+                    Journal of Psychosomatic Research</span
+                  >
+                  •
+                  <span class="text-purple-400 font-semibold">
+                    Organizational Science</span
+                  >
+                </p>
+                <div class="grid grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <p class="text-emerald-400 font-bold text-lg">2,847</p>
+                    <p class="text-gray-400">Participants Validated</p>
+                  </div>
+                  <div>
+                    <p class="text-blue-400 font-bold text-lg">40%</p>
+                    <p class="text-gray-400">Faster Client Insight</p>
+                  </div>
+                  <div>
+                    <p class="text-purple-400 font-bold text-lg">28%</p>
+                    <p class="text-gray-400">Lower Probation Rate</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Animated Brain Visual -->
+          <div class="relative h-96 lg:h-full flex items-center justify-center">
+            <div class="relative w-full h-96">
+              <!-- Animated SVG Brain -->
+              <svg
+                viewBox="0 0 200 280"
+                class="w-full h-full mx-auto brain-visual"
+              >
+                <!-- Brain outline -->
+                <defs>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                    <feMerge>
+                      <feMergeNode in="coloredBlur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <linearGradient
+                    id="brainGrad"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop
+                      offset="0%"
+                      style="stop-color: &quot;#1a1a2e&quot;; stop-opacity: 0.8"
+                    />
+                    <stop
+                      offset="100%"
+                      style="stop-color: &quot;#2c3e50&quot;; stop-opacity: 0.8"
+                    />
+                  </linearGradient>
+                </defs>
+
+                <!-- Brain shape (simplified) -->
+                <ellipse
+                  cx="100"
+                  cy="100"
+                  rx="65"
+                  ry="80"
+                  fill="url(#brainGrad)"
+                  filter="url(#glow)"
+                  opacity="0.9"
+                />
+
+                <!-- Neural pathways with different colors -->
+                <!-- Blue threshold pathways -->
+                <path
+                  d="M 100 50 Q 90 80 100 110"
+                  stroke="#00B4FF"
+                  stroke-width="2"
+                  fill="none"
+                  filter="url(#glow)"
+                  opacity="0.7"
+                  style="animation: pulse 3s ease-in-out infinite"
+                />
+                <path
+                  d="M 100 50 Q 110 80 100 110"
+                  stroke="#00B4FF"
+                  stroke-width="2"
+                  fill="none"
+                  filter="url(#glow)"
+                  opacity="0.5"
+                  style="animation: pulse 3s ease-in-out infinite 0.5s"
+                />
+
+                <!-- Red interoceptive pathways -->
+                <path
+                  d="M 70 120 Q 85 140 100 160"
+                  stroke="#FF3366"
+                  stroke-width="2"
+                  fill="none"
+                  filter="url(#glow)"
+                  opacity="0.7"
+                  style="animation: pulse 2.5s ease-in-out infinite 1s"
+                />
+                <path
+                  d="M 130 120 Q 115 140 100 160"
+                  stroke="#FF3366"
+                  stroke-width="2"
+                  fill="none"
+                  filter="url(#glow)"
+                  opacity="0.5"
+                  style="animation: pulse 2.5s ease-in-out infinite 1.5s"
+                />
+
+                <!-- Green modulatory pathways -->
+                <path
+                  d="M 100 160 Q 100 190 100 220"
+                  stroke="#00CC99"
+                  stroke-width="2"
+                  fill="none"
+                  filter="url(#glow)"
+                  opacity="0.6"
+                  style="animation: flow 4s ease-in-out infinite"
+                />
+
+                <!-- Purple global workspace -->
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="20"
+                  fill="none"
+                  stroke="#9966FF"
+                  stroke-width="1.5"
+                  filter="url(#glow)"
+                  opacity="0.8"
+                  style="animation: expand 4s ease-in-out infinite"
+                />
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="12"
+                  fill="#9966FF"
+                  opacity="0.3"
+                  filter="url(#glow)"
+                />
+
+                <!-- Accent points -->
+                <circle
+                  cx="100"
+                  cy="60"
+                  r="3"
+                  fill="#00B4FF"
+                  filter="url(#glow)"
+                />
+                <circle
+                  cx="75"
+                  cy="130"
+                  r="3"
+                  fill="#FF3366"
+                  filter="url(#glow)"
+                />
+                <circle
+                  cx="125"
+                  cy="130"
+                  r="3"
+                  fill="#FF3366"
+                  filter="url(#glow)"
+                />
+                <circle
+                  cx="100"
+                  cy="220"
+                  r="3"
+                  fill="#00CC99"
+                  filter="url(#glow)"
+                />
+              </svg>
+
+              <!-- Floating labels -->
+              <div class="absolute inset-0 pointer-events-none">
+                <div
+                  class="absolute top-12 left-8 text-xs font-semibold text-blue-300 tracking-widest"
+                >
+                  THRESHOLD
+                </div>
+                <div
+                  class="absolute bottom-20 left-4 text-xs font-semibold text-red-300 tracking-widest"
+                >
+                  PRECISION
+                </div>
+                <div
+                  class="absolute bottom-8 right-8 text-xs font-semibold text-emerald-300 tracking-widest"
+                >
+                  MODULATION
+                </div>
+                <div
+                  class="absolute top-1/3 right-6 text-xs font-semibold text-purple-300 tracking-widest"
+                >
+                  BROADCAST
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Segment Paths Section -->
-    <section class="relative py-24 px-6 lg:px-12 bg-gradient-to-b from-black via-blue-950/5 to-black">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-20">
-                <h2 class="text-5xl lg:text-6xl font-black mb-4 tracking-tight">Choose Your Path</h2>
-                <p class="text-xl text-gray-400 max-w-2xl">One framework. Seven applications. Infinite possibilities for understanding.</p>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-6">
-                <!-- Segment 1 -->
-                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="icon-bg p-3 rounded-lg">
-                            <i class="fas fa-bullseye w-6 h-6 text-blue-300"></i>
-                        </div>
-                        <span class="text-lg font-bold text-blue-400">$199</span>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Self-Discovery</h3>
-                    <p class="text-medium-contrast mb-6">Track your growth beyond labels</p>
-
-                    <button class="btn btn-secondary btn-block">
-                        Map Yourself
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-
-                <!-- Segment 2 -->
-                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="icon-bg p-3 rounded-lg">
-                            <i class="fas fa-users w-6 h-6 text-blue-300"></i>
-                        </div>
-                        <span class="text-lg font-bold text-blue-400">$599/yr</span>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Professional Tools</h3>
-                    <p class="text-medium-contrast mb-6">Breakthroughs 3x faster</p>
-
-                    <button class="btn btn-secondary btn-block">
-                        Elevate Practice
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-
-                <!-- Segment 3 -->
-                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="icon-bg p-3 rounded-lg">
-                            <i class="fas fa-microscope w-6 h-6 text-blue-300"></i>
-                        </div>
-                        <span class="text-lg font-bold text-blue-400">$1,999/yr</span>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Research Suite</h3>
-                    <p class="text-medium-contrast mb-6">Publish with validated measures</p>
-
-                    <button class="btn btn-secondary btn-block">
-                        Access API
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-
-                <!-- Segment 4 -->
-                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="icon-bg p-3 rounded-lg">
-                            <i class="fas fa-building w-6 h-6 text-blue-300"></i>
-                        </div>
-                        <span class="text-lg font-bold text-blue-400">$10K+/yr</span>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Enterprise Solutions</h3>
-                    <p class="text-medium-contrast mb-6">Quantify team dynamics</p>
-
-                    <button class="btn btn-secondary btn-block">
-                        Request Demo
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-
-                <!-- Segment 5 -->
-                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="icon-bg p-3 rounded-lg">
-                            <i class="fas fa-graduation-cap w-6 h-6 text-blue-300"></i>
-                        </div>
-                        <span class="text-lg font-bold text-blue-400">$5K/yr</span>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Educational Tools</h3>
-                    <p class="text-medium-contrast mb-6">Reduce probation by 28%</p>
-
-                    <button class="btn btn-secondary btn-block">
-                        Transform Schools
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-
-                <!-- Segment 6 -->
-                <div class="segment-card p-8 rounded-2xl cursor-pointer" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="icon-bg p-3 rounded-lg">
-                            <i class="fas fa-stethoscope w-6 h-6 text-blue-300"></i>
-                        </div>
-                        <span class="text-lg font-bold text-blue-400">$3K/yr</span>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Clinical Integration</h3>
-                    <p class="text-medium-contrast mb-6">Bridge mind-body connections</p>
-
-                    <button class="btn btn-secondary btn-block">
-                        See Clinical
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-
-                <!-- Segment 7 -->
-                <div class="segment-card p-8 rounded-2xl cursor-pointer lg:col-span-3" onmouseenter="this.classList.add('scale-105')" onmouseleave="this.classList.remove('scale-105')">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="icon-bg p-3 rounded-lg">
-                            <i class="fas fa-code w-6 h-6 text-blue-300"></i>
-                        </div>
-                        <span class="text-lg font-bold text-blue-400">$500/mo</span>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-2 text-high-contrast">Developer Tools</h3>
-                    <p class="text-medium-contrast mb-6">Ethical personalization</p>
-
-                    <button class="btn btn-secondary btn-block">
-                        Build Smarter
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
+    <section
+      class="relative py-24 px-6 lg:px-12 bg-gradient-to-b from-black via-blue-950/5 to-black"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div class="mb-20">
+          <h2 class="text-5xl lg:text-6xl font-black mb-4 tracking-tight">
+            Choose Your Path
+          </h2>
+          <p class="text-xl text-gray-400 max-w-2xl">
+            One framework. Seven applications. Infinite possibilities for
+            understanding.
+          </p>
         </div>
+
+        <div class="grid lg:grid-cols-3 gap-6">
+          <!-- Segment 1 -->
+          <div
+            class="segment-card p-8 rounded-2xl cursor-pointer"
+            onmouseenter="this.classList.add('scale-105')"
+            onmouseleave="this.classList.remove('scale-105')"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div class="icon-bg p-3 rounded-lg">
+                <i class="fas fa-bullseye w-6 h-6 text-blue-300"></i>
+              </div>
+              <span class="text-lg font-bold text-blue-400">$199</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-2 text-high-contrast">
+              Self-Discovery
+            </h3>
+            <p class="text-medium-contrast mb-6">
+              Track your growth beyond labels
+            </p>
+
+            <button class="btn btn-secondary btn-block">
+              Map Yourself
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Segment 2 -->
+          <div
+            class="segment-card p-8 rounded-2xl cursor-pointer"
+            onmouseenter="this.classList.add('scale-105')"
+            onmouseleave="this.classList.remove('scale-105')"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div class="icon-bg p-3 rounded-lg">
+                <i class="fas fa-users w-6 h-6 text-blue-300"></i>
+              </div>
+              <span class="text-lg font-bold text-blue-400">$599/yr</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-2 text-high-contrast">
+              Professional Tools
+            </h3>
+            <p class="text-medium-contrast mb-6">Breakthroughs 3x faster</p>
+
+            <button class="btn btn-secondary btn-block">
+              Elevate Practice
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Segment 3 -->
+          <div
+            class="segment-card p-8 rounded-2xl cursor-pointer"
+            onmouseenter="this.classList.add('scale-105')"
+            onmouseleave="this.classList.remove('scale-105')"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div class="icon-bg p-3 rounded-lg">
+                <i class="fas fa-microscope w-6 h-6 text-blue-300"></i>
+              </div>
+              <span class="text-lg font-bold text-blue-400">$1,999/yr</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-2 text-high-contrast">
+              Research Suite
+            </h3>
+            <p class="text-medium-contrast mb-6">
+              Publish with validated measures
+            </p>
+
+            <button class="btn btn-secondary btn-block">
+              Access API
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Segment 4 -->
+          <div
+            class="segment-card p-8 rounded-2xl cursor-pointer"
+            onmouseenter="this.classList.add('scale-105')"
+            onmouseleave="this.classList.remove('scale-105')"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div class="icon-bg p-3 rounded-lg">
+                <i class="fas fa-building w-6 h-6 text-blue-300"></i>
+              </div>
+              <span class="text-lg font-bold text-blue-400">$10K+/yr</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-2 text-high-contrast">
+              Enterprise Solutions
+            </h3>
+            <p class="text-medium-contrast mb-6">Quantify team dynamics</p>
+
+            <button class="btn btn-secondary btn-block">
+              Request Demo
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Segment 5 -->
+          <div
+            class="segment-card p-8 rounded-2xl cursor-pointer"
+            onmouseenter="this.classList.add('scale-105')"
+            onmouseleave="this.classList.remove('scale-105')"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div class="icon-bg p-3 rounded-lg">
+                <i class="fas fa-graduation-cap w-6 h-6 text-blue-300"></i>
+              </div>
+              <span class="text-lg font-bold text-blue-400">$5K/yr</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-2 text-high-contrast">
+              Educational Tools
+            </h3>
+            <p class="text-medium-contrast mb-6">Reduce probation by 28%</p>
+
+            <button class="btn btn-secondary btn-block">
+              Transform Schools
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Segment 6 -->
+          <div
+            class="segment-card p-8 rounded-2xl cursor-pointer"
+            onmouseenter="this.classList.add('scale-105')"
+            onmouseleave="this.classList.remove('scale-105')"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div class="icon-bg p-3 rounded-lg">
+                <i class="fas fa-stethoscope w-6 h-6 text-blue-300"></i>
+              </div>
+              <span class="text-lg font-bold text-blue-400">$3K/yr</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-2 text-high-contrast">
+              Clinical Integration
+            </h3>
+            <p class="text-medium-contrast mb-6">
+              Bridge mind-body connections
+            </p>
+
+            <button class="btn btn-secondary btn-block">
+              See Clinical
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- Segment 7 -->
+          <div
+            class="segment-card p-8 rounded-2xl cursor-pointer lg:col-span-3"
+            onmouseenter="this.classList.add('scale-105')"
+            onmouseleave="this.classList.remove('scale-105')"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div class="icon-bg p-3 rounded-lg">
+                <i class="fas fa-code w-6 h-6 text-blue-300"></i>
+              </div>
+              <span class="text-lg font-bold text-blue-400">$500/mo</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-2 text-high-contrast">
+              Developer Tools
+            </h3>
+            <p class="text-medium-contrast mb-6">Ethical personalization</p>
+
+            <button class="btn btn-secondary btn-block">
+              Build Smarter
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
-            <!-- Why APGI Is Different -->
+    <!-- Why APGI Is Different -->
     <section class="relative py-24 px-6 lg:px-12">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 class="text-5xl font-black mb-8 tracking-tight leading-tight">
-                        Not Another Personality Test
-                    </h2>
-                    <div class="space-y-6">
-                        <div class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300">
-                            <h3 class="text-xl font-bold mb-2">Dynamic, Not Static</h3>
-                            <p class="text-medium-contrast">Parameters shift with sleep, stress, and growth. Track real change.</p>
-                        </div>
-                        <div class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300">
-                            <h3 class="text-xl font-bold mb-2">Falsifiable Science</h3>
-                            <p class="text-medium-contrast">Grounded in predictive processing, interoception, and global workspace theory.</p>
-                        </div>
-                        <div class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300">
-                            <h3 class="text-xl font-bold mb-2">Validated Across Populations</h3>
-                            <p class="text-medium-contrast">2,847 people across 47 countries, continuously evolving.</p>
-                        </div>
-                        <div class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300">
-                            <h3 class="text-xl font-bold mb-2">Actionable Insights</h3>
-                            <p class="text-medium-contrast">Shows patterns AND mechanisms you can measurably influence.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl blur-3xl"></div>
-                    <div class="relative glass-card rounded-3xl p-8">
-                        <div class="space-y-6">
-                            <div>
-                                <p class="text-sm text-gray-400 uppercase tracking-widest mb-2">The APGI Parameters</p>
-                                <h4 class="text-lg font-bold text-blue-400 mb-2">ε (Epsilon): Environmental Sensitivity</h4>
-                                <p class="text-medium-contrast">"How deeply do you feel the world?"</p>
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-red-400 mb-2">π (Pi): Processing Intensity</h4>
-                                <p class="text-medium-contrast">"How complex are your thought patterns?"</p>
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-yellow-400 mb-2">θₜ (Theta-t): Awareness Threshold</h4>
-                                <p class="text-medium-contrast">"How much stimulus before you notice?"</p>
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-emerald-400 mb-2">β (Beta): Body-World Balance</h4>
-                                <p class="text-medium-contrast">"Where do you focus—internal or external?"</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div class="max-w-6xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 class="text-5xl font-black mb-8 tracking-tight leading-tight">
+              Not Another Personality Test
+            </h2>
+            <div class="space-y-6">
+              <div
+                class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300"
+              >
+                <h3 class="text-xl font-bold mb-2">Dynamic, Not Static</h3>
+                <p class="text-medium-contrast">
+                  Parameters shift with sleep, stress, and growth. Track real
+                  change.
+                </p>
+              </div>
+              <div
+                class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300"
+              >
+                <h3 class="text-xl font-bold mb-2">Falsifiable Science</h3>
+                <p class="text-medium-contrast">
+                  Grounded in predictive processing, interoception, and global
+                  workspace theory.
+                </p>
+              </div>
+              <div
+                class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300"
+              >
+                <h3 class="text-xl font-bold mb-2">
+                  Validated Across Populations
+                </h3>
+                <p class="text-medium-contrast">
+                  2,847 people across 47 countries, continuously evolving.
+                </p>
+              </div>
+              <div
+                class="feature-border pl-6 hover:border-blue-400 transition-colors duration-300"
+              >
+                <h3 class="text-xl font-bold mb-2">Actionable Insights</h3>
+                <p class="text-medium-contrast">
+                  Shows patterns AND mechanisms you can measurably influence.
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div class="relative">
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl blur-3xl"
+            ></div>
+            <div class="relative glass-card rounded-3xl p-8">
+              <div class="space-y-6">
+                <div>
+                  <p
+                    class="text-sm text-gray-400 uppercase tracking-widest mb-2"
+                  >
+                    The APGI Parameters
+                  </p>
+                  <h4 class="text-lg font-bold text-blue-400 mb-2">
+                    ε (Epsilon): Environmental Sensitivity
+                  </h4>
+                  <p class="text-medium-contrast">
+                    "How deeply do you feel the world?"
+                  </p>
+                </div>
+                <div>
+                  <h4 class="text-lg font-bold text-red-400 mb-2">
+                    π (Pi): Processing Intensity
+                  </h4>
+                  <p class="text-medium-contrast">
+                    "How complex are your thought patterns?"
+                  </p>
+                </div>
+                <div>
+                  <h4 class="text-lg font-bold text-yellow-400 mb-2">
+                    θₜ (Theta-t): Awareness Threshold
+                  </h4>
+                  <p class="text-medium-contrast">
+                    "How much stimulus before you notice?"
+                  </p>
+                </div>
+                <div>
+                  <h4 class="text-lg font-bold text-emerald-400 mb-2">
+                    β (Beta): Body-World Balance
+                  </h4>
+                  <p class="text-medium-contrast">
+                    "Where do you focus—internal or external?"
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Success Stories -->
-    <section class="relative py-24 px-6 lg:px-12 bg-gradient-to-b from-black via-purple-950/5 to-black">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-5xl font-black mb-16 tracking-tight">Success Across Sectors</h2>
+    <section
+      class="relative py-24 px-6 lg:px-12 bg-gradient-to-b from-black via-purple-950/5 to-black"
+    >
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-5xl font-black mb-16 tracking-tight">
+          Success Across Sectors
+        </h2>
 
-            <div class="grid lg:grid-cols-2 gap-8">
-                <div class="testimonial-card group p-8 rounded-2xl">
-                    <div class="relative z-10">
-                        <p class="text-lg text-medium-contrast mb-6 italic">"Understand why meditation feels impossible some days."</p>
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <p class="font-bold text-high-contrast">Jamie L.</p>
-                                <p class="text-sm text-gray-400">Software Engineer</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-2xl font-bold text-blue-400">3x</p>
-                                <p class="text-xs text-gray-400">faster insight</p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="grid lg:grid-cols-2 gap-8">
+          <div class="testimonial-card group p-8 rounded-2xl">
+            <div class="relative z-10">
+              <p class="text-lg text-medium-contrast mb-6 italic">
+                "Understand why meditation feels impossible some days."
+              </p>
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="font-bold text-high-contrast">Jamie L.</p>
+                  <p class="text-sm text-gray-400">Software Engineer</p>
                 </div>
-
-                <div class="testimonial-card group p-8 rounded-2xl">
-                    <div class="relative z-10">
-                        <p class="text-lg text-medium-contrast mb-6 italic">"Reduced client aha-moment time from 6 sessions to 2."</p>
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <p class="font-bold text-high-contrast">Dr. Sarah Chen</p>
-                                <p class="text-sm text-gray-400">Clinical Psychologist</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-2xl font-bold text-blue-400">47</p>
-                                <p class="text-xs text-gray-400">clients tracked</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="text-right">
+                  <p class="text-2xl font-bold text-blue-400">3x</p>
+                  <p class="text-xs text-gray-400">faster insight</p>
                 </div>
-
-                <div class="testimonial-card group p-8 rounded-2xl">
-                    <div class="relative z-10">
-                        <p class="text-lg text-medium-contrast mb-6 italic">"Published in 3 months instead of 12."</p>
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <p class="font-bold text-high-contrast">Prof. James Wright</p>
-                                <p class="text-sm text-gray-400">Neuroscience Lab</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-2xl font-bold text-blue-400">2,847</p>
-                                <p class="text-xs text-gray-400">validation</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card group p-8 rounded-2xl">
-                    <div class="relative z-10">
-                        <p class="text-lg text-medium-contrast mb-6 italic">"Academic probation dropped 28% in one year."</p>
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <p class="font-bold text-high-contrast">Dr. Robert Kim</p>
-                                <p class="text-sm text-gray-400">Dean of Students</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-2xl font-bold text-blue-400">1,847</p>
-                                <p class="text-xs text-gray-400">students</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="testimonial-card group p-8 rounded-2xl">
+            <div class="relative z-10">
+              <p class="text-lg text-medium-contrast mb-6 italic">
+                "Reduced client aha-moment time from 6 sessions to 2."
+              </p>
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="font-bold text-high-contrast">Dr. Sarah Chen</p>
+                  <p class="text-sm text-gray-400">Clinical Psychologist</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-2xl font-bold text-blue-400">47</p>
+                  <p class="text-xs text-gray-400">clients tracked</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card group p-8 rounded-2xl">
+            <div class="relative z-10">
+              <p class="text-lg text-medium-contrast mb-6 italic">
+                "Published in 3 months instead of 12."
+              </p>
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="font-bold text-high-contrast">Prof. James Wright</p>
+                  <p class="text-sm text-gray-400">Neuroscience Lab</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-2xl font-bold text-blue-400">2,847</p>
+                  <p class="text-xs text-gray-400">validation</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card group p-8 rounded-2xl">
+            <div class="relative z-10">
+              <p class="text-lg text-medium-contrast mb-6 italic">
+                "Academic probation dropped 28% in one year."
+              </p>
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="font-bold text-high-contrast">Dr. Robert Kim</p>
+                  <p class="text-sm text-gray-400">Dean of Students</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-2xl font-bold text-blue-400">1,847</p>
+                  <p class="text-xs text-gray-400">students</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- CTA Section -->
     <section class="relative py-24 px-6 lg:px-12">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="inline-block mb-6 px-4 py-2 bg-blue-500/10 border border-blue-400/50 rounded-full">
-                <p class="text-sm font-semibold text-blue-400">LIMITED TIME OFFER</p>
-            </div>
-
-            <h2 class="text-5xl lg:text-6xl font-black mb-8 tracking-tight leading-tight">
-                Join the Cognitive Revolution
-            </h2>
-
-            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-                Start with a 5-minute snapshot. Use APGI fully for 90 days. If it doesn't deliver measurable insights, get 100% refund + $50 for your time.
-            </p>
-
-            <!-- Email Capture & CTA Forms -->
-            <div class="space-y-8">
-                <!-- Free Snapshot Form -->
-                <form id="ctaSnapshotForm" class="max-w-md mx-auto space-y-4">
-                    <input 
-                        type="email" 
-                        id="ctaEmailInput"
-                        placeholder="Enter your email for free snapshot" 
-                        class="w-full px-6 py-4 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                        required
-                    >
-                    <button 
-                        type="submit" 
-                        class="btn-primary w-full px-10 py-5 rounded-lg font-bold text-lg"
-                    >
-                        Get 5-Minute Snapshot
-                    </button>
-                </form>
-                
-                <div class="text-center text-gray-400">or</div>
-                
-                <!-- Consultation Booking -->
-                <button 
-                    onclick="showConsultationModal()" 
-                    class="btn-secondary w-full sm:w-auto px-10 py-5 rounded-lg font-bold text-lg mx-auto block"
-                >
-                    Schedule Consultation
-                </button>
-                
-                <div id="ctaFormMessage" class="hidden text-sm text-center"></div>
-            </div>
-
-            <p class="text-xs text-gray-500 mt-8">
-                No credit card required. 90-day prove-it guarantee. GDPR, CCPA, HIPAA compliant.
-            </p>
+      <div class="max-w-4xl mx-auto text-center">
+        <div
+          class="inline-block mb-6 px-4 py-2 bg-blue-500/10 border border-blue-400/50 rounded-full"
+        >
+          <p class="text-sm font-semibold text-blue-400">LIMITED TIME OFFER</p>
         </div>
+
+        <h2
+          class="text-5xl lg:text-6xl font-black mb-8 tracking-tight leading-tight"
+        >
+          Join the Cognitive Revolution
+        </h2>
+
+        <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+          Start with a 5-minute snapshot. Use APGI fully for 90 days. If it
+          doesn't deliver measurable insights, get 100% refund + $50 for your
+          time.
+        </p>
+
+        <!-- Email Capture & CTA Forms -->
+        <div class="space-y-8">
+          <!-- Free Snapshot Form -->
+          <form
+            id="ctaSnapshotForm"
+            class="max-w-md mx-auto space-y-4"
+            data-form-handler
+          >
+            <input
+              type="email"
+              id="ctaEmailInput"
+              placeholder="Enter your email for free snapshot"
+              class="w-full px-6 py-4 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+              required
+            />
+            <button
+              type="submit"
+              class="btn-primary w-full px-10 py-5 rounded-lg font-bold text-lg"
+            >
+              Get 5-Minute Snapshot
+            </button>
+          </form>
+
+          <div class="text-center text-gray-400">or</div>
+
+          <!-- Consultation Booking -->
+          <button
+            onclick="showConsultationModal()"
+            class="btn-secondary w-full sm:w-auto px-10 py-5 rounded-lg font-bold text-lg mx-auto block"
+          >
+            Schedule Consultation
+          </button>
+
+          <div id="ctaFormMessage" class="hidden text-sm text-center"></div>
+        </div>
+
+        <p class="text-xs text-gray-500 mt-8">
+          No credit card required. 90-day prove-it guarantee. GDPR, CCPA, HIPAA
+          compliant.
+        </p>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="border-t border-gray-800 py-12 px-6 lg:px-12">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-4 gap-8 mb-12">
-                <div>
-                    <h3 class="font-bold mb-4 text-blue-400">Product</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="footer-link">Features</a></li>
-                        <li><a href="#" class="footer-link">Pricing</a></li>
-                        <li><a href="#" class="footer-link">Research</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold mb-4 text-blue-400">Company</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="footer-link">About</a></li>
-                        <li><a href="#" class="footer-link">Blog</a></li>
-                        <li><a href="#" class="footer-link">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold mb-4 text-blue-400">Legal</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="footer-link">Privacy</a></li>
-                        <li><a href="#" class="footer-link">Terms</a></li>
-                        <li><a href="#" class="footer-link">Compliance</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold mb-4 text-blue-400">Follow</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="footer-link">Twitter</a></li>
-                        <li><a href="#" class="footer-link">LinkedIn</a></li>
-                        <li><a href="#" class="footer-link">GitHub</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-                <p>© 2026 APGI Framework. All research conducted under IRB approval.</p>
-                <p>Privacy-first • GDPR • CCPA • HIPAA • FERPA compliant</p>
-            </div>
+      <div class="max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <h3 class="font-bold mb-4 text-blue-400">Product</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="footer-link">Features</a></li>
+              <li><a href="#" class="footer-link">Pricing</a></li>
+              <li><a href="#" class="footer-link">Research</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold mb-4 text-blue-400">Company</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="footer-link">About</a></li>
+              <li><a href="#" class="footer-link">Blog</a></li>
+              <li><a href="#" class="footer-link">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold mb-4 text-blue-400">Legal</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="footer-link">Privacy</a></li>
+              <li><a href="#" class="footer-link">Terms</a></li>
+              <li><a href="#" class="footer-link">Compliance</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold mb-4 text-blue-400">Follow</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="footer-link">Twitter</a></li>
+              <li><a href="#" class="footer-link">LinkedIn</a></li>
+              <li><a href="#" class="footer-link">GitHub</a></li>
+            </ul>
+          </div>
         </div>
+
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500"
+        >
+          <p>
+            © 2026 APGI Framework. All research conducted under IRB approval.
+          </p>
+          <p>Privacy-first • GDPR • CCPA • HIPAA • FERPA compliant</p>
+        </div>
+      </div>
     </footer>
 
     <!-- Pricing Modal -->
     <div id="pricingModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen px-4">
-            <div class="fixed inset-0 bg-black/75" onclick="closePricingModal()"></div>
-            
-            <div class="relative bg-gray-900 border border-gray-700 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto p-8">
-                <button onclick="closePricingModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
+      <div class="flex items-center justify-center min-h-screen px-4">
+        <div
+          class="fixed inset-0 bg-black/75"
+          onclick="closePricingModal()"
+        ></div>
+
+        <div
+          class="relative bg-gray-900 border border-gray-700 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto p-8"
+        >
+          <button
+            onclick="closePricingModal()"
+            class="absolute top-4 right-4 text-gray-400 hover:text-white"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+
+          <h2 class="text-4xl font-bold mb-8 text-center">Choose Your Path</h2>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <!-- Free Tier -->
+            <div class="bg-gray-800/50 border border-gray-600 rounded-xl p-6">
+              <h3 class="text-2xl font-bold mb-2">Free</h3>
+              <p class="text-gray-400 mb-6">Perfect for getting started</p>
+              <div class="text-4xl font-bold mb-6">
+                $0<span class="text-lg text-gray-400">/month</span>
+              </div>
+              <ul class="space-y-3 mb-8">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>5-Minute
+                  Snapshot
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>Basic
+                  Report
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>Community
+                  Access
+                </li>
+              </ul>
+              <form id="freeTierForm" class="space-y-4" data-form-handler>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400"
+                  required
+                />
+                <button
+                  type="submit"
+                  class="w-full btn-primary py-3 rounded-lg font-semibold"
+                >
+                  Start Free
                 </button>
-                
-                <h2 class="text-4xl font-bold mb-8 text-center">Choose Your Path</h2>
-                
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- Free Tier -->
-                    <div class="bg-gray-800/50 border border-gray-600 rounded-xl p-6">
-                        <h3 class="text-2xl font-bold mb-2">Free</h3>
-                        <p class="text-gray-400 mb-6">Perfect for getting started</p>
-                        <div class="text-4xl font-bold mb-6">$0<span class="text-lg text-gray-400">/month</span></div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>5-Minute Snapshot</li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Basic Report</li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Community Access</li>
-                        </ul>
-                        <form id="freeTierForm" class="space-y-4">
-                            <input type="email" placeholder="Enter your email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400" required>
-                            <button type="submit" class="w-full btn-primary py-3 rounded-lg font-semibold">Start Free</button>
-                        </form>
-                    </div>
-                    
-                    <!-- Professional Tier -->
-                    <div class="bg-blue-900/30 border-2 border-blue-500 rounded-xl p-6 relative">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">POPULAR</div>
-                        <h3 class="text-2xl font-bold mb-2">Professional</h3>
-                        <p class="text-gray-400 mb-6">For practitioners & coaches</p>
-                        <div class="text-4xl font-bold mb-6">$47<span class="text-lg text-gray-400">/month</span></div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Everything in Free</li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Full Assessment Suite</li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Client Management</li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Advanced Analytics</li>
-                        </ul>
-                        <button onclick="startPayment('professional')" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition-colors">Start Trial</button>
-                    </div>
-                    
-                    <!-- Enterprise Tier -->
-                    <div class="bg-gray-800/50 border border-gray-600 rounded-xl p-6">
-                        <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
-                        <p class="text-gray-400 mb-6">For organizations & teams</p>
-                        <div class="text-4xl font-bold mb-6">Custom</div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Everything in Pro</li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>API Access</li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Custom Integration</li>
-                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Dedicated Support</li>
-                        </ul>
-                        <button onclick="showConsultationModal()" class="w-full btn-secondary py-3 rounded-lg font-semibold">Contact Sales</button>
-                    </div>
-                </div>
+              </form>
             </div>
+
+            <!-- Professional Tier -->
+            <div
+              class="bg-blue-900/30 border-2 border-blue-500 rounded-xl p-6 relative"
+            >
+              <div
+                class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold"
+              >
+                POPULAR
+              </div>
+              <h3 class="text-2xl font-bold mb-2">Professional</h3>
+              <p class="text-gray-400 mb-6">For practitioners & coaches</p>
+              <div class="text-4xl font-bold mb-6">
+                $47<span class="text-lg text-gray-400">/month</span>
+              </div>
+              <ul class="space-y-3 mb-8">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i
+                  >Everything in Free
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>Full
+                  Assessment Suite
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>Client
+                  Management
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>Advanced
+                  Analytics
+                </li>
+              </ul>
+              <button
+                onclick="startPayment('professional')"
+                class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition-colors"
+              >
+                Start Trial
+              </button>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="bg-gray-800/50 border border-gray-600 rounded-xl p-6">
+              <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+              <p class="text-gray-400 mb-6">For organizations & teams</p>
+              <div class="text-4xl font-bold mb-6">Custom</div>
+              <ul class="space-y-3 mb-8">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i
+                  >Everything in Pro
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>API
+                  Access
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>Custom
+                  Integration
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-400 mt-1 mr-3"></i>Dedicated
+                  Support
+                </li>
+              </ul>
+              <button
+                onclick="showConsultationModal()"
+                class="w-full btn-secondary py-3 rounded-lg font-semibold"
+              >
+                Contact Sales
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Consultation Modal -->
-    <div id="consultationModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen px-4">
-            <div class="fixed inset-0 bg-black/75" onclick="closeConsultationModal()"></div>
-            
-            <div class="relative bg-gray-900 border border-gray-700 rounded-2xl max-w-2xl w-full p-8">
-                <button onclick="closeConsultationModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-                
-                <h2 class="text-3xl font-bold mb-4">Schedule Your Consultation</h2>
-                <p class="text-gray-400 mb-8">30-minute expert session to discuss your specific needs</p>
-                
-                <form id="consultationForm" class="space-y-6">
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <input type="text" placeholder="First Name" class="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400" required>
-                        <input type="text" placeholder="Last Name" class="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400" required>
-                    </div>
-                    
-                    <input type="email" placeholder="Work Email" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400" required>
-                    
-                    <select class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white">
-                        <option value="">Select your role</option>
-                        <option value="therapist">Therapist/Counselor</option>
-                        <option value="coach">Coach</option>
-                        <option value="researcher">Researcher</option>
-                        <option value="educator">Educator</option>
-                        <option value="business">Business Leader</option>
-                        <option value="other">Other</option>
-                    </select>
-                    
-                    <textarea placeholder="Tell us about your specific needs..." rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400"></textarea>
-                    
-                    <div class="flex items-center space-x-4">
-                        <button type="submit" class="flex-1 btn-primary py-3 rounded-lg font-semibold">Book Consultation</button>
-                        <button type="button" onclick="closeConsultationModal()" class="flex-1 btn-secondary py-3 rounded-lg font-semibold">Cancel</button>
-                    </div>
-                </form>
-                
-                <div id="consultationMessage" class="hidden mt-4 text-sm"></div>
+    <div
+      id="consultationModal"
+      class="fixed inset-0 z-50 hidden overflow-y-auto"
+    >
+      <div class="flex items-center justify-center min-h-screen px-4">
+        <div
+          class="fixed inset-0 bg-black/75"
+          onclick="closeConsultationModal()"
+        ></div>
+
+        <div
+          class="relative bg-gray-900 border border-gray-700 rounded-2xl max-w-2xl w-full p-8"
+        >
+          <button
+            onclick="closeConsultationModal()"
+            class="absolute top-4 right-4 text-gray-400 hover:text-white"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+
+          <h2 class="text-3xl font-bold mb-4">Schedule Your Consultation</h2>
+          <p class="text-gray-400 mb-8">
+            30-minute expert session to discuss your specific needs
+          </p>
+
+          <form id="consultationForm" class="space-y-6" data-form-handler>
+            <div class="grid md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="First Name"
+                class="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                class="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400"
+                required
+              />
             </div>
+
+            <input
+              type="email"
+              placeholder="Work Email"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400"
+              required
+            />
+
+            <select
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white"
+            >
+              <option value="">Select your role</option>
+              <option value="therapist">Therapist/Counselor</option>
+              <option value="coach">Coach</option>
+              <option value="researcher">Researcher</option>
+              <option value="educator">Educator</option>
+              <option value="business">Business Leader</option>
+              <option value="other">Other</option>
+            </select>
+
+            <textarea
+              placeholder="Tell us about your specific needs..."
+              rows="4"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400"
+            ></textarea>
+
+            <div class="flex items-center space-x-4">
+              <button
+                type="submit"
+                class="flex-1 btn-primary py-3 rounded-lg font-semibold"
+              >
+                Book Consultation
+              </button>
+              <button
+                type="button"
+                onclick="closeConsultationModal()"
+                class="flex-1 btn-secondary py-3 rounded-lg font-semibold"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+
+          <div id="consultationMessage" class="hidden mt-4 text-sm"></div>
         </div>
+      </div>
     </div>
 
     <script>
-        // Parallax effect for gradient background
-        let scrollY = 0;
-        window.addEventListener('scroll', () => {
-            scrollY = window.scrollY;
-            const gradientBg = document.getElementById('gradientBg');
-            if (gradientBg) {
-                gradientBg.style.transform = `translateY(${scrollY * 0.5}px)`;
-            }
+      // Parallax effect for gradient background
+      let scrollY = 0;
+      window.addEventListener("scroll", () => {
+        scrollY = window.scrollY;
+        const gradientBg = document.getElementById("gradientBg");
+        if (gradientBg) {
+          gradientBg.style.transform = `translateY(${scrollY * 0.5}px)`;
+        }
+      });
+
+      // Add smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+          }
         });
+      });
 
-        // Add smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
+      // Add intersection observer for fade-in animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
         });
+      }, observerOptions);
 
-        // Add intersection observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+      // Observe all sections for animation
+      document.querySelectorAll("section").forEach((section) => {
+        section.style.opacity = "0";
+        section.style.transform = "translateY(20px)";
+        section.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(section);
+      });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+      // Initialize form handlers
+      function initializeFormHandlers() {
+        // Snapshot form handlers
+        const snapshotForm = document.getElementById("snapshotForm");
+        const ctaSnapshotForm = document.getElementById("ctaSnapshotForm");
+        const freeTierForm = document.getElementById("freeTierForm");
+        const consultationForm = document.getElementById("consultationForm");
 
-        // Observe all sections for animation
-        document.querySelectorAll('section').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(20px)';
-            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(section);
-        });
+        if (snapshotForm) {
+          snapshotForm.addEventListener("submit", handleSnapshotSubmit);
+        }
 
-        // Initialize form handlers
-        function initializeFormHandlers() {
-            // Snapshot form handlers
-            const snapshotForm = document.getElementById('snapshotForm');
-            const ctaSnapshotForm = document.getElementById('ctaSnapshotForm');
-            const freeTierForm = document.getElementById('freeTierForm');
-            const consultationForm = document.getElementById('consultationForm');
-            
-            if (snapshotForm) {
-                snapshotForm.addEventListener('submit', handleSnapshotSubmit);
-            }
-            
-            if (ctaSnapshotForm) {
-                ctaSnapshotForm.addEventListener('submit', handleCtaSnapshotSubmit);
-            }
-            
-            if (freeTierForm) {
-                freeTierForm.addEventListener('submit', handleFreeTierSubmit);
-            }
-            
-            if (consultationForm) {
-                consultationForm.addEventListener('submit', handleConsultationSubmit);
-            }
+        if (ctaSnapshotForm) {
+          ctaSnapshotForm.addEventListener("submit", handleCtaSnapshotSubmit);
         }
-        
-        // Email validation function
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
+
+        if (freeTierForm) {
+          freeTierForm.addEventListener("submit", handleFreeTierSubmit);
         }
-        
-        // Show form message
-        function showFormMessage(elementId, message, isError = false) {
-            const messageElement = document.getElementById(elementId);
-            if (messageElement) {
-                messageElement.textContent = message;
-                messageElement.className = isError ? 'text-red-400 text-sm' : 'text-green-400 text-sm';
-                messageElement.classList.remove('hidden');
-                
-                // Hide message after 5 seconds
-                setTimeout(() => {
-                    messageElement.classList.add('hidden');
-                }, 5000);
-            }
+
+        if (consultationForm) {
+          consultationForm.addEventListener("submit", handleConsultationSubmit);
         }
-        
-        // Handle snapshot form submission
-        async function handleSnapshotSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('emailInput').value;
-            
-            if (!isValidEmail(email)) {
-                showFormMessage('formMessage', 'Please enter a valid email address', true);
-                return;
-            }
-            
-            try {
-                // Simulate API call - replace with actual endpoint
-                const response = await submitToEmailService(email, 'snapshot-request');
-                
-                if (response.success) {
-                    showFormMessage('formMessage', 'Success! Check your email for the snapshot link.');
-                    document.getElementById('emailInput').value = '';
-                    
-                    // Track conversion
-                    trackConversion('snapshot-signup', email);
-                } else {
-                    showFormMessage('formMessage', 'Something went wrong. Please try again.', true);
-                }
-            } catch (error) {
-                showFormMessage('formMessage', 'Network error. Please try again.', true);
-            }
+      }
+
+      // Email validation function
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      // Show form message
+      function showFormMessage(elementId, message, isError = false) {
+        const messageElement = document.getElementById(elementId);
+        if (messageElement) {
+          messageElement.textContent = message;
+          messageElement.className = isError
+            ? "text-red-400 text-sm"
+            : "text-green-400 text-sm";
+          messageElement.classList.remove("hidden");
+
+          // Hide message after 5 seconds
+          setTimeout(() => {
+            messageElement.classList.add("hidden");
+          }, 5000);
         }
-        
-        // Handle CTA snapshot form submission
-        async function handleCtaSnapshotSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('ctaEmailInput').value;
-            
-            if (!isValidEmail(email)) {
-                showFormMessage('ctaFormMessage', 'Please enter a valid email address', true);
-                return;
-            }
-            
-            try {
-                const response = await submitToEmailService(email, 'cta-snapshot');
-                
-                if (response.success) {
-                    showFormMessage('ctaFormMessage', 'Success! Check your email for your free snapshot.');
-                    document.getElementById('ctaEmailInput').value = '';
-                    trackConversion('cta-snapshot-signup', email);
-                } else {
-                    showFormMessage('ctaFormMessage', 'Something went wrong. Please try again.', true);
-                }
-            } catch (error) {
-                showFormMessage('ctaFormMessage', 'Network error. Please try again.', true);
-            }
+      }
+
+      // Handle snapshot form submission
+      async function handleSnapshotSubmit(e) {
+        e.preventDefault();
+        const email = document.getElementById("emailInput").value;
+
+        if (!isValidEmail(email)) {
+          showFormMessage(
+            "formMessage",
+            "Please enter a valid email address",
+            true,
+          );
+          return;
         }
-        
-        // Handle free tier form submission
-        async function handleFreeTierSubmit(e) {
-            e.preventDefault();
-            const email = e.target.querySelector('input[type="email"]').value;
-            
-            if (!isValidEmail(email)) {
-                alert('Please enter a valid email address');
-                return;
-            }
-            
-            try {
-                const response = await submitToEmailService(email, 'free-tier-signup');
-                
-                if (response.success) {
-                    alert('Success! Check your email to activate your free account.');
-                    closePricingModal();
-                    trackConversion('free-tier-signup', email);
-                } else {
-                    alert('Something went wrong. Please try again.');
-                }
-            } catch (error) {
-                alert('Network error. Please try again.');
-            }
+
+        try {
+          // Simulate API call - replace with actual endpoint
+          const response = await submitToEmailService(
+            email,
+            "snapshot-request",
+          );
+
+          if (response.success) {
+            showFormMessage(
+              "formMessage",
+              "Success! Check your email for the snapshot link.",
+            );
+            document.getElementById("emailInput").value = "";
+
+            // Track conversion
+            trackConversion("snapshot-signup", email);
+          } else {
+            showFormMessage(
+              "formMessage",
+              "Something went wrong. Please try again.",
+              true,
+            );
+          }
+        } catch (error) {
+          showFormMessage(
+            "formMessage",
+            "Network error. Please try again.",
+            true,
+          );
         }
-        
-        // Handle consultation form submission
-        async function handleConsultationSubmit(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-            
-            if (!isValidEmail(data.email)) {
-                showFormMessage('consultationMessage', 'Please enter a valid email address', true);
-                return;
-            }
-            
-            try {
-                const response = await submitConsultationRequest(data);
-                
-                if (response.success) {
-                    showFormMessage('consultationMessage', 'Consultation request received! We\'ll contact you within 24 hours.');
-                    e.target.reset();
-                    setTimeout(() => {
-                        closeConsultationModal();
-                    }, 3000);
-                    trackConversion('consultation-request', data.email);
-                } else {
-                    showFormMessage('consultationMessage', 'Something went wrong. Please try again.', true);
-                }
-            } catch (error) {
-                showFormMessage('consultationMessage', 'Network error. Please try again.', true);
-            }
+      }
+
+      // Handle CTA snapshot form submission
+      async function handleCtaSnapshotSubmit(e) {
+        e.preventDefault();
+        const email = document.getElementById("ctaEmailInput").value;
+
+        if (!isValidEmail(email)) {
+          showFormMessage(
+            "ctaFormMessage",
+            "Please enter a valid email address",
+            true,
+          );
+          return;
         }
-        
-        // Submit to email service
-        async function submitToEmailService(email, listType) {
-            try {
-                const response = await fetch('/api/subscribe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        listType: listType,
-                        additionalData: {
-                            source: 'landing-page',
-                            timestamp: new Date().toISOString()
-                        }
-                    })
-                });
-                
-                const result = await response.json();
-                return result;
-            } catch (error) {
-                console.error('Email service error:', error);
-                // Fallback to local storage for development
-                return EmailService.storeLocally(email, listType, { source: 'landing-page' });
-            }
+
+        try {
+          const response = await submitToEmailService(email, "cta-snapshot");
+
+          if (response.success) {
+            showFormMessage(
+              "ctaFormMessage",
+              "Success! Check your email for your free snapshot.",
+            );
+            document.getElementById("ctaEmailInput").value = "";
+            trackConversion("cta-snapshot-signup", email);
+          } else {
+            showFormMessage(
+              "ctaFormMessage",
+              "Something went wrong. Please try again.",
+              true,
+            );
+          }
+        } catch (error) {
+          showFormMessage(
+            "ctaFormMessage",
+            "Network error. Please try again.",
+            true,
+          );
         }
-        
-        // Submit consultation request
-        async function submitConsultationRequest(data) {
-            try {
-                const response = await fetch('/api/consultations', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                const result = await response.json();
-                return result;
-            } catch (error) {
-                console.error('Consultation service error:', error);
-                // Fallback to local storage for development
-                const consultations = JSON.parse(localStorage.getItem('apgi_consultations') || '[]');
-                consultations.push({ ...data, timestamp: new Date().toISOString() });
-                localStorage.setItem('apgi_consultations', JSON.stringify(consultations));
-                return { success: true };
-            }
+      }
+
+      // Handle free tier form submission
+      async function handleFreeTierSubmit(e) {
+        e.preventDefault();
+        const email = e.target.querySelector('input[type="email"]').value;
+
+        if (!isValidEmail(email)) {
+          alert("Please enter a valid email address");
+          return;
         }
-        
-        // Track conversion (placeholder - integrate with analytics)
-        function trackConversion(event, email) {
-            // In production, send to Google Analytics, Mixpanel, etc.
-            console.log(`Conversion tracked: ${event}, Email: ${email}`);
-            
-            // Example: gtag('event', event, { email: email });
-        }
-        
-        // Modal functions
-        function showPricingModal() {
-            document.getElementById('pricingModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closePricingModal() {
-            document.getElementById('pricingModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-        
-        function showConsultationModal() {
+
+        try {
+          const response = await submitToEmailService(
+            email,
+            "free-tier-signup",
+          );
+
+          if (response.success) {
+            alert("Success! Check your email to activate your free account.");
             closePricingModal();
-            document.getElementById('consultationModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            trackConversion("free-tier-signup", email);
+          } else {
+            alert("Something went wrong. Please try again.");
+          }
+        } catch (error) {
+          alert("Network error. Please try again.");
         }
-        
-        function closeConsultationModal() {
-            document.getElementById('consultationModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
+      }
+
+      // Handle consultation form submission
+      async function handleConsultationSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+
+        if (!isValidEmail(data.email)) {
+          showFormMessage(
+            "consultationMessage",
+            "Please enter a valid email address",
+            true,
+          );
+          return;
         }
-        
-        // Payment processing with Stripe
-        async function startPayment(tier) {
-            try {
-                // Get email from user (could show a modal or use stored email)
-                const email = prompt('Enter your email for the payment:');
-                if (!email || !isValidEmail(email)) {
-                    alert('Please enter a valid email address');
-                    return;
-                }
-                
-                // Create checkout session
-                const response = await fetch('/api/create-checkout-session', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        tier: tier,
-                        customerEmail: email
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success && result.sessionId) {
-                    // Redirect to Stripe Checkout
-                    const stripe = Stripe('pk_test_51234567890abcdef'); // Replace with actual key
-                    await stripe.redirectToCheckout({
-                        sessionId: result.sessionId
-                    });
-                } else {
-                    alert('Payment setup failed. Please try again.');
-                }
-            } catch (error) {
-                console.error('Payment error:', error);
-                alert('Payment processing failed. Please try again.');
+
+        try {
+          const response = await submitConsultationRequest(data);
+
+          if (response.success) {
+            showFormMessage(
+              "consultationMessage",
+              "Consultation request received! We'll contact you within 24 hours.",
+            );
+            e.target.reset();
+            setTimeout(() => {
+              closeConsultationModal();
+            }, 3000);
+            trackConversion("consultation-request", data.email);
+          } else {
+            showFormMessage(
+              "consultationMessage",
+              "Something went wrong. Please try again.",
+              true,
+            );
+          }
+        } catch (error) {
+          showFormMessage(
+            "consultationMessage",
+            "Network error. Please try again.",
+            true,
+          );
+        }
+      }
+
+      // Submit to email service
+      async function submitToEmailService(email, listType) {
+        try {
+          const response = await fetch("/api/subscribe", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              listType: listType,
+              additionalData: {
+                source: "landing-page",
+                timestamp: new Date().toISOString(),
+              },
+            }),
+          });
+
+          const result = await response.json();
+          return result;
+        } catch (error) {
+          console.error("Email service error:", error);
+          // Fallback to local storage for development
+          return EmailService.storeLocally(email, listType, {
+            source: "landing-page",
+          });
+        }
+      }
+
+      // Submit consultation request
+      async function submitConsultationRequest(data) {
+        try {
+          const response = await fetch("/api/consultations", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+          return result;
+        } catch (error) {
+          console.error("Consultation service error:", error);
+          // Fallback to local storage for development
+          const consultations = JSON.parse(
+            localStorage.getItem("apgi_consultations") || "[]",
+          );
+          consultations.push({ ...data, timestamp: new Date().toISOString() });
+          localStorage.setItem(
+            "apgi_consultations",
+            JSON.stringify(consultations),
+          );
+          return { success: true };
+        }
+      }
+
+      // Track conversion (placeholder - integrate with analytics)
+      function trackConversion(event, email) {
+        // In production, send to Google Analytics, Mixpanel, etc.
+        console.log(`Conversion tracked: ${event}, Email: ${email}`);
+
+        // Example: gtag('event', event, { email: email });
+      }
+
+      // Modal functions
+      function showPricingModal() {
+        document.getElementById("pricingModal").classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closePricingModal() {
+        document.getElementById("pricingModal").classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+
+      function showConsultationModal() {
+        closePricingModal();
+        document.getElementById("consultationModal").classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeConsultationModal() {
+        document.getElementById("consultationModal").classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+
+      // Payment processing with enhanced payment service
+      async function startPayment(tier) {
+        try {
+          // Use the new payment service
+          if (window.paymentService) {
+            await window.paymentService.startPayment(tier);
+          } else {
+            // Fallback to basic implementation
+            const email = prompt("Enter your email for the payment:");
+            if (!email || !isValidEmail(email)) {
+              alert("Please enter a valid email address");
+              return;
             }
+
+            // Simulate payment for demo
+            alert(
+              `Payment initiated for ${tier} tier. This is a demo - no actual payment will be processed.`,
+            );
+          }
+        } catch (error) {
+          console.error("Payment error:", error);
+          alert("Payment processing failed. Please try again.");
         }
+      }
     </script>
-</body>
+  </body>
 </html>

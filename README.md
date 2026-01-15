@@ -1,6 +1,6 @@
-# APGI Framework Website - Complete Site Guide
+# APGI Framework Website - Development Guide
 
-The APGI Framework website is a comprehensive consciousness assessment and psychological research platform that helps users understand their cognitive architecture through scientifically-grounded measurements. This guide describes every page and its functionality from a user perspective.
+The APGI Framework website is a comprehensive consciousness assessment and psychological research platform that helps users understand their cognitive architecture through scientifically-grounded measurements. This guide covers development setup, code quality, and deployment procedures.
 
 ## 🧠 Core Concept
 
@@ -46,7 +46,6 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 
 - Dramatic animated brain visualization with neural pathways showing threshold, precision, modulation, and broadcast functions
 - Seven distinct user paths with pricing:
-
   - Self-Discovery ($199) - Personal growth tracking
   - Professional Tools ($599/yr) - Therapist and coach resources
   - Research Suite ($1,999/yr) - Academic research tools
@@ -67,6 +66,44 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Mobile-responsive pricing grid
 
 ---
+
+### App-Explorer.html
+
+**Purpose**: Interactive application explorer showcasing APGI Framework capabilities
+
+**User Experience**:
+
+- Interactive demonstration of consciousness parameters
+- Real-time visualization of cognitive patterns
+- Guided exploration of framework features
+- Hands-on experimentation with parameter adjustments
+
+**Key Features**:
+
+- Interactive parameter controls
+- Live visualization updates
+- Educational tooltips and explanations
+- Mobile-responsive design
+
+---
+
+### App-Appendix.html
+
+**Purpose**: Comprehensive reference and appendix for APGI applications
+
+**User Experience**:
+
+- Detailed technical documentation
+- Reference materials and guides
+- Advanced configuration options
+- Integration examples and use cases
+
+**Key Features**:
+
+- Complete API reference
+- Integration guides
+- Code examples and snippets
+- Troubleshooting resources
 
 ## 📊 Assessment & Testing Pages
 
@@ -93,7 +130,7 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Mobile-optimized with touch-friendly controls
 - Accessibility features with screen reader support
 
-### Assessment.html
+### APGI-Assessment.html
 
 **Purpose**: Comprehensive consciousness architecture assessment with detailed analysis
 
@@ -115,16 +152,23 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Comparison with population averages
 - Personalized development suggestions
 
-### APGI-Assessment.html & APGI-Assessment-3.html
+### Assessment-OnePage.html
 
-**Purpose**: Alternative assessment interfaces with different approaches
+**Purpose**: Streamlined single-page assessment experience
 
 **User Experience**:
 
-- Variations on the core assessment with different question styles
-- Alternative visualization methods for results
-- Different pacing and question formats for user preference
-- Streamlined interfaces for repeat assessments
+- Condensed assessment flow on a single page
+- Quick navigation between sections
+- Immediate results and feedback
+- Simplified interface for rapid completion
+
+**Key Features**:
+
+- Single-page design for efficiency
+- Progress indicators
+- Real-time validation
+- Mobile-optimized layout
 
 ---
 
@@ -149,6 +193,120 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Adjustable parameters with immediate visual feedback
 - Educational content about the science behind APGI
 - Links to research papers and validation studies
+
+---
+
+## 🧠 SCI (Scientific Consciousness Interface) Module
+
+The SCI directory contains advanced scientific visualization and analysis tools for consciousness research.
+
+### SCI/Consciousness-Visualization.html
+
+**Purpose**: Interactive consciousness state visualization and mapping
+
+**User Experience**:
+
+- Real-time consciousness state rendering
+- Interactive parameter controls
+- Visual representation of cognitive flows
+- Scientific data visualization tools
+
+**Key Features**:
+
+- Dynamic state transitions
+- Parameter adjustment interfaces
+- Scientific accuracy in visualizations
+- Research-grade data presentation
+
+### SCI/Dashboard.html
+
+**Purpose**: Comprehensive research dashboard for consciousness data
+
+**User Experience**:
+
+- Central hub for all SCI tools
+- Data aggregation and overview
+- Quick access to experiments
+- Real-time monitoring capabilities
+
+**Key Features**:
+
+- Unified interface for SCI modules
+- Data synchronization across tools
+- Research workflow management
+- Export and reporting capabilities
+
+### SCI/Neuromoduratory-Cascade.html
+
+**Purpose**: Neuromodulatory cascade visualization and analysis
+
+**User Experience**:
+
+- Interactive neuromodulatory pathway mapping
+- Cascade effect visualization
+- Real-time parameter adjustments
+- Scientific modeling interface
+
+**Key Features**:
+
+- Biological accuracy in models
+- Interactive pathway exploration
+- Real-time cascade simulation
+- Research data integration
+
+### SCI/PsyStates-Visualizer.html
+
+**Purpose**: Advanced psychological states visualization with dark/light theme support
+
+**User Experience**:
+
+- Interactive psychological state mapping
+- Theme toggle (dark/light) with smooth transitions
+- Real-time state transitions
+- Accessible design with screen reader support
+
+**Key Features**:
+
+- Theme persistence in localStorage
+- CSS variables for consistent theming
+- Accessibility-first design
+- Responsive layout for all devices
+
+### SCI/PsyStates.html
+
+**Purpose**: Psychological states analysis and mapping tool
+
+**User Experience**:
+
+- Comprehensive state analysis
+- Interactive state diagrams
+- Pattern recognition tools
+- Research-grade visualization
+
+**Key Features**:
+
+- Advanced state mapping algorithms
+- Pattern detection and analysis
+- Research data integration
+- Export capabilities
+
+### SCI/State-Network.html
+
+**Purpose**: Consciousness state network analysis and visualization
+
+**User Experience**:
+
+- Network topology visualization
+- State relationship mapping
+- Interactive network exploration
+- Complex system analysis
+
+**Key Features**:
+
+- Graph-based state representation
+- Real-time network analysis
+- Interactive node exploration
+- Research-grade network tools
 
 ### Paper.html
 
@@ -236,6 +394,74 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 
 ---
 
+## 🎯 Marketing & Conversion Funnels
+
+### Funnels.html
+
+**Purpose**: Overview of all marketing funnels and conversion paths
+
+**User Experience**:
+
+- Directory of all available funnels
+- Quick navigation to specific user segments
+- Funnel performance metrics and analytics
+- A/B testing information and results
+
+**Key Features**:
+
+- Centralized funnel management
+- Performance tracking
+- Conversion analytics
+- Segment-specific targeting
+
+### Individual Funnels (funnels/ directory)
+
+The funnels directory contains 16 specialized conversion funnels:
+
+**Individual Self-Explorers**:
+- `1_individual_self_explorers.html` - Main funnel for personal growth seekers
+- `1_individual_self_explorers_journey.html` - Extended journey experience
+
+**Therapists & Coaches**:
+- `2_therapists_coaches.html` - Professional tools and resources
+- `2_therapists_coaches_journey.html` - Detailed practitioner journey
+
+**Academic Researchers**:
+- `3_academic_researchers.html` - Research tools and validation
+- `3_academic_researchers_journey.html` - Academic partnership pathway
+
+**Organizational Development**:
+- `4_organizational_development.html` - Team dynamics and enterprise solutions
+- `4_organizational_development_journey.html` - Corporate implementation guide
+
+**Educational Institutions**:
+- `5_educational_institutions.html` - School programs and educational tools
+- `5_educational_institutions_journey.html` - Educational transformation pathway
+
+**Healthcare Professionals**:
+- `6_healthcare_professionals.html` - Clinical integration and medical applications
+- `6_healthcare_professionals_journey.html` - Healthcare implementation guide
+
+**Tech Industry Professionals**:
+- `7_tech_industry_professionals.html` - Developer tools and API access
+- `7_tech_industry_professionals_journey.html` - Technical integration pathway
+
+**Advertising Assets**:
+- `ad-display.html` - Advertisement display templates
+- `social-media-ads.html` - Social media campaign assets
+
+**Key Features Across Funnels**:
+
+- Segment-specific messaging and value propositions
+- Tailored pricing and packaging for each audience
+- Industry-specific use cases and testimonials
+- Conversion-optimized user flows
+- Mobile-responsive designs
+- A/B testing capabilities
+- Analytics and performance tracking
+
+---
+
 ## 👤 User Management
 
 ### Profile.html
@@ -249,7 +475,99 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Assessment history and results management
 - Privacy settings and data preferences
 - Notification preferences and communication settings
-- Account management options
+- Account management and security options
+
+**Key Features**:
+
+- Comprehensive profile management
+- Assessment history tracking
+- Privacy controls and data export
+- Communication preferences
+- Security settings and 2FA options
+
+---
+
+## 📊 State Assessment & Analysis
+
+### State-Assessment.html
+
+**Purpose**: Advanced consciousness state assessment and analysis
+
+**User Experience**:
+
+- Comprehensive state evaluation process
+- Real-time feedback and progress tracking
+- Detailed analysis of consciousness parameters
+- Interactive visualization of assessment results
+- Personalized recommendations and insights
+
+**Key Features**:
+
+- Multi-dimensional state analysis
+- Real-time parameter calculation
+- Interactive result visualization
+- Historical tracking and comparison
+- Export and sharing capabilities
+
+---
+
+## 📄 Legal & Administrative Pages
+
+### Privacy-Policy.html
+
+**Purpose**: Comprehensive privacy policy and data protection information
+
+**User Experience**:
+
+- Clear explanation of data collection and usage
+- User rights and consent management
+- Cookie policy and tracking information
+- GDPR compliance and data protection
+- Contact information for privacy inquiries
+
+**Key Features**:
+
+- GDPR-compliant privacy framework
+- Transparent data usage policies
+- User consent management
+- Data retention and deletion policies
+
+### Terms-of-Service.html
+
+**Purpose**: Terms of service and usage agreements
+
+**User Experience**:
+
+- Comprehensive terms and conditions
+- User responsibilities and guidelines
+- Service limitations and disclaimers
+- Intellectual property and licensing
+- Dispute resolution and legal information
+
+**Key Features**:
+
+- Legal compliance and protection
+- Clear usage guidelines
+- Intellectual property protection
+- Dispute resolution framework
+
+### 404.html
+
+**Purpose**: Custom error page for missing or broken links
+
+**User Experience**:
+
+- Friendly and helpful error messaging
+- Navigation options to return to main content
+- Search functionality to find desired pages
+- Contact information for further assistance
+
+**Key Features**:
+
+- On-brand error handling
+- Helpful navigation options
+- Search functionality
+- Mobile-responsive designagement options
 
 **Key Features**:
 
@@ -260,536 +578,301 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 
 ---
 
-## 🎯 Specialized Funnels
+## 📁 Project Structure
 
-### funnels/1_individual_self_explorers.html
-
-**Purpose**: Dedicated funnel for individual users interested in self-discovery
-
-**User Experience**:
-
-- Personalized messaging for individual growth seekers
-- Animated brain visualization with particle effects
-- Step-by-step journey through self-discovery process
-- Pricing and package information for personal use
-- Success stories from individual users
-- Clear path to getting started
-
-### funnels/2_therapists_coaches.html
-
-**Purpose**: Professional funnel for therapists and coaches
-
-**User Experience**:
-
-- Professional messaging focused on client outcomes
-- Case studies and success metrics
-- Tools and resources for practice enhancement
-- Professional pricing and packages
-- Training and certification information
-- Community and networking opportunities
-
-### funnels/3_academic_researchers.html
-
-**Purpose**: Research-focused funnel for academic users
-
-**User Experience**:
-
-- Academic validation and research credentials
-- Access to raw data and research tools
-- Publication support and collaboration opportunities
-- Institutional pricing and licensing
-- Research community and forums
-- Grant and funding information
-
-### funnels/4_organizational_development.html
-
-**Purpose**: Corporate and organizational development funnel
-
-**User Experience**:
-
-- Business-focused messaging and ROI presentation
-- Team dynamics and organizational assessment tools
-- Enterprise pricing and implementation support
-- Case studies from corporate clients
-- Integration with existing HR systems
-- Training and change management resources
-
----
-
-## 🧪 Interactive Visualizations
-
-### SCI/PsyStates-Visualizer.html
-
-**Purpose**: Interactive visualization of psychological states and consciousness parameters
-
-**User Experience**:
-
-- Real-time interactive charts and graphs
-- Adjustable parameters with immediate visual feedback
-- Multiple visualization types (radar charts, line graphs, heat maps)
-- Dark/light theme toggle for accessibility
-- Export capabilities for presentations and reports
-- Educational tooltips and explanations
-
-**Key Features**:
-
-- React-based interactive components
-- Recharts for data visualization
-- Responsive design for all screen sizes
-- Accessibility features with keyboard navigation
-
-### SCI/Consciousness-Visualization.html
-
-**Purpose**: Advanced visualization of consciousness architecture
-
-**User Experience**:
-
-- 3D-like visualizations of consciousness parameters
-- Interactive exploration of neural networks
-- Time-based animations showing consciousness processes
-- Comparative analysis tools
-- Educational mode with guided tours
-
-### SCI/Dashboard.html
-
-**Purpose**: Comprehensive dashboard for tracking consciousness metrics
-
-**User Experience**:
-
-- Overview of all APGI parameters at a glance
-- Historical tracking and trend analysis
-- Comparative metrics and benchmarks
-- Goal setting and progress tracking
-- Export and sharing capabilities
-
-### SCI/Neuromoduratory-Cascade.html
-
-**Purpose**: Specialized visualization of neuromodulatory processes
-
-**User Experience**:
-
-- Detailed visualization of brain modulation systems
-- Interactive exploration of neurotransmitter effects
-- Educational content about brain chemistry
-- Research-based explanations and references
+```
+apgi-web/
+├── 📄 Core Pages
+│   ├── Home.html                 # Main landing page with quiz
+│   ├── Landing.html              # High-conversion pricing page
+│   ├── Quiz.html                 # Interactive consciousness assessment
+│   ├── Assessment.html           # Comprehensive assessment tool
+│   ├── APGI-Assessment.html      # Alternative assessment interface
+│   ├── Assessment-OnePage.html   # Streamlined single-page assessment
+│   ├── State-Assessment.html     # Advanced state analysis
+│   └── Profile.html              # User profile management
+│
+├── 🧠 Scientific Module (SCI/)
+│   ├── Consciousness-Visualization.html  # Interactive state visualization
+│   ├── Dashboard.html            # Research dashboard hub
+│   ├── Neuromoduratory-Cascade.html      # Neuromodulatory pathway analysis
+│   ├── PsyStates-Visualizer.html # Psychological states with theme support
+│   ├── PsyStates.html           # Advanced psychological analysis
+│   └── State-Network.html       # Consciousness network topology
+│
+├── 🎯 Marketing Funnels (funnels/)
+│   ├── 1_individual_self_explorers*.html     # Personal growth users
+│   ├── 2_therapists_coaches*.html           # Professional practitioners
+│   ├── 3_academic_researchers*.html          # Research community
+│   ├── 4_organizational_development*.html    # Corporate clients
+│   ├── 5_educational_institutions*.html      # Educational sector
+│   ├── 6_healthcare_professionals*.html      # Medical community
+│   ├── 7_tech_industry_professionals*.html   # Tech sector
+│   ├── ad-display.html          # Advertisement templates
+│   └── social-media-ads.html    # Social media assets
+│
+├── 📚 Educational & Content
+│   ├── Book-Outline.html         # Book structure and overview
+│   ├── Book-Available-Now.html   # Book launch and purchase
+│   ├── Paper.html               # Academic research papers
+│   └── APGI-Experiments.html    # Interactive experiments
+│
+├── 🛠️ Technical & API
+│   ├── API.html                 # Developer documentation
+│   ├── APGI-Software-System.html # System architecture overview
+│   ├── App-Explorer.html        # Interactive app showcase
+│   └── App-Appendix.html        # Technical reference
+│
+├── 📄 Legal & Administrative
+│   ├── Privacy-Policy.html      # Data protection and privacy
+│   ├── Terms-of-Service.html    # Usage terms and conditions
+│   └── 404.html                 # Custom error page
+│
+├── 🎨 Assets & Components
+│   ├── assets/
+│   │   ├── css/                 # Stylesheets and design system
+│   │   ├── js/                  # JavaScript functionality
+│   │   ├── images/              # Static images and graphics
+│   │   └── security/            # Security configurations
+│   └── components/
+│       └── navigation.html      # Shared navigation component
+│
+├── 📋 Documentation
+│   ├── README.md                # This development guide
+│   ├── TODO.md                  # Development roadmap
+│   ├── REPORT.md                # Project status reports
+│   └── docs/                    # Additional documentation
+│       ├── testing-guide.md     # Testing procedures
+│       └── webhook-testing.md   # API testing guide
+│
+└── ⚙️ Configuration
+    ├── package.json              # Node.js dependencies and scripts
+    ├── server.js                # Express backend server
+    ├── .env                     # Environment variables
+    ├── .gitignore               # Git ignore patterns
+    └── eslint.config.mjs        # Code linting configuration
+```
 
 ---
 
-## 📋 Supporting Pages
+## 🚀 Development Setup
 
-### Privacy-Policy.html
+### Prerequisites
 
-**Purpose**: Comprehensive privacy policy and data handling information
+- **Node.js**: >= 16.0.0
+- **npm**: >= 8.0.0
+- **Git**: For version control
 
-**User Experience**:
+### Installation
 
-- Clear, readable privacy policy in plain language
-- Data collection and usage explanations
-- User rights and options
-- Contact information for privacy concerns
-- GDPR and compliance information
-
-### Terms-of-Service.html
-
-**Purpose**: Terms of service and usage agreements
-
-**User Experience**:
-
-- Comprehensive terms in accessible language
-- User responsibilities and rights
-- Service limitations and disclaimers
-- Dispute resolution information
-- Contact legal support options
-
-### App-Explorer.html
-
-**Purpose**: Exploration of mobile app capabilities and features
-
-**User Experience**:
-
-- Mobile app feature demonstrations
-- Download links and platform compatibility
-- Feature comparisons with web version
-- Push notification settings and preferences
-- Offline capabilities explanation
-
-### State-Assessment.html
-
-**Purpose**: Specialized assessment for current psychological states
-
-**User Experience**:
-
-- Quick state assessment tools
-- Real-time feedback and recommendations
-- Integration with main APGI parameters
-- Tracking of state changes over time
-- Intervention suggestions based on current state
-
-### Assessment-OnePage.html
-
-**Purpose**: Streamlined single-page assessment experience
-
-**User Experience**:
-
-- Complete assessment on one page
-- Progress indicators and section navigation
-- Quick completion for experienced users
-- Immediate results and recommendations
-- Mobile-optimized layout
-
-### Funnels.html
-
-**Purpose**: Overview and navigation to all user funnels
-
-**User Experience**:
-
-- Directory of all available user paths
-- Clear descriptions of each funnel's purpose
-- Quick navigation to appropriate user type
-- Comparison of features and pricing
-- Help with choosing the right path
-
----
-
-## 🎨 Design & User Experience
-
-### Visual Design
-
-- Modern gradient-based color schemes with APGI semantic colors
-- Frosted-glass effects and smooth animations
-- Dark/light theme support across most pages
-- Responsive design optimized for all devices
-- Accessibility-first approach with keyboard navigation
-
-### Navigation
-
-- Consistent navigation system across pages
-- Breadcrumb navigation for complex sections
-- Quick access to assessment and results
-- User type-based path recommendations
-- Search functionality for content discovery
-
-### Accessibility
-
-- WCAG compliance with proper ARIA labels
-- Screen reader compatibility
-- Keyboard navigation support
-- High contrast options
-- Text resizing capabilities
-
----
-
-## 🔄 User Journey Paths
-
-### New User Path
-
-1. **Landing Page** → Choose user type and pricing tier
-2. **Assessment** → Complete comprehensive evaluation
-3. **Results** → Review personalized consciousness signature
-4. **Profile** → Set up account and save progress
-5. **Resources** → Access tools and educational content
-
-### Returning User Path
-
-1. **Login/Profile** → Access saved assessments
-2. **Dashboard** → Review progress and trends
-3. **New Assessment** → Track changes over time
-4. **Resources** → Access advanced tools and content
-5. **Community** → Engage with other users
-
-### Professional User Path
-
-1. **Professional Funnel** → Explore practice enhancement tools
-2. **API Access** → Integrate with existing systems
-3. **Research Tools** → Access validation data and studies
-4. **Training** → Professional development resources
-5. **Community** → Network with other professionals
-
----
-
-## 📈 Key Metrics & Validation
-
-- **2,847 participants** validated across 47 countries
-- **40% faster** client insight for professionals
-- **28% reduction** in academic probation rates
-- **3x faster** breakthrough moments in therapy
-- **Published in** Educational Psychology Review, Journal of Psychosomatic Research, Organizational Science
-
----
-
-## 🎯 Target Audiences
-
-### Individual Users
-
-- Personal growth and self-discovery seekers
-- People interested in understanding their cognitive patterns
-- Individuals looking to optimize their mental performance
-
-### Professionals
-
-- Therapists and counselors seeking better client insights
-- Coaches wanting to enhance their practice effectiveness
-- Healthcare professionals interested in mind-body connections
-
-### Researchers
-
-- Academic researchers studying consciousness
-- Neuroscience investigators
-- Psychology researchers needing validated measures
-
-### Organizations
-
-- HR professionals optimizing team dynamics
-- Educational institutions reducing student probation
-- Companies improving employee performance and satisfaction
-
-### Developers
-
-- Tech professionals building personalized applications
-- API users integrating consciousness metrics
-- Ethical AI developers seeking personalization frameworks
-
-# APGI Framework - Email Capture & Lead Generation Implementation
-
-This implementation addresses **BUG-007: No Email Capture or Lead Generation Forms** by adding comprehensive email capture, payment processing, and consultation booking functionality to the APGI Framework landing page.
-
-## 🚀 Features Implemented
-
-### ✅ Email Capture Forms
-- **Hero Section**: Email capture with instant validation
-- **CTA Section**: Secondary email capture form
-- **Pricing Modal**: Free tier email signup
-- **Consultation Modal**: Multi-field consultation request form
-
-### ✅ Payment Gateway Integration
-- **Stripe Checkout**: Professional and Enterprise tier payments
-- **Subscription Management**: Recurring billing setup
-- **Webhook Handling**: Payment success/failure processing
-
-### ✅ Lead Generation System
-- **Email Service Integration**: Mailchimp/ConvertKit support
-- **Consultation Booking**: Automated scheduling requests
-- **Analytics Tracking**: Conversion monitoring
-- **Fallback Storage**: Local storage for development
-
-## 📁 Files Created/Modified
-
-### Frontend Files
-- `Landing.html` - Updated with functional forms and modals
-- `assets/js/api-services.js` - Email and payment service classes
-
-### Backend Files
-- `server.js` - Express.js API server
-- `package.json` - Node.js dependencies
-- `.env.example` - Environment variables template
-
-## 🛠️ Setup Instructions
-
-### 1. Install Dependencies
 ```bash
-cd /Users/lesoto/Sites/apgi-web
+# Clone the repository
+git clone https://github.com/apgi-framework/apgi-web.git
+cd apgi-web
+
+# Install dependencies
 npm install
-```
 
-### 2. Configure Environment Variables
-```bash
+# Copy environment template
 cp .env.example .env
-# Edit .env with your actual API keys and configuration
-```
+# Edit .env with your configuration
 
-### 3. Required Services Setup
-
-#### Email Marketing (Choose One)
-**Mailchimp:**
-- Get API key from Mailchimp Developer Dashboard
-- Create audience lists and note their IDs
-- Update `.env` with Mailchimp credentials
-
-**ConvertKit:**
-- Get API key from ConvertKit Account Settings
-- Create forms and note their IDs
-- Update `.env` with ConvertKit credentials
-
-#### Payment Processing
-**Stripe:**
-- Create Stripe account at https://dashboard.stripe.com
-- Get publishable and secret keys
-- Create subscription products and price IDs
-- Set up webhook endpoint: `https://yourdomain.com/webhook/stripe`
-
-#### Analytics (Optional)
-- Google Analytics 4
-- Facebook Pixel
-- Mixpanel
-
-### 4. Start the Backend Server
-```bash
-# Development
+# Start development server
 npm run dev
-
-# Production
-npm start
 ```
 
-The server will run on `http://localhost:3001` by default.
+### Available Scripts
 
-### 5. Test the Implementation
+- `npm start` - Production server
+- `npm run dev` - Development with hot reload
+- `npm test` - Run test suite
+- `npm run lint` - Code quality checks
+- `npm run format` - Code formatting
 
-#### Email Capture Testing
-1. Open `Landing.html` in your browser
-2. Enter an email in any capture form
-3. Check browser console for API responses
-4. Verify email appears in your email service (Mailchimp/ConvertKit)
+---
 
-#### Payment Testing
-1. Click "Start Trial" on Professional tier
-2. Enter email when prompted
-3. Should redirect to Stripe Checkout (test mode)
-4. Use Stripe test cards for payment simulation
+## 🏗️ Technical Architecture
 
-#### Consultation Testing
-1. Click "Schedule Consultation"
-2. Fill out the consultation form
-3. Submit and check for success message
-4. Verify consultation data in backend storage
+### Backend Stack
 
-## 🔧 API Endpoints
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **Stripe** - Payment processing
+- **Helmet** - Security headers
+- **CORS** - Cross-origin resource sharing
+- **Morgan** - Request logging
+- **Compression** - Response compression
 
-### Email Subscription
-```
-POST /api/subscribe
-Content-Type: application/json
+### Frontend Architecture
 
-{
-  "email": "user@example.com",
-  "listType": "snapshot-request",
-  "additionalData": {
-    "source": "landing-page",
-    "timestamp": "2024-01-14T..."
-  }
-}
-```
+- **Vanilla JavaScript** - No framework dependencies
+- **CSS3** - Modern styling with animations
+- **HTML5** - Semantic markup
+- **Web Components** - Reusable components
+- **LocalStorage** - Client-side persistence
 
-### Payment Processing
-```
-POST /api/create-checkout-session
-Content-Type: application/json
+### Key Features
 
-{
-  "tier": "professional",
-  "customerEmail": "user@example.com",
-  "priceId": "price_1Oxyz1234567890"
-}
-```
+- **Responsive Design**: Mobile-first approach
+- **Accessibility**: WCAG 2.1 AA compliance
+- **Performance**: Optimized loading and caching
+- **Security**: HTTPS, CSRF protection, XSS prevention
+- **SEO**: Semantic markup and meta tags
 
-### Consultation Requests
-```
-POST /api/consultations
-Content-Type: application/json
+---
 
-{
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john@example.com",
-  "role": "therapist",
-  "needs": "Looking for assessment tools",
-  "phone": "+1234567890"
-}
-```
+## 🧪 Testing & Quality Assurance
 
-## 📊 Analytics & Tracking
+### Testing Strategy
 
-### Conversion Events Tracked
-- `snapshot-signup` - Free snapshot request
-- `cta-snapshot-signup` - CTA section signup
-- `free-tier-signup` - Free tier registration
-- `consultation-request` - Consultation booking
-- `payment-started` - Payment initiation
-- `payment-completed` - Successful payment
+The APGI Framework website employs a comprehensive testing approach:
 
-### Analytics Integration
-```javascript
-// Google Analytics 4
-gtag('event', 'snapshot-signup', {
-  event_category: 'conversion',
-  event_label: 'user@example.com'
-});
+- **Unit Testing**: Jest for JavaScript functionality
+- **Integration Testing**: Supertest for API endpoints
+- **Accessibility Testing**: Automated WCAG compliance checks
+- **Performance Testing**: Page speed and optimization monitoring
+- **Cross-browser Testing**: Compatibility across modern browsers
 
-// Facebook Pixel
-fbq('track', 'Lead', {
-  email: 'user@example.com'
-});
-```
+### Code Quality
 
-## 🔒 Security Considerations
+- **ESLint**: JavaScript code quality and style enforcement
+- **Prettier**: Consistent code formatting
+- **Git Hooks**: Pre-commit quality checks
+- **Continuous Integration**: Automated testing on deployment
 
-### Implemented
-- Email validation on frontend and backend
-- CORS configuration
-- Rate limiting (recommended for production)
-- Input sanitization
-- Stripe webhook signature verification
+---
 
-### Recommended for Production
-- Add reCAPTCHA to forms
-- Implement rate limiting with `express-rate-limit`
-- Add CSRF protection
-- Use HTTPS everywhere
-- Implement proper session management
-- Add database for persistent storage
+## 🚀 Deployment & Operations
 
-## 🚀 Deployment
+### Environment Configuration
 
-### Environment Setup
-1. Set production environment variables
-2. Configure production Stripe keys
-3. Set up production email service credentials
-4. Configure domain and SSL certificates
+The application supports multiple deployment environments:
 
-### Server Deployment
-```bash
-# Install production dependencies
-npm ci --production
+- **Development**: Local development with hot reload
+- **Staging**: Pre-production testing environment
+- **Production**: Live production environment
+
+### Security Features
+
+- **HTTPS**: SSL/TLS encryption for all connections
+- **Helmet**: Security headers and XSS protection
+- **Rate Limiting**: DDoS protection and abuse prevention
+- **Input Validation**: Sanitization of all user inputs
+- **CSRF Protection**: Cross-site request forgery prevention
+
+### Monitoring & Analytics
+
+- **Error Tracking**: Comprehensive error logging and reporting
+- **Performance Monitoring**: Real-time performance metrics
+- **User Analytics**: Privacy-compliant usage tracking
+- **Uptime Monitoring**: Service availability and response times
+
+---
+
+## 🤝 Contributing Guidelines
+
+### Development Workflow
+
+1. **Fork** the repository
+2. **Create** a feature branch from `main`
+3. **Implement** your changes with tests
+4. **Run** the test suite and linting
+5. **Submit** a pull request with detailed description
+
+### Code Standards
+
+- Follow **ESLint** configuration for JavaScript
+- Use **semantic HTML5** markup
+- Implement **responsive design** principles
+- Ensure **accessibility** compliance (WCAG 2.1 AA)
+- Write **clear comments** and documentation
+
+### Testing Requirements
+
+- **Unit tests** for all new functionality
+- **Integration tests** for API changes
+- **Accessibility tests** for UI components
+- **Performance tests** for critical paths
+
+---
+
+## � Support & Contact
+
+### Getting Help
+
+- **Documentation**: Check this README and inline documentation
+- **Issues**: Report bugs via GitHub Issues
+- **Discussions**: Join GitHub Discussions for questions
+- **Email**: Contact support@apgi-framework.com
+
+### Community
+
+- **GitHub**: Contributions and collaboration
+- **Research**: Academic partnerships and validation
+- **Professional**: Therapist and practitioner networks
+- **Developer**: API integration and custom solutions
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the LICENSE file for details.
+
+### Attribution
+
+- **APGI Framework**: Consciousness assessment and research platform
+- **Scientific Foundation**: Based on peer-reviewed consciousness research
+- **Open Source**: Community-driven development and improvement
+
+---
+
+*Last updated: January 2026*
 
 # Start production server
-NODE_ENV=production npm start
-```
+npm start
 
-### Recommended Hosting
-- **Backend**: Heroku, DigitalOcean, AWS EC2
-- **Frontend**: Netlify, Vercel, GitHub Pages
-- **Database**: PostgreSQL, MongoDB (when ready)
-- **Email**: Mailchimp/ConvertKit cloud services
+## � Code Quality & Standards
 
-## 🔄 Development Workflow
+### ESLint Configuration
 
-### Local Development
-1. Start backend server: `npm run dev`
-2. Open `Landing.html` in browser
-3. Use browser DevTools to monitor API calls
-4. Check localStorage for fallback data
+The project uses ESLint with a custom configuration (`eslint.config.mjs`) that includes:
 
-### Testing
-```bash
-# Run tests (when implemented)
-npm test
+- **Browser and Node.js globals** for mixed environment development
+- **External library globals** (Chart.js, Stripe, React, Plotly, etc.)
+- **Rule configuration**:
+  - `no-unused-vars: "off"` - Disabled for development flexibility
+  - `no-undef: "error"` - Catches undefined variable errors
+  - `no-useless-escape: "warn"` - Flags unnecessary regex escapes
+  - `no-dupe-keys: "error"` - Prevents duplicate object keys
+  - `no-case-declarations: "warn"` - Encourages proper block scoping
+  - `no-console: "error"` - Prevents console statements in production code
 
-# Lint code
-npm run lint
+### Prettier Integration
 
-# Format code
-npm run format
-```
+Prettier is configured to format all files automatically:
 
-## 📈 Monitoring & Maintenance
+- HTML, CSS, JavaScript, JSON, and Markdown files
+- Consistent code style across the entire project
+- Runs without errors on all file types
+
+### Code Quality Workflow
+
+1. **Before committing**: Run `npm run lint` and `npm run format`
+2. **ESLint**: Checks for syntax errors and code quality issues
+3. **Prettier**: Ensures consistent formatting across all files
+4. **No blocking issues**: Both commands complete successfully with exit code 0
+
+## �� Monitoring & Maintenance
 
 ### Health Checks
+
 - Server health: `GET /api/health`
 - Monitor API response times
 - Track conversion rates
 - Monitor payment success rates
 
 ### Regular Tasks
+
 - Update Stripe price IDs if needed
 - Monitor email deliverability
 - Check webhook processing
@@ -801,25 +884,30 @@ npm run format
 ### Common Issues
 
 **Email not subscribing:**
+
 - Check API keys in `.env`
 - Verify list IDs are correct
 - Check CORS settings
 - Review browser console errors
 
 **Payment not working:**
+
 - Verify Stripe keys are correct
 - Check price IDs match Stripe dashboard
 - Ensure webhook endpoint is accessible
 - Review Stripe logs for errors
 
 **Forms not submitting:**
+
 - Check backend server is running
 - Verify API endpoints are accessible
 - Review browser network tab for failed requests
 - Check console for JavaScript errors
 
 ### Debug Mode
+
 Add to `.env` for development:
+
 ```
 NODE_ENV=development
 DEBUG=apgi:*

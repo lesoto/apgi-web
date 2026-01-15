@@ -1,941 +1,1150 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/theme-manager.js"></script>
     <script src="assets/js/cdn-fallbacks.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI Explorer - Understanding Your Cognitive Architecture</title>
-    <meta name="description" content="Explore the APGI Framework and discover eight cognitive profiles. Learn about consciousness architecture, prediction processing, and find your unique cognitive signature.">
+    <meta
+      name="description"
+      content="Explore the APGI Framework and discover eight cognitive profiles. Learn about consciousness architecture, prediction processing, and find your unique cognitive signature."
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        :root {
-            /* APGI Semantic Color System */
-            --threshold-blue: #00B4FF;
-            --precision-red: #FF3366;
-            --modulator-green: #00CC99;
-            --error-yellow: #FFCC00;
-            --workspace-purple: #9966FF;
-            --slate-dark: #2C3E50;
-            --slate-light: #34495E;
-            --slate-lighter: #4A5F7F;
-            --bg-dark: #1A1A2E;
-            --bg-card: rgba(44, 62, 80, 0.6);
-            --text-primary: #FFFFFF;
-            --text-secondary: #B8C5D6;
-        }
+      :root {
+        /* APGI Semantic Color System */
+        --threshold-blue: #00b4ff;
+        --precision-red: #ff3366;
+        --modulator-green: #00cc99;
+        --error-yellow: #ffcc00;
+        --workspace-purple: #9966ff;
+        --slate-dark: #2c3e50;
+        --slate-light: #34495e;
+        --slate-lighter: #4a5f7f;
+        --bg-dark: #1a1a2e;
+        --bg-card: rgba(44, 62, 80, 0.6);
+        --text-primary: #ffffff;
+        --text-secondary: #b8c5d6;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--slate-dark) 100%);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+          Arial, sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--bg-dark) 0%,
+          var(--slate-dark) 100%
+        );
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
 
-        /* Neural Glow Background Animation */
-        .neural-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.15;
-        }
+      /* Neural Glow Background Animation */
+      .neural-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.15;
+      }
 
-        .neural-particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            animation: float 20s infinite;
-        }
+      .neural-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        animation: float 20s infinite;
+      }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-100px) translateX(50px); }
-            50% { transform: translateY(-50px) translateX(-30px); }
-            75% { transform: translateY(-120px) translateX(20px); }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) translateX(0);
         }
+        25% {
+          transform: translateY(-100px) translateX(50px);
+        }
+        50% {
+          transform: translateY(-50px) translateX(-30px);
+        }
+        75% {
+          transform: translateY(-120px) translateX(20px);
+        }
+      }
 
-        /* Container */
+      /* Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Header */
+      header {
+        padding: 2rem 0 4rem;
+        text-align: center;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .logo-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(
+          135deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 180, 255, 0.3);
+        animation: pulse-glow 3s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 8px 32px rgba(0, 180, 255, 0.3);
+        }
+        50% {
+          box-shadow: 0 12px 48px rgba(153, 102, 255, 0.5);
+        }
+      }
+
+      .logo-text {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(
+          90deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 4rem 0;
+        margin-bottom: 4rem;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .hero .gradient-text {
+        background: linear-gradient(
+          90deg,
+          var(--threshold-blue),
+          var(--precision-red),
+          var(--workspace-purple)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        max-width: 700px;
+        margin: 0 auto 2.5rem;
+      }
+
+      .cta-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        color: white;
+        box-shadow: 0 8px 24px rgba(0, 180, 255, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(0, 180, 255, 0.5);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--threshold-blue);
+      }
+
+      /* Hero Illustration */
+      .hero-illustration {
+        margin: 3rem 0;
+        text-align: center;
+      }
+
+      .hero-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .hero-image:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Feature Grid */
+      .section {
+        margin-bottom: 6rem;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-header h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .section-header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+
+      .feature-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .feature-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .feature-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-icon::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        filter: blur(20px);
+        opacity: 0.5;
+      }
+
+      .icon-threshold {
+        background: rgba(0, 180, 255, 0.2);
+        color: var(--threshold-blue);
+      }
+      .icon-precision {
+        background: rgba(255, 51, 102, 0.2);
+        color: var(--precision-red);
+      }
+      .icon-modulator {
+        background: rgba(0, 204, 153, 0.2);
+        color: var(--modulator-green);
+      }
+      .icon-error {
+        background: rgba(255, 204, 0, 0.2);
+        color: var(--error-yellow);
+      }
+      .icon-workspace {
+        background: rgba(153, 102, 255, 0.2);
+        color: var(--workspace-purple);
+      }
+
+      .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-card p {
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+
+      /* Parameters Section */
+      .parameters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .parameter-card {
+        background: linear-gradient(
+          135deg,
+          var(--bg-card),
+          rgba(44, 62, 80, 0.4)
+        );
+        backdrop-filter: blur(20px);
+        border-radius: 16px;
+        padding: 2rem;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .parameter-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        padding: 2px;
+        background: linear-gradient(135deg, transparent, transparent);
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .parameter-card:hover::after {
+        opacity: 1;
+      }
+
+      .parameter-card.param-error::after {
+        background: linear-gradient(135deg, var(--error-yellow), transparent);
+      }
+
+      .parameter-card.param-precision::after {
+        background: linear-gradient(135deg, var(--precision-red), transparent);
+      }
+
+      .parameter-card.param-threshold::after {
+        background: linear-gradient(135deg, var(--threshold-blue), transparent);
+      }
+
+      .parameter-card.param-somatic::after {
+        background: linear-gradient(
+          135deg,
+          var(--workspace-purple),
+          transparent
+        );
+      }
+
+      .parameter-symbol {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+
+      .param-error .parameter-symbol {
+        color: var(--error-yellow);
+      }
+      .param-precision .parameter-symbol {
+        color: var(--precision-red);
+      }
+      .param-threshold .parameter-symbol {
+        color: var(--threshold-blue);
+      }
+      .param-somatic .parameter-symbol {
+        color: var(--workspace-purple);
+      }
+
+      .parameter-card h4 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .parameter-card p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      /* Profiles Section */
+      .profiles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .profile-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        border-radius: 16px;
+        padding: 1.75rem;
+        border-left: 4px solid;
+        transition: all 0.3s ease;
+      }
+
+      .profile-card:hover {
+        transform: translateX(4px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      .profile-card h4 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        padding: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .tech-card:hover {
+        border-color: var(--threshold-blue);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 180, 255, 0.1),
+          rgba(153, 102, 255, 0.1)
+        );
+      }
+
+      .tech-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .tech-list {
+        list-style: none;
+        margin-top: 1rem;
+      }
+
+      .tech-list li {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--text-secondary);
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .tech-list li:last-child {
+        border-bottom: none;
+      }
+
+      .tech-list li::before {
+        content: "→";
+        color: var(--threshold-blue);
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      /* Privacy Section */
+      .privacy-section {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 204, 153, 0.1),
+          rgba(0, 180, 255, 0.1)
+        );
+        border-radius: 24px;
+        padding: 3rem;
+        border: 2px solid rgba(0, 204, 153, 0.3);
+        text-align: center;
+      }
+
+      .privacy-section h3 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--modulator-green);
+      }
+
+      .privacy-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .privacy-item {
+        text-align: left;
+      }
+
+      .privacy-item h4 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+      }
+
+      .privacy-item p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      /* Footer CTA */
+      .footer-cta {
+        text-align: center;
+        padding: 4rem 0 3rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 4rem;
+      }
+
+      .footer-cta h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .footer-cta p {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+      }
+
+      .platform-badges {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .badge {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 0.5rem 1.5rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-in {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        header {
-            padding: 2rem 0 4rem;
-            text-align: center;
-        }
-
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 180, 255, 0.3);
-            animation: pulse-glow 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 8px 32px rgba(0, 180, 255, 0.3); }
-            50% { box-shadow: 0 12px 48px rgba(153, 102, 255, 0.5); }
-        }
-
-        .logo-text {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--threshold-blue), var(--workspace-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-            margin-bottom: 4rem;
+          padding: 0 1rem;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .hero .gradient-text {
-            background: linear-gradient(90deg, var(--threshold-blue), var(--precision-red), var(--workspace-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+          font-size: 2.5rem;
         }
 
         .hero p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 2.5rem;
-        }
-
-        .cta-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--threshold-blue), var(--workspace-purple));
-            color: white;
-            box-shadow: 0 8px 24px rgba(0, 180, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(0, 180, 255, 0.5);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--threshold-blue);
-        }
-
-        /* Hero Illustration */
-        .hero-illustration {
-            margin: 3rem 0;
-            text-align: center;
-        }
-
-        .hero-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .hero-image:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
-        }
-
-        /* Feature Grid */
-        .section {
-            margin-bottom: 6rem;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
+          font-size: 1rem;
         }
 
         .section-header h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+          font-size: 2rem;
         }
 
-        .section-header p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
+        .feature-grid,
+        .parameters-grid,
+        .profiles-grid,
+        .tech-grid {
+          grid-template-columns: 1fr;
         }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+        .cta-group {
+          flex-direction: column;
         }
 
-        .feature-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+        .btn {
+          width: 100%;
+          justify-content: center;
         }
+      }
 
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--threshold-blue), var(--workspace-purple));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+      /* Accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
         }
-
-        .feature-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-icon::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            filter: blur(20px);
-            opacity: 0.5;
-        }
-
-        .icon-threshold { background: rgba(0, 180, 255, 0.2); color: var(--threshold-blue); }
-        .icon-precision { background: rgba(255, 51, 102, 0.2); color: var(--precision-red); }
-        .icon-modulator { background: rgba(0, 204, 153, 0.2); color: var(--modulator-green); }
-        .icon-error { background: rgba(255, 204, 0, 0.2); color: var(--error-yellow); }
-        .icon-workspace { background: rgba(153, 102, 255, 0.2); color: var(--workspace-purple); }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* Parameters Section */
-        .parameters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .parameter-card {
-            background: linear-gradient(135deg, var(--bg-card), rgba(44, 62, 80, 0.4));
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .parameter-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            padding: 2px;
-            background: linear-gradient(135deg, transparent, transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .parameter-card:hover::after {
-            opacity: 1;
-        }
-
-        .parameter-card.param-error::after {
-            background: linear-gradient(135deg, var(--error-yellow), transparent);
-        }
-
-        .parameter-card.param-precision::after {
-            background: linear-gradient(135deg, var(--precision-red), transparent);
-        }
-
-        .parameter-card.param-threshold::after {
-            background: linear-gradient(135deg, var(--threshold-blue), transparent);
-        }
-
-        .parameter-card.param-somatic::after {
-            background: linear-gradient(135deg, var(--workspace-purple), transparent);
-        }
-
-        .parameter-symbol {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .param-error .parameter-symbol { color: var(--error-yellow); }
-        .param-precision .parameter-symbol { color: var(--precision-red); }
-        .param-threshold .parameter-symbol { color: var(--threshold-blue); }
-        .param-somatic .parameter-symbol { color: var(--workspace-purple); }
-
-        .parameter-card h4 {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .parameter-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        /* Profiles Section */
-        .profiles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .profile-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 1.75rem;
-            border-left: 4px solid;
-            transition: all 0.3s ease;
-        }
-
-        .profile-card:hover {
-            transform: translateX(4px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .profile-card h4 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .tech-card:hover {
-            border-color: var(--threshold-blue);
-            background: linear-gradient(135deg, rgba(0, 180, 255, 0.1), rgba(153, 102, 255, 0.1));
-        }
-
-        .tech-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .tech-list {
-            list-style: none;
-            margin-top: 1rem;
-        }
-
-        .tech-list li {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-
-        .tech-list li:last-child {
-            border-bottom: none;
-        }
-
-        .tech-list li::before {
-            content: '→';
-            color: var(--threshold-blue);
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        /* Privacy Section */
-        .privacy-section {
-            background: linear-gradient(135deg, rgba(0, 204, 153, 0.1), rgba(0, 180, 255, 0.1));
-            border-radius: 24px;
-            padding: 3rem;
-            border: 2px solid rgba(0, 204, 153, 0.3);
-            text-align: center;
-        }
-
-        .privacy-section h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--modulator-green);
-        }
-
-        .privacy-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .privacy-item {
-            text-align: left;
-        }
-
-        .privacy-item h4 {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .privacy-item p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        /* Footer CTA */
-        .footer-cta {
-            text-align: center;
-            padding: 4rem 0 3rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 4rem;
-        }
-
-        .footer-cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-cta p {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .platform-badges {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .badge {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 0.5rem 1.5rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-in {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-header h2 {
-                font-size: 2rem;
-            }
-
-            .feature-grid,
-            .parameters-grid,
-            .profiles-grid,
-            .tech-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-group {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Neural Background Animation -->
     <div class="neural-bg" id="neuralBg"></div>
 
     <!-- Header -->
     <header>
-        <div class="container">
-            <div class="logo">
-                <div class="logo-icon">🧠</div>
-                <div class="logo-text">APGI Explorer</div>
-            </div>
+      <div class="container">
+        <div class="logo">
+          <div class="logo-icon">🧠</div>
+          <div class="logo-text">APGI Explorer</div>
         </div>
+      </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
-            <h1>
-                Understand Your<br>
-                <span class="gradient-text">Cognitive Architecture</span>
-            </h1>
-            <p>
-                A scientifically-validated psychological assessment that maps your unique cognitive and emotional processing patterns through the APGI framework.
-            </p>
-            <div class="hero-illustration">
-                <img src="assets/images/App-Explorer.png" alt="APGI Explorer Interface" class="hero-image">
-            </div>
-            <div class="cta-group">
-                <a href="https://github.com/lesoto/apgi-framework/releases/latest" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                    <span>Download for macOS</span>
-                    <span>↓</span>
-                </a>
-                <a href="#features" class="btn btn-secondary">
-                    <span>Explore Features</span>
-                    <span>→</span>
-                </a>
-            </div>
+      <div class="container">
+        <h1>
+          Understand Your<br />
+          <span class="gradient-text">Cognitive Architecture</span>
+        </h1>
+        <p>
+          A scientifically-validated psychological assessment that maps your
+          unique cognitive and emotional processing patterns through the APGI
+          framework.
+        </p>
+        <div class="hero-illustration">
+          <img
+            src="assets/images/App-Explorer.png"
+            alt="APGI Explorer Interface"
+            class="hero-image"
+          />
         </div>
+        <div class="cta-group">
+          <a
+            href="https://github.com/lesoto/apgi-framework/releases/latest"
+            class="btn btn-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Download for macOS</span>
+            <span>↓</span>
+          </a>
+          <a href="#features" class="btn btn-secondary">
+            <span>Explore Features</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- Core Features -->
     <section class="section" id="features">
-        <div class="container">
-            <div class="section-header">
-                <h2>Comprehensive Cognitive Assessment</h2>
-                <p>35 scientifically-validated questions across 7 dimensions with adaptive scoring and real-time analysis</p>
-            </div>
-            <div class="feature-grid">
-                <div class="feature-card animate-in">
-                    <div class="feature-icon icon-threshold">⚡</div>
-                    <h3>Adaptive Assessment</h3>
-                    <p>Questions adjust based on your responses with reliability weighting and confidence scoring to ensure accurate, personalized results.</p>
-                </div>
-                <div class="feature-card animate-in">
-                    <div class="feature-icon icon-precision">🎯</div>
-                    <h3>Real-Time Analysis</h3>
-                    <p>Dynamic profile calculation with instant visual feedback as you progress through the assessment journey.</p>
-                </div>
-                <div class="feature-card animate-in">
-                    <div class="feature-icon icon-workspace">📊</div>
-                    <h3>Interactive Visualization</h3>
-                    <p>Dynamic radar charts, state explorers, and profile comparisons with customizable styles and animations.</p>
-                </div>
-                <div class="feature-card animate-in">
-                    <div class="feature-icon icon-modulator">🔄</div>
-                    <h3>Profile Evolution</h3>
-                    <p>Track changes over time, compare multiple profiles, and explore 43+ psychological states and transitions.</p>
-                </div>
-                <div class="feature-card animate-in">
-                    <div class="feature-icon icon-error">📈</div>
-                    <h3>Comprehensive Reports</h3>
-                    <p>Generate detailed PDF, CSV, JSON, and PNG reports for personal insight or clinical use with full data export.</p>
-                </div>
-                <div class="feature-card animate-in">
-                    <div class="feature-icon icon-threshold">⚙️</div>
-                    <h3>Complete Customization</h3>
-                    <p>9 settings categories with 50+ options for appearance, behavior, charts, privacy, and advanced features.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header">
+          <h2>Comprehensive Cognitive Assessment</h2>
+          <p>
+            35 scientifically-validated questions across 7 dimensions with
+            adaptive scoring and real-time analysis
+          </p>
         </div>
+        <div class="feature-grid">
+          <div class="feature-card animate-in">
+            <div class="feature-icon icon-threshold">⚡</div>
+            <h3>Adaptive Assessment</h3>
+            <p>
+              Questions adjust based on your responses with reliability
+              weighting and confidence scoring to ensure accurate, personalized
+              results.
+            </p>
+          </div>
+          <div class="feature-card animate-in">
+            <div class="feature-icon icon-precision">🎯</div>
+            <h3>Real-Time Analysis</h3>
+            <p>
+              Dynamic profile calculation with instant visual feedback as you
+              progress through the assessment journey.
+            </p>
+          </div>
+          <div class="feature-card animate-in">
+            <div class="feature-icon icon-workspace">📊</div>
+            <h3>Interactive Visualization</h3>
+            <p>
+              Dynamic radar charts, state explorers, and profile comparisons
+              with customizable styles and animations.
+            </p>
+          </div>
+          <div class="feature-card animate-in">
+            <div class="feature-icon icon-modulator">🔄</div>
+            <h3>Profile Evolution</h3>
+            <p>
+              Track changes over time, compare multiple profiles, and explore
+              43+ psychological states and transitions.
+            </p>
+          </div>
+          <div class="feature-card animate-in">
+            <div class="feature-icon icon-error">📈</div>
+            <h3>Comprehensive Reports</h3>
+            <p>
+              Generate detailed PDF, CSV, JSON, and PNG reports for personal
+              insight or clinical use with full data export.
+            </p>
+          </div>
+          <div class="feature-card animate-in">
+            <div class="feature-icon icon-threshold">⚙️</div>
+            <h3>Complete Customization</h3>
+            <p>
+              9 settings categories with 50+ options for appearance, behavior,
+              charts, privacy, and advanced features.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Four Core Parameters -->
     <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Four Core Parameters</h2>
-                <p>Understanding the fundamental dimensions of your cognitive processing</p>
-            </div>
-            <div class="parameters-grid">
-                <div class="parameter-card param-error">
-                    <span class="parameter-symbol">ε</span>
-                    <h4>Prediction Error Sensitivity</h4>
-                    <p>Measures how sensitive you are to unexpected events, novelty, and changes in your environment. High sensitivity drives exploration and learning.</p>
-                </div>
-                <div class="parameter-card param-precision">
-                    <span class="parameter-symbol">π</span>
-                    <h4>Precision Allocation</h4>
-                    <p>Analyzes how you prioritize different information sources—sensory input, bodily signals, or internal models—when making decisions.</p>
-                </div>
-                <div class="parameter-card param-threshold">
-                    <span class="parameter-symbol">θₜ</span>
-                    <h4>Ignition Threshold</h4>
-                    <p>Assesses the level of evidence needed for information to reach conscious awareness and trigger focused attention.</p>
-                </div>
-                <div class="parameter-card param-somatic">
-                    <span class="parameter-symbol">β</span>
-                    <h4>Somatic Bias</h4>
-                    <p>Evaluates your attunement to bodily sensations, interoceptive signals, and how physical states influence your decisions.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header">
+          <h2>Four Core Parameters</h2>
+          <p>
+            Understanding the fundamental dimensions of your cognitive
+            processing
+          </p>
         </div>
+        <div class="parameters-grid">
+          <div class="parameter-card param-error">
+            <span class="parameter-symbol">ε</span>
+            <h4>Prediction Error Sensitivity</h4>
+            <p>
+              Measures how sensitive you are to unexpected events, novelty, and
+              changes in your environment. High sensitivity drives exploration
+              and learning.
+            </p>
+          </div>
+          <div class="parameter-card param-precision">
+            <span class="parameter-symbol">π</span>
+            <h4>Precision Allocation</h4>
+            <p>
+              Analyzes how you prioritize different information sources—sensory
+              input, bodily signals, or internal models—when making decisions.
+            </p>
+          </div>
+          <div class="parameter-card param-threshold">
+            <span class="parameter-symbol">θₜ</span>
+            <h4>Ignition Threshold</h4>
+            <p>
+              Assesses the level of evidence needed for information to reach
+              conscious awareness and trigger focused attention.
+            </p>
+          </div>
+          <div class="parameter-card param-somatic">
+            <span class="parameter-symbol">β</span>
+            <h4>Somatic Bias</h4>
+            <p>
+              Evaluates your attunement to bodily sensations, interoceptive
+              signals, and how physical states influence your decisions.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Cognitive Profiles -->
     <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Eight Cognitive Profiles</h2>
-                <p>Discover which profile best describes your unique processing style</p>
-            </div>
-            <div class="profiles-grid">
-                <div class="profile-card profile-orange">
-                    <h4>
-                        🟠 Sensitive Integrator
-                        <span class="profile-badge">Orange</span>
-                    </h4>
-                    <p>High awareness of prediction errors and bodily responses. Deeply processes both external surprises and internal signals.</p>
-                </div>
-                <div class="profile-card profile-blue">
-                    <h4>
-                        🔵 Analytical Guard
-                        <span class="profile-badge">Blue</span>
-                    </h4>
-                    <p>Strong mental models with precise vigilance. Excels at systematic analysis and maintaining cognitive control.</p>
-                </div>
-                <div class="profile-card profile-green">
-                    <h4>
-                        🟢 Adaptive Balancer
-                        <span class="profile-badge">Green</span>
-                    </h4>
-                    <p>Maintains equilibrium between exploration and stability. Flexible yet grounded in changing environments.</p>
-                </div>
-                <div class="profile-card profile-pink">
-                    <h4>
-                        🌸 Open Explorer
-                        <span class="profile-badge">Pink</span>
-                    </h4>
-                    <p>Thrives on novelty and new experiences. High curiosity with openness to unexpected information.</p>
-                </div>
-                <div class="profile-card profile-teal">
-                    <h4>
-                        🔷 Contemplative Anchor
-                        <span class="profile-badge">Teal</span>
-                    </h4>
-                    <p>Maintains calm and reflection across contexts. Stable processing with measured responses to change.</p>
-                </div>
-                <div class="profile-card profile-purple">
-                    <h4>
-                        🟣 Somatic Navigator
-                        <span class="profile-badge">Purple</span>
-                    </h4>
-                    <p>Deeply attuned to bodily sensations and intuition. Strong interoceptive awareness guides decisions.</p>
-                </div>
-                <div class="profile-card profile-mint">
-                    <h4>
-                        🔶 Cognitive Architect
-                        <span class="profile-badge">Mint</span>
-                    </h4>
-                    <p>Strong theoretical and strategic planning abilities. Builds comprehensive mental frameworks.</p>
-                </div>
-                <div class="profile-card profile-red">
-                    <h4>
-                        🔴 Dynamic Responder
-                        <span class="profile-badge">Red</span>
-                    </h4>
-                    <p>Quick to respond to emotional and situational changes. High reactivity with rapid adaptation.</p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header">
+          <h2>Eight Cognitive Profiles</h2>
+          <p>
+            Discover which profile best describes your unique processing style
+          </p>
         </div>
+        <div class="profiles-grid">
+          <div class="profile-card profile-orange">
+            <h4>
+              🟠 Sensitive Integrator
+              <span class="profile-badge">Orange</span>
+            </h4>
+            <p>
+              High awareness of prediction errors and bodily responses. Deeply
+              processes both external surprises and internal signals.
+            </p>
+          </div>
+          <div class="profile-card profile-blue">
+            <h4>
+              🔵 Analytical Guard
+              <span class="profile-badge">Blue</span>
+            </h4>
+            <p>
+              Strong mental models with precise vigilance. Excels at systematic
+              analysis and maintaining cognitive control.
+            </p>
+          </div>
+          <div class="profile-card profile-green">
+            <h4>
+              🟢 Adaptive Balancer
+              <span class="profile-badge">Green</span>
+            </h4>
+            <p>
+              Maintains equilibrium between exploration and stability. Flexible
+              yet grounded in changing environments.
+            </p>
+          </div>
+          <div class="profile-card profile-pink">
+            <h4>
+              🌸 Open Explorer
+              <span class="profile-badge">Pink</span>
+            </h4>
+            <p>
+              Thrives on novelty and new experiences. High curiosity with
+              openness to unexpected information.
+            </p>
+          </div>
+          <div class="profile-card profile-teal">
+            <h4>
+              🔷 Contemplative Anchor
+              <span class="profile-badge">Teal</span>
+            </h4>
+            <p>
+              Maintains calm and reflection across contexts. Stable processing
+              with measured responses to change.
+            </p>
+          </div>
+          <div class="profile-card profile-purple">
+            <h4>
+              🟣 Somatic Navigator
+              <span class="profile-badge">Purple</span>
+            </h4>
+            <p>
+              Deeply attuned to bodily sensations and intuition. Strong
+              interoceptive awareness guides decisions.
+            </p>
+          </div>
+          <div class="profile-card profile-mint">
+            <h4>
+              🔶 Cognitive Architect
+              <span class="profile-badge">Mint</span>
+            </h4>
+            <p>
+              Strong theoretical and strategic planning abilities. Builds
+              comprehensive mental frameworks.
+            </p>
+          </div>
+          <div class="profile-card profile-red">
+            <h4>
+              🔴 Dynamic Responder
+              <span class="profile-badge">Red</span>
+            </h4>
+            <p>
+              Quick to respond to emotional and situational changes. High
+              reactivity with rapid adaptation.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Technical Features -->
     <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Built for macOS Excellence</h2>
-                <p>Native performance with deep system integration</p>
-            </div>
-            <div class="tech-grid">
-                <div class="tech-card">
-                    <h3>🖥️ Native Experience</h3>
-                    <ul class="tech-list">
-                        <li>Full SwiftUI framework with smooth animations</li>
-                        <li>Menu bar integration for quick access</li>
-                        <li>Advanced window management with multiple layouts</li>
-                        <li>Touch Bar support on compatible MacBooks</li>
-                        <li>Complete keyboard navigation and shortcuts</li>
-                    </ul>
-                </div>
-                <div class="tech-card">
-                    <h3>♿ Accessibility First</h3>
-                    <ul class="tech-list">
-                        <li>Full VoiceOver support with descriptive labels</li>
-                        <li>Dynamic Type for adjustable text sizes</li>
-                        <li>High contrast modes and color options</li>
-                        <li>Keyboard-only navigation throughout</li>
-                        <li>Reduced motion respect for user preferences</li>
-                    </ul>
-                </div>
-                <div class="tech-card">
-                    <h3>💾 Robust Data Management</h3>
-                    <ul class="tech-list">
-                        <li>Core Data integration with automatic migration</li>
-                        <li>Automated backups with configurable frequency</li>
-                        <li>Multiple export formats (PDF, CSV, JSON, PNG)</li>
-                        <li>Data validation and error recovery</li>
-                        <li>Performance optimization with lazy loading</li>
-                    </ul>
-                </div>
-                <div class="tech-card">
-                    <h3>🎨 Visual Excellence</h3>
-                    <ul class="tech-list">
-                        <li>System light, dark, and auto appearance modes</li>
-                        <li>Adaptive layouts for multiple screen sizes</li>
-                        <li>Smooth animations with configurable duration</li>
-                        <li>Interactive charts with real-time updates</li>
-                        <li>Professional color schemes matching APGI identity</li>
-                    </ul>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header">
+          <h2>Built for macOS Excellence</h2>
+          <p>Native performance with deep system integration</p>
         </div>
+        <div class="tech-grid">
+          <div class="tech-card">
+            <h3>🖥️ Native Experience</h3>
+            <ul class="tech-list">
+              <li>Full SwiftUI framework with smooth animations</li>
+              <li>Menu bar integration for quick access</li>
+              <li>Advanced window management with multiple layouts</li>
+              <li>Touch Bar support on compatible MacBooks</li>
+              <li>Complete keyboard navigation and shortcuts</li>
+            </ul>
+          </div>
+          <div class="tech-card">
+            <h3>♿ Accessibility First</h3>
+            <ul class="tech-list">
+              <li>Full VoiceOver support with descriptive labels</li>
+              <li>Dynamic Type for adjustable text sizes</li>
+              <li>High contrast modes and color options</li>
+              <li>Keyboard-only navigation throughout</li>
+              <li>Reduced motion respect for user preferences</li>
+            </ul>
+          </div>
+          <div class="tech-card">
+            <h3>💾 Robust Data Management</h3>
+            <ul class="tech-list">
+              <li>Core Data integration with automatic migration</li>
+              <li>Automated backups with configurable frequency</li>
+              <li>Multiple export formats (PDF, CSV, JSON, PNG)</li>
+              <li>Data validation and error recovery</li>
+              <li>Performance optimization with lazy loading</li>
+            </ul>
+          </div>
+          <div class="tech-card">
+            <h3>🎨 Visual Excellence</h3>
+            <ul class="tech-list">
+              <li>System light, dark, and auto appearance modes</li>
+              <li>Adaptive layouts for multiple screen sizes</li>
+              <li>Smooth animations with configurable duration</li>
+              <li>Interactive charts with real-time updates</li>
+              <li>Professional color schemes matching APGI identity</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Privacy & Data -->
     <section class="section">
-        <div class="container">
-            <div class="privacy-section">
-                <h3>🔒 Privacy & Security by Design</h3>
-                <p style="color: var(--text-secondary); max-width: 700px; margin: 1rem auto;">
-                    Your cognitive profile is deeply personal. APGI Explorer puts you in complete control with transparent, privacy-first architecture.
-                </p>
-                <div class="privacy-grid">
-                    <div class="privacy-item">
-                        <h4>🏠 Local Storage</h4>
-                        <p>All assessment data stored locally on your device with Core Data. Nothing leaves your Mac without your explicit permission.</p>
-                    </div>
-                    <div class="privacy-item">
-                        <h4>🔐 End-to-End Encryption</h4>
-                        <p>All stored profiles encrypted at rest. Your data remains secure even if your device is compromised.</p>
-                    </div>
-                    <div class="privacy-item">
-                        <h4>🎚️ Granular Control</h4>
-                        <p>Fine-grained permissions for data sharing, analytics, and exports. Choose exactly what happens with your information.</p>
-                    </div>
-                    <div class="privacy-item">
-                        <h4>📤 Complete Export</h4>
-                        <p>Full data portability in standard formats. Your data, your choice—export or delete anytime with immediate effect.</p>
-                    </div>
-                    <div class="privacy-item">
-                        <h4>✅ GDPR Compliant</h4>
-                        <p>Full compliance with international data protection regulations. Your rights are protected by design.</p>
-                    </div>
-                    <div class="privacy-item">
-                        <h4>🚫 No Personal Data</h4>
-                        <p>Optional anonymous analytics only. No personal information collected without explicit, informed consent.</p>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="privacy-section">
+          <h3>🔒 Privacy & Security by Design</h3>
+          <p
+            style="
+              color: var(--text-secondary);
+              max-width: 700px;
+              margin: 1rem auto;
+            "
+          >
+            Your cognitive profile is deeply personal. APGI Explorer puts you in
+            complete control with transparent, privacy-first architecture.
+          </p>
+          <div class="privacy-grid">
+            <div class="privacy-item">
+              <h4>🏠 Local Storage</h4>
+              <p>
+                All assessment data stored locally on your device with Core
+                Data. Nothing leaves your Mac without your explicit permission.
+              </p>
             </div>
+            <div class="privacy-item">
+              <h4>🔐 End-to-End Encryption</h4>
+              <p>
+                All stored profiles encrypted at rest. Your data remains secure
+                even if your device is compromised.
+              </p>
+            </div>
+            <div class="privacy-item">
+              <h4>🎚️ Granular Control</h4>
+              <p>
+                Fine-grained permissions for data sharing, analytics, and
+                exports. Choose exactly what happens with your information.
+              </p>
+            </div>
+            <div class="privacy-item">
+              <h4>📤 Complete Export</h4>
+              <p>
+                Full data portability in standard formats. Your data, your
+                choice—export or delete anytime with immediate effect.
+              </p>
+            </div>
+            <div class="privacy-item">
+              <h4>✅ GDPR Compliant</h4>
+              <p>
+                Full compliance with international data protection regulations.
+                Your rights are protected by design.
+              </p>
+            </div>
+            <div class="privacy-item">
+              <h4>🚫 No Personal Data</h4>
+              <p>
+                Optional anonymous analytics only. No personal information
+                collected without explicit, informed consent.
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Footer CTA -->
     <section class="footer-cta">
-        <div class="container">
-            <h2>Ready to Explore Your Mind?</h2>
-            <p>Download APGI Explorer and discover your unique cognitive architecture.</p>
-            <div class="cta-group">
-                <a href="https://github.com/lesoto/apgi-framework/releases/latest" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                    <span>Download for macOS 12+</span>
-                    <span>↓</span>
-                </a>
-            </div>
-            <div class="platform-badges">
-                <span class="badge">macOS 12.0+</span>
-                <span class="badge">Universal Binary</span>
-                <span class="badge">Apple Silicon Optimized</span>
-            </div>
-            <p style="margin-top: 3rem; color: var(--text-secondary); font-size: 0.9rem;">
-                Built with the APGI framework • Scientifically validated • Open source
-            </p>
+      <div class="container">
+        <h2>Ready to Explore Your Mind?</h2>
+        <p>
+          Download APGI Explorer and discover your unique cognitive
+          architecture.
+        </p>
+        <div class="cta-group">
+          <a
+            href="https://github.com/lesoto/apgi-framework/releases/latest"
+            class="btn btn-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Download for macOS 12+</span>
+            <span>↓</span>
+          </a>
         </div>
+        <div class="platform-badges">
+          <span class="badge">macOS 12.0+</span>
+          <span class="badge">Universal Binary</span>
+          <span class="badge">Apple Silicon Optimized</span>
+        </div>
+        <p
+          style="
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+          "
+        >
+          Built with the APGI framework • Scientifically validated • Open source
+        </p>
+      </div>
     </section>
 
     <script>
-        // Generate neural background particles
-        function createNeuralParticles() {
-            const bg = document.getElementById('neuralBg');
-            const colors = ['#00B4FF', '#FF3366', '#00CC99', '#FFCC00', '#9966FF'];
-            const particleCount = 30;
+      // Generate neural background particles
+      function createNeuralParticles() {
+        const bg = document.getElementById("neuralBg");
+        const colors = ["#00B4FF", "#FF3366", "#00CC99", "#FFCC00", "#9966FF"];
+        const particleCount = 30;
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'neural-particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                bg.appendChild(particle);
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "neural-particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.top = Math.random() * 100 + "%";
+          particle.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+          particle.style.animationDelay = Math.random() * 20 + "s";
+          particle.style.animationDuration = 15 + Math.random() * 10 + "s";
+          bg.appendChild(particle);
+        }
+      }
+
+      // Intersection Observer for animations
+      function setupAnimations() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+
+        document
+          .querySelectorAll(".feature-card, .parameter-card, .profile-card")
+          .forEach((el) => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(30px)";
+            el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            observer.observe(el);
+          });
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        createNeuralParticles();
+        setupAnimations();
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          const href = this.getAttribute("href");
+          if (href !== "#") {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
             }
-        }
-
-        // Intersection Observer for animations
-        function setupAnimations() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.feature-card, .parameter-card, .profile-card').forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            createNeuralParticles();
-            setupAnimations();
+          }
         });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#') {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }
-            });
-        });
+      });
     </script>
-</body>
+  </body>
 </html>

@@ -1,743 +1,743 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI API - Documentation</title>
-    <link rel="stylesheet" href="assets/css/navigation.css">
+    <link rel="stylesheet" href="assets/css/navigation.css" />
     <script src="assets/js/navigation.js"></script>
     <script src="assets/js/theme-manager.js"></script>
     <script src="assets/js/cdn-fallbacks.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        :root {
-            /* APGI Semantic Color System */
-            --threshold-blue: #00B4FF;
-            --precision-red: #FF3366;
-            --modulator-green: #00CC99;
-            --error-yellow: #FFCC00;
-            --workspace-purple: #9966FF;
-            --slate-dark: #2C3E50;
-            --slate-light: #34495E;
-            --bg-dark: #1A1A2E;
-            --bg-darker: #111827;
-            --bg-card: rgba(44, 62, 80, 0.6);
-            --text-primary: #FFFFFF;
-            --text-secondary: #B8C5D6;
-            --text-muted: #6B7280;
-            
-            /* Light theme defaults */
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-tertiary: #e2e8f0;
-            --border-color: #e2e8f0;
-            --border-light: #f1f5f9;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
+      :root {
+        /* APGI Semantic Color System */
+        --threshold-blue: #00b4ff;
+        --precision-red: #ff3366;
+        --modulator-green: #00cc99;
+        --error-yellow: #ffcc00;
+        --workspace-purple: #9966ff;
+        --slate-dark: #2c3e50;
+        --slate-light: #34495e;
+        --bg-dark: #1a1a2e;
+        --bg-darker: #111827;
+        --bg-card: rgba(44, 62, 80, 0.6);
+        --text-primary: #ffffff;
+        --text-secondary: #b8c5d6;
+        --text-muted: #6b7280;
 
-        [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-tertiary: #e2e8f0;
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --border-light: #f1f5f9;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
+        /* Light theme defaults */
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8fafc;
+        --bg-tertiary: #e2e8f0;
+        --border-color: #e2e8f0;
+        --border-light: #f1f5f9;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
 
-        [data-theme="dark"] {
-            --bg-primary: #0f0f23;
-            --bg-secondary: #1a1a2e;
-            --bg-tertiary: #252538;
-            --text-primary: #e2e8f0;
-            --text-secondary: #cbd5e1;
-            --text-muted: #9ca3af;
-            --border-color: #2d2d44;
-            --border-light: #252538;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
-            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
+      [data-theme="light"] {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8fafc;
+        --bg-tertiary: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #334155;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --border-light: #f1f5f9;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+      [data-theme="dark"] {
+        --bg-primary: #0f0f23;
+        --bg-secondary: #1a1a2e;
+        --bg-tertiary: #252538;
+        --text-primary: #e2e8f0;
+        --text-secondary: #cbd5e1;
+        --text-muted: #9ca3af;
+        --border-color: #2d2d44;
+        --border-light: #252538;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
 
-        /* Skip to content link */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+          Arial, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        min-height: 100vh;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
 
-        .sr-only:focus {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            width: auto;
-            height: auto;
-            padding: 1rem;
-            margin: 0;
-            overflow: visible;
-            clip: auto;
-            white-space: normal;
-            background: var(--threshold-blue);
-            color: white;
-            border-radius: 0.375rem;
-            z-index: 50;
-            outline: 2px solid var(--threshold-blue);
-        }
+      /* Skip to content link */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
 
-        /* Navigation */
-        nav {
-            background: var(--bg-secondary);
-            box-shadow: var(--shadow-md);
-            border-bottom: 1px solid var(--border-color);
-        }
+      .sr-only:focus {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        width: auto;
+        height: auto;
+        padding: 1rem;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+        background: var(--threshold-blue);
+        color: white;
+        border-radius: 0.375rem;
+        z-index: 50;
+        outline: 2px solid var(--threshold-blue);
+      }
 
-        .nav-container {
-            max-width: 80rem;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
+      /* Navigation */
+      nav {
+        background: var(--bg-secondary);
+        box-shadow: var(--shadow-md);
+        border-bottom: 1px solid var(--border-color);
+      }
 
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 4rem;
-        }
+      .nav-container {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
+      .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 4rem;
+      }
 
-        .nav-brand:hover {
-            color: var(--text-primary);
-        }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
 
-        .logo {
-            height: 2rem;
-            width: auto;
-        }
+      .nav-brand:hover {
+        color: var(--text-primary);
+      }
 
-        .brand-text {
-            margin-left: 0.5rem;
-            font-size: 1.25rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--threshold-blue), var(--workspace-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+      .logo {
+        height: 2rem;
+        width: auto;
+      }
 
+      .brand-text {
+        margin-left: 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        background: linear-gradient(
+          90deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .nav-links {
+        display: none;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      @media (min-width: 768px) {
         .nav-links {
-            display: none;
-            align-items: center;
-            gap: 2rem;
+          display: flex;
         }
+      }
 
-        @media (min-width: 768px) {
-            .nav-links {
-                display: flex;
-            }
-        }
+      .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.2s;
+        font-weight: 500;
+      }
 
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.2s;
-            font-weight: 500;
-        }
+      .nav-link:hover {
+        color: var(--text-primary);
+      }
 
-        .nav-link:hover {
-            color: var(--text-primary);
-        }
+      .nav-link.active {
+        color: var(--threshold-blue);
+      }
 
-        .nav-link.active {
-            color: var(--threshold-blue);
-        }
+      .nav-button {
+        color: var(--text-secondary);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: color 0.2s;
+        padding: 0.5rem 1rem;
+      }
 
-        .nav-button {
-            color: var(--text-secondary);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: color 0.2s;
-            padding: 0.5rem 1rem;
-        }
+      .nav-button:hover {
+        color: var(--text-primary);
+      }
 
-        .nav-button:hover {
-            color: var(--text-primary);
-        }
+      .theme-toggle {
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
 
-        .theme-toggle {
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+      .theme-toggle:hover {
+        background: var(--bg-secondary);
+        transform: translateY(-1px);
+      }
 
-        .theme-toggle:hover {
-            background: var(--bg-secondary);
-            transform: translateY(-1px);
-        }
+      .mobile-menu-button {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        color: var(--text-secondary);
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
 
+      @media (min-width: 768px) {
         .mobile-menu-button {
-            display: flex;
-            align-items: center;
-            padding: 0.5rem;
-            color: var(--text-secondary);
-            background: none;
-            border: none;
-            cursor: pointer;
+          display: none;
         }
+      }
 
-        @media (min-width: 768px) {
-            .mobile-menu-button {
-                display: none;
-            }
-        }
+      /* Main Content */
+      main {
+        scroll-margin-top: 4rem;
+      }
 
-        /* Main Content */
-        main {
-            scroll-margin-top: 4rem;
-        }
+      .container {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+        background: var(--bg-primary);
+        border-radius: 8px;
+        box-shadow: var(--shadow-lg);
+      }
 
-        .container {
-            max-width: 80rem;
-            margin: 0 auto;
-            padding: 3rem 1rem;
-            background: var(--bg-primary);
-            border-radius: 8px;
-            box-shadow: var(--shadow-lg);
-        }
+      /* Search */
+      .search-mobile {
+        display: block;
+        margin-bottom: 1rem;
+      }
 
-        /* Search */
+      @media (min-width: 768px) {
         .search-mobile {
-            display: block;
-            margin-bottom: 1rem;
+          display: none;
         }
+      }
 
-        @media (min-width: 768px) {
-            .search-mobile {
-                display: none;
-            }
-        }
+      .search-desktop {
+        display: none;
+      }
 
+      @media (min-width: 768px) {
         .search-desktop {
-            display: none;
+          display: block;
         }
+      }
 
-        @media (min-width: 768px) {
-            .search-desktop {
-                display: block;
-            }
+      .search-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .search-button:hover {
+        background: var(--bg-secondary);
+        transform: translateY(-1px);
+      }
+
+      .search-wrapper {
+        position: relative;
+        max-width: 42rem;
+        margin: 0 auto;
+      }
+
+      .search-input-wrapper {
+        position: relative;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.25rem;
+        height: 1.25rem;
+        color: var(--text-muted);
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 0.75rem 2.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        transition: all 0.2s;
+      }
+
+      .search-input::placeholder {
+        color: var(--text-muted);
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--threshold-blue);
+        box-shadow: 0 0 0 2px rgba(0, 180, 255, 0.2);
+      }
+
+      /* Sections */
+      .section {
+        margin-top: 2rem;
+        background: var(--bg-primary);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+      }
+
+      .section-header {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 0;
+        color: inherit;
+        font: inherit;
+        transition: all 0.2s;
+      }
+
+      .section-header:hover h2 {
+        color: var(--threshold-blue);
+      }
+
+      .section-header h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        transition: color 0.2s;
+      }
+
+      .chevron {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--text-muted);
+        transition: all 0.2s;
+      }
+
+      .section-header:hover .chevron {
+        color: var(--threshold-blue);
+      }
+
+      .chevron.rotated {
+        transform: rotate(180deg);
+      }
+
+      .section-content {
+        margin-top: 1rem;
+        display: none;
+        animation: slideDown 0.3s ease-out;
+      }
+
+      .section-content.expanded {
+        display: block;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
         }
-
-        .search-button {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.2s;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
+      }
 
-        .search-button:hover {
-            background: var(--bg-secondary);
-            transform: translateY(-1px);
-        }
+      .section-text {
+        margin-top: 0.5rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+      }
 
-        .search-wrapper {
-            position: relative;
-            max-width: 42rem;
-            margin: 0 auto;
-        }
+      /* Code blocks */
+      .code-block {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--slate-light);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 1rem 0;
+        overflow-x: auto;
+      }
 
-        .search-input-wrapper {
-            position: relative;
-        }
+      .code-block code {
+        color: var(--modulator-green);
+        font-family: "Courier New", monospace;
+        font-size: 0.875rem;
+      }
 
-        .search-icon {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1.25rem;
-            height: 1.25rem;
-            color: var(--text-muted);
-        }
+      .code-block pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
 
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 2.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: all 0.2s;
-        }
+      /* Cards */
+      .card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin: 1rem 0;
+      }
 
-        .search-input::placeholder {
-            color: var(--text-muted);
-        }
+      .card h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        color: var(--threshold-blue);
+      }
 
-        .search-input:focus {
-            outline: none;
-            border-color: var(--threshold-blue);
-            box-shadow: 0 0 0 2px rgba(0, 180, 255, 0.2);
-        }
+      .card p {
+        color: var(--text-secondary);
+      }
 
-        /* Sections */
-        .section {
-            margin-top: 2rem;
-            background: var(--bg-primary);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-        }
+      /* Parameter badges */
+      .param-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+      }
 
-        .section-header {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            padding: 0;
-            color: inherit;
-            font: inherit;
-            transition: all 0.2s;
-        }
+      .badge-required {
+        background: rgba(255, 51, 102, 0.2);
+        color: var(--precision-red);
+      }
 
-        .section-header:hover h2 {
-            color: var(--threshold-blue);
+      .badge-optional {
+        background: rgba(0, 204, 153, 0.2);
+        color: var(--modulator-green);
+      }
+
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+      }
+
+      th,
+      td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      th {
+        font-weight: 600;
+        color: var(--threshold-blue);
+      }
+
+      td {
+        color: var(--text-secondary);
+      }
+
+      /* Footer */
+      footer {
+        background: var(--bg-darker);
+        margin-top: 4rem;
+      }
+
+      .footer-content {
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+        text-align: center;
+      }
+
+      .footer-text {
+        color: var(--text-muted);
+      }
+
+      /* Neural glow effects */
+      .glow-text {
+        text-shadow: 0 0 20px rgba(0, 180, 255, 0.5);
+      }
+
+      .endpoint-method {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.25rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+      }
+
+      .method-get {
+        background: rgba(0, 204, 153, 0.2);
+        color: var(--modulator-green);
+      }
+
+      .method-post {
+        background: rgba(0, 180, 255, 0.2);
+        color: var(--threshold-blue);
+      }
+
+      .method-put {
+        background: rgba(255, 204, 0, 0.2);
+        color: var(--error-yellow);
+      }
+
+      .method-delete {
+        background: rgba(255, 51, 102, 0.2);
+        color: var(--precision-red);
+      }
+
+      /* Lists */
+      ul,
+      ol {
+        margin-left: 1.5rem;
+        margin-top: 0.5rem;
+        color: var(--text-secondary);
+      }
+
+      ul li,
+      ol li {
+        margin-bottom: 0.5rem;
+      }
+
+      /* Highlights */
+      .highlight {
+        background: rgba(0, 180, 255, 0.1);
+        border-left: 3px solid var(--threshold-blue);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 0.25rem;
+      }
+
+      .highlight-warning {
+        background: rgba(255, 204, 0, 0.1);
+        border-left-color: var(--error-yellow);
+      }
+
+      .highlight-success {
+        background: rgba(0, 204, 153, 0.1);
+        border-left-color: var(--modulator-green);
+      }
+
+      .highlight-error {
+        background: rgba(255, 51, 102, 0.1);
+        border-left-color: var(--precision-red);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .container {
+          padding: 2rem 1rem;
         }
 
         .section-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            transition: color 0.2s;
+          font-size: 1.25rem;
         }
 
-        .chevron {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: var(--text-muted);
-            transition: all 0.2s;
-        }
-
-        .section-header:hover .chevron {
-            color: var(--threshold-blue);
-        }
-
-        .chevron.rotated {
-            transform: rotate(180deg);
-        }
-
-        .section-content {
-            margin-top: 1rem;
-            display: none;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        .section-content.expanded {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section-text {
-            margin-top: 0.5rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-
-        /* Code blocks */
-        .code-block {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--slate-light);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-
-        .code-block code {
-            color: var(--modulator-green);
-            font-family: 'Courier New', monospace;
-            font-size: 0.875rem;
-        }
-
-        .code-block pre {
-            margin: 0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1rem 0;
-        }
-
-        .card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            color: var(--threshold-blue);
-        }
-
-        .card p {
-            color: var(--text-secondary);
-        }
-
-        /* Parameter badges */
-        .param-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.25rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-        }
-
-        .badge-required {
-            background: rgba(255, 51, 102, 0.2);
-            color: var(--precision-red);
-        }
-
-        .badge-optional {
-            background: rgba(0, 204, 153, 0.2);
-            color: var(--modulator-green);
-        }
-
-        /* Tables */
         table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
+          font-size: 0.875rem;
         }
 
-        th, td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        th {
-            font-weight: 600;
-            color: var(--threshold-blue);
-        }
-
+        th,
         td {
-            color: var(--text-secondary);
+          padding: 0.5rem;
         }
-
-        /* Footer */
-        footer {
-            background: var(--bg-darker);
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            max-width: 80rem;
-            margin: 0 auto;
-            padding: 3rem 1rem;
-            text-align: center;
-        }
-
-        .footer-text {
-            color: var(--text-muted);
-        }
-
-        /* Neural glow effects */
-        .glow-text {
-            text-shadow: 0 0 20px rgba(0, 180, 255, 0.5);
-        }
-
-        .endpoint-method {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.25rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin-right: 0.5rem;
-        }
-
-        .method-get {
-            background: rgba(0, 204, 153, 0.2);
-            color: var(--modulator-green);
-        }
-
-        .method-post {
-            background: rgba(0, 180, 255, 0.2);
-            color: var(--threshold-blue);
-        }
-
-        .method-put {
-            background: rgba(255, 204, 0, 0.2);
-            color: var(--error-yellow);
-        }
-
-        .method-delete {
-            background: rgba(255, 51, 102, 0.2);
-            color: var(--precision-red);
-        }
-
-        /* Lists */
-        ul, ol {
-            margin-left: 1.5rem;
-            margin-top: 0.5rem;
-            color: var(--text-secondary);
-        }
-
-        ul li, ol li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Highlights */
-        .highlight {
-            background: rgba(0, 180, 255, 0.1);
-            border-left: 3px solid var(--threshold-blue);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.25rem;
-        }
-
-        .highlight-warning {
-            background: rgba(255, 204, 0, 0.1);
-            border-left-color: var(--error-yellow);
-        }
-
-        .highlight-success {
-            background: rgba(0, 204, 153, 0.1);
-            border-left-color: var(--modulator-green);
-        }
-
-        .highlight-error {
-            background: rgba(255, 51, 102, 0.1);
-            border-left-color: var(--precision-red);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 2rem 1rem;
-            }
-
-            .section-header h2 {
-                font-size: 1.25rem;
-            }
-
-            table {
-                font-size: 0.875rem;
-            }
-
-            th, td {
-                padding: 0.5rem;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Include Navigation Component -->
     <div id="navigation-container"></div>
-    <script>
-      // Load navigation with fallback
-      fetch('components/navigation.html')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Navigation component failed to load');
-          }
-          return response.text();
-        })
-        .then(html => {
-          document.getElementById('navigation-container').innerHTML = html;
-          
-          // Initialize navigation functionality
-          if (window.navigationManager) {
-            window.navigationManager.init();
-          }
-        })
-        .catch(error => {
-          console.error('Error loading navigation:', error);
-          // Fallback navigation if component fails to load
-          document.getElementById('navigation-container').innerHTML = `
-            <nav class="main-nav" role="navigation" aria-label="Main navigation">
-              <div class="nav-container">
-                <div class="nav-links">
-                  <a href="Home.html" class="nav-link nav-brand">APGI Framework</a>
-                  <div class="nav-dropdown">
-                    <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Assessment ▼</button>
-                    <div class="dropdown-menu">
-                      <a href="Quiz.html" class="dropdown-link">Quiz (Short)</a>
-                      <a href="Assessment.html" class="dropdown-link">Assessment (Full)</a>
-                      <a href="Assessment-OnePage.html" class="dropdown-link">Assessment (One Page)</a>
-                    </div>
-                  </div>
-                  <div class="nav-dropdown">
-                    <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Visualizations ▼</button>
-                    <div class="dropdown-menu">
-                      <a href="SCI/PsyStates-Visualizer.html" class="dropdown-link">PsyStates Visualizer</a>
-                      <a href="SCI/Consciousness-Visualization.html" class="dropdown-link">Consciousness Visualization</a>
-                      <a href="SCI/State-Network.html" class="dropdown-link">3D Network</a>
-                      <a href="SCI/Neuromoduratory-Cascade.html" class="dropdown-link">Neuromodulatory Cascade</a>
-                    </div>
-                  </div>
-                  <div class="nav-dropdown">
-                    <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Research ▼</button>
-                    <div class="dropdown-menu">
-                      <a href="Paper.html" class="dropdown-link">Research Paper</a>
-                      <a href="App-Appendix.html" class="dropdown-link">Appendix App</a>
-                      <a href="App-Explorer.html" class="dropdown-link">App Explorer</a>
-                      <a href="APGI-Experiments.html" class="dropdown-link">Experiments App</a>
-                      <a href="API.html" class="dropdown-link active">API Documentation</a>
-                      <a href="APGI-Software-System.html" class="dropdown-link">APGI Software System</a>
-                      <a href="SCI/Dashboard.html" class="dropdown-link">Dashboard</a>
-                      <a href="Book-Available-Now.html" class="dropdown-link">Book (Available Now)</a>
-                      <a href="Book-Outline.html" class="dropdown-link">Book Outline</a>
-                    </div>
-                  </div>
-                  <div class="nav-dropdown">
-                    <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Resources ▼</button>
-                    <div class="dropdown-menu">
-                      <a href="Profile.html" class="dropdown-link">Profile</a>
-                      <a href="Privacy-Policy.html" class="dropdown-link">Privacy Policy</a>
-                      <a href="Terms-of-Service.html" class="dropdown-link">Terms of Service</a>
-                    </div>
-                  </div>
-                  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" aria-expanded="false">
-                    <span class="theme-icon" aria-hidden="true">🌙</span>
-                    <span class="theme-text">Dark</span>
-                  </button>
-                </div>
-              </div>
-            </nav>
-          `;
-        })
-        .finally(() => {
-          // Reinitialize theme toggle after navigation loads (both success and fallback)
-          if (window.themeManager) {
-            window.themeManager.setupThemeToggle();
-            window.themeManager.updateThemeUI(window.themeManager.getTheme());
-          }
-        });
-    </script>
+    <script src="assets/js/navigation-loader.js"></script>
     <main id="main-content">
-        <div class="container">
-            <section class="section">
-                <div id="overview">
-                    <button class="section-header" onclick="toggleSection('overview-content', this)">
-                        <h2>Overview</h2>
-                        <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m18 15-6-6-6 6"></path>
-                        </svg>
-                    </button>
-                    <div id="overview-content" class="section-content expanded">
-                        <p class="section-text">
-                            The APGI API provides access to a scientifically-validated framework for understanding consciousness and cognitive processing. Built on the Allostatic Precision-Gated Ignition model, this API enables developers to integrate consciousness assessment, cognitive profiling, and real-time state analysis into their applications.
-                        </p>
-                        <p class="section-text">
-                            The API supports analysis of psychological assessments, cognitive parameter estimation, profile comparison, and state prediction based on validated APGI framework principles combining predictive processing, thermodynamics, and global workspace theory.
-                        </p>
-                        <div class="card">
-                            <h3>Key Features</h3>
-                            <ul>
-                                <li>Scientifically-validated cognitive parameter estimation (ε, π, θₜ, β)</li>
-                                <li>Real-time consciousness state analysis across 43+ psychological states</li>
-                                <li>Profile generation from questionnaire responses or behavioral data</li>
-                                <li>Comparative analysis between profiles with similarity scoring</li>
-                                <li>State transition prediction based on parameter changes</li>
-                                <li>Support for multiple data formats (JSON, CSV, streaming)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
+      <div class="container">
+        <section class="section">
+          <div id="overview">
+            <button
+              class="section-header"
+              onclick="toggleSection('overview-content', this)"
+            >
+              <h2>Overview</h2>
+              <svg
+                class="chevron"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m18 15-6-6-6 6"></path>
+              </svg>
+            </button>
+            <div id="overview-content" class="section-content expanded">
+              <p class="section-text">
+                The APGI API provides access to a scientifically-validated
+                framework for understanding consciousness and cognitive
+                processing. Built on the Allostatic Precision-Gated Ignition
+                model, this API enables developers to integrate consciousness
+                assessment, cognitive profiling, and real-time state analysis
+                into their applications.
+              </p>
+              <p class="section-text">
+                The API supports analysis of psychological assessments,
+                cognitive parameter estimation, profile comparison, and state
+                prediction based on validated APGI framework principles
+                combining predictive processing, thermodynamics, and global
+                workspace theory.
+              </p>
+              <div class="card">
+                <h3>Key Features</h3>
+                <ul>
+                  <li>
+                    Scientifically-validated cognitive parameter estimation (ε,
+                    π, θₜ, β)
+                  </li>
+                  <li>
+                    Real-time consciousness state analysis across 43+
+                    psychological states
+                  </li>
+                  <li>
+                    Profile generation from questionnaire responses or
+                    behavioral data
+                  </li>
+                  <li>
+                    Comparative analysis between profiles with similarity
+                    scoring
+                  </li>
+                  <li>
+                    State transition prediction based on parameter changes
+                  </li>
+                  <li>
+                    Support for multiple data formats (JSON, CSV, streaming)
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <!-- Getting Started Section -->
-            <section class="section">
-                <div id="getting-started">
-                    <button class="section-header" onclick="toggleSection('getting-started-content', this)">
-                        <h2>Getting Started</h2>
-                        <svg class="chevron rotated" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6"></path>
-                        </svg>
-                    </button>
-                    <div id="getting-started-content" class="section-content">
-                        <p class="section-text">
-                            To begin using the APGI API, you'll need to obtain an API key and configure your development environment. The API is RESTful and returns JSON-formatted responses.
-                        </p>
-                        
-                        <h3 style="color: var(--threshold-blue); margin-top: 1.5rem; margin-bottom: 0.75rem;">Quick Start</h3>
-                        
-                        <div class="card">
-                            <h3>Step 1: Get Your API Key</h3>
-                            <p>Register for an API key at the APGI Developer Portal. Keys are environment-specific (development, staging, production).</p>
-                        </div>
+        <!-- Getting Started Section -->
+        <section class="section">
+          <div id="getting-started">
+            <button
+              class="section-header"
+              onclick="toggleSection('getting-started-content', this)"
+            >
+              <h2>Getting Started</h2>
+              <svg
+                class="chevron rotated"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+            <div id="getting-started-content" class="section-content">
+              <p class="section-text">
+                To begin using the APGI API, you'll need to obtain an API key
+                and configure your development environment. The API is RESTful
+                and returns JSON-formatted responses.
+              </p>
 
-                        <div class="card">
-                            <h3>Step 2: Install Client Library (Optional)</h3>
-                            <p>We provide official client libraries for popular languages:</p>
-                            <div class="code-block">
-                                <pre><code># Python
+              <h3
+                style="
+                  color: var(--threshold-blue);
+                  margin-top: 1.5rem;
+                  margin-bottom: 0.75rem;
+                "
+              >
+                Quick Start
+              </h3>
+
+              <div class="card">
+                <h3>Step 1: Get Your API Key</h3>
+                <p>
+                  Register for an API key at the APGI Developer Portal. Keys are
+                  environment-specific (development, staging, production).
+                </p>
+              </div>
+
+              <div class="card">
+                <h3>Step 2: Install Client Library (Optional)</h3>
+                <p>
+                  We provide official client libraries for popular languages:
+                </p>
+                <div class="code-block">
+                  <pre><code># Python
 pip install apgi-api
 
 # JavaScript/Node.js
@@ -745,78 +745,115 @@ npm install apgi-api
 
 # R
 install.packages("apgi")</code></pre>
-                            </div>
-                        </div>
+                </div>
+              </div>
 
-                        <div class="card">
-                            <h3>Step 3: Make Your First Request</h3>
-                            <p>Test your connection with a simple profile analysis:</p>
-                            <div class="code-block">
-                                <pre><code>curl -X POST https://api.apgi.io/v1/analyze \
+              <div class="card">
+                <h3>Step 3: Make Your First Request</h3>
+                <p>Test your connection with a simple profile analysis:</p>
+                <div class="code-block">
+                  <pre><code>curl -X POST https://api.apgi.io/v1/analyze \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "responses": [4, 3, 5, 2, 4, ...],
     "return_profile": true
   }'</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="highlight highlight-success">
-                            <strong>Base URL:</strong> <code>https://api.apgi.io/v1</code><br>
-                            <strong>Rate Limits:</strong> 1000 requests/hour (standard tier), 10,000 requests/hour (premium tier)
-                        </div>
-                    </div>
                 </div>
-            </section>
+              </div>
 
-            <!-- Authentication Section -->
-            <section class="section">
-                <div id="authentication">
-                    <button class="section-header" onclick="toggleSection('authentication-content', this)">
-                        <h2>Authentication</h2>
-                        <svg class="chevron rotated" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6"></path>
-                        </svg>
-                    </button>
-                    <div id="authentication-content" class="section-content">
-                        <p class="section-text">
-                            The APGI API uses API key authentication via Bearer tokens. All requests must include your API key in the Authorization header.
-                        </p>
+              <div class="highlight highlight-success">
+                <strong>Base URL:</strong> <code>https://api.apgi.io/v1</code
+                ><br />
+                <strong>Rate Limits:</strong> 1000 requests/hour (standard
+                tier), 10,000 requests/hour (premium tier)
+              </div>
+            </div>
+          </div>
+        </section>
 
-                        <h3 style="color: var(--threshold-blue); margin-top: 1.5rem; margin-bottom: 0.75rem;">Authentication Methods</h3>
+        <!-- Authentication Section -->
+        <section class="section">
+          <div id="authentication">
+            <button
+              class="section-header"
+              onclick="toggleSection('authentication-content', this)"
+            >
+              <h2>Authentication</h2>
+              <svg
+                class="chevron rotated"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+            <div id="authentication-content" class="section-content">
+              <p class="section-text">
+                The APGI API uses API key authentication via Bearer tokens. All
+                requests must include your API key in the Authorization header.
+              </p>
 
-                        <div class="card">
-                            <h3>Bearer Token (Recommended)</h3>
-                            <p>Include your API key in the Authorization header:</p>
-                            <div class="code-block">
-                                <pre><code>Authorization: Bearer apgi_live_abc123def456ghi789</code></pre>
-                            </div>
-                        </div>
+              <h3
+                style="
+                  color: var(--threshold-blue);
+                  margin-top: 1.5rem;
+                  margin-bottom: 0.75rem;
+                "
+              >
+                Authentication Methods
+              </h3>
 
-                        <div class="card">
-                            <h3>API Key Formats</h3>
-                            <ul>
-                                <li><code>apgi_test_*</code> - Testing environment (limited features, no billing)</li>
-                                <li><code>apgi_dev_*</code> - Development environment (full features, no rate limits)</li>
-                                <li><code>apgi_live_*</code> - Production environment (full features, rate limits apply)</li>
-                            </ul>
-                        </div>
+              <div class="card">
+                <h3>Bearer Token (Recommended)</h3>
+                <p>Include your API key in the Authorization header:</p>
+                <div class="code-block">
+                  <pre><code>Authorization: Bearer apgi_live_abc123def456ghi789</code></pre>
+                </div>
+              </div>
 
-                        <div class="highlight highlight-warning">
-                            <strong>Security Best Practices:</strong>
-                            <ul>
-                                <li>Never expose API keys in client-side code or public repositories</li>
-                                <li>Rotate keys regularly (recommended: every 90 days)</li>
-                                <li>Use environment variables to store keys</li>
-                                <li>Implement IP whitelisting for production keys</li>
-                            </ul>
-                        </div>
+              <div class="card">
+                <h3>API Key Formats</h3>
+                <ul>
+                  <li>
+                    <code>apgi_test_*</code> - Testing environment (limited
+                    features, no billing)
+                  </li>
+                  <li>
+                    <code>apgi_dev_*</code> - Development environment (full
+                    features, no rate limits)
+                  </li>
+                  <li>
+                    <code>apgi_live_*</code> - Production environment (full
+                    features, rate limits apply)
+                  </li>
+                </ul>
+              </div>
 
-                        <div class="card">
-                            <h3>Example Authentication</h3>
-                            <div class="code-block">
-                                <pre><code>// JavaScript
+              <div class="highlight highlight-warning">
+                <strong>Security Best Practices:</strong>
+                <ul>
+                  <li>
+                    Never expose API keys in client-side code or public
+                    repositories
+                  </li>
+                  <li>Rotate keys regularly (recommended: every 90 days)</li>
+                  <li>Use environment variables to store keys</li>
+                  <li>Implement IP whitelisting for production keys</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <h3>Example Authentication</h3>
+                <div class="code-block">
+                  <pre><code>// JavaScript
 fetch('https://api.apgi.io/v1/analyze', {
   method: 'POST',
   headers: {
@@ -825,72 +862,103 @@ fetch('https://api.apgi.io/v1/analyze', {
   },
   body: JSON.stringify({ responses: [4,3,5,2,4] })
 })</code></pre>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </section>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <!-- Endpoints Section -->
-            <section class="section">
-                <div id="endpoints">
-                    <button class="section-header" onclick="toggleSection('endpoints-content', this)">
-                        <h2>Endpoints</h2>
-                        <svg class="chevron rotated" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6"></path>
-                        </svg>
-                    </button>
-                    <div id="endpoints-content" class="section-content">
-                        
-                        <!-- Profile Analysis Endpoint -->
-                        <div class="card">
-                            <h3>
-                                <span class="endpoint-method method-post">POST</span>
-                                /v1/analyze
-                            </h3>
-                            <p>Generate APGI cognitive profile from questionnaire responses.</p>
-                            
-                            <h4 style="margin-top: 1rem; color: var(--text-primary);">Request Parameters</h4>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Parameter</th>
-                                        <th>Type</th>
-                                        <th>Required</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><code>responses</code></td>
-                                        <td>array[integer]</td>
-                                        <td><span class="param-badge badge-required">Required</span></td>
-                                        <td>Array of 35 questionnaire responses (1-5 scale)</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>return_profile</code></td>
-                                        <td>boolean</td>
-                                        <td><span class="param-badge badge-optional">Optional</span></td>
-                                        <td>Include full profile analysis (default: true)</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>include_states</code></td>
-                                        <td>boolean</td>
-                                        <td><span class="param-badge badge-optional">Optional</span></td>
-                                        <td>Include probable psychological states (default: false)</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>confidence_threshold</code></td>
-                                        <td>float</td>
-                                        <td><span class="param-badge badge-optional">Optional</span></td>
-                                        <td>Minimum confidence for profile (0.0-1.0, default: 0.7)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+        <!-- Endpoints Section -->
+        <section class="section">
+          <div id="endpoints">
+            <button
+              class="section-header"
+              onclick="toggleSection('endpoints-content', this)"
+            >
+              <h2>Endpoints</h2>
+              <svg
+                class="chevron rotated"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+            <div id="endpoints-content" class="section-content">
+              <!-- Profile Analysis Endpoint -->
+              <div class="card">
+                <h3>
+                  <span class="endpoint-method method-post">POST</span>
+                  /v1/analyze
+                </h3>
+                <p>
+                  Generate APGI cognitive profile from questionnaire responses.
+                </p>
 
-                            <h4 style="margin-top: 1rem; color: var(--text-primary);">Response</h4>
-                            <div class="code-block">
-                                <pre><code>{
+                <h4 style="margin-top: 1rem; color: var(--text-primary)">
+                  Request Parameters
+                </h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>responses</code></td>
+                      <td>array[integer]</td>
+                      <td>
+                        <span class="param-badge badge-required">Required</span>
+                      </td>
+                      <td>Array of 35 questionnaire responses (1-5 scale)</td>
+                    </tr>
+                    <tr>
+                      <td><code>return_profile</code></td>
+                      <td>boolean</td>
+                      <td>
+                        <span class="param-badge badge-optional">Optional</span>
+                      </td>
+                      <td>Include full profile analysis (default: true)</td>
+                    </tr>
+                    <tr>
+                      <td><code>include_states</code></td>
+                      <td>boolean</td>
+                      <td>
+                        <span class="param-badge badge-optional">Optional</span>
+                      </td>
+                      <td>
+                        Include probable psychological states (default: false)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><code>confidence_threshold</code></td>
+                      <td>float</td>
+                      <td>
+                        <span class="param-badge badge-optional">Optional</span>
+                      </td>
+                      <td>
+                        Minimum confidence for profile (0.0-1.0, default: 0.7)
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <h4 style="margin-top: 1rem; color: var(--text-primary)">
+                  Response
+                </h4>
+                <div class="code-block">
+                  <pre><code>{
   "profile_id": "prof_abc123",
   "parameters": {
     "epsilon": 0.72,
@@ -909,239 +977,306 @@ fetch('https://api.apgi.io/v1/analyze', {
     }
   ]
 }</code></pre>
-                            </div>
-                        </div>
-
-                        <!-- Parameter Estimation Endpoint -->
-                        <div class="card">
-                            <h3>
-                                <span class="endpoint-method method-post">POST</span>
-                                /v1/parameters/estimate
-                            </h3>
-                            <p>Estimate individual APGI parameters from behavioral data.</p>
-                            
-                            <h4 style="margin-top: 1rem; color: var(--text-primary);">Request Parameters</h4>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Parameter</th>
-                                        <th>Type</th>
-                                        <th>Required</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><code>data_type</code></td>
-                                        <td>string</td>
-                                        <td><span class="param-badge badge-required">Required</span></td>
-                                        <td>Type of input data: "questionnaire", "behavioral", "neural"</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>data</code></td>
-                                        <td>object</td>
-                                        <td><span class="param-badge badge-required">Required</span></td>
-                                        <td>Input data formatted according to data_type</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>parameters</code></td>
-                                        <td>array[string]</td>
-                                        <td><span class="param-badge badge-optional">Optional</span></td>
-                                        <td>Specific parameters to estimate (default: all four)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Profile Comparison Endpoint -->
-                        <div class="card">
-                            <h3>
-                                <span class="endpoint-method method-post">POST</span>
-                                /v1/profiles/compare
-                            </h3>
-                            <p>Compare two or more APGI profiles and calculate similarity metrics.</p>
-                            
-                            <h4 style="margin-top: 1rem; color: var(--text-primary);">Request Parameters</h4>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Parameter</th>
-                                        <th>Type</th>
-                                        <th>Required</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><code>profile_ids</code></td>
-                                        <td>array[string]</td>
-                                        <td><span class="param-badge badge-required">Required</span></td>
-                                        <td>Array of 2-10 profile IDs to compare</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>metrics</code></td>
-                                        <td>array[string]</td>
-                                        <td><span class="param-badge badge-optional">Optional</span></td>
-                                        <td>Similarity metrics: "euclidean", "cosine", "manhattan"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- State Prediction Endpoint -->
-                        <div class="card">
-                            <h3>
-                                <span class="endpoint-method method-post">POST</span>
-                                /v1/states/predict
-                            </h3>
-                            <p>Predict psychological states based on current parameters and context.</p>
-                            
-                            <h4 style="margin-top: 1rem; color: var(--text-primary);">Request Parameters</h4>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Parameter</th>
-                                        <th>Type</th>
-                                        <th>Required</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><code>profile_id</code></td>
-                                        <td>string</td>
-                                        <td><span class="param-badge badge-required">Required</span></td>
-                                        <td>Profile ID for state prediction</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>context</code></td>
-                                        <td>object</td>
-                                        <td><span class="param-badge badge-optional">Optional</span></td>
-                                        <td>Environmental or situational context data</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>top_k</code></td>
-                                        <td>integer</td>
-                                        <td><span class="param-badge badge-optional">Optional</span></td>
-                                        <td>Number of top states to return (default: 5)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Get Profile Endpoint -->
-                        <div class="card">
-                            <h3>
-                                <span class="endpoint-method method-get">GET</span>
-                                /v1/profiles/{profile_id}
-                            </h3>
-                            <p>Retrieve a previously generated profile by ID.</p>
-                            
-                            <h4 style="margin-top: 1rem; color: var(--text-primary);">Path Parameters</h4>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Parameter</th>
-                                        <th>Type</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><code>profile_id</code></td>
-                                        <td>string</td>
-                                        <td>Unique identifier for the profile</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
                 </div>
-            </section>
+              </div>
 
-            <!-- Error Codes Section -->
-            <section class="section">
-                <div id="error-codes">
-                    <button class="section-header" onclick="toggleSection('error-codes-content', this)">
-                        <h2>Error Codes</h2>
-                        <svg class="chevron rotated" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6"></path>
-                        </svg>
-                    </button>
-                    <div id="error-codes-content" class="section-content">
-                        <p class="section-text">
-                            The APGI API uses standard HTTP status codes and provides detailed error messages in JSON format.
-                        </p>
+              <!-- Parameter Estimation Endpoint -->
+              <div class="card">
+                <h3>
+                  <span class="endpoint-method method-post">POST</span>
+                  /v1/parameters/estimate
+                </h3>
+                <p>Estimate individual APGI parameters from behavioral data.</p>
 
-                        <h3 style="color: var(--threshold-blue); margin-top: 1.5rem; margin-bottom: 0.75rem;">HTTP Status Codes</h3>
-                        
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Status</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>200</strong></td>
-                                    <td>OK</td>
-                                    <td>Request succeeded</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>201</strong></td>
-                                    <td>Created</td>
-                                    <td>Resource successfully created</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>400</strong></td>
-                                    <td>Bad Request</td>
-                                    <td>Invalid request parameters or malformed data</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>401</strong></td>
-                                    <td>Unauthorized</td>
-                                    <td>Missing or invalid API key</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>403</strong></td>
-                                    <td>Forbidden</td>
-                                    <td>API key lacks necessary permissions</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>404</strong></td>
-                                    <td>Not Found</td>
-                                    <td>Requested resource does not exist</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>422</strong></td>
-                                    <td>Unprocessable Entity</td>
-                                    <td>Request data fails validation</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>429</strong></td>
-                                    <td>Too Many Requests</td>
-                                    <td>Rate limit exceeded</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>500</strong></td>
-                                    <td>Internal Server Error</td>
-                                    <td>Unexpected server error</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>503</strong></td>
-                                    <td>Service Unavailable</td>
-                                    <td>API temporarily unavailable</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <h4 style="margin-top: 1rem; color: var(--text-primary)">
+                  Request Parameters
+                </h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>data_type</code></td>
+                      <td>string</td>
+                      <td>
+                        <span class="param-badge badge-required">Required</span>
+                      </td>
+                      <td>
+                        Type of input data: "questionnaire", "behavioral",
+                        "neural"
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><code>data</code></td>
+                      <td>object</td>
+                      <td>
+                        <span class="param-badge badge-required">Required</span>
+                      </td>
+                      <td>Input data formatted according to data_type</td>
+                    </tr>
+                    <tr>
+                      <td><code>parameters</code></td>
+                      <td>array[string]</td>
+                      <td>
+                        <span class="param-badge badge-optional">Optional</span>
+                      </td>
+                      <td>
+                        Specific parameters to estimate (default: all four)
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-                        <h3 style="color: var(--threshold-blue); margin-top: 1.5rem; margin-bottom: 0.75rem;">Error Response Format</h3>
-                        
-                        <div class="code-block">
-                            <pre><code>{
+              <!-- Profile Comparison Endpoint -->
+              <div class="card">
+                <h3>
+                  <span class="endpoint-method method-post">POST</span>
+                  /v1/profiles/compare
+                </h3>
+                <p>
+                  Compare two or more APGI profiles and calculate similarity
+                  metrics.
+                </p>
+
+                <h4 style="margin-top: 1rem; color: var(--text-primary)">
+                  Request Parameters
+                </h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>profile_ids</code></td>
+                      <td>array[string]</td>
+                      <td>
+                        <span class="param-badge badge-required">Required</span>
+                      </td>
+                      <td>Array of 2-10 profile IDs to compare</td>
+                    </tr>
+                    <tr>
+                      <td><code>metrics</code></td>
+                      <td>array[string]</td>
+                      <td>
+                        <span class="param-badge badge-optional">Optional</span>
+                      </td>
+                      <td>
+                        Similarity metrics: "euclidean", "cosine", "manhattan"
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- State Prediction Endpoint -->
+              <div class="card">
+                <h3>
+                  <span class="endpoint-method method-post">POST</span>
+                  /v1/states/predict
+                </h3>
+                <p>
+                  Predict psychological states based on current parameters and
+                  context.
+                </p>
+
+                <h4 style="margin-top: 1rem; color: var(--text-primary)">
+                  Request Parameters
+                </h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>profile_id</code></td>
+                      <td>string</td>
+                      <td>
+                        <span class="param-badge badge-required">Required</span>
+                      </td>
+                      <td>Profile ID for state prediction</td>
+                    </tr>
+                    <tr>
+                      <td><code>context</code></td>
+                      <td>object</td>
+                      <td>
+                        <span class="param-badge badge-optional">Optional</span>
+                      </td>
+                      <td>Environmental or situational context data</td>
+                    </tr>
+                    <tr>
+                      <td><code>top_k</code></td>
+                      <td>integer</td>
+                      <td>
+                        <span class="param-badge badge-optional">Optional</span>
+                      </td>
+                      <td>Number of top states to return (default: 5)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Get Profile Endpoint -->
+              <div class="card">
+                <h3>
+                  <span class="endpoint-method method-get">GET</span>
+                  /v1/profiles/{profile_id}
+                </h3>
+                <p>Retrieve a previously generated profile by ID.</p>
+
+                <h4 style="margin-top: 1rem; color: var(--text-primary)">
+                  Path Parameters
+                </h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>profile_id</code></td>
+                      <td>string</td>
+                      <td>Unique identifier for the profile</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Error Codes Section -->
+        <section class="section">
+          <div id="error-codes">
+            <button
+              class="section-header"
+              onclick="toggleSection('error-codes-content', this)"
+            >
+              <h2>Error Codes</h2>
+              <svg
+                class="chevron rotated"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+            <div id="error-codes-content" class="section-content">
+              <p class="section-text">
+                The APGI API uses standard HTTP status codes and provides
+                detailed error messages in JSON format.
+              </p>
+
+              <h3
+                style="
+                  color: var(--threshold-blue);
+                  margin-top: 1.5rem;
+                  margin-bottom: 0.75rem;
+                "
+              >
+                HTTP Status Codes
+              </h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>200</strong></td>
+                    <td>OK</td>
+                    <td>Request succeeded</td>
+                  </tr>
+                  <tr>
+                    <td><strong>201</strong></td>
+                    <td>Created</td>
+                    <td>Resource successfully created</td>
+                  </tr>
+                  <tr>
+                    <td><strong>400</strong></td>
+                    <td>Bad Request</td>
+                    <td>Invalid request parameters or malformed data</td>
+                  </tr>
+                  <tr>
+                    <td><strong>401</strong></td>
+                    <td>Unauthorized</td>
+                    <td>Missing or invalid API key</td>
+                  </tr>
+                  <tr>
+                    <td><strong>403</strong></td>
+                    <td>Forbidden</td>
+                    <td>API key lacks necessary permissions</td>
+                  </tr>
+                  <tr>
+                    <td><strong>404</strong></td>
+                    <td>Not Found</td>
+                    <td>Requested resource does not exist</td>
+                  </tr>
+                  <tr>
+                    <td><strong>422</strong></td>
+                    <td>Unprocessable Entity</td>
+                    <td>Request data fails validation</td>
+                  </tr>
+                  <tr>
+                    <td><strong>429</strong></td>
+                    <td>Too Many Requests</td>
+                    <td>Rate limit exceeded</td>
+                  </tr>
+                  <tr>
+                    <td><strong>500</strong></td>
+                    <td>Internal Server Error</td>
+                    <td>Unexpected server error</td>
+                  </tr>
+                  <tr>
+                    <td><strong>503</strong></td>
+                    <td>Service Unavailable</td>
+                    <td>API temporarily unavailable</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3
+                style="
+                  color: var(--threshold-blue);
+                  margin-top: 1.5rem;
+                  margin-bottom: 0.75rem;
+                "
+              >
+                Error Response Format
+              </h3>
+
+              <div class="code-block">
+                <pre><code>{
   "error": {
     "code": "invalid_parameter",
     "message": "Invalid value for 'responses': expected 35 integers, got 30",
@@ -1150,195 +1285,265 @@ fetch('https://api.apgi.io/v1/analyze', {
   },
   "status": 400
 }</code></pre>
-                        </div>
+              </div>
 
-                        <h3 style="color: var(--threshold-blue); margin-top: 1.5rem; margin-bottom: 0.75rem;">Common Error Types</h3>
-                        
-                        <div class="card">
-                            <h3>authentication_error</h3>
-                            <p>API key is missing, invalid, or expired. Check your Authorization header.</p>
-                        </div>
+              <h3
+                style="
+                  color: var(--threshold-blue);
+                  margin-top: 1.5rem;
+                  margin-bottom: 0.75rem;
+                "
+              >
+                Common Error Types
+              </h3>
 
-                        <div class="card">
-                            <h3>validation_error</h3>
-                            <p>Request parameters don't meet schema requirements. Check parameter types and ranges.</p>
-                        </div>
+              <div class="card">
+                <h3>authentication_error</h3>
+                <p>
+                  API key is missing, invalid, or expired. Check your
+                  Authorization header.
+                </p>
+              </div>
 
-                        <div class="card">
-                            <h3>rate_limit_error</h3>
-                            <p>Too many requests in a short time. Implement exponential backoff or upgrade your plan.</p>
-                        </div>
+              <div class="card">
+                <h3>validation_error</h3>
+                <p>
+                  Request parameters don't meet schema requirements. Check
+                  parameter types and ranges.
+                </p>
+              </div>
 
-                        <div class="card">
-                            <h3>resource_not_found</h3>
-                            <p>Requested profile_id or other resource doesn't exist or has been deleted.</p>
-                        </div>
+              <div class="card">
+                <h3>rate_limit_error</h3>
+                <p>
+                  Too many requests in a short time. Implement exponential
+                  backoff or upgrade your plan.
+                </p>
+              </div>
 
-                        <div class="highlight highlight-error">
-                            <strong>Rate Limiting:</strong><br>
-                            When rate limited, the response includes <code>Retry-After</code> header indicating seconds to wait before retrying. Implement exponential backoff for optimal performance.
-                        </div>
-                    </div>
-                </div>
-            </section>
+              <div class="card">
+                <h3>resource_not_found</h3>
+                <p>
+                  Requested profile_id or other resource doesn't exist or has
+                  been deleted.
+                </p>
+              </div>
 
-            <!-- FAQ Section -->
-            <section class="section">
-                <div id="faq">
-                    <button class="section-header" onclick="toggleSection('faq-content', this)">
-                        <h2>FAQ</h2>
-                        <svg class="chevron rotated" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6"></path>
-                        </svg>
-                    </button>
-                    <div id="faq-content" class="section-content">
-                        
-                        <div class="card">
-                            <h3>What is the APGI framework?</h3>
-                            <p>
-                                APGI (Allostatic Precision-Gated Ignition) is a scientifically-validated framework for understanding consciousness as an emergent property of thermodynamically-constrained neural processing. It combines predictive processing, global workspace theory, and thermodynamic principles to explain how conscious experiences arise from neural computation.
-                            </p>
-                        </div>
+              <div class="highlight highlight-error">
+                <strong>Rate Limiting:</strong><br />
+                When rate limited, the response includes
+                <code>Retry-After</code> header indicating seconds to wait
+                before retrying. Implement exponential backoff for optimal
+                performance.
+              </div>
+            </div>
+          </div>
+        </section>
 
-                        <div class="card">
-                            <h3>How accurate are the cognitive profiles?</h3>
-                            <p>
-                                APGI profiles are generated using scientifically-validated assessment methodology with test-retest reliability >0.85. Parameter estimates are validated against established personality inventories and show strong convergent validity with Big Five traits (r > 0.7). Confidence scores indicate the reliability of individual assessments.
-                            </p>
-                        </div>
+        <!-- FAQ Section -->
+        <section class="section">
+          <div id="faq">
+            <button
+              class="section-header"
+              onclick="toggleSection('faq-content', this)"
+            >
+              <h2>FAQ</h2>
+              <svg
+                class="chevron rotated"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+            <div id="faq-content" class="section-content">
+              <div class="card">
+                <h3>What is the APGI framework?</h3>
+                <p>
+                  APGI (Allostatic Precision-Gated Ignition) is a
+                  scientifically-validated framework for understanding
+                  consciousness as an emergent property of
+                  thermodynamically-constrained neural processing. It combines
+                  predictive processing, global workspace theory, and
+                  thermodynamic principles to explain how conscious experiences
+                  arise from neural computation.
+                </p>
+              </div>
 
-                        <div class="card">
-                            <h3>Can I use the API for clinical purposes?</h3>
-                            <p>
-                                The APGI API is designed for research and informational purposes. While based on validated psychological principles, it should not be used as a sole diagnostic tool for clinical decision-making. Always consult qualified mental health professionals for clinical assessment and treatment.
-                            </p>
-                        </div>
+              <div class="card">
+                <h3>How accurate are the cognitive profiles?</h3>
+                <p>
+                  APGI profiles are generated using scientifically-validated
+                  assessment methodology with test-retest reliability >0.85.
+                  Parameter estimates are validated against established
+                  personality inventories and show strong convergent validity
+                  with Big Five traits (r > 0.7). Confidence scores indicate the
+                  reliability of individual assessments.
+                </p>
+              </div>
 
-                        <div class="card">
-                            <h3>What are the four core parameters?</h3>
-                            <p>
-                                <strong>ε (Epsilon):</strong> Prediction Error Sensitivity - responsiveness to unexpected events<br>
-                                <strong>π (Pi):</strong> Precision Allocation - how you prioritize information sources<br>
-                                <strong>θₜ (Theta-t):</strong> Ignition Threshold - level needed for conscious awareness<br>
-                                <strong>β (Beta):</strong> Somatic Bias - attunement to bodily sensations
-                            </p>
-                        </div>
+              <div class="card">
+                <h3>Can I use the API for clinical purposes?</h3>
+                <p>
+                  The APGI API is designed for research and informational
+                  purposes. While based on validated psychological principles,
+                  it should not be used as a sole diagnostic tool for clinical
+                  decision-making. Always consult qualified mental health
+                  professionals for clinical assessment and treatment.
+                </p>
+              </div>
 
-                        <div class="card">
-                            <h3>How is data privacy handled?</h3>
-                            <p>
-                                All API requests are encrypted via TLS 1.3. Profile data is anonymized and can be deleted on request. We do not share individual-level data with third parties. Aggregate, anonymized data may be used for research purposes. See our Privacy Policy for full details.
-                            </p>
-                        </div>
+              <div class="card">
+                <h3>What are the four core parameters?</h3>
+                <p>
+                  <strong>ε (Epsilon):</strong> Prediction Error Sensitivity -
+                  responsiveness to unexpected events<br />
+                  <strong>π (Pi):</strong> Precision Allocation - how you
+                  prioritize information sources<br />
+                  <strong>θₜ (Theta-t):</strong> Ignition Threshold - level
+                  needed for conscious awareness<br />
+                  <strong>β (Beta):</strong> Somatic Bias - attunement to bodily
+                  sensations
+                </p>
+              </div>
 
-                        <div class="card">
-                            <h3>What are the rate limits?</h3>
-                            <p>
-                                Standard tier: 1,000 requests/hour<br>
-                                Premium tier: 10,000 requests/hour<br>
-                                Enterprise tier: Custom limits available<br><br>
-                                Rate limits reset hourly. Implement caching and batch processing for optimal usage.
-                            </p>
-                        </div>
+              <div class="card">
+                <h3>How is data privacy handled?</h3>
+                <p>
+                  All API requests are encrypted via TLS 1.3. Profile data is
+                  anonymized and can be deleted on request. We do not share
+                  individual-level data with third parties. Aggregate,
+                  anonymized data may be used for research purposes. See our
+                  Privacy Policy for full details.
+                </p>
+              </div>
 
-                        <div class="card">
-                            <h3>Can I integrate APGI with existing psychological assessments?</h3>
-                            <p>
-                                Yes! The APGI framework is designed to complement existing psychological assessment tools. We provide mapping functions for popular inventories (Big Five, HEXACO, etc.) and can work with behavioral data from various sources. Contact our integration team for custom solutions.
-                            </p>
-                        </div>
+              <div class="card">
+                <h3>What are the rate limits?</h3>
+                <p>
+                  Standard tier: 1,000 requests/hour<br />
+                  Premium tier: 10,000 requests/hour<br />
+                  Enterprise tier: Custom limits available<br /><br />
+                  Rate limits reset hourly. Implement caching and batch
+                  processing for optimal usage.
+                </p>
+              </div>
 
-                        <div class="card">
-                            <h3>How do I report bugs or request features?</h3>
-                            <p>
-                                Submit bug reports and feature requests through our GitHub repository or developer portal. For critical issues affecting production systems, contact support@apgi.io with your API key and request details.
-                            </p>
-                        </div>
+              <div class="card">
+                <h3>
+                  Can I integrate APGI with existing psychological assessments?
+                </h3>
+                <p>
+                  Yes! The APGI framework is designed to complement existing
+                  psychological assessment tools. We provide mapping functions
+                  for popular inventories (Big Five, HEXACO, etc.) and can work
+                  with behavioral data from various sources. Contact our
+                  integration team for custom solutions.
+                </p>
+              </div>
 
-                        <div class="highlight highlight-success">
-                            <strong>Need more help?</strong><br>
-                            Join our developer community on Discord or check out the comprehensive API documentation at <code>docs.apgi.io</code>
-                        </div>
-                    </div>
-                </div>
-            </section>
+              <div class="card">
+                <h3>How do I report bugs or request features?</h3>
+                <p>
+                  Submit bug reports and feature requests through our GitHub
+                  repository or developer portal. For critical issues affecting
+                  production systems, contact support@apgi.io with your API key
+                  and request details.
+                </p>
+              </div>
 
-        </div>
+              <div class="highlight highlight-success">
+                <strong>Need more help?</strong><br />
+                Join our developer community on Discord or check out the
+                comprehensive API documentation at <code>docs.apgi.io</code>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
     <footer>
-        <div class="footer-content">
-            <p class="footer-text">© 2025 APGI Framework. All rights reserved.</p>
-        </div>
+      <div class="footer-content">
+        <p class="footer-text">© 2025 APGI Framework. All rights reserved.</p>
+      </div>
     </footer>
 
     <script>
-        // Theme Management
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeUI(savedTheme);
-        }
+      // Theme Management
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        updateThemeUI(savedTheme);
+      }
 
-        function updateThemeUI(theme) {
-            const themeToggle = document.getElementById('theme-toggle');
-            const themeIcon = themeToggle.querySelector('.theme-icon');
-            const themeText = themeToggle.querySelector('.theme-text');
-            
-            if (theme === 'dark') {
-                themeIcon.textContent = '☀️';
-                themeText.textContent = 'Light';
-            } else {
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'Dark';
+      function updateThemeUI(theme) {
+        const themeToggle = document.getElementById("theme-toggle");
+        const themeIcon = themeToggle.querySelector(".theme-icon");
+        const themeText = themeToggle.querySelector(".theme-text");
+
+        if (theme === "dark") {
+          themeIcon.textContent = "☀️";
+          themeText.textContent = "Light";
+        } else {
+          themeIcon.textContent = "🌙";
+          themeText.textContent = "Dark";
+        }
+      }
+
+      function toggleTheme() {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        updateThemeUI(newTheme);
+      }
+
+      // Initialize theme on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeTheme();
+
+        // Add theme toggle functionality
+        const themeToggle = document.getElementById("theme-toggle");
+        if (themeToggle) {
+          themeToggle.addEventListener("click", toggleTheme);
+        }
+      });
+
+      function toggleSection(contentId, button) {
+        const content = document.getElementById(contentId);
+        const chevron = button.querySelector(".chevron");
+
+        if (content.classList.contains("expanded")) {
+          content.classList.remove("expanded");
+          chevron.classList.add("rotated");
+        } else {
+          content.classList.add("expanded");
+          chevron.classList.remove("rotated");
+        }
+      }
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          const href = this.getAttribute("href");
+          if (href !== "#") {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
             }
-        }
-
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeUI(newTheme);
-        }
-
-        // Initialize theme on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeTheme();
-            
-            // Add theme toggle functionality
-            const themeToggle = document.getElementById('theme-toggle');
-            if (themeToggle) {
-                themeToggle.addEventListener('click', toggleTheme);
-            }
+          }
         });
-
-        function toggleSection(contentId, button) {
-            const content = document.getElementById(contentId);
-            const chevron = button.querySelector('.chevron');
-            
-            if (content.classList.contains('expanded')) {
-                content.classList.remove('expanded');
-                chevron.classList.add('rotated');
-            } else {
-                content.classList.add('expanded');
-                chevron.classList.remove('rotated');
-            }
-        }
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#') {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }
-            });
-        });
+      });
     </script>
-</body>
+  </body>
 </html>

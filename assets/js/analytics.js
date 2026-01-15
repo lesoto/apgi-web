@@ -6,31 +6,31 @@
 class AnalyticsManager {
   constructor() {
     this.config = {
-      domain: 'apgi-framework.com', // Replace with actual domain
-      apiEndpoint: 'https://plausible.io/api/event',
+      domain: "apgi-framework.com", // Replace with actual domain
+      apiEndpoint: "https://plausible.io/api/event",
       trackOutbound: true,
       trackDownloads: true,
-      respectDoNotTrack: true
+      respectDoNotTrack: true,
     };
     this.init();
   }
 
   isDevelopment() {
     return (
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1' ||
-      window.location.hostname.includes('.local') ||
-      window.location.hostname.includes('.dev') ||
-      window.location.hostname.includes('.test') ||
-      window.location.protocol === 'file:'
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname.includes(".local") ||
+      window.location.hostname.includes(".dev") ||
+      window.location.hostname.includes(".test") ||
+      window.location.protocol === "file:"
     );
   }
 
   init() {
     // Check for Do Not Track preference
-    if (this.config.respectDoNotTrack && navigator.doNotTrack === '1') {
+    if (this.config.respectDoNotTrack && navigator.doNotTrack === "1") {
       if (this.isDevelopment()) {
-        console.log('Analytics disabled due to Do Not Track preference');
+        console.log("Analytics disabled due to Do Not Track preference");
       }
       return;
     }
@@ -45,10 +45,10 @@ class AnalyticsManager {
   // Setup automatic page tracking
   setupPageTracking() {
     // Track page view
-    this.trackEvent('pageview', {
+    this.trackEvent("pageview", {
       url: window.location.pathname,
       referrer: document.referrer,
-      title: document.title
+      title: document.title,
     });
 
     // Track single page app navigation
@@ -74,12 +74,12 @@ class AnalyticsManager {
     };
 
     // Listen to popstate events
-    window.addEventListener('popstate', () => {
+    window.addEventListener("popstate", () => {
       this.onRouteChange();
     });
 
     // Listen to hashchange events
-    window.addEventListener('hashchange', () => {
+    window.addEventListener("hashchange", () => {
       this.onRouteChange();
     });
   }
@@ -89,10 +89,10 @@ class AnalyticsManager {
     if (window.location.pathname !== currentPath) {
       currentPath = window.location.pathname;
       setTimeout(() => {
-        this.trackEvent('pageview', {
+        this.trackEvent("pageview", {
           url: window.location.pathname,
           referrer: currentPath,
-          title: document.title
+          title: document.title,
         });
       }, 0);
     }
@@ -101,8 +101,8 @@ class AnalyticsManager {
   // Setup custom event tracking
   setupEventTracking() {
     // Track assessment starts
-    document.addEventListener('click', e => {
-      const target = e.target.closest('[data-track-event]');
+    document.addEventListener("click", (e) => {
+      const target = e.target.closest("[data-track-event]");
       if (target) {
         const eventName = target.dataset.trackEvent;
         const eventProps = this.parseEventProps(target.dataset.trackProps);
@@ -111,28 +111,29 @@ class AnalyticsManager {
     });
 
     // Track form submissions
-    document.addEventListener('submit', e => {
+    document.addEventListener("submit", (e) => {
       const form = e.target;
       if (form.dataset.trackForm) {
-        this.trackEvent('form_submit', {
+        this.trackEvent("form_submit", {
           form_name: form.dataset.trackForm,
-          form_id: form.id || 'unknown'
+          form_id: form.id || "unknown",
         });
       }
     });
 
     // Track search queries
-    const searchInput = document.getElementById('site-search-input');
+    const searchInput = document.getElementById("site-search-input");
     if (searchInput) {
       let searchTimeout;
-      searchInput.addEventListener('input', e => {
+      searchInput.addEventListener("input", (e) => {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
           const query = e.target.value.trim();
           if (query.length >= 3) {
-            this.trackEvent('search', {
+            this.trackEvent("search", {
               query: query,
-              results_count: document.querySelectorAll('.search-result-item').length
+              results_count: document.querySelectorAll(".search-result-item")
+                .length,
             });
           }
         }, 500);
@@ -144,13 +145,13 @@ class AnalyticsManager {
   setupOutboundTracking() {
     if (!this.config.trackOutbound) return;
 
-    document.addEventListener('click', e => {
-      const target = e.target.closest('a');
+    document.addEventListener("click", (e) => {
+      const target = e.target.closest("a");
       if (target && this.isOutboundLink(target)) {
-        this.trackEvent('outbound', {
+        this.trackEvent("outbound", {
           url: target.href,
           link_text: target.textContent.trim(),
-          link_domain: new URL(target.href).hostname
+          link_domain: new URL(target.href).hostname,
         });
       }
     });
@@ -160,13 +161,13 @@ class AnalyticsManager {
   setupDownloadTracking() {
     if (!this.config.trackDownloads) return;
 
-    document.addEventListener('click', e => {
-      const target = e.target.closest('a');
+    document.addEventListener("click", (e) => {
+      const target = e.target.closest("a");
       if (target && this.isDownloadLink(target)) {
-        this.trackEvent('download', {
+        this.trackEvent("download", {
           url: target.href,
           file_name: this.getFileName(target.href),
-          file_type: this.getFileType(target.href)
+          file_type: this.getFileType(target.href),
         });
       }
     });
@@ -177,7 +178,7 @@ class AnalyticsManager {
     try {
       const linkDomain = new URL(link.href).hostname;
       const currentDomain = window.location.hostname;
-      return linkDomain !== currentDomain && !link.href.startsWith('mailto:');
+      return linkDomain !== currentDomain && !link.href.startsWith("mailto:");
     } catch {
       return false;
     }
@@ -186,28 +187,35 @@ class AnalyticsManager {
   // Check if link is a download
   isDownloadLink(link) {
     const href = link.href;
-    const downloadExtensions = ['.pdf', '.zip', '.dmg', '.exe', '.pkg', '.tar.gz'];
+    const downloadExtensions = [
+      ".pdf",
+      ".zip",
+      ".dmg",
+      ".exe",
+      ".pkg",
+      ".tar.gz",
+    ];
     return (
-      downloadExtensions.some(ext => href.includes(ext)) ||
-      link.hasAttribute('download') ||
-      link.textContent.includes('Download')
+      downloadExtensions.some((ext) => href.includes(ext)) ||
+      link.hasAttribute("download") ||
+      link.textContent.includes("Download")
     );
   }
 
   // Get filename from URL
   getFileName(url) {
     try {
-      return new URL(url).pathname.split('/').pop() || 'unknown';
+      return new URL(url).pathname.split("/").pop() || "unknown";
     } catch {
-      return 'unknown';
+      return "unknown";
     }
   }
 
   // Get file type from URL
   getFileType(url) {
     const fileName = this.getFileName(url);
-    const extension = fileName.split('.').pop();
-    return extension || 'unknown';
+    const extension = fileName.split(".").pop();
+    return extension || "unknown";
   }
 
   // Parse event properties from data attribute
@@ -219,10 +227,10 @@ class AnalyticsManager {
     } catch {
       // Simple key=value format
       const props = {};
-      propsString.split(',').forEach(pair => {
-        const [key, value] = pair.split('=').map(s => s.trim());
+      propsString.split(",").forEach((pair) => {
+        const [key, value] = pair.split("=").map((s) => s.trim());
         if (key && value) {
-          props[key] = value.replace(/['"]/g, '');
+          props[key] = value.replace(/['"]/g, "");
         }
       });
       return props;
@@ -236,7 +244,7 @@ class AnalyticsManager {
       url: window.location.pathname,
       domain: this.config.domain,
       referrer: document.referrer,
-      ...props
+      ...props,
     };
 
     // Add user agent and screen width
@@ -252,7 +260,7 @@ class AnalyticsManager {
     // Use navigator.sendBeacon for reliable delivery
     if (navigator.sendBeacon) {
       const data = new URLSearchParams();
-      Object.keys(payload).forEach(key => {
+      Object.keys(payload).forEach((key) => {
         data.append(key, payload[key]);
       });
 
@@ -260,12 +268,12 @@ class AnalyticsManager {
     } else {
       // Fallback to fetch
       fetch(this.config.apiEndpoint, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams(payload).toString(),
-        keepalive: true
+        keepalive: true,
       }).catch(() => {
         // Silently fail to not break user experience
       });
@@ -284,13 +292,13 @@ class AnalyticsManager {
     let idleTime = 0;
 
     // Track activity
-    const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    const events = ["mousedown", "keydown", "scroll", "touchstart"];
     const resetIdle = () => {
       isActive = true;
       idleTime = 0;
     };
 
-    events.forEach(event => {
+    events.forEach((event) => {
       document.addEventListener(event, resetIdle, true);
     });
 
@@ -306,22 +314,25 @@ class AnalyticsManager {
     }, 5000);
 
     // Track time on page when leaving
-    window.addEventListener('beforeunload', () => {
+    window.addEventListener("beforeunload", () => {
       const timeOnPage = Math.round((Date.now() - startTime) / 1000);
-      this.trackEvent('page_leave', {
+      this.trackEvent("page_leave", {
         time_on_page: timeOnPage,
-        engaged: isActive
+        engaged: isActive,
       });
     });
   }
 }
 
 // Initialize analytics
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   // Only initialize on production domains
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  if (
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+  ) {
     if (this.isDevelopment()) {
-      console.log('Analytics disabled in development');
+      console.log("Analytics disabled in development");
     }
     return;
   }
@@ -331,6 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Export for potential use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = AnalyticsManager;
 }

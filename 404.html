@@ -1,497 +1,572 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/navigation.js"></script>
     <script src="assets/js/theme-manager.js"></script>
     <script src="assets/js/form-handler.js"></script>
     <script src="assets/js/cdn-fallbacks.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>404 - Page Not Found | APGI Framework</title>
-    <meta name="description" content="The page you're looking for doesn't exist. Navigate back to APGI Framework homepage.">
-    
+    <meta
+      name="description"
+      content="The page you're looking for doesn't exist. Navigate back to APGI Framework homepage."
+    />
+
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="alternate icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/tailwind-fallback.css" media="all and (prefers-reduced-data: no), (prefers-color-scheme: no), (prefers-contrast: no)">
-    <link rel="stylesheet" href="assets/css/tailwind-fallback.css" media="(prefers-reduced-data: reduce) or (prefers-color-scheme: dark) or (prefers-contrast: high)">
-    
+    <link
+      rel="stylesheet"
+      href="assets/css/tailwind-fallback.css"
+      media="all and (prefers-reduced-data: no), (prefers-color-scheme: no), (prefers-contrast: no)"
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/tailwind-fallback.css"
+      media="(prefers-reduced-data: reduce) or (prefers-color-scheme: dark) or (prefers-contrast: high)"
+    />
+
     <!-- Performance optimization: Preload critical resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" integrity="sha384-J1/3uCQHbgOYWzJUxz9iRJIGsNcuCRbE6yM4Fvt+pwefH+GHSi5Zz7sOCrA0LL/3" crossorigin="anonymous">
-    <link rel="preload" href="https://unpkg.com/lucide@latest" as="script">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+      integrity="sha384-J1/3uCQHbgOYWzJUxz9iRJIGsNcuCRbE6yM4Fvt+pwefH+GHSi5Zz7sOCrA0LL/3"
+      crossorigin="anonymous"
+    />
+    <link rel="preload" href="https://unpkg.com/lucide@latest" as="script" />
+
     <!-- Resource hints -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//unpkg.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="assets/css/design-system.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//unpkg.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="assets/css/design-system.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" integrity="sha384-+BtA6NbrkZ1eh8kuyVylOCEebvmRK+hACkrA6LToCK5+FsvX+J6bnBBHslT+noJQ" crossorigin="anonymous"></script>
+    <script
+      src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"
+      integrity="sha384-+BtA6NbrkZ1eh8kuyVylOCEebvmRK+hACkrA6LToCK5+FsvX+J6bnBBHslT+noJQ"
+      crossorigin="anonymous"
+    ></script>
     <style>
-        :root {
-            /* Modern Typography */
-            --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            
-            /* Modern Color Palette */
-            --primary: #0f172a;
-            --primary-light: #1e293b;
-            --accent: #3b82f6;
-            --accent-light: #60a5fa;
-            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            
-            /* Semantic Colors */
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            
-            /* Neutral Colors */
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            
-            /* Design Tokens */
-            --border-radius: 12px;
-            --border-radius-lg: 20px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+      :root {
+        /* Modern Typography */
+        --font-display:
+          "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-body:
+          "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* Modern Color Palette */
+        --primary: #0f172a;
+        --primary-light: #1e293b;
+        --accent: #3b82f6;
+        --accent-light: #60a5fa;
+        --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
-        body {
-            font-family: var(--font-display);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            position: relative;
-        }
+        /* Semantic Colors */
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
 
-        .main-container {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            max-width: 1200px;
-            width: 100%;
-        }
+        /* Neutral Colors */
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8fafc;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #94a3b8;
 
-        .error-content {
-            flex: 1;
-            text-align: left;
-        }
+        /* Design Tokens */
+        --border-radius: 12px;
+        --border-radius-lg: 20px;
+        --shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
-        .error-visual {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 85% 15%, rgba(102, 126, 234, 0.06) 0%, transparent 55%),
-                radial-gradient(circle at 50% 85%, rgba(245, 158, 11, 0.04) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: -1;
-        }
+      body {
+        font-family: var(--font-display);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        position: relative;
+      }
 
-        @keyframes ambientShift {
-            0% { transform: scale(1) translateY(0); }
-            100% { transform: scale(1.05) translateY(-10px); }
-        }
+      .main-container {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        max-width: 1200px;
+        width: 100%;
+      }
 
+      .error-content {
+        flex: 1;
+        text-align: left;
+      }
+
+      .error-visual {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background:
+          radial-gradient(
+            circle at 15% 20%,
+            rgba(59, 130, 246, 0.08) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 85% 15%,
+            rgba(102, 126, 234, 0.06) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 50% 85%,
+            rgba(245, 158, 11, 0.04) 0%,
+            transparent 60%
+          );
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      @keyframes ambientShift {
+        0% {
+          transform: scale(1) translateY(0);
+        }
+        100% {
+          transform: scale(1.05) translateY(-10px);
+        }
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .error-card {
+        background: var(--bg-primary);
+        backdrop-filter: blur(24px);
+        border-radius: var(--border-radius-lg);
+        padding: 40px;
+        box-shadow: var(--shadow-lg);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        position: relative;
+        overflow: hidden;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 60px;
+      }
+
+      .error-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      }
+
+      .error-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.08) 1px,
+          transparent 1px
+        );
+        background-size: 40px 40px;
+        opacity: 0.5;
+        animation: float 30s linear infinite;
+      }
+
+      @keyframes float {
+        0% {
+          transform: rotate(0deg) translateX(0);
+        }
+        100% {
+          transform: rotate(360deg) translateX(20px);
+        }
+      }
+
+      .error-code {
+        font-size: clamp(4rem, 12vw, 6rem);
+        font-weight: 700;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 24px;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 1;
+      }
+
+      .error-title {
+        font-size: clamp(1.25rem, 3.5vw, 1.5rem);
+        color: var(--text-primary);
+        margin-bottom: 16px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      .error-description {
+        font-size: clamp(0.95rem, 2.5vw, 1.125rem);
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+      }
+
+      .error-icon {
+        font-size: 3.5rem;
+        color: var(--warning);
+        margin-bottom: 24px;
+        opacity: 0.8;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.8;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 32px;
+      }
+
+      .btn {
+        background: var(--accent-gradient);
+        color: white;
+        text-decoration: none;
+        padding: 14px 28px;
+        border-radius: var(--border-radius);
+        font-size: 15px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-display);
+        font-size: 14px;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.6s ease,
+          height 0.6s ease;
+      }
+
+      .btn:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--accent);
+        border: 2px solid var(--accent);
+        box-shadow: none;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(59, 130, 246, 0.08);
+        border-color: var(--accent-light);
+        box-shadow: var(--shadow);
+      }
+
+      .suggestions {
+        background: var(--bg-secondary);
+        border-radius: var(--border-radius);
+        padding: 24px;
+        margin-top: 32px;
+        border: 1px solid rgba(148, 163, 184, 0.15);
+      }
+
+      .suggestions h3 {
+        color: var(--text-primary);
+        margin-bottom: 16px;
+        font-size: 1.125rem;
+        font-weight: 600;
+      }
+
+      .suggestions ul {
+        list-style: none;
+        text-align: left;
+      }
+
+      .suggestions li {
+        margin-bottom: 12px;
+        padding-left: 24px;
+        position: relative;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      .suggestions li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .suggestions a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+
+      .suggestions a:hover {
+        color: var(--accent-light);
+        text-decoration: underline;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
         .container {
-            max-width: 1200px;
-            width: 100%;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+          padding: 16px;
         }
 
         .error-card {
-            background: var(--bg-primary);
-            backdrop-filter: blur(24px);
-            border-radius: var(--border-radius-lg);
-            padding: 40px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 60px;
+          flex-direction: column;
+          padding: 32px 24px;
+          gap: 32px;
+          text-align: center;
         }
 
-        .error-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-        }
-
-        .error-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.5;
-            animation: float 30s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: rotate(0deg) translateX(0); }
-            100% { transform: rotate(360deg) translateX(20px); }
-        }
-
-        .error-code {
-            font-size: clamp(4rem, 12vw, 6rem);
-            font-weight: 700;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 24px;
-            line-height: 1;
-            letter-spacing: -0.02em;
-            position: relative;
-            z-index: 1;
-        }
-
-        .error-title {
-            font-size: clamp(1.25rem, 3.5vw, 1.5rem);
-            color: var(--text-primary);
-            margin-bottom: 16px;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        .error-description {
-            font-size: clamp(0.95rem, 2.5vw, 1.125rem);
-            color: var(--text-secondary);
-            margin-bottom: 32px;
-            max-width: 480px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-
-        .error-icon {
-            font-size: 3.5rem;
-            color: var(--warning);
-            margin-bottom: 24px;
-            opacity: 0.8;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
+        .error-content {
+          text-align: center;
         }
 
         .action-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
+          flex-direction: column;
+          gap: 12px;
         }
 
         .btn {
-            background: var(--accent-gradient);
-            color: white;
-            text-decoration: none;
-            padding: 14px 28px;
-            border-radius: var(--border-radius);
-            font-size: 15px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            border: none;
-            cursor: pointer;
-            font-family: var(--font-display);
-            font-size: 14px;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-            box-shadow: none;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(59, 130, 246, 0.08);
-            border-color: var(--accent-light);
-            box-shadow: var(--shadow);
+          width: 100%;
+          justify-content: center;
         }
 
         .suggestions {
-            background: var(--bg-secondary);
-            border-radius: var(--border-radius);
-            padding: 24px;
-            margin-top: 32px;
-            border: 1px solid rgba(148, 163, 184, 0.15);
+          padding: 20px;
+        }
+      }
+
+      .suggestions li:last-child {
+        border-bottom: none;
+      }
+
+      .suggestions li:hover {
+        transform: translateX(5px);
+        color: var(--primary-color);
+      }
+
+      .suggestions i {
+        color: var(--secondary-color);
+        width: 20px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .error-card {
+          padding: 30px 20px;
         }
 
-        .suggestions h3 {
-            color: var(--text-primary);
-            margin-bottom: 16px;
-            font-size: 1.125rem;
-            font-weight: 600;
+        .action-buttons {
+          flex-direction: column;
+          align-items: center;
         }
 
-        .suggestions ul {
-            list-style: none;
-            text-align: left;
+        .btn {
+          width: 100%;
+          max-width: 300px;
+          justify-content: center;
         }
 
-        .suggestions li {
-            margin-bottom: 12px;
-            padding-left: 24px;
-            position: relative;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
+        .suggestions {
+          padding: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .error-code {
+          font-size: 4rem;
         }
 
-        .suggestions li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: 600;
+        .error-title {
+          font-size: 1.3rem;
         }
 
-        .suggestions a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
+        .error-description {
+          font-size: 1rem;
+        }
+      }
+
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
         }
 
-        .suggestions a:hover {
-            color: var(--accent-light);
-            text-decoration: underline;
+        .error-card::before {
+          animation: none;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 16px;
-            }
-            
-            .error-card {
-                flex-direction: column;
-                padding: 32px 24px;
-                gap: 32px;
-                text-align: center;
-            }
-            
-            .error-content {
-                text-align: center;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .suggestions {
-                padding: 20px;
-            }
+        .error-icon {
+          animation: none;
         }
 
-        .suggestions li:last-child {
-            border-bottom: none;
+        body::before {
+          animation: none;
         }
-
-        .suggestions li:hover {
-            transform: translateX(5px);
-            color: var(--primary-color);
-        }
-
-        .suggestions i {
-            color: var(--secondary-color);
-            width: 20px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .error-card {
-                padding: 30px 20px;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-
-            .suggestions {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .error-code {
-                font-size: 4rem;
-            }
-
-            .error-title {
-                font-size: 1.3rem;
-            }
-
-            .error-description {
-                font-size: 1rem;
-            }
-        }
-
-        /* Reduced motion support */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            
-            .error-card::before {
-                animation: none;
-            }
-            
-            .error-icon {
-                animation: none;
-            }
-            
-            body::before {
-                animation: none;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="error-card">
-            <div class="error-content">
-                <div class="error-code">404</div>
-                <h1 class="error-title">Page Not Found</h1>
-                <p class="error-description">
-                    Oops! The page you're looking for seems to have wandered off into uncharted territory. 
-                    Let us help you find your way back to APGI Framework.
-                </p>
-                
-                <div class="action-buttons">
-                    <a href="Home.html" class="btn">
-                        <i data-lucide="home"></i>
-                        Go Home
-                    </a>
-                    <a href="javascript:history.back()" class="btn btn-secondary">
-                        <i data-lucide="arrow-left"></i>
-                        Go Back
-                    </a>
-                </div>
-                
-                <div class="suggestions">
-                    <h3>Looking for something specific?</h3>
-                    <ul>
-                        <li>
-                            <i data-lucide="bar-chart-3"></i>
-                            <span>Take the <a href="Assessment.html">APGI Assessment</a></span>
-                        </li>
-                        <li>
-                            <i data-lucide="book-open"></i>
-                            <span>Read our <a href="Book-Outline.html">Framework Documentation</a></span>
-                        </li>
-                        <li>
-                            <i data-lucide="flask-conical"></i>
-                            <span>Explore <a href="APGI-Experiments.html">Computational Models</a></span>
-                        </li>
-                        <li>
-                            <i data-lucide="brain"></i>
-                            <span>Check out <a href="SCI/Dashboard.html">Academic Dashboard</a></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="error-visual">
-                <div class="error-icon">
-                    <i data-lucide="compass"></i>
-                </div>
-            </div>
+      <div class="error-card">
+        <div class="error-content">
+          <div class="error-code">404</div>
+          <h1 class="error-title">Page Not Found</h1>
+          <p class="error-description">
+            Oops! The page you're looking for seems to have wandered off into
+            uncharted territory. Let us help you find your way back to APGI
+            Framework.
+          </p>
+
+          <div class="action-buttons">
+            <a href="Home.html" class="btn">
+              <i data-lucide="home"></i>
+              Go Home
+            </a>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+              <i data-lucide="arrow-left"></i>
+              Go Back
+            </a>
+          </div>
+
+          <div class="suggestions">
+            <h3>Looking for something specific?</h3>
+            <ul>
+              <li>
+                <i data-lucide="bar-chart-3"></i>
+                <span
+                  >Take the <a href="Assessment.html">APGI Assessment</a></span
+                >
+              </li>
+              <li>
+                <i data-lucide="book-open"></i>
+                <span
+                  >Read our
+                  <a href="Book-Outline.html">Framework Documentation</a></span
+                >
+              </li>
+              <li>
+                <i data-lucide="flask-conical"></i>
+                <span
+                  >Explore
+                  <a href="APGI-Experiments.html">Computational Models</a></span
+                >
+              </li>
+              <li>
+                <i data-lucide="brain"></i>
+                <span
+                  >Check out
+                  <a href="SCI/Dashboard.html">Academic Dashboard</a></span
+                >
+              </li>
+            </ul>
+          </div>
         </div>
+
+        <div class="error-visual">
+          <div class="error-icon">
+            <i data-lucide="compass"></i>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Initialize Lucide icons -->
     <script>
-        lucide.createIcons();
+      lucide.createIcons();
     </script>
-</body>
+  </body>
 </html>

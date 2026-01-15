@@ -1,197 +1,461 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI Educational Suite | From Stress to Success</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #2d3748; line-height: 1.6; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        header { background: rgba(255, 255, 255, 0.95); padding: 20px 0; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
-        .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: #667eea; }
-        .hero { padding: 100px 20px; text-align: center; color: white; }
-        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 25px; line-height: 1.2; }
-        .hero-subtitle { font-size: 1.3rem; max-width: 800px; margin: 0 auto 40px; opacity: 0.95; }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 900px; margin: 50px auto; }
-        .stat-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 30px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.3); }
-        .stat-number { font-size: 3rem; font-weight: 800; display: block; margin-bottom: 10px; color: #FFCC00; }
-        .btn-primary { display: inline-block; background: #FFCC00; color: #2d3748; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 204, 0, 0.6); }
-        .features { padding: 100px 20px; background: white; }
-        .section-title { font-size: 2.8rem; font-weight: 700; text-align: center; margin-bottom: 20px; color: #2d3748; }
-        .section-subtitle { text-align: center; color: #718096; font-size: 1.2rem; max-width: 700px; margin: 0 auto 60px; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; }
-        .feature-card { background: linear-gradient(135deg, #f7fafc, #edf2f7); border-radius: 16px; padding: 35px; transition: all 0.3s ease; }
-        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2); }
-        .feature-icon { font-size: 3rem; margin-bottom: 20px; }
-        .feature-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: #667eea; }
-        .testimonial { padding: 100px 20px; background: #f7fafc; }
-        .testimonial-card { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; padding: 50px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); }
-        .testimonial-quote { font-size: 1.4rem; line-height: 1.8; margin-bottom: 30px; color: #2d3748; font-style: italic; }
-        .pricing { padding: 100px 20px; background: white; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1100px; margin: 50px auto; }
-        .pricing-card { background: linear-gradient(135deg, #f7fafc, #edf2f7); border: 3px solid #e2e8f0; border-radius: 20px; padding: 40px; transition: all 0.3s ease; }
-        .pricing-card.featured { border-color: #667eea; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2); transform: scale(1.05); }
-        .tier-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; color: #2d3748; }
-        .tier-price { font-size: 3.5rem; font-weight: 800; color: #667eea; margin: 20px 0; }
-        .tier-features { list-style: none; margin: 25px 0; }
-        .tier-features li { padding: 12px 0; border-bottom: 1px solid #e2e8f0; color: #4a5568; }
-        .tier-features li::before { content: '✓ '; color: #00CC99; font-weight: 700; }
-        footer { padding: 60px 20px; background: #2d3748; color: white; text-align: center; }
-        @media (max-width: 968px) { .stats-grid, .pricing-grid { grid-template-columns: 1fr; } .pricing-card.featured { transform: scale(1); } }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Nunito", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #2d3748;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      header {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #667eea;
+      }
+      .hero {
+        padding: 100px 20px;
+        text-align: center;
+        color: white;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 25px;
+        line-height: 1.2;
+      }
+      .hero-subtitle {
+        font-size: 1.3rem;
+        max-width: 800px;
+        margin: 0 auto 40px;
+        opacity: 0.95;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        max-width: 900px;
+        margin: 50px auto;
+      }
+      .stat-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 10px;
+        color: #ffcc00;
+      }
+      .btn-primary {
+        display: inline-block;
+        background: #ffcc00;
+        color: #2d3748;
+        padding: 18px 40px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 204, 0, 0.6);
+      }
+      .features {
+        padding: 100px 20px;
+        background: white;
+      }
+      .section-title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #2d3748;
+      }
+      .section-subtitle {
+        text-align: center;
+        color: #718096;
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 60px;
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 35px;
+      }
+      .feature-card {
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border-radius: 16px;
+        padding: 35px;
+        transition: all 0.3s ease;
+      }
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+      }
+      .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+      }
+      .feature-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #667eea;
+      }
+      .testimonial {
+        padding: 100px 20px;
+        background: #f7fafc;
+      }
+      .testimonial-card {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 50px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      }
+      .testimonial-quote {
+        font-size: 1.4rem;
+        line-height: 1.8;
+        margin-bottom: 30px;
+        color: #2d3748;
+        font-style: italic;
+      }
+      .pricing {
+        padding: 100px 20px;
+        background: white;
+      }
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1100px;
+        margin: 50px auto;
+      }
+      .pricing-card {
+        background: linear-gradient(135deg, #f7fafc, #edf2f7);
+        border: 3px solid #e2e8f0;
+        border-radius: 20px;
+        padding: 40px;
+        transition: all 0.3s ease;
+      }
+      .pricing-card.featured {
+        border-color: #667eea;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+        transform: scale(1.05);
+      }
+      .tier-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #2d3748;
+      }
+      .tier-price {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #667eea;
+        margin: 20px 0;
+      }
+      .tier-features {
+        list-style: none;
+        margin: 25px 0;
+      }
+      .tier-features li {
+        padding: 12px 0;
+        border-bottom: 1px solid #e2e8f0;
+        color: #4a5568;
+      }
+      .tier-features li::before {
+        content: "✓ ";
+        color: #00cc99;
+        font-weight: 700;
+      }
+      footer {
+        padding: 60px 20px;
+        background: #2d3748;
+        color: white;
+        text-align: center;
+      }
+      @media (max-width: 968px) {
+        .stats-grid,
+        .pricing-grid {
+          grid-template-columns: 1fr;
+        }
+        .pricing-card.featured {
+          transform: scale(1);
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">APGI Education</div>
-                <a href="#pricing" class="btn-primary" style="background: #667eea; color: white; padding: 12px 28px; font-size: 0.95rem;">Request Demo</a>
-            </div>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">APGI Education</div>
+          <a
+            href="#pricing"
+            class="btn-primary"
+            style="
+              background: #667eea;
+              color: white;
+              padding: 12px 28px;
+              font-size: 0.95rem;
+            "
+            >Request Demo</a
+          >
         </div>
+      </div>
     </header>
 
     <section class="hero">
-        <div class="container">
-            <h1>🎓 Why do some students thrive<br>while others struggle?</h1>
-            <p class="hero-subtitle">The answer isn't intelligence—it's how their brains process information. (And yes, it's measurable.)</p>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number">-28%</span>
-                    <span style="font-size: 1.1rem;">Academic Probation Rates</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">94%</span>
-                    <span style="font-size: 1.1rem;">Student Satisfaction</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">1,847</span>
-                    <span style="font-size: 1.1rem;">Students Measured</span>
-                </div>
-            </div>
+      <div class="container">
+        <h1>🎓 Why do some students thrive<br />while others struggle?</h1>
+        <p class="hero-subtitle">
+          The answer isn't intelligence—it's how their brains process
+          information. (And yes, it's measurable.)
+        </p>
 
-            <a href="#pricing" class="btn-primary">Transform Student Support</a>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number">-28%</span>
+            <span style="font-size: 1.1rem">Academic Probation Rates</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">94%</span>
+            <span style="font-size: 1.1rem">Student Satisfaction</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">1,847</span>
+            <span style="font-size: 1.1rem">Students Measured</span>
+          </div>
         </div>
+
+        <a href="#pricing" class="btn-primary">Transform Student Support</a>
+      </div>
     </section>
 
     <section class="features">
-        <div class="container">
-            <h2 class="section-title">Academic Applications</h2>
-            <p class="section-subtitle">Support every student's unique cognitive journey with neuroscience-backed insights</p>
+      <div class="container">
+        <h2 class="section-title">Academic Applications</h2>
+        <p class="section-subtitle">
+          Support every student's unique cognitive journey with
+          neuroscience-backed insights
+        </p>
 
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3 class="feature-title">Learning Center Tools</h3>
-                    <p style="color: #718096;">Identify at-risk students early with cognitive pattern analysis before grades decline.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Advisor Dashboards</h3>
-                    <p style="color: #718096;">Data-driven student support with personalized intervention recommendations.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📚</div>
-                    <h3 class="feature-title">Curriculum Design</h3>
-                    <p style="color: #718096;">Match teaching methods to cognitive patterns for maximum learning effectiveness.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🧘</div>
-                    <h3 class="feature-title">Wellness Integration</h3>
-                    <p style="color: #718096;">Connect cognitive patterns with mental health support for holistic student care.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔗</div>
-                    <h3 class="feature-title">LMS Compatibility</h3>
-                    <p style="color: #718096;">Works seamlessly with Canvas, Blackboard, Moodle, and other learning platforms.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👨‍👩‍👧</div>
-                    <h3 class="feature-title">Parent Dashboards</h3>
-                    <p style="color: #718096;">Age-appropriate insights with parent communication tools and school counselor oversight.</p>
-                </div>
-            </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3 class="feature-title">Learning Center Tools</h3>
+            <p style="color: #718096">
+              Identify at-risk students early with cognitive pattern analysis
+              before grades decline.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-title">Advisor Dashboards</h3>
+            <p style="color: #718096">
+              Data-driven student support with personalized intervention
+              recommendations.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3 class="feature-title">Curriculum Design</h3>
+            <p style="color: #718096">
+              Match teaching methods to cognitive patterns for maximum learning
+              effectiveness.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🧘</div>
+            <h3 class="feature-title">Wellness Integration</h3>
+            <p style="color: #718096">
+              Connect cognitive patterns with mental health support for holistic
+              student care.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔗</div>
+            <h3 class="feature-title">LMS Compatibility</h3>
+            <p style="color: #718096">
+              Works seamlessly with Canvas, Blackboard, Moodle, and other
+              learning platforms.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">👨‍👩‍👧</div>
+            <h3 class="feature-title">Parent Dashboards</h3>
+            <p style="color: #718096">
+              Age-appropriate insights with parent communication tools and
+              school counselor oversight.
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
     <section class="testimonial">
-        <div class="container">
-            <h2 class="section-title">University Results</h2>
-            <div class="testimonial-card">
-                <p class="testimonial-quote">"Since implementing APGI in our learning center, academic probation rates dropped 28% and student satisfaction with support services increased to 94%."</p>
-                <p style="color: #718096; font-size: 0.95rem; margin-top: 20px;">
-                    Measured across 1,847 students over 2 academic years, controlling for incoming GPA
-                </p>
-                <p style="color: #667eea; font-weight: 600; margin-top: 15px;">— State University Implementation Report</p>
-            </div>
+      <div class="container">
+        <h2 class="section-title">University Results</h2>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">
+            "Since implementing APGI in our learning center, academic probation
+            rates dropped 28% and student satisfaction with support services
+            increased to 94%."
+          </p>
+          <p style="color: #718096; font-size: 0.95rem; margin-top: 20px">
+            Measured across 1,847 students over 2 academic years, controlling
+            for incoming GPA
+          </p>
+          <p style="color: #667eea; font-weight: 600; margin-top: 15px">
+            — State University Implementation Report
+          </p>
         </div>
+      </div>
     </section>
 
     <section class="pricing" id="pricing">
-        <div class="container">
-            <h2 class="section-title">Educational Institution Packages</h2>
-            <p class="section-subtitle">Designed for universities, colleges, K-12 districts, and educational nonprofits</p>
+      <div class="container">
+        <h2 class="section-title">Educational Institution Packages</h2>
+        <p class="section-subtitle">
+          Designed for universities, colleges, K-12 districts, and educational
+          nonprofits
+        </p>
 
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3 class="tier-name">Small Institution</h3>
-                    <p style="color: #718096;">500-1,500 students</p>
-                    <div class="tier-price">$5K<small style="font-size: 1.2rem; color: #718096;">/year</small></div>
-                    <ul class="tier-features">
-                        <li>Campus-wide licensing</li>
-                        <li>Age-appropriate adaptations</li>
-                        <li>Advisor training (2 sessions)</li>
-                        <li>Parent communication tools</li>
-                        <li>Research participation options</li>
-                    </ul>
-                    <a href="#contact" class="btn-primary" style="width: 100%; text-align: center; padding: 14px;">Get Started</a>
-                </div>
-
-                <div class="pricing-card featured">
-                    <h3 class="tier-name">Medium Institution</h3>
-                    <p style="color: #718096;">1,500-5,000 students</p>
-                    <div class="tier-price">$12K<small style="font-size: 1.2rem; color: #718096;">/year</small></div>
-                    <ul class="tier-features">
-                        <li>Everything in Small, plus:</li>
-                        <li>Advanced analytics</li>
-                        <li>Faculty training (4 sessions)</li>
-                        <li>Custom curriculum support</li>
-                        <li>Dedicated success manager</li>
-                    </ul>
-                    <a href="#contact" class="btn-primary" style="width: 100%; text-align: center; padding: 14px;">Most Popular</a>
-                </div>
-
-                <div class="pricing-card">
-                    <h3 class="tier-name">Large Institution</h3>
-                    <p style="color: #718096;">5,000+ students</p>
-                    <div class="tier-price">$20K<small style="font-size: 1.2rem; color: #718096;">/year</small></div>
-                    <ul class="tier-features">
-                        <li>Everything in Medium, plus:</li>
-                        <li>Multi-campus deployment</li>
-                        <li>Unlimited training sessions</li>
-                        <li>Custom integrations</li>
-                        <li>Annual review & consultation</li>
-                    </ul>
-                    <a href="#contact" class="btn-primary" style="width: 100%; text-align: center; padding: 14px;">Contact Sales</a>
-                </div>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3 class="tier-name">Small Institution</h3>
+            <p style="color: #718096">500-1,500 students</p>
+            <div class="tier-price">
+              $5K<small style="font-size: 1.2rem; color: #718096">/year</small>
             </div>
+            <ul class="tier-features">
+              <li>Campus-wide licensing</li>
+              <li>Age-appropriate adaptations</li>
+              <li>Advisor training (2 sessions)</li>
+              <li>Parent communication tools</li>
+              <li>Research participation options</li>
+            </ul>
+            <a
+              href="#contact"
+              class="btn-primary"
+              style="width: 100%; text-align: center; padding: 14px"
+              >Get Started</a
+            >
+          </div>
 
-            <p style="text-align: center; color: #718096; margin-top: 40px; font-size: 1.05rem;">
-                🎓 <strong>Pilot Program Available:</strong> Test with one department first (Psychology, Learning Center, Honors Programs)<br>
-                Typical pilot: 50-200 students
-            </p>
+          <div class="pricing-card featured">
+            <h3 class="tier-name">Medium Institution</h3>
+            <p style="color: #718096">1,500-5,000 students</p>
+            <div class="tier-price">
+              $12K<small style="font-size: 1.2rem; color: #718096">/year</small>
+            </div>
+            <ul class="tier-features">
+              <li>Everything in Small, plus:</li>
+              <li>Advanced analytics</li>
+              <li>Faculty training (4 sessions)</li>
+              <li>Custom curriculum support</li>
+              <li>Dedicated success manager</li>
+            </ul>
+            <a
+              href="#contact"
+              class="btn-primary"
+              style="width: 100%; text-align: center; padding: 14px"
+              >Most Popular</a
+            >
+          </div>
+
+          <div class="pricing-card">
+            <h3 class="tier-name">Large Institution</h3>
+            <p style="color: #718096">5,000+ students</p>
+            <div class="tier-price">
+              $20K<small style="font-size: 1.2rem; color: #718096">/year</small>
+            </div>
+            <ul class="tier-features">
+              <li>Everything in Medium, plus:</li>
+              <li>Multi-campus deployment</li>
+              <li>Unlimited training sessions</li>
+              <li>Custom integrations</li>
+              <li>Annual review & consultation</li>
+            </ul>
+            <a
+              href="#contact"
+              class="btn-primary"
+              style="width: 100%; text-align: center; padding: 14px"
+              >Contact Sales</a
+            >
+          </div>
         </div>
+
+        <p
+          style="
+            text-align: center;
+            color: #718096;
+            margin-top: 40px;
+            font-size: 1.05rem;
+          "
+        >
+          🎓 <strong>Pilot Program Available:</strong> Test with one department
+          first (Psychology, Learning Center, Honors Programs)<br />
+          Typical pilot: 50-200 students
+        </p>
+      </div>
     </section>
 
     <footer>
-        <div class="container">
-            <div style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; margin-bottom: 20px; color: #FFCC00;">APGI Educational Suite</div>
-            <p style="color: #a0aec0;">Support every student's unique cognitive journey with neuroscience-backed insights</p>
+      <div class="container">
+        <div
+          style="
+            font-family: &quot;Poppins&quot;, sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+          "
+        >
+          APGI Educational Suite
         </div>
+        <p style="color: #a0aec0">
+          Support every student's unique cognitive journey with
+          neuroscience-backed insights
+        </p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>
