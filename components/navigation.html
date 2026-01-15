@@ -6,7 +6,7 @@
       
       <!-- Assessment Tools Dropdown -->
       <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="Assessment tools dropdown menu">
           Assessment ▼
         </button>
         <div class="dropdown-menu">
@@ -19,7 +19,7 @@
       
       <!-- Visualizations & Tools Dropdown -->
       <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="Visualizations and tools dropdown menu">
           Visualizations ▼
         </button>
         <div class="dropdown-menu">
@@ -32,7 +32,7 @@
       </div>
       
       <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="Research and documentation dropdown menu">
           Research ▼
         </button>
         <div class="dropdown-menu">
@@ -49,7 +49,7 @@
       </div>
       
       <div class="nav-dropdown">
-        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">
+        <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="Resources and support dropdown menu">
           Resources ▼
         </button>
         <div class="dropdown-menu">
@@ -183,24 +183,118 @@
 
 /* Mobile responsive dropdown styles */
 @media (max-width: 768px) {
+  .nav-dropdown {
+    position: static;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .nav-dropdown-btn {
+    width: 100%;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    min-height: 48px; /* Better touch target */
+    border-radius: var(--radius, 12px);
+    background: var(--bg-primary, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
+  }
+  
+  .nav-dropdown-btn:hover,
+  .nav-dropdown-btn:focus {
+    background: rgba(59, 130, 246, 0.05);
+    border-color: var(--accent, #3b82f6);
+  }
+  
   .dropdown-menu {
     position: fixed;
-    top: 60px;
+    top: 0;
     left: 0;
     right: 0;
-    border-radius: 0 0 var(--radius-lg, 16px) var(--radius-lg, 16px);
-    min-width: auto;
-    margin-top: 0;
-    box-shadow: var(--shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 4rem 1rem 1rem;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+    overflow-y: auto;
   }
   
   .nav-dropdown.active .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
     transform: translateY(0);
   }
   
   .dropdown-link {
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    min-height: 48px; /* Better touch target */
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
+    border-radius: var(--radius, 12px);
+    transition: all 0.2s ease;
+  }
+  
+  .dropdown-link:hover,
+  .dropdown-link:focus {
+    background: rgba(255, 255, 255, 0.2);
+    transform: none;
+    color: #ffffff;
+  }
+  
+  .dropdown-link:first-child {
+    border-radius: var(--radius, 12px);
+    margin-top: 1rem;
+  }
+  
+  .dropdown-link:last-child {
+    border-bottom: none;
+    border-radius: var(--radius, 12px);
+    margin-bottom: 1rem;
+  }
+  
+  /* Add close button for mobile */
+  .dropdown-menu::before {
+    content: '✕ Close';
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  }
+  
+  /* Hide dropdown arrows on mobile */
+  .nav-dropdown-btn::after {
+    display: none;
   }
 }
 
@@ -370,6 +464,26 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
+  
+  // Handle mobile close button (pseudo-element)
+  document.addEventListener('click', function(e) {
+    if (e.target.textContent === '✕ Close') {
+      dropdowns.forEach(dropdown => {
+        dropdown.classList.remove('active');
+        dropdown.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+  
+  // Handle escape key for mobile dropdowns
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      dropdowns.forEach(dropdown => {
+        dropdown.classList.remove('active');
+        dropdown.querySelector('.nav-dropdown-btn').setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
 });
 </script>
 

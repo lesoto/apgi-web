@@ -1,0 +1,264 @@
+/* Standardized Button System for APGI Framework */
+/* This file provides consistent button styling across all pages */
+
+:root {
+    /* Button Colors */
+    --btn-primary-bg: linear-gradient(135deg, #1658f2 0%, #1fc7b9 100%);
+    --btn-primary-hover: linear-gradient(135deg, #0d3fb8 0%, #18a095 100%);
+    --btn-secondary-bg: transparent;
+    --btn-secondary-border: #1658f2;
+    --btn-secondary-hover-bg: rgba(22, 88, 242, 0.08);
+    --btn-secondary-hover-border: #0d3fb8;
+    --btn-success-bg: linear-gradient(135deg, #3fb950 0%, #1e8e3e 100%);
+    --btn-warning-bg: linear-gradient(135deg, #f4c542 0%, #d97706 100%);
+    --btn-danger-bg: linear-gradient(135deg, #f05454 0%, #d63939 100%);
+    
+    /* Button Dimensions */
+    --btn-padding-sm: 12px 24px;
+    --btn-padding-md: 16px 32px;
+    --btn-padding-lg: 20px 40px;
+    --btn-border-radius: 60px;
+    --btn-font-size: 16px;
+    --btn-font-weight: 600;
+    
+    /* Button Effects */
+    --btn-transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --btn-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+    --btn-hover-shadow: 0 14px 40px rgba(102, 126, 234, 0.45);
+    --btn-active-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+/* Base Button Styles */
+.btn, 
+button:not(.theme-toggle):not(.control-btn):not(.export-btn):not(.mobile-menu-button) {
+    background: var(--btn-primary-bg);
+    color: white;
+    border: none;
+    padding: var(--btn-padding-md);
+    border-radius: var(--btn-border-radius);
+    font-size: var(--btn-font-size);
+    font-weight: var(--btn-font-weight);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: var(--btn-transition);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--btn-shadow);
+    text-decoration: none;
+    font-family: inherit;
+    line-height: 1.4;
+    white-space: nowrap;
+    min-height: 48px;
+}
+
+/* Button Ripple Effect */
+.btn::before,
+button:not(.theme-toggle):not(.control-btn):not(.export-btn):not(.mobile-menu-button)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+/* Button Hover States */
+.btn:hover,
+button:not(.theme-toggle):not(.control-btn):not(.export-btn):not(.mobile-menu-button):hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: var(--btn-hover-shadow);
+}
+
+.btn:hover::before,
+button:not(.theme-toggle):not(.control-btn):not(.export-btn):not(.mobile-menu-button):hover::before {
+    width: 320px;
+    height: 320px;
+}
+
+/* Button Active States */
+.btn:active,
+button:not(.theme-toggle):not(.control-btn):not(.export-btn):not(.mobile-menu-button):active {
+    transform: translateY(-1px) scale(1.01);
+}
+
+/* Button Disabled States */
+.btn:disabled,
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--btn-active-shadow);
+}
+
+.btn:disabled:hover,
+button:disabled:hover {
+    transform: none;
+    box-shadow: var(--btn-active-shadow);
+}
+
+.btn:disabled::before,
+button:disabled::before {
+    display: none;
+}
+
+/* Button Variants */
+.btn-secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--primary-color, #1658f2);
+    border: 2px solid var(--btn-secondary-border);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-secondary-hover-bg);
+    border-color: var(--btn-secondary-hover-border);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);
+}
+
+.btn-success {
+    background: var(--btn-success-bg);
+}
+
+.btn-warning {
+    background: var(--btn-warning-bg);
+}
+
+.btn-danger {
+    background: var(--btn-danger-bg);
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: var(--btn-padding-sm);
+    font-size: 14px;
+    min-height: 40px;
+}
+
+.btn-lg {
+    padding: var(--btn-padding-lg);
+    font-size: 18px;
+    min-height: 56px;
+}
+
+/* Full Width Button */
+.btn-block {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Button with Icon */
+.btn i,
+button i {
+    font-size: 1em;
+    line-height: 1;
+}
+
+/* Button Loading State */
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Dark Theme Overrides */
+[data-theme="dark"] .btn:not(.btn-secondary) {
+    box-shadow: 0 8px 24px rgba(58, 123, 255, 0.35);
+}
+
+[data-theme="dark"] .btn:not(.btn-secondary):hover {
+    box-shadow: 0 14px 40px rgba(58, 123, 255, 0.45);
+}
+
+[data-theme="dark"] .btn-secondary {
+    color: var(--primary-color, #4a7fff);
+    border-color: var(--primary-color, #4a7fff);
+    box-shadow: 0 4px 12px rgba(74, 127, 255, 0.15);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: rgba(74, 127, 255, 0.08);
+    border-color: var(--primary-dark, #1658f2);
+    box-shadow: 0 8px 24px rgba(74, 127, 255, 0.25);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .btn,
+    button:not(.theme-toggle):not(.control-btn):not(.export-btn):not(.mobile-menu-button) {
+        padding: 14px 28px;
+        font-size: 15px;
+        min-height: 44px;
+    }
+    
+    .btn-sm {
+        padding: 10px 20px;
+        font-size: 13px;
+        min-height: 36px;
+    }
+    
+    .btn-lg {
+        padding: 18px 36px;
+        font-size: 17px;
+        min-height: 52px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn,
+    button:not(.theme-toggle):not(.control-btn):not(.export-btn):not(.mobile-menu-button) {
+        width: 100%;
+        max-width: 280px;
+        padding: 16px 24px;
+        font-size: 14px;
+        min-height: 48px;
+    }
+    
+    .btn-block {
+        max-width: 100%;
+    }
+}
+
+/* Focus States for Accessibility */
+.btn:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--secondary-color, #1fc7b9);
+    outline-offset: 4px;
+}
+
+/* Print Styles */
+@media print {
+    .btn,
+    button {
+        background: transparent !important;
+        color: #000 !important;
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+}

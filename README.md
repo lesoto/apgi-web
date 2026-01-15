@@ -548,3 +548,279 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Tech professionals building personalized applications
 - API users integrating consciousness metrics
 - Ethical AI developers seeking personalization frameworks
+
+# APGI Framework - Email Capture & Lead Generation Implementation
+
+This implementation addresses **BUG-007: No Email Capture or Lead Generation Forms** by adding comprehensive email capture, payment processing, and consultation booking functionality to the APGI Framework landing page.
+
+## 🚀 Features Implemented
+
+### ✅ Email Capture Forms
+- **Hero Section**: Email capture with instant validation
+- **CTA Section**: Secondary email capture form
+- **Pricing Modal**: Free tier email signup
+- **Consultation Modal**: Multi-field consultation request form
+
+### ✅ Payment Gateway Integration
+- **Stripe Checkout**: Professional and Enterprise tier payments
+- **Subscription Management**: Recurring billing setup
+- **Webhook Handling**: Payment success/failure processing
+
+### ✅ Lead Generation System
+- **Email Service Integration**: Mailchimp/ConvertKit support
+- **Consultation Booking**: Automated scheduling requests
+- **Analytics Tracking**: Conversion monitoring
+- **Fallback Storage**: Local storage for development
+
+## 📁 Files Created/Modified
+
+### Frontend Files
+- `Landing.html` - Updated with functional forms and modals
+- `assets/js/api-services.js` - Email and payment service classes
+
+### Backend Files
+- `server.js` - Express.js API server
+- `package.json` - Node.js dependencies
+- `.env.example` - Environment variables template
+
+## 🛠️ Setup Instructions
+
+### 1. Install Dependencies
+```bash
+cd /Users/lesoto/Sites/apgi-web
+npm install
+```
+
+### 2. Configure Environment Variables
+```bash
+cp .env.example .env
+# Edit .env with your actual API keys and configuration
+```
+
+### 3. Required Services Setup
+
+#### Email Marketing (Choose One)
+**Mailchimp:**
+- Get API key from Mailchimp Developer Dashboard
+- Create audience lists and note their IDs
+- Update `.env` with Mailchimp credentials
+
+**ConvertKit:**
+- Get API key from ConvertKit Account Settings
+- Create forms and note their IDs
+- Update `.env` with ConvertKit credentials
+
+#### Payment Processing
+**Stripe:**
+- Create Stripe account at https://dashboard.stripe.com
+- Get publishable and secret keys
+- Create subscription products and price IDs
+- Set up webhook endpoint: `https://yourdomain.com/webhook/stripe`
+
+#### Analytics (Optional)
+- Google Analytics 4
+- Facebook Pixel
+- Mixpanel
+
+### 4. Start the Backend Server
+```bash
+# Development
+npm run dev
+
+# Production
+npm start
+```
+
+The server will run on `http://localhost:3001` by default.
+
+### 5. Test the Implementation
+
+#### Email Capture Testing
+1. Open `Landing.html` in your browser
+2. Enter an email in any capture form
+3. Check browser console for API responses
+4. Verify email appears in your email service (Mailchimp/ConvertKit)
+
+#### Payment Testing
+1. Click "Start Trial" on Professional tier
+2. Enter email when prompted
+3. Should redirect to Stripe Checkout (test mode)
+4. Use Stripe test cards for payment simulation
+
+#### Consultation Testing
+1. Click "Schedule Consultation"
+2. Fill out the consultation form
+3. Submit and check for success message
+4. Verify consultation data in backend storage
+
+## 🔧 API Endpoints
+
+### Email Subscription
+```
+POST /api/subscribe
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "listType": "snapshot-request",
+  "additionalData": {
+    "source": "landing-page",
+    "timestamp": "2024-01-14T..."
+  }
+}
+```
+
+### Payment Processing
+```
+POST /api/create-checkout-session
+Content-Type: application/json
+
+{
+  "tier": "professional",
+  "customerEmail": "user@example.com",
+  "priceId": "price_1Oxyz1234567890"
+}
+```
+
+### Consultation Requests
+```
+POST /api/consultations
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "role": "therapist",
+  "needs": "Looking for assessment tools",
+  "phone": "+1234567890"
+}
+```
+
+## 📊 Analytics & Tracking
+
+### Conversion Events Tracked
+- `snapshot-signup` - Free snapshot request
+- `cta-snapshot-signup` - CTA section signup
+- `free-tier-signup` - Free tier registration
+- `consultation-request` - Consultation booking
+- `payment-started` - Payment initiation
+- `payment-completed` - Successful payment
+
+### Analytics Integration
+```javascript
+// Google Analytics 4
+gtag('event', 'snapshot-signup', {
+  event_category: 'conversion',
+  event_label: 'user@example.com'
+});
+
+// Facebook Pixel
+fbq('track', 'Lead', {
+  email: 'user@example.com'
+});
+```
+
+## 🔒 Security Considerations
+
+### Implemented
+- Email validation on frontend and backend
+- CORS configuration
+- Rate limiting (recommended for production)
+- Input sanitization
+- Stripe webhook signature verification
+
+### Recommended for Production
+- Add reCAPTCHA to forms
+- Implement rate limiting with `express-rate-limit`
+- Add CSRF protection
+- Use HTTPS everywhere
+- Implement proper session management
+- Add database for persistent storage
+
+## 🚀 Deployment
+
+### Environment Setup
+1. Set production environment variables
+2. Configure production Stripe keys
+3. Set up production email service credentials
+4. Configure domain and SSL certificates
+
+### Server Deployment
+```bash
+# Install production dependencies
+npm ci --production
+
+# Start production server
+NODE_ENV=production npm start
+```
+
+### Recommended Hosting
+- **Backend**: Heroku, DigitalOcean, AWS EC2
+- **Frontend**: Netlify, Vercel, GitHub Pages
+- **Database**: PostgreSQL, MongoDB (when ready)
+- **Email**: Mailchimp/ConvertKit cloud services
+
+## 🔄 Development Workflow
+
+### Local Development
+1. Start backend server: `npm run dev`
+2. Open `Landing.html` in browser
+3. Use browser DevTools to monitor API calls
+4. Check localStorage for fallback data
+
+### Testing
+```bash
+# Run tests (when implemented)
+npm test
+
+# Lint code
+npm run lint
+
+# Format code
+npm run format
+```
+
+## 📈 Monitoring & Maintenance
+
+### Health Checks
+- Server health: `GET /api/health`
+- Monitor API response times
+- Track conversion rates
+- Monitor payment success rates
+
+### Regular Tasks
+- Update Stripe price IDs if needed
+- Monitor email deliverability
+- Check webhook processing
+- Review analytics data
+- Update security dependencies
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Email not subscribing:**
+- Check API keys in `.env`
+- Verify list IDs are correct
+- Check CORS settings
+- Review browser console errors
+
+**Payment not working:**
+- Verify Stripe keys are correct
+- Check price IDs match Stripe dashboard
+- Ensure webhook endpoint is accessible
+- Review Stripe logs for errors
+
+**Forms not submitting:**
+- Check backend server is running
+- Verify API endpoints are accessible
+- Review browser network tab for failed requests
+- Check console for JavaScript errors
+
+### Debug Mode
+Add to `.env` for development:
+```
+NODE_ENV=development
+DEBUG=apgi:*
+```

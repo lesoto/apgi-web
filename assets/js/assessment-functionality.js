@@ -90,6 +90,50 @@ function initializeAssessment() {
     });
   }
 
+  // ========== LOADING STATES ==========
+  function showLoading(message = 'Processing...') {
+    const overlay = document.getElementById('loadingOverlay');
+    const loadingText = overlay.querySelector('.loading-text');
+    loadingText.textContent = message;
+    overlay.classList.add('active');
+  }
+
+  function hideLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.classList.remove('active');
+  }
+
+  function setButtonLoading(button, loading = true) {
+    if (loading) {
+      button.classList.add('button-loading');
+      button.disabled = true;
+    } else {
+      button.classList.remove('button-loading');
+      button.disabled = false;
+    }
+  }
+
+  function showChartLoading(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'chart-loading';
+    loadingDiv.id = `${containerId}-loading`;
+    loadingDiv.innerHTML = `
+      <div class="spinner"></div>
+      <div>Generating visualization...</div>
+    `;
+    container.appendChild(loadingDiv);
+  }
+
+  function hideChartLoading(containerId) {
+    const loadingDiv = document.getElementById(`${containerId}-loading`);
+    if (loadingDiv) {
+      loadingDiv.remove();
+    }
+  }
+
   // ========== UTILITY FUNCTIONS ==========
   function getTotalQuestions() {
     let total = 0;
@@ -271,52 +315,64 @@ function initializeAssessment() {
       return;
     }
 
-    const section = quizData.sections[currentSection];
-    if (currentQuestion < section.questions.length - 1) {
-      currentQuestion++;
-    } else if (currentSection < quizData.sections.length - 1) {
-      currentSection++;
-      currentQuestion = 0;
-    } else {
-      calculateResults();
-      showResults();
-      return;
-    }
+    setButtonLoading(nextBtn, true);
+    
+    // Simulate processing delay for better UX
+    setTimeout(() => {
+      if (currentQuestion < quizData.sections[currentSection].questions.length - 1) {
+        currentQuestion++;
+      } else if (currentSection < quizData.sections.length - 1) {
+        currentSection++;
+        currentQuestion = 0;
+      } else {
+        calculateResults();
+        showResults();
+        setButtonLoading(nextBtn, false);
+        return;
+      }
 
-    showQuestion();
+      showQuestion();
+      setButtonLoading(nextBtn, false);
+    }, 300);
   }
 
   // ========== RESULTS CALCULATION ==========
   function calculateResults() {
-    // Reset scores
-    scores = {
-      epsilon: 0,
-      precision: 0,
-      threshold: 0,
-      somatic: 0,
-      interactions: 0,
-      temporal: 0,
-      environment: 0
-    };
+    showLoading('Calculating your results...');
+    
+    // Simulate processing time for better UX
+    setTimeout(() => {
+      // Reset scores
+      scores = {
+        epsilon: 0,
+        precision: 0,
+        threshold: 0,
+        somatic: 0,
+        interactions: 0,
+        temporal: 0,
+        environment: 0
+      };
 
-    // Calculate section scores
-    quizData.sections.forEach(section => {
-      section.questions.forEach(question => {
-        const answer = answers[question.id];
-        if (answer !== null) {
-          if (section.id === 'epsilon') scores.epsilon += answer;
-          else if (section.id === 'precision') scores.precision += answer;
-          else if (section.id === 'threshold') scores.threshold += answer;
-          else if (section.id === 'somatic') scores.somatic += answer;
-          else if (section.id === 'interactions') scores.interactions += answer;
-          else if (section.id === 'temporal') scores.temporal += answer;
-          else if (section.id === 'environment') scores.environment += answer;
-        }
+      // Calculate section scores
+      quizData.sections.forEach(section => {
+        section.questions.forEach(question => {
+          const answer = answers[question.id];
+          if (answer !== null) {
+            if (section.id === 'epsilon') scores.epsilon += answer;
+            else if (section.id === 'precision') scores.precision += answer;
+            else if (section.id === 'threshold') scores.threshold += answer;
+            else if (section.id === 'somatic') scores.somatic += answer;
+            else if (section.id === 'interactions') scores.interactions += answer;
+            else if (section.id === 'temporal') scores.temporal += answer;
+            else if (section.id === 'environment') scores.environment += answer;
+          }
+        });
       });
-    });
 
-    // Calculate interaction effects
-    calculateInteractions();
+      // Calculate interaction effects
+      calculateInteractions();
+      hideLoading();
+    }, 1500);
   }
 
   function calculateInteractions() {
@@ -539,49 +595,75 @@ function initializeAssessment() {
   }
 
   function downloadReport() {
-    // Create report data
-    const reportData = {
-      date: new Date().toISOString(),
-      profile: determineProfile(scores),
-      scores: scores,
-      answers: answers,
-      interactionEffects: interactionEffects
-    };
+    setButtonLoading(downloadBtn, true);
+    showLoading('Generating your report...');
+    
+    setTimeout(() => {
+      // Create report data
+      const reportData = {
+        date: new Date().toISOString(),
+        profile: determineProfile(scores),
+        scores: scores,
+        answers: answers,
+        interactionEffects: interactionEffects
+      };
 
-    // Create and download file
-    const dataStr = JSON.stringify(reportData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+      // Create and download file
+      const dataStr = JSON.stringify(reportData, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-    const exportFileDefaultName = `apgi-assessment-${new Date().toISOString().split('T')[0]}.json`;
+      const exportFileDefaultName = `apgi-assessment-${new Date().toISOString().split('T')[0]}.json`;
 
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+      
+      hideLoading();
+      setButtonLoading(downloadBtn, false);
+    }, 1000);
   }
 
   // ========== CHART INITIALIZATION ==========
   function initializeCharts() {
+    showLoading('Initializing visualizations...');
+    
     // Destroy existing charts if they exist
     Object.values(chartInstances).forEach(chart => {
       if (chart) chart.destroy();
     });
     chartInstances = {};
 
-    // Initialize Radar Chart
-    initializeRadarChart();
-    
-    // Initialize Gauge Charts
-    initializeGaugeCharts();
-    
-    // Initialize Interaction Chart
-    initializeInteractionChart();
-    
-    // Initialize Temporal Chart
-    initializeTemporalChart();
-    
-    // Initialize Environment Chart
-    initializeEnvironmentChart();
+    // Show loading states for chart containers
+    showChartLoading('radarChart');
+    showChartLoading('gaugeCharts');
+    showChartLoading('interactionChart');
+    showChartLoading('temporalChart');
+    showChartLoading('environmentChart');
+
+    setTimeout(() => {
+      // Initialize Radar Chart
+      initializeRadarChart();
+      hideChartLoading('radarChart');
+      
+      // Initialize Gauge Charts
+      initializeGaugeCharts();
+      hideChartLoading('gaugeCharts');
+      
+      // Initialize Interaction Chart
+      initializeInteractionChart();
+      hideChartLoading('interactionChart');
+      
+      // Initialize Temporal Chart
+      initializeTemporalChart();
+      hideChartLoading('temporalChart');
+      
+      // Initialize Environment Chart
+      initializeEnvironmentChart();
+      hideChartLoading('environmentChart');
+      
+      hideLoading();
+    }, 800);
   }
 
   function initializeRadarChart() {
@@ -617,18 +699,53 @@ function initializeAssessment() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        resizeDelay: 0,
         scales: {
           r: {
             beginAtZero: true,
             max: 20,
             ticks: {
-              stepSize: 5
+              stepSize: 5,
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 40, 12);
+                }
+              }
+            },
+            pointLabels: {
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 30, 14);
+                }
+              }
             }
           }
         },
         plugins: {
           legend: {
-            position: 'bottom'
+            position: 'bottom',
+            labels: {
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 35, 12);
+                }
+              },
+              padding: function(context) {
+                return Math.min(context.chart.width / 50, 10);
+              }
+            }
+          },
+          tooltip: {
+            titleFont: {
+              size: function(context) {
+                return Math.min(context.chart.width / 35, 14);
+              }
+            },
+            bodyFont: {
+              size: function(context) {
+                return Math.min(context.chart.width / 40, 12);
+              }
+            }
           }
         }
       }
@@ -709,29 +826,57 @@ function initializeAssessment() {
       type: 'scatter',
       data: data,
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            type: 'linear',
-            position: 'bottom',
-            min: -0.5,
-            max: 3.5,
-            ticks: {
-              callback: function(value, index, values) {
-                return ['ε', 'π', 'θₜ', 'β'][value] || '';
+          responsive: true,
+          maintainAspectRatio: false,
+          resizeDelay: 0,
+          scales: {
+            x: {
+              type: 'linear',
+              position: 'bottom',
+              min: -0.5,
+              max: 3.5,
+              ticks: {
+                callback: function(value, index, values) {
+                  return ['ε', 'π', 'θₜ', 'β'][value] || '';
+                },
+                font: {
+                  size: function(context) {
+                    return Math.min(context.chart.width / 25, 14);
+                  }
+                }
+              },
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              beginAtZero: true,
+              max: 20,
+              ticks: {
+                font: {
+                  size: function(context) {
+                    return Math.min(context.chart.width / 40, 12);
+                  }
+                }
               }
             }
           },
-          y: {
-            beginAtZero: true,
-            max: 20
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              titleFont: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 35, 14);
+                }
+              },
+              bodyFont: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 40, 12);
+                }
+              }
+            }
           }
-        },
-        plugins: {
-          legend: { display: false }
         }
-      }
     });
   }
 
@@ -760,10 +905,56 @@ function initializeAssessment() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        resizeDelay: 0,
         scales: {
           y: {
             beginAtZero: true,
-            max: 20
+            max: 20,
+            ticks: {
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 40, 12);
+                }
+              }
+            }
+          },
+          x: {
+            ticks: {
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 35, 11);
+                }
+              },
+              maxRotation: 45,
+              minRotation: 0
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 35, 12);
+                }
+              },
+              padding: function(context) {
+                return Math.min(context.chart.width / 50, 10);
+              }
+            }
+          },
+          tooltip: {
+            titleFont: {
+              size: function(context) {
+                return Math.min(context.chart.width / 35, 14);
+              }
+            },
+            bodyFont: {
+              size: function(context) {
+                return Math.min(context.chart.width / 40, 12);
+              }
+            }
           }
         }
       }
@@ -799,10 +990,56 @@ function initializeAssessment() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        resizeDelay: 0,
         scales: {
           y: {
             beginAtZero: true,
-            max: 20
+            max: 20,
+            ticks: {
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 40, 12);
+                }
+              }
+            }
+          },
+          x: {
+            ticks: {
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 35, 11);
+                }
+              },
+              maxRotation: 45,
+              minRotation: 0
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: {
+                size: function(context) {
+                  return Math.min(context.chart.width / 35, 12);
+                }
+              },
+              padding: function(context) {
+                return Math.min(context.chart.width / 50, 10);
+              }
+            }
+          },
+          tooltip: {
+            titleFont: {
+              size: function(context) {
+                return Math.min(context.chart.width / 35, 14);
+              }
+            },
+            bodyFont: {
+              size: function(context) {
+                return Math.min(context.chart.width / 40, 12);
+              }
+            }
           }
         }
       }

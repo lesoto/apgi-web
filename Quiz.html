@@ -10,10 +10,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>APGI Consciousness Signature Assessment</title>
+  <meta name="description" content="Take the APGI Consciousness Signature Assessment to discover your unique cognitive profile. Answer questions about prediction errors, precision allocation, and consciousness thresholds.">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha384-/o6I2CkkWC//PSjvWC/eYN7l3xM3tJm8ZzVkCOfp//W05QcE3mlGskpoHB6XqI+B" crossorigin="anonymous">
   <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
   <link rel="stylesheet" href="assets/css/design-system.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
   <style>
     :root {
       --bg: #ffffff;
@@ -906,7 +907,8 @@
     }
     
     .chart-container {
-      height: 450px;
+      height: clamp(250px, 40vh, 450px);
+      min-height: 250px;
     }
     
     .mini-chart {

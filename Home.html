@@ -10,6 +10,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Understand How Your Consciousness Works—And Learn to Adjust It</title>
+  <meta name="description" content="Discover your unique consciousness signature with the APGI Framework. Take our scientifically-validated assessment to understand how your mind processes information and learn practical techniques to optimize your cognitive performance.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="favicon.svg">
   <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/tailwind-fallback.css" media="all and (prefers-reduced-data: no), (prefers-color-scheme: no), (prefers-contrast: no)">
     <link rel="stylesheet" href="assets/css/tailwind-fallback.css" media="(prefers-reduced-data: reduce) or (prefers-color-scheme: dark) or (prefers-contrast: high)">
@@ -26,7 +32,7 @@
   <link rel="stylesheet" href="assets/css/design-system.css">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" integrity="sha384-+BtA6NbrkZ1eh8kuyVylOCEebvmRK+hACkrA6LToCK5+FsvX+J6bnBBHslT+noJQ" crossorigin="anonymous"></script></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" integrity="sha384-+BtA6NbrkZ1eh8kuyVylOCEebvmRK+hACkrA6LToCK5+FsvX+J6bnBBHslT+noJQ" crossorigin="anonymous"></script>
   <style>
     :root {
       /* Modern Typography */
@@ -1569,7 +1575,7 @@
             <div class="nav-links">
               <a href="Home.html" class="nav-link nav-brand">APGI Framework</a>
               <div class="nav-dropdown">
-                <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Assessment ▼</button>
+                <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="Assessment tools dropdown menu">Assessment ▼</button>
                 <div class="dropdown-menu">
                   <a href="Quiz.html" class="dropdown-link">Quiz (Short)</a>
                   <a href="Assessment.html" class="dropdown-link">Assessment (Full)</a>
@@ -1577,7 +1583,7 @@
                 </div>
               </div>
               <div class="nav-dropdown">
-                <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Visualizations ▼</button>
+                <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="Visualizations and tools dropdown menu">Visualizations ▼</button>
                 <div class="dropdown-menu">
                   <a href="SCI/PsyStates-Visualizer.html" class="dropdown-link">PsyStates Visualizer</a>
                   <a href="SCI/Consciousness-Visualization.html" class="dropdown-link">Consciousness Visualization</a>
@@ -1586,7 +1592,7 @@
                 </div>
               </div>
               <div class="nav-dropdown">
-                <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Research ▼</button>
+                <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="Research and documentation dropdown menu">Research ▼</button>
                 <div class="dropdown-menu">
                   <a href="Paper.html" class="dropdown-link">Research Paper</a>
                   <a href="App-Appendix.html" class="dropdown-link">Appendix App</a>
@@ -1600,7 +1606,7 @@
                 </div>
               </div>
               <div class="nav-dropdown">
-                <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true">Resources ▼</button>
+                <button class="nav-dropdown-btn" aria-expanded="false" aria-haspopup="true" aria-label="Resources and support dropdown menu">Resources ▼</button>
                 <div class="dropdown-menu">
                   <a href="Profile.html" class="dropdown-link">Profile</a>
                   <a href="Privacy-Policy.html" class="dropdown-link">Privacy Policy</a>
@@ -1707,7 +1713,7 @@
       <form id="quiz-form">
         <!-- Questions will be injected here -->
         <div id="questions-container"></div>
-        <button type="submit" class="btn" id="submit-quiz">Show Me My Results</button>
+        <button type="submit" class="btn" id="submit-quiz" aria-label="Submit quiz answers and view results">Show Me My Results</button>
       </form>
 
       <div id="result">
@@ -1764,9 +1770,9 @@
         <hr style="margin: 2rem 0;">
         <h4>Get Your Full Report</h4>
         <form id="email-form">
-          <input type="text" name="fname" placeholder="What should I call you? (optional)">
-          <input type="email" name="email" placeholder="Your email" required>
-          <button type="submit" class="btn">Send Me Chapter 11</button>
+          <input type="text" name="fname" placeholder="What should I call you? (optional)" aria-label="Your first name (optional)">
+          <input type="email" name="email" placeholder="Your email" required aria-label="Your email address (required)">
+          <button type="submit" class="btn" aria-label="Send chapter 11 to your email">Send Me Chapter 11</button>
         </form>
         <p class="privacy">We respect your inbox. One email per week, unsubscribe anytime. <a href="Privacy-Policy.html">Privacy Policy</a></p>
       </div>
@@ -2004,7 +2010,7 @@
       <div class="options">
         ${q.options.map((opt, i) => `
           <label>
-            <input type="radio" name="q${index}" value="${i + 1}" required>
+            <input type="radio" name="q${index}" value="${i + 1}" required aria-label="${opt}">
             ${opt}
           </label>
         `).join('')}

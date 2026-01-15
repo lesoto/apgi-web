@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Framework - Understand Why Your Mind Works The Way It Does</title>
+    <meta name="description" content="Discover the APGI Framework that explains consciousness through predictive processing. Learn about your cognitive architecture and take our assessment to understand your unique mind.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <script src="assets/js/enhanced-cdn-fallbacks.js"></script>
+    <script src="assets/js/unified-theme-manager.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/buttons.css">
+    <script src="assets/js/api-services.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
@@ -126,27 +137,7 @@
             border-color: var(--accent-blue);
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            box-shadow: 0 10px 25px rgba(0, 180, 255, 0.4);
-            transform: scale(1.05);
-        }
-        
-        .btn-secondary {
-            border: 2px solid var(--accent-blue);
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            border-color: var(--accent-blue);
-            background: rgba(0, 180, 255, 0.1);
-        }
+        /* Button styles are now handled by assets/css/buttons.css */
         
         .icon-bg {
             background: linear-gradient(135deg, rgba(0, 180, 255, 0.2) 0%, rgba(153, 102, 255, 0.2) 100%);
@@ -157,18 +148,6 @@
             background: linear-gradient(135deg, rgba(0, 180, 255, 0.4) 0%, rgba(153, 102, 255, 0.4) 100%);
         }
         
-        .segment-btn {
-            background: linear-gradient(135deg, rgba(0, 180, 255, 0.2) 0%, rgba(153, 102, 255, 0.2) 100%);
-            border: 1px solid rgba(0, 180, 255, 0.3);
-            color: var(--accent-blue);
-            transition: all 0.3s ease;
-        }
-        
-        .segment-card:hover .segment-btn {
-            background: linear-gradient(135deg, rgba(0, 180, 255, 0.4) 0%, rgba(153, 102, 255, 0.4) 100%);
-            border-color: rgba(0, 180, 255, 0.5);
-        }
-        
         .footer-link {
             color: var(--text-muted);
             transition: color 0.3s ease;
@@ -176,6 +155,25 @@
         
         .footer-link:hover {
             color: var(--accent-blue);
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .brain-visual {
+                animation: none;
+            }
+            
+            [style*="animation"] {
+                animation: none !important;
+            }
         }
         
         /* Theme Toggle Styles */
@@ -280,12 +278,6 @@
     </style>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
-    <!-- Theme Toggle Button -->
-    <div class="theme-toggle" onclick="toggleTheme()">
-        <i class="fas fa-moon theme-icon" id="themeIcon"></i>
-        <div class="theme-toggle-slider"></div>
-        <i class="fas fa-sun theme-icon"></i>
-    </div>
     
     <!-- Animated gradient background -->
     <div class="fixed inset-0 pointer-events-none opacity-40">
@@ -314,12 +306,32 @@
                         Move beyond personality labels to measurable cognitive architecture. Used by 1,200+ professionals across psychology, neuroscience, and organizational development.
                     </p>
 
-                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                        <button class="btn-primary px-8 py-4 rounded-lg font-semibold">
-                            Get Your 5-Min Snapshot
-                            <i class="fas fa-chevron-right ml-2"></i>
-                        </button>
-                        <button class="btn-secondary px-8 py-4 rounded-lg font-semibold">
+                    <!-- Email Capture Form -->
+                    <div class="space-y-4">
+                        <form id="snapshotForm" class="space-y-4">
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <input 
+                                    type="email" 
+                                    id="emailInput"
+                                    placeholder="Enter your email" 
+                                    class="flex-1 px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required
+                                >
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-primary"
+                                >
+                                    Get Free Snapshot
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div id="formMessage" class="hidden text-sm"></div>
+                        </form>
+                        
+                        <button 
+                            onclick="showPricingModal()" 
+                            class="btn btn-secondary"
+                        >
                             Explore All Paths
                         </button>
                     </div>
@@ -422,9 +434,9 @@
                     <h3 class="text-2xl font-bold mb-2 text-high-contrast">Self-Discovery</h3>
                     <p class="text-medium-contrast mb-6">Track your growth beyond labels</p>
 
-                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                    <button class="btn btn-secondary btn-block">
                         Map Yourself
-                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
 
@@ -440,9 +452,9 @@
                     <h3 class="text-2xl font-bold mb-2 text-high-contrast">Professional Tools</h3>
                     <p class="text-medium-contrast mb-6">Breakthroughs 3x faster</p>
 
-                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                    <button class="btn btn-secondary btn-block">
                         Elevate Practice
-                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
 
@@ -458,9 +470,9 @@
                     <h3 class="text-2xl font-bold mb-2 text-high-contrast">Research Suite</h3>
                     <p class="text-medium-contrast mb-6">Publish with validated measures</p>
 
-                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                    <button class="btn btn-secondary btn-block">
                         Access API
-                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
 
@@ -476,9 +488,9 @@
                     <h3 class="text-2xl font-bold mb-2 text-high-contrast">Enterprise Solutions</h3>
                     <p class="text-medium-contrast mb-6">Quantify team dynamics</p>
 
-                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                    <button class="btn btn-secondary btn-block">
                         Request Demo
-                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
 
@@ -494,9 +506,9 @@
                     <h3 class="text-2xl font-bold mb-2 text-high-contrast">Educational Tools</h3>
                     <p class="text-medium-contrast mb-6">Reduce probation by 28%</p>
 
-                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                    <button class="btn btn-secondary btn-block">
                         Transform Schools
-                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
 
@@ -512,9 +524,9 @@
                     <h3 class="text-2xl font-bold mb-2 text-high-contrast">Clinical Integration</h3>
                     <p class="text-medium-contrast mb-6">Bridge mind-body connections</p>
 
-                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                    <button class="btn btn-secondary btn-block">
                         See Clinical
-                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
 
@@ -530,9 +542,9 @@
                     <h3 class="text-2xl font-bold mb-2 text-high-contrast">Developer Tools</h3>
                     <p class="text-medium-contrast mb-6">Ethical personalization</p>
 
-                    <button class="segment-btn w-full py-3 px-4 rounded-lg font-semibold text-blue-400 flex items-center justify-center gap-2">
+                    <button class="btn btn-secondary btn-block">
                         Build Smarter
-                        <i class="fas fa-chevron-right w-4 h-4"></i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
             </div>
@@ -682,13 +694,36 @@
                 Start with a 5-minute snapshot. Use APGI fully for 90 days. If it doesn't deliver measurable insights, get 100% refund + $50 for your time.
             </p>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button class="btn-primary px-10 py-5 rounded-lg font-bold text-lg">
-                    Get 5-Minute Snapshot
-                </button>
-                <button class="btn-secondary px-10 py-5 rounded-lg font-bold text-lg">
+            <!-- Email Capture & CTA Forms -->
+            <div class="space-y-8">
+                <!-- Free Snapshot Form -->
+                <form id="ctaSnapshotForm" class="max-w-md mx-auto space-y-4">
+                    <input 
+                        type="email" 
+                        id="ctaEmailInput"
+                        placeholder="Enter your email for free snapshot" 
+                        class="w-full px-6 py-4 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                        required
+                    >
+                    <button 
+                        type="submit" 
+                        class="btn-primary w-full px-10 py-5 rounded-lg font-bold text-lg"
+                    >
+                        Get 5-Minute Snapshot
+                    </button>
+                </form>
+                
+                <div class="text-center text-gray-400">or</div>
+                
+                <!-- Consultation Booking -->
+                <button 
+                    onclick="showConsultationModal()" 
+                    class="btn-secondary w-full sm:w-auto px-10 py-5 rounded-lg font-bold text-lg mx-auto block"
+                >
                     Schedule Consultation
                 </button>
+                
+                <div id="ctaFormMessage" class="hidden text-sm text-center"></div>
             </div>
 
             <p class="text-xs text-gray-500 mt-8">
@@ -742,6 +777,112 @@
         </div>
     </footer>
 
+    <!-- Pricing Modal -->
+    <div id="pricingModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-black/75" onclick="closePricingModal()"></div>
+            
+            <div class="relative bg-gray-900 border border-gray-700 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto p-8">
+                <button onclick="closePricingModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+                
+                <h2 class="text-4xl font-bold mb-8 text-center">Choose Your Path</h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Free Tier -->
+                    <div class="bg-gray-800/50 border border-gray-600 rounded-xl p-6">
+                        <h3 class="text-2xl font-bold mb-2">Free</h3>
+                        <p class="text-gray-400 mb-6">Perfect for getting started</p>
+                        <div class="text-4xl font-bold mb-6">$0<span class="text-lg text-gray-400">/month</span></div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>5-Minute Snapshot</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Basic Report</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Community Access</li>
+                        </ul>
+                        <form id="freeTierForm" class="space-y-4">
+                            <input type="email" placeholder="Enter your email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400" required>
+                            <button type="submit" class="w-full btn-primary py-3 rounded-lg font-semibold">Start Free</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Professional Tier -->
+                    <div class="bg-blue-900/30 border-2 border-blue-500 rounded-xl p-6 relative">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">POPULAR</div>
+                        <h3 class="text-2xl font-bold mb-2">Professional</h3>
+                        <p class="text-gray-400 mb-6">For practitioners & coaches</p>
+                        <div class="text-4xl font-bold mb-6">$47<span class="text-lg text-gray-400">/month</span></div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Everything in Free</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Full Assessment Suite</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Client Management</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Advanced Analytics</li>
+                        </ul>
+                        <button onclick="startPayment('professional')" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition-colors">Start Trial</button>
+                    </div>
+                    
+                    <!-- Enterprise Tier -->
+                    <div class="bg-gray-800/50 border border-gray-600 rounded-xl p-6">
+                        <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+                        <p class="text-gray-400 mb-6">For organizations & teams</p>
+                        <div class="text-4xl font-bold mb-6">Custom</div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Everything in Pro</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>API Access</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Custom Integration</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Dedicated Support</li>
+                        </ul>
+                        <button onclick="showConsultationModal()" class="w-full btn-secondary py-3 rounded-lg font-semibold">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consultation Modal -->
+    <div id="consultationModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-black/75" onclick="closeConsultationModal()"></div>
+            
+            <div class="relative bg-gray-900 border border-gray-700 rounded-2xl max-w-2xl w-full p-8">
+                <button onclick="closeConsultationModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+                
+                <h2 class="text-3xl font-bold mb-4">Schedule Your Consultation</h2>
+                <p class="text-gray-400 mb-8">30-minute expert session to discuss your specific needs</p>
+                
+                <form id="consultationForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <input type="text" placeholder="First Name" class="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400" required>
+                        <input type="text" placeholder="Last Name" class="px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400" required>
+                    </div>
+                    
+                    <input type="email" placeholder="Work Email" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400" required>
+                    
+                    <select class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white">
+                        <option value="">Select your role</option>
+                        <option value="therapist">Therapist/Counselor</option>
+                        <option value="coach">Coach</option>
+                        <option value="researcher">Researcher</option>
+                        <option value="educator">Educator</option>
+                        <option value="business">Business Leader</option>
+                        <option value="other">Other</option>
+                    </select>
+                    
+                    <textarea placeholder="Tell us about your specific needs..." rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400"></textarea>
+                    
+                    <div class="flex items-center space-x-4">
+                        <button type="submit" class="flex-1 btn-primary py-3 rounded-lg font-semibold">Book Consultation</button>
+                        <button type="button" onclick="closeConsultationModal()" class="flex-1 btn-secondary py-3 rounded-lg font-semibold">Cancel</button>
+                    </div>
+                </form>
+                
+                <div id="consultationMessage" class="hidden mt-4 text-sm"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Parallax effect for gradient background
         let scrollY = 0;
@@ -787,32 +928,277 @@
             observer.observe(section);
         });
 
-        // Theme Toggle Functionality
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        // Initialize form handlers
+        function initializeFormHandlers() {
+            // Snapshot form handlers
+            const snapshotForm = document.getElementById('snapshotForm');
+            const ctaSnapshotForm = document.getElementById('ctaSnapshotForm');
+            const freeTierForm = document.getElementById('freeTierForm');
+            const consultationForm = document.getElementById('consultationForm');
             
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        }
-
-        function updateThemeIcon(theme) {
-            const icon = document.getElementById('themeIcon');
-            if (theme === 'light') {
-                icon.className = 'fas fa-sun theme-icon';
-            } else {
-                icon.className = 'fas fa-moon theme-icon';
+            if (snapshotForm) {
+                snapshotForm.addEventListener('submit', handleSnapshotSubmit);
+            }
+            
+            if (ctaSnapshotForm) {
+                ctaSnapshotForm.addEventListener('submit', handleCtaSnapshotSubmit);
+            }
+            
+            if (freeTierForm) {
+                freeTierForm.addEventListener('submit', handleFreeTierSubmit);
+            }
+            
+            if (consultationForm) {
+                consultationForm.addEventListener('submit', handleConsultationSubmit);
             }
         }
-
-        // Initialize theme on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
-        });
+        
+        // Email validation function
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Show form message
+        function showFormMessage(elementId, message, isError = false) {
+            const messageElement = document.getElementById(elementId);
+            if (messageElement) {
+                messageElement.textContent = message;
+                messageElement.className = isError ? 'text-red-400 text-sm' : 'text-green-400 text-sm';
+                messageElement.classList.remove('hidden');
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    messageElement.classList.add('hidden');
+                }, 5000);
+            }
+        }
+        
+        // Handle snapshot form submission
+        async function handleSnapshotSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            
+            if (!isValidEmail(email)) {
+                showFormMessage('formMessage', 'Please enter a valid email address', true);
+                return;
+            }
+            
+            try {
+                // Simulate API call - replace with actual endpoint
+                const response = await submitToEmailService(email, 'snapshot-request');
+                
+                if (response.success) {
+                    showFormMessage('formMessage', 'Success! Check your email for the snapshot link.');
+                    document.getElementById('emailInput').value = '';
+                    
+                    // Track conversion
+                    trackConversion('snapshot-signup', email);
+                } else {
+                    showFormMessage('formMessage', 'Something went wrong. Please try again.', true);
+                }
+            } catch (error) {
+                showFormMessage('formMessage', 'Network error. Please try again.', true);
+            }
+        }
+        
+        // Handle CTA snapshot form submission
+        async function handleCtaSnapshotSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('ctaEmailInput').value;
+            
+            if (!isValidEmail(email)) {
+                showFormMessage('ctaFormMessage', 'Please enter a valid email address', true);
+                return;
+            }
+            
+            try {
+                const response = await submitToEmailService(email, 'cta-snapshot');
+                
+                if (response.success) {
+                    showFormMessage('ctaFormMessage', 'Success! Check your email for your free snapshot.');
+                    document.getElementById('ctaEmailInput').value = '';
+                    trackConversion('cta-snapshot-signup', email);
+                } else {
+                    showFormMessage('ctaFormMessage', 'Something went wrong. Please try again.', true);
+                }
+            } catch (error) {
+                showFormMessage('ctaFormMessage', 'Network error. Please try again.', true);
+            }
+        }
+        
+        // Handle free tier form submission
+        async function handleFreeTierSubmit(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            
+            if (!isValidEmail(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            try {
+                const response = await submitToEmailService(email, 'free-tier-signup');
+                
+                if (response.success) {
+                    alert('Success! Check your email to activate your free account.');
+                    closePricingModal();
+                    trackConversion('free-tier-signup', email);
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+            }
+        }
+        
+        // Handle consultation form submission
+        async function handleConsultationSubmit(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            if (!isValidEmail(data.email)) {
+                showFormMessage('consultationMessage', 'Please enter a valid email address', true);
+                return;
+            }
+            
+            try {
+                const response = await submitConsultationRequest(data);
+                
+                if (response.success) {
+                    showFormMessage('consultationMessage', 'Consultation request received! We\'ll contact you within 24 hours.');
+                    e.target.reset();
+                    setTimeout(() => {
+                        closeConsultationModal();
+                    }, 3000);
+                    trackConversion('consultation-request', data.email);
+                } else {
+                    showFormMessage('consultationMessage', 'Something went wrong. Please try again.', true);
+                }
+            } catch (error) {
+                showFormMessage('consultationMessage', 'Network error. Please try again.', true);
+            }
+        }
+        
+        // Submit to email service
+        async function submitToEmailService(email, listType) {
+            try {
+                const response = await fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        listType: listType,
+                        additionalData: {
+                            source: 'landing-page',
+                            timestamp: new Date().toISOString()
+                        }
+                    })
+                });
+                
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('Email service error:', error);
+                // Fallback to local storage for development
+                return EmailService.storeLocally(email, listType, { source: 'landing-page' });
+            }
+        }
+        
+        // Submit consultation request
+        async function submitConsultationRequest(data) {
+            try {
+                const response = await fetch('/api/consultations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('Consultation service error:', error);
+                // Fallback to local storage for development
+                const consultations = JSON.parse(localStorage.getItem('apgi_consultations') || '[]');
+                consultations.push({ ...data, timestamp: new Date().toISOString() });
+                localStorage.setItem('apgi_consultations', JSON.stringify(consultations));
+                return { success: true };
+            }
+        }
+        
+        // Track conversion (placeholder - integrate with analytics)
+        function trackConversion(event, email) {
+            // In production, send to Google Analytics, Mixpanel, etc.
+            console.log(`Conversion tracked: ${event}, Email: ${email}`);
+            
+            // Example: gtag('event', event, { email: email });
+        }
+        
+        // Modal functions
+        function showPricingModal() {
+            document.getElementById('pricingModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closePricingModal() {
+            document.getElementById('pricingModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function showConsultationModal() {
+            closePricingModal();
+            document.getElementById('consultationModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeConsultationModal() {
+            document.getElementById('consultationModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Payment processing with Stripe
+        async function startPayment(tier) {
+            try {
+                // Get email from user (could show a modal or use stored email)
+                const email = prompt('Enter your email for the payment:');
+                if (!email || !isValidEmail(email)) {
+                    alert('Please enter a valid email address');
+                    return;
+                }
+                
+                // Create checkout session
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tier: tier,
+                        customerEmail: email
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success && result.sessionId) {
+                    // Redirect to Stripe Checkout
+                    const stripe = Stripe('pk_test_51234567890abcdef'); // Replace with actual key
+                    await stripe.redirectToCheckout({
+                        sessionId: result.sessionId
+                    });
+                } else {
+                    alert('Payment setup failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Payment error:', error);
+                alert('Payment processing failed. Please try again.');
+            }
+        }
     </script>
 </body>
 </html>

@@ -39,294 +39,9 @@ class APGIQuiz {
       return quizData;
     }
     
-    // Fallback data if assessment-quiz.js isn't loaded
-    console.warn('quizData not found, using fallback data');
-    return {
-      sections: [
-        {
-          id: 'epsilon',
-          title: 'Prediction Error Sensitivity (ε)',
-          subtitle: 'How sensitive you are to surprises and mismatches between expectations and reality',
-          icon: 'fas fa-bolt',
-          description: 'High ε means you notice many mismatches (good for learning, can cause anxiety). Low ε means you filter out surprises (calm but may miss important changes).',
-          questions: [
-            {
-              id: 1,
-              text: 'When plans change unexpectedly, how do you react initially?',
-              options: [
-                'Hardly notice—just adapt smoothly',
-                'Notice but adapt quickly',
-                'Feel disrupted, need to recalibrate',
-                'Strong reaction—feels like system failure'
-              ],
-              notes: ['Very Low ε', 'Low ε', 'Moderate ε', 'High ε'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 2,
-              text: 'How often do you notice small inconsistencies in your environment?',
-              options: [
-                'Rarely—things seem consistent',
-                'Sometimes notice obvious ones',
-                'Frequently notice subtle mismatches',
-                'Constantly—my brain flags inconsistencies'
-              ],
-              notes: ['Low ε', 'Moderate-Low ε', 'Moderate-High ε', 'Very High ε'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 3,
-              text: 'When learning something new, how do you handle being wrong?',
-              options: [
-                'Hardly notice errors—keep going',
-                'Notice but don\'t dwell on errors',
-                'Errors feel significant—motivate correction',
-                'Errors feel painful—strong urge to fix immediately'
-              ],
-              notes: ['Low ε', 'Moderate ε', 'High ε', 'Very High ε'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 4,
-              text: "In social situations, how quickly do you notice when someone's words don't match their tone?",
-              options: [
-                'Often miss these mismatches',
-                'Notice only large discrepancies',
-                'Quickly detect subtle incongruences',
-                'Immediately sense any mismatch'
-              ],
-              notes: ['Low ε', 'Moderate-Low ε', 'Moderate-High ε', 'Very High ε'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 5,
-              text: 'How do you experience novelty and new experiences?',
-              options: [
-                'Mostly comforting routine preferred',
-                'Enjoy some novelty in moderation',
-                'Seek novelty—it\'s energizing',
-                'Need constant novelty—routine feels stifling'
-              ],
-              notes: ['Low ε', 'Moderate ε', 'High ε', 'Very High ε'],
-              values: [1, 2, 3, 4]
-            }
-          ]
-        },
-        {
-          id: 'precision',
-          title: 'Precision Allocation (π)',
-          subtitle: 'How much confidence/weight you assign to different signals (body, threat, reward, social)',
-          icon: 'fas fa-weight-hanging',
-          description: 'High precision on threat = hypervigilance. High precision on interoception = intense bodily awareness. Balanced precision = flexible attention.',
-          questions: [
-            {
-              id: 6,
-              text: 'When you feel a physical sensation (like a twinge or ache), how do you interpret it?',
-              options: [
-                'Probably nothing—ignore it',
-                'Note it but wait to see if continues',
-                'Pay close attention—could be important',
-                'Immediately concerned—might be serious'
-              ],
-              notes: ['Low body precision', 'Moderate body precision', 'High body precision', 'Very high body precision'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 7,
-              text: 'In uncertain situations, where does your attention naturally go?',
-              options: [
-                'To potential opportunities',
-                'To gathering more information',
-                'To potential problems or threats',
-                'To how my body feels about it'
-              ],
-              notes: ['High reward precision', 'Balanced precision', 'High threat precision', 'High interoceptive precision'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 8,
-              text: "How much do social feedback and others' opinions influence your decisions?",
-              options: [
-                'Minimal—I trust my own judgment',
-                'Consider but don\'t overvalue',
-                'Strongly influence my choices',
-                'Often override my own judgment'
-              ],
-              notes: ['Low social precision', 'Moderate social precision', 'High social precision', 'Very high social precision'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 9,
-              text: 'When making decisions, how do you weigh logical analysis vs. intuitive feelings?',
-              options: [
-                'Almost entirely logical analysis',
-                'Mostly logic with some intuition',
-                'Equal weight to both',
-                'Intuition guides, logic confirms'
-              ],
-              notes: ['High analytical precision', 'Moderate balance', 'Balanced precision', 'High intuitive precision'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 10,
-              text: 'How quickly do you form strong opinions or judgments?',
-              options: [
-                'Slowly—prefer to stay uncertain',
-                'Moderately—after some consideration',
-                'Fairly quickly with moderate confidence',
-                'Very quickly with high certainty'
-              ],
-              notes: ['Low confidence precision', 'Moderate confidence', 'High confidence', 'Very high confidence precision'],
-              values: [1, 2, 3, 4]
-            }
-          ]
-        },
-        {
-          id: 'threshold',
-          title: 'Ignition Threshold (θₜ)',
-          subtitle: 'How much precision-weighted prediction error is needed to trigger conscious awareness',
-          icon: 'fas fa-bullseye',
-          description: 'Low threshold = rich awareness but easily overwhelmed. High threshold = focused but may miss subtle signals.',
-          questions: [
-            {
-              id: 11,
-              text: 'When working deeply, how easily do background sounds interrupt your focus?',
-              options: [
-                'Almost never—deeply absorbed',
-                'Only loud or salient sounds',
-                'Moderate sounds break through',
-                'Almost any sound distracts me'
-              ],
-              notes: ['Very High θₜ', 'High θₜ', 'Moderate θₜ', 'Low θₜ'],
-              values: [4, 3, 2, 1],
-              reverseScored: true
-            },
-            {
-              id: 12,
-              text: 'How many thoughts/feelings/sensations are typically in your conscious awareness at once?',
-              options: [
-                'Just one or two focused elements',
-                'A few related elements',
-                'Several different elements',
-                'Many elements simultaneously'
-              ],
-              notes: ['High θₜ', 'Moderate-High θₜ', 'Moderate-Low θₜ', 'Low θₜ'],
-              values: [4, 3, 2, 1],
-              reverseScored: true
-            },
-            {
-              id: 13,
-              text: 'How quickly do you notice subtle changes in your emotional state?',
-              options: [
-                'Often miss until emotions are strong',
-                'Notice moderate emotional shifts',
-                'Notice subtle emotional fluctuations',
-                'Immediately aware of slightest shifts'
-              ],
-              notes: ['High θₜ', 'Moderate-High θₜ', 'Moderate-Low θₜ', 'Low θₜ'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 14,
-              text: 'In a busy environment, how much sensory information reaches conscious awareness?',
-              options: [
-                'Very little—I focus selectively',
-                'Some relevant information',
-                'Quite a lot of environment',
-                'Almost everything registers'
-              ],
-              notes: ['High θₜ', 'Moderate-High θₜ', 'Moderate-Low θₜ', 'Low θₜ'],
-              values: [4, 3, 2, 1],
-              reverseScored: true
-            },
-            {
-              id: 15,
-              text: "How easily can you achieve 'flow state' where self-awareness disappears?",
-              options: [
-                'Very easily and frequently',
-                'Fairly easily when conditions right',
-                'Occasionally with effort',
-                'Rarely—always self-aware'
-              ],
-              notes: ['High θₜ', 'Moderate-High θₜ', 'Moderate-Low θₜ', 'Low θₜ'],
-              values: [4, 3, 2, 1],
-              reverseScored: true
-            }
-          ]
-        },
-        {
-          id: 'somatic',
-          title: 'Somatic Bias (β)',
-          subtitle: 'Whether your awareness anchors primarily in bodily sensations or external events',
-          icon: 'fas fa-heartbeat',
-          description: "High β = 'I feel my feelings' in body. Low β = 'I think about my feelings' cognitively.",
-          questions: [
-            {
-              id: 16,
-              text: 'When you experience an emotion, where do you primarily feel it?',
-              options: [
-                'Mostly as thoughts about emotion',
-                'Some physical sensation but mostly thoughts',
-                'Equal physical sensations and thoughts',
-                'Overwhelmingly as physical sensations'
-              ],
-              notes: ['Very Low β', 'Low β', 'Moderate β', 'High β'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 17,
-              text: "When making important decisions, what's your primary guide?",
-              options: [
-                'Logical analysis and pros/cons',
-                'Mostly logic with some gut feeling',
-                'Equal logic and bodily intuition',
-                'Bodily feeling of rightness/wrongness'
-              ],
-              notes: ['Low β', 'Moderate-Low β', 'Moderate β', 'High β'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 18,
-              text: 'How aware are you of internal bodily states (heartbeat, breathing, muscle tension) throughout day?',
-              options: [
-                'Rarely notice unless pointed out',
-                'Occasionally notice when resting',
-                'Frequently aware throughout day',
-                'Constantly aware of multiple signals'
-              ],
-              notes: ['Low β', 'Moderate-Low β', 'Moderate β', 'High β'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 19,
-              text: "When stressed, what dominates your experience?",
-              options: [
-                'Worried thoughts and mental analysis',
-                'Mostly thoughts with some body tension',
-                'Equal mental and physical symptoms',
-                'Overwhelming physical sensations'
-              ],
-              notes: ['Low β', 'Moderate-Low β', 'Moderate β', 'High β'],
-              values: [1, 2, 3, 4]
-            },
-            {
-              id: 20,
-              text: "How do you experience abstract concepts like 'freedom' or 'connection'?",
-              options: [
-                'As purely mental constructs',
-                'Mostly mental with slight bodily sense',
-                'With clear bodily correlates',
-                'As distinct bodily experiences'
-              ],
-              notes: ['Low β', 'Moderate-Low β', 'Moderate-High β', 'High β'],
-              values: [1, 2, 3, 4]
-            }
-          ]
-        }
-      ]
-    };
-
-    return quizData;
+    // Error if quizData is not available
+    console.error('quizData not found. Please ensure assessment-quiz.js is loaded before quiz-functionality.js');
+    return null;
   }
 
   // Render quiz
@@ -350,10 +65,10 @@ class APGIQuiz {
                         ${question.options
                           .map(
                             (option, index) => {
-                              // Handle both data structures: assessment-quiz.js (objects) and fallback (arrays)
-                              const optionText = typeof option === 'object' ? option.text : option;
-                              const optionValue = typeof option === 'object' ? option.value : question.values[index];
-                              const optionNote = typeof option === 'object' ? option.note : question.notes[index];
+                              // Handle object format from assessment-quiz.js
+                              const optionText = option.text;
+                              const optionValue = option.value;
+                              const optionNote = option.note;
                               
                               const savedAnswer = this.answers[question.id];
                               const isChecked = savedAnswer === optionValue ? 'checked' : '';
@@ -425,7 +140,7 @@ class APGIQuiz {
     const selectedOption = document.querySelector(selector);
 
     if (!selectedOption) {
-      alert('Please select an answer before continuing.');
+      this.showValidationError('Please select an answer before continuing.');
       return;
     }
 
@@ -446,6 +161,49 @@ class APGIQuiz {
     }
   }
 
+  // Show validation error
+  showValidationError(message) {
+    // Remove any existing error messages
+    const existingError = document.querySelector('.validation-error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Create error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'validation-error';
+    errorDiv.textContent = message;
+    errorDiv.style.cssText = `
+      background-color: #fee;
+      color: #c53030;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border-left: 4px solid #e53e3e;
+      margin-bottom: 16px;
+      font-size: 14px;
+      animation: slideInRight 0.3s ease-out;
+    `;
+
+    // Insert error message before the question container
+    const questionContainer = document.querySelector('.question-container');
+    if (questionContainer) {
+      questionContainer.parentNode.insertBefore(errorDiv, questionContainer);
+    }
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+      if (errorDiv.parentNode) {
+        errorDiv.remove();
+      }
+    }, 3000);
+
+    // Focus on the first option
+    const firstOption = document.querySelector(`input[name="quiz-question-${this.currentSection}-${this.currentQuestion}"]`);
+    if (firstOption) {
+      firstOption.focus();
+    }
+  }
+
   // Previous question
   previousQuestion() {
     if (this.currentQuestion > 0) {
@@ -459,6 +217,13 @@ class APGIQuiz {
 
   // Show results
   showResults() {
+    // Validate all questions are answered
+    const unansweredQuestions = this.validateAllQuestionsAnswered();
+    if (unansweredQuestions.length > 0) {
+      this.showUnansweredQuestionsError(unansweredQuestions);
+      return;
+    }
+
     const scores = this.calculateScores();
     const profile = this.determineProfile(scores);
 
@@ -500,6 +265,89 @@ class APGIQuiz {
     }
 
     this.bindResultsEvents();
+  }
+
+  // Validate all questions are answered
+  validateAllQuestionsAnswered() {
+    const unansweredQuestions = [];
+    
+    this.quizData.sections.forEach((section, sectionIndex) => {
+      section.questions.forEach((question, questionIndex) => {
+        if (this.answers[question.id] === undefined) {
+          unansweredQuestions.push({
+            sectionTitle: section.title,
+            questionNumber: questionIndex + 1,
+            questionText: question.text.substring(0, 50) + (question.text.length > 50 ? '...' : ''),
+            sectionIndex,
+            questionIndex
+          });
+        }
+      });
+    });
+    
+    return unansweredQuestions;
+  }
+
+  // Show error for unanswered questions
+  showUnansweredQuestionsError(unansweredQuestions) {
+    // Remove any existing error messages
+    const existingError = document.querySelector('.validation-error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Create detailed error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'validation-error';
+    
+    const questionList = unansweredQuestions
+      .map(q => `<li><strong>${q.sectionTitle}</strong> - Question ${q.questionNumber}: ${q.questionText}</li>`)
+      .join('');
+    
+    errorDiv.innerHTML = `
+      <div style="font-weight: bold; margin-bottom: 8px;">Please answer all questions before viewing your results:</div>
+      <ol style="margin: 0; padding-left: 20px;">
+        ${questionList}
+      </ol>
+      <div style="margin-top: 12px; font-size: 13px;">
+        <button onclick="this.parentElement.parentElement.remove()" style="
+          background: #e53e3e;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+        ">Dismiss</button>
+      </div>
+    `;
+    
+    errorDiv.style.cssText = `
+      background-color: #fee;
+      color: #c53030;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #e53e3e;
+      margin-bottom: 16px;
+      font-size: 14px;
+      animation: slideInRight 0.3s ease-out;
+      max-height: 300px;
+      overflow-y: auto;
+    `;
+
+    // Insert error message at the top of the quiz section
+    const quizSection = document.getElementById('quiz-section');
+    if (quizSection) {
+      quizSection.insertBefore(errorDiv, quizSection.firstChild);
+    }
+
+    // Navigate to first unanswered question
+    const firstUnanswered = unansweredQuestions[0];
+    if (firstUnanswered) {
+      this.currentSection = firstUnanswered.sectionIndex;
+      this.currentQuestion = firstUnanswered.questionIndex;
+      this.renderQuiz();
+    }
   }
 
   // Calculate scores

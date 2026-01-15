@@ -8,16 +8,23 @@
     <script src="assets/js/cdn-fallbacks.js"></script>
     <!-- Shared Navigation -->
     <link rel="stylesheet" href="assets/css/navigation.css">
+    <link rel="stylesheet" href="assets/css/buttons.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Consciousness Architecture Assessment</title>
+    <meta name="description" content="Take the comprehensive APGI assessment to discover your unique consciousness signature. Learn about your prediction error sensitivity, precision allocation, ignition threshold, and somatic bias patterns.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/fonts-fallback.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
         :root {
@@ -827,9 +834,11 @@
         }
 
         .chart-container {
-            height: 400px;
+            height: clamp(250px, 40vh, 400px);
             position: relative;
             margin-bottom: var(--spacing-lg);
+            width: 100%;
+            min-height: 250px;
         }
 
         .multi-chart-container {
@@ -1025,6 +1034,94 @@
             padding-top: var(--spacing-lg);
             border-top: 2px solid var(--border-color);
             flex-wrap: wrap;
+        }
+
+        /* Loading States */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: white;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .button-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+
+        .button-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .chart-loading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            min-height: 200px;
+            color: var(--muted-text);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .chart-loading .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 12px;
         }
 
         .parameter-interactions {
@@ -1253,7 +1350,8 @@
             }
             
             .chart-container {
-                height: 300px;
+                height: clamp(200px, 35vh, 300px);
+                min-height: 200px;
             }
             
             .gauge-container {
@@ -1300,7 +1398,8 @@
             }
             
             .chart-container {
-                height: 260px;
+                height: clamp(180px, 30vh, 260px);
+                min-height: 180px;
             }
             
             .context-factors {
@@ -1835,6 +1934,14 @@
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Processing...</div>
+        </div>
+    </div>
+
     <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -2065,7 +2172,7 @@
             </div>
             
             <div style="text-align: center; margin-top: 30px;">
-                <button id="start-quiz-btn">
+                <button id="start-quiz-btn" aria-label="Begin the complete APGI consciousness assessment">
                     <i class="fas fa-brain"></i> Begin Complete Assessment
                 </button>
             </div>
@@ -2088,10 +2195,10 @@
             </div>
             
             <div class="quiz-navigation">
-                <button class="secondary" id="prev-btn" disabled>
+                <button class="secondary" id="prev-btn" disabled aria-label="Go to previous question">
                     <i class="fas fa-arrow-left"></i> Previous
                 </button>
-                <button id="next-btn">
+                <button id="next-btn" aria-label="Go to next question">
                     Next <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
@@ -2346,10 +2453,10 @@
             </div>
             
             <div class="actions">
-                <button class="secondary" id="retake-btn">
+                <button class="secondary" id="retake-btn" aria-label="Retake the consciousness assessment">
                     <i class="fas fa-redo"></i> Retake Assessment
                 </button>
-                <button id="download-btn">
+                <button id="download-btn" aria-label="Download full assessment report as PDF">
                     <i class="fas fa-download"></i> Download Full Report
                 </button>
             </div>

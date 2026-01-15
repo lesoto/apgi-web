@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="assets/js/performance-optimizer.js"></script>
-    <script src="assets/js/accessibility-enhancer.js"></script>
-    <script src="assets/js/navigation.js"></script>
-    <script src="assets/js/cdn-fallbacks.js"></script>
+    <script src="../assets/js/performance-optimizer.js"></script>
+    <script src="../assets/js/accessibility-enhancer.js"></script>
+    <script src="../assets/js/navigation.js"></script>
+    <script src="../assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APGI Framework - Academic Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script></script>
+    <link rel="stylesheet" href="../assets/css/fontawesome-fallback.css">
+    <link rel="stylesheet" href="../assets/css/buttons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
     <style>
         * {
@@ -295,13 +296,15 @@
         /* Chart Containers */
         .chart-container {
             position: relative;
-            height: 300px;
+            height: clamp(250px, 40vh, 300px);
             width: 100%;
             margin-top: 20px;
+            min-height: 250px;
         }
         
         .large-chart-container {
-            height: 400px;
+            height: clamp(300px, 50vh, 400px);
+            min-height: 300px;
         }
         
         .chart-header {
@@ -332,13 +335,14 @@
         .control-btn {
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 50px;
+            border-radius: var(--btn-border-radius, 60px);
             padding: 10px 18px;
             font-size: 13px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--btn-transition, all 0.4s cubic-bezier(0.4, 0, 0.2, 1));
             color: var(--text-primary);
             font-weight: 600;
+            min-height: 40px;
         }
         
         .control-btn:hover {
@@ -515,16 +519,17 @@
         .export-btn {
             background: var(--bg-secondary);
             border: 2px solid var(--border-color);
-            border-radius: 50px;
+            border-radius: var(--btn-border-radius, 60px);
             padding: 12px 24px;
             font-size: 14px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--btn-transition, all 0.4s cubic-bezier(0.4, 0, 0.2, 1));
             color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 10px;
             font-weight: 600;
+            min-height: 48px;
         }
         
         .export-btn:hover {
@@ -879,11 +884,13 @@
             }
             
             .chart-container {
-                height: 250px;
+                height: clamp(200px, 35vh, 250px);
+                min-height: 200px;
             }
             
             .large-chart-container {
-                height: 300px;
+                height: clamp(250px, 40vh, 300px);
+                min-height: 250px;
             }
             
             .chart-header {

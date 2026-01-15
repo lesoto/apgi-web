@@ -31,10 +31,18 @@ class FormHandler {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
+    const email = formData.get('email');
+    
+    // Validate email
+    if (!this.validateEmail(email)) {
+      this.showError(form, 'Please enter a valid email address.');
+      return;
+    }
+    
     const data = {
       type: 'newsletter',
       name: formData.get('fname') || '',
-      email: formData.get('email'),
+      email: email,
       source: 'Home.html',
       timestamp: new Date().toISOString()
     };
@@ -48,9 +56,17 @@ class FormHandler {
     const emailInput = form.querySelector('input[type="email"]');
     if (!emailInput) return;
 
+    const email = emailInput.value;
+    
+    // Validate email
+    if (!this.validateEmail(email)) {
+      this.showError(form, 'Please enter a valid email address.');
+      return;
+    }
+
     const data = {
       type: 'book_chapter',
-      email: emailInput.value,
+      email: email,
       source: 'Book-Outline.html',
       timestamp: new Date().toISOString()
     };
@@ -141,6 +157,16 @@ class FormHandler {
 
   showError(form, message) {
     this.showMessage(form, message, 'error');
+  }
+
+  validateEmail(email) {
+    if (!email || typeof email !== 'string') {
+      return false;
+    }
+    
+    // Basic email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email.trim());
   }
 
   showMessage(form, message, type) {
