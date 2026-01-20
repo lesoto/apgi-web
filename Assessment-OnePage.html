@@ -10,6 +10,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI Consciousness Parameter Assessment</title>
+    <meta
+      name="description"
+      content="Complete APGI Consciousness Parameter Assessment in one page. Discover your unique cognitive signature through prediction error, precision, threshold, and somatic bias measurements."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -1442,10 +1446,56 @@
         .finally(() => {
           // Reinitialize theme toggle after navigation loads (both success and fallback)
           if (window.themeManager) {
-            window.themeManager.setupThemeToggle();
-            window.themeManager.updateThemeUI(window.themeManager.getTheme());
+            // Wait a bit for DOM to be ready
+            setTimeout(() => {
+              window.themeManager.setupThemeToggle();
+              window.themeManager.updateThemeUI(window.themeManager.getTheme());
+            }, 100);
+          } else {
+            // Fallback: initialize theme toggle manually if themeManager is not available
+            setTimeout(() => {
+              initializeThemeToggleFallback();
+            }, 100);
           }
         });
+
+      // Fallback theme toggle initialization
+      function initializeThemeToggleFallback() {
+        const themeToggle = document.getElementById("theme-toggle");
+        if (!themeToggle) return;
+
+        // Get current theme
+        const currentTheme =
+          localStorage.getItem("theme") ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+
+        // Apply theme
+        document.documentElement.setAttribute("data-theme", currentTheme);
+        updateThemeUI(currentTheme);
+
+        // Handle toggle click
+        themeToggle.addEventListener("click", function () {
+          const newTheme = currentTheme === "light" ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", newTheme);
+          localStorage.setItem("theme", newTheme);
+          updateThemeUI(newTheme);
+        });
+
+        function updateThemeUI(theme) {
+          const icon = themeToggle.querySelector(".theme-icon");
+          const text = themeToggle.querySelector(".theme-text");
+
+          if (icon) {
+            icon.textContent = theme === "light" ? "🌙" : "☀️";
+          }
+          if (text) {
+            text.textContent = theme === "light" ? "Dark" : "Light";
+          }
+          themeToggle.setAttribute("aria-expanded", theme === "dark");
+        }
+      }
     </script>
 
     <!-- Skip to main content for accessibility -->
@@ -1933,6 +1983,7 @@
 
       let behavioralData = {
         noveltyResponse: null,
+        somaticDecisionWeight: 0,
         multitaskingCapacity: 0,
       };
 
@@ -2005,28 +2056,38 @@
       // ==================== PARAMETER CALCULATION ====================
 
       function calculateResults() {
+        // Show loading state
+        const calculateBtn = document.querySelector('button[onclick="calculateResults()"]');
+        const originalContent = calculateBtn.innerHTML;
+        calculateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+        calculateBtn.disabled = true;
+
         // Validate all questions answered
         if (Object.keys(responses).length < 10) {
+          calculateBtn.innerHTML = originalContent;
+          calculateBtn.disabled = false;
           alert("Please answer all questions before calculating results.");
           return;
         }
 
-        // Calculate base parameters from responses
-        parameters.predictionError = responses.q1 || 50;
-        parameters.precision = responses.q2 || 50;
-        parameters.threshold = 100 - (responses.q3 || 50); // Inverse: low awareness = high threshold
-        parameters.somaticBias = responses.q4 || 50;
-        parameters.stateFlexibility = responses.q7 || 50;
+        // Simulate processing delay for better UX
+        setTimeout(() => {
+          // Calculate base parameters from responses
+          parameters.predictionError = responses.q1 || 50;
+          parameters.precision = responses.q2 || 50;
+          parameters.threshold = 100 - (responses.q3 || 50); // Inverse: low awareness = high threshold
+          parameters.somaticBias = responses.q4 || 50;
+          parameters.stateFlexibility = responses.q7 || 50;
 
-        // Calculate state-dependent profiles
-        stateProfiles.resting = {
+          // Calculate state-dependent profiles
+          stateProfiles.resting = {
           predictionError: parameters.predictionError,
           precision: parameters.precision,
           threshold: parameters.threshold,
           somaticBias: parameters.somaticBias,
         };
 
-        stateProfiles.stressed = {
+          stateProfiles.stressed = {
           predictionError: Math.min(
             100,
             parameters.predictionError + (responses.q5 || 50) * 0.5,
@@ -2036,7 +2097,7 @@
           somaticBias: Math.min(100, parameters.somaticBias + 15),
         };
 
-        stateProfiles.focused = {
+          stateProfiles.focused = {
           predictionError: Math.max(0, parameters.predictionError - 20),
           precision: Math.min(100, parameters.precision + 10),
           threshold: Math.min(
@@ -2046,14 +2107,14 @@
           somaticBias: Math.max(0, parameters.somaticBias - 10),
         };
 
-        // Store behavioral data
-        behavioralData.noveltyResponse = responses.q8;
-        behavioralData.somaticDecisionWeight = responses.q9 || 50;
-        behavioralData.multitaskingCapacity = responses.q10 || 50;
+          // Store behavioral data
+          behavioralData.noveltyResponse = responses.q8;
+          behavioralData.somaticDecisionWeight = responses.q9 || 50;
+          behavioralData.multitaskingCapacity = responses.q10 || 50;
 
-        // Display results
-        displayResults();
-      }
+          // Display results
+          displayResults();
+      }, 800); // End of setTimeout
 
       function displayResults() {
         // Show results section
@@ -2074,8 +2135,6 @@
         Object.entries(resultElements).forEach(([id, value]) => {
           const element = document.getElementById(id);
           if (element) {
-            element.textContent = value;
-          } else {
             element.textContent = value;
           }
         });
@@ -2141,6 +2200,8 @@
             ],
           },
           options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
               r: {
                 min: 0,
@@ -2157,6 +2218,14 @@
             },
           },
         });
+
+          // Reset button state
+          calculateBtn.innerHTML = originalContent;
+          calculateBtn.disabled = false;
+
+          // Scroll to results
+          document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }, 800); // End of setTimeout
       }
 
       function generateStateTable() {
@@ -2271,17 +2340,17 @@
                 <p style="font-size: 1.1rem; margin-bottom: 20px;">
                     <strong>Your APGI Profile:</strong> Your consciousness architecture shows the following characteristics:
                 </p>
-                
+
                 <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                     <h4 style="color: var(--secondary); margin-bottom: 10px;">Ignition Dynamics:</h4>
                     <p>With a precision-weighted prediction error of ${((parameters.precision / 100) * parameters.predictionError).toFixed(1)} and threshold of ${parameters.threshold.toFixed(1)}, your ignition probability is approximately ${(sigmoid((parameters.precision / 100) * parameters.predictionError - parameters.threshold / 100) * 100).toFixed(1)}%. This indicates ${parameters.threshold < 40 ? "broad conscious access (low threshold)" : parameters.threshold > 70 ? "narrow conscious access (high threshold)" : "moderate conscious selectivity"}.</p>
                 </div>
-                
+
                 <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                     <h4 style="color: var(--secondary); margin-bottom: 10px;">Embodiment Profile:</h4>
                     <p>Your somatic bias of ${parameters.somaticBias.toFixed(1)} suggests ${parameters.somaticBias < 30 ? "strongly externally-focused consciousness with limited interoceptive influence" : parameters.somaticBias > 70 ? "deeply embodied consciousness dominated by interoceptive signals" : "balanced integration of interoceptive and exteroceptive information"}.</p>
                 </div>
-                
+
                 <div style="background: var(--bg-secondary); padding: 20px; border-radius: 8px; margin-top: 20px;">
                     <h4 style="color: var(--secondary); margin-bottom: 10px;">Processing Style:</h4>
                     <p>${interpretProcessingStyle()}</p>

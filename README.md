@@ -11,8 +11,6 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - **θₜ (Theta-t)**: Awareness Threshold - How much stimulus before you notice
 - **β (Beta)**: Body-World Balance - Where you focus internally or externally
 
----
-
 ## 🏠 Main Pages
 
 ### Home.html
@@ -35,8 +33,6 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Progress tracking with visual indicators
 - Responsive design for all devices
 - Accessibility enhancements with skip links and keyboard navigation
-
----
 
 ### Landing.html
 
@@ -65,8 +61,6 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Professional testimonials with quantified results
 - Mobile-responsive pricing grid
 
----
-
 ### App-Explorer.html
 
 **Purpose**: Interactive application explorer showcasing APGI Framework capabilities
@@ -84,8 +78,6 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Live visualization updates
 - Educational tooltips and explanations
 - Mobile-responsive design
-
----
 
 ### App-Appendix.html
 
@@ -170,8 +162,6 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Real-time validation
 - Mobile-optimized layout
 
----
-
 ## 🔬 Scientific & Research Pages
 
 ### APGI-Experiments.html
@@ -193,8 +183,6 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Adjustable parameters with immediate visual feedback
 - Educational content about the science behind APGI
 - Links to research papers and validation studies
-
----
 
 ## 🧠 SCI (Scientific Consciousness Interface) Module
 
@@ -320,8 +308,6 @@ The SCI directory contains advanced scientific visualization and analysis tools 
 - Download options for full papers
 - Reference sections and related work
 
----
-
 ## 📚 Educational Content
 
 ### Book-Outline.html
@@ -356,8 +342,6 @@ The SCI directory contains advanced scientific visualization and analysis tools 
 - Special offers and bundles
 - Reader community and discussion forums
 
----
-
 ## 🛠️ Technical & API Pages
 
 ### API.html
@@ -372,13 +356,17 @@ The SCI directory contains advanced scientific visualization and analysis tools 
 - Rate limiting and usage guidelines
 - Authentication and security information
 - Developer community and support resources
+- **Note**: Backend API is implemented and functional
 
 **Key Features**:
 
-- RESTful API documentation
+- **Implemented RESTful API** with working endpoints
 - SDK downloads and integration guides
 - Sandbox environment for testing
 - Webhook documentation and examples
+- Email subscription endpoints
+- Consultation booking endpoints
+- Payment processing with Stripe integration
 
 ### APGI-Software-System.html
 
@@ -391,8 +379,6 @@ The SCI directory contains advanced scientific visualization and analysis tools 
 - Integration possibilities and examples
 - Security and privacy information
 - Performance metrics and reliability data
-
----
 
 ## 🎯 Marketing & Conversion Funnels
 
@@ -419,34 +405,42 @@ The SCI directory contains advanced scientific visualization and analysis tools 
 The funnels directory contains 16 specialized conversion funnels:
 
 **Individual Self-Explorers**:
+
 - `1_individual_self_explorers.html` - Main funnel for personal growth seekers
 - `1_individual_self_explorers_journey.html` - Extended journey experience
 
 **Therapists & Coaches**:
+
 - `2_therapists_coaches.html` - Professional tools and resources
 - `2_therapists_coaches_journey.html` - Detailed practitioner journey
 
 **Academic Researchers**:
+
 - `3_academic_researchers.html` - Research tools and validation
 - `3_academic_researchers_journey.html` - Academic partnership pathway
 
 **Organizational Development**:
+
 - `4_organizational_development.html` - Team dynamics and enterprise solutions
 - `4_organizational_development_journey.html` - Corporate implementation guide
 
 **Educational Institutions**:
+
 - `5_educational_institutions.html` - School programs and educational tools
 - `5_educational_institutions_journey.html` - Educational transformation pathway
 
 **Healthcare Professionals**:
+
 - `6_healthcare_professionals.html` - Clinical integration and medical applications
 - `6_healthcare_professionals_journey.html` - Healthcare implementation guide
 
 **Tech Industry Professionals**:
+
 - `7_tech_industry_professionals.html` - Developer tools and API access
 - `7_tech_industry_professionals_journey.html` - Technical integration pathway
 
 **Advertising Assets**:
+
 - `ad-display.html` - Advertisement display templates
 - `social-media-ads.html` - Social media campaign assets
 
@@ -459,8 +453,6 @@ The funnels directory contains 16 specialized conversion funnels:
 - Mobile-responsive designs
 - A/B testing capabilities
 - Analytics and performance tracking
-
----
 
 ## 👤 User Management
 
@@ -476,16 +468,16 @@ The funnels directory contains 16 specialized conversion funnels:
 - Privacy settings and data preferences
 - Notification preferences and communication settings
 - Account management and security options
+- **Save functionality** with form validation and backend integration
 
 **Key Features**:
 
-- Comprehensive profile management
-- Assessment history tracking
+- Comprehensive profile management with save functionality
+- Assessment history tracking (session-based)
 - Privacy controls and data export
 - Communication preferences
 - Security settings and 2FA options
-
----
+- Form validation and user feedback
 
 ## 📊 State Assessment & Analysis
 
@@ -508,8 +500,6 @@ The funnels directory contains 16 specialized conversion funnels:
 - Interactive result visualization
 - Historical tracking and comparison
 - Export and sharing capabilities
-
----
 
 ## 📄 Legal & Administrative Pages
 
@@ -561,26 +551,20 @@ The funnels directory contains 16 specialized conversion funnels:
 - Navigation options to return to main content
 - Search functionality to find desired pages
 - Contact information for further assistance
+- **Fully implemented** with proper navigation and styling
 
 **Key Features**:
 
 - On-brand error handling
 - Helpful navigation options
 - Search functionality
-- Mobile-responsive designagement options
-
-**Key Features**:
-
-- Editable profile fields with validation
-- Social media integration
-- Assessment result organization
-- Export data functionality
-
----
+- Mobile-responsive design
+- Accessibility compliance
+- Theme support
 
 ## 📁 Project Structure
 
-```
+```text
 apgi-web/
 ├── 📄 Core Pages
 │   ├── Home.html                 # Main landing page with quiz
@@ -632,6 +616,11 @@ apgi-web/
 │   ├── assets/
 │   │   ├── css/                 # Stylesheets and design system
 │   │   ├── js/                  # JavaScript functionality
+│   │   │   ├── theme-manager.js           # Dark/light theme support
+│   │   │   ├── accessibility-enhancer.js  # Accessibility features
+│   │   │   ├── payment-service.js         # Stripe integration
+│   │   │   ├── form-handler.js           # Form validation
+│   │   │   └── site-search.js            # Search functionality
 │   │   ├── images/              # Static images and graphics
 │   │   └── security/            # Security configurations
 │   └── components/
@@ -647,13 +636,12 @@ apgi-web/
 │
 └── ⚙️ Configuration
     ├── package.json              # Node.js dependencies and scripts
-    ├── server.js                # Express backend server
+    ├── server.js                # Express backend server (IMPLEMENTED)
     ├── .env                     # Environment variables
     ├── .gitignore               # Git ignore patterns
-    └── eslint.config.mjs        # Code linting configuration
+    ├── eslint.config.mjs        # Code linting configuration
+    └── favicon.svg              # Site favicon
 ```
-
----
 
 ## 🚀 Development Setup
 
@@ -662,6 +650,7 @@ apgi-web/
 - **Node.js**: >= 16.0.0
 - **npm**: >= 8.0.0
 - **Git**: For version control
+- **Stripe Account**: For payment processing (optional for development)
 
 ### Installation
 
@@ -675,10 +664,28 @@ npm install
 
 # Copy environment template
 cp .env.example .env
-# Edit .env with your configuration
+# Edit .env with your configuration (Stripe keys, etc.)
 
 # Start development server
 npm run dev
+```
+
+### Environment Variables
+
+Required environment variables for `.env`:
+
+```env
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+
+# Stripe Integration
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Optional: Email Service Integration
+MAILCHIMP_API_KEY=...
+CONVERTKIT_API_KEY=...
 ```
 
 ### Available Scripts
@@ -689,19 +696,27 @@ npm run dev
 - `npm run lint` - Code quality checks
 - `npm run format` - Code formatting
 
----
-
 ## 🏗️ Technical Architecture
 
 ### Backend Stack
 
 - **Node.js** - Runtime environment
 - **Express.js** - Web framework
-- **Stripe** - Payment processing
+- **Stripe** - Payment processing (IMPLEMENTED)
 - **Helmet** - Security headers
 - **CORS** - Cross-origin resource sharing
 - **Morgan** - Request logging
 - **Compression** - Response compression
+- **Rate Limiting** - DDoS protection
+
+### Implemented API Endpoints
+
+- `POST /api/subscribe` - Email subscription with validation
+- `POST /api/create-checkout-session` - Stripe payment processing
+- `POST /webhook/stripe` - Stripe webhook handling
+- `POST /api/consultations` - Consultation booking
+- `GET /api/consultations` - Admin consultation retrieval
+- `GET /api/health` - Health check endpoint
 
 ### Frontend Architecture
 
@@ -714,12 +729,14 @@ npm run dev
 ### Key Features
 
 - **Responsive Design**: Mobile-first approach
-- **Accessibility**: WCAG 2.1 AA compliance
+- **Accessibility**: WCAG 2.1 AA compliance with reduced motion support
 - **Performance**: Optimized loading and caching
 - **Security**: HTTPS, CSRF protection, XSS prevention
 - **SEO**: Semantic markup and meta tags
-
----
+- **Theme Management**: Dark/light theme toggle with persistence
+- **Navigation**: Centralized component across pages
+- **Print Styles**: Optimized printing for assessment results
+- **External Links**: Proper security attributes (target="\_blank" rel="noopener noreferrer")
 
 ## 🧪 Testing & Quality Assurance
 
@@ -739,8 +756,6 @@ The APGI Framework website employs a comprehensive testing approach:
 - **Prettier**: Consistent code formatting
 - **Git Hooks**: Pre-commit quality checks
 - **Continuous Integration**: Automated testing on deployment
-
----
 
 ## 🚀 Deployment & Operations
 
@@ -767,8 +782,6 @@ The application supports multiple deployment environments:
 - **User Analytics**: Privacy-compliant usage tracking
 - **Uptime Monitoring**: Service availability and response times
 
----
-
 ## 🤝 Contributing Guidelines
 
 ### Development Workflow
@@ -794,8 +807,6 @@ The application supports multiple deployment environments:
 - **Accessibility tests** for UI components
 - **Performance tests** for critical paths
 
----
-
 ## � Support & Contact
 
 ### Getting Help
@@ -803,7 +814,7 @@ The application supports multiple deployment environments:
 - **Documentation**: Check this README and inline documentation
 - **Issues**: Report bugs via GitHub Issues
 - **Discussions**: Join GitHub Discussions for questions
-- **Email**: Contact support@apgi-framework.com
+- **Email**: Contact <support@apgi-framework.com>
 
 ### Community
 
@@ -811,8 +822,6 @@ The application supports multiple deployment environments:
 - **Research**: Academic partnerships and validation
 - **Professional**: Therapist and practitioner networks
 - **Developer**: API integration and custom solutions
-
----
 
 ## 📄 License
 
@@ -822,93 +831,8 @@ This project is licensed under the **MIT License** - see the LICENSE file for de
 
 - **APGI Framework**: Consciousness assessment and research platform
 - **Scientific Foundation**: Based on peer-reviewed consciousness research
-- **Open Source**: Community-driven development and improvement
+- **Community-driven development and improvement**
 
----
+## Last Updated
 
-*Last updated: January 2026*
-
-# Start production server
-npm start
-
-## � Code Quality & Standards
-
-### ESLint Configuration
-
-The project uses ESLint with a custom configuration (`eslint.config.mjs`) that includes:
-
-- **Browser and Node.js globals** for mixed environment development
-- **External library globals** (Chart.js, Stripe, React, Plotly, etc.)
-- **Rule configuration**:
-  - `no-unused-vars: "off"` - Disabled for development flexibility
-  - `no-undef: "error"` - Catches undefined variable errors
-  - `no-useless-escape: "warn"` - Flags unnecessary regex escapes
-  - `no-dupe-keys: "error"` - Prevents duplicate object keys
-  - `no-case-declarations: "warn"` - Encourages proper block scoping
-  - `no-console: "error"` - Prevents console statements in production code
-
-### Prettier Integration
-
-Prettier is configured to format all files automatically:
-
-- HTML, CSS, JavaScript, JSON, and Markdown files
-- Consistent code style across the entire project
-- Runs without errors on all file types
-
-### Code Quality Workflow
-
-1. **Before committing**: Run `npm run lint` and `npm run format`
-2. **ESLint**: Checks for syntax errors and code quality issues
-3. **Prettier**: Ensures consistent formatting across all files
-4. **No blocking issues**: Both commands complete successfully with exit code 0
-
-## �� Monitoring & Maintenance
-
-### Health Checks
-
-- Server health: `GET /api/health`
-- Monitor API response times
-- Track conversion rates
-- Monitor payment success rates
-
-### Regular Tasks
-
-- Update Stripe price IDs if needed
-- Monitor email deliverability
-- Check webhook processing
-- Review analytics data
-- Update security dependencies
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Email not subscribing:**
-
-- Check API keys in `.env`
-- Verify list IDs are correct
-- Check CORS settings
-- Review browser console errors
-
-**Payment not working:**
-
-- Verify Stripe keys are correct
-- Check price IDs match Stripe dashboard
-- Ensure webhook endpoint is accessible
-- Review Stripe logs for errors
-
-**Forms not submitting:**
-
-- Check backend server is running
-- Verify API endpoints are accessible
-- Review browser network tab for failed requests
-- Check console for JavaScript errors
-
-### Debug Mode
-
-Add to `.env` for development:
-
-```
-NODE_ENV=development
-DEBUG=apgi:*
-```
+January 2026

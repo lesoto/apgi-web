@@ -1459,6 +1459,8 @@
       async function handleSnapshotSubmit(e) {
         e.preventDefault();
         const email = document.getElementById("emailInput").value;
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalContent = submitBtn.innerHTML;
 
         if (!isValidEmail(email)) {
           showFormMessage(
@@ -1468,6 +1470,11 @@
           );
           return;
         }
+
+        // Show loading state
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
 
         try {
           // Simulate API call - replace with actual endpoint
@@ -1498,6 +1505,10 @@
             "Network error. Please try again.",
             true,
           );
+        } finally {
+          // Reset button state
+          submitBtn.innerHTML = originalContent;
+          submitBtn.disabled = false;
         }
       }
 

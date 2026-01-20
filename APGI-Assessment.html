@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI Cognitive Processing Assessment</title>
+    <meta
+      name="description"
+      content="Take the APGI Cognitive Processing Assessment to discover your unique consciousness signature. Learn about prediction error sensitivity, precision allocation, ignition threshold, and somatic bias patterns."
+    />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -352,6 +356,144 @@
         }
         50% {
           border-color: #fbbf24;
+        }
+      }
+
+      /* ============================================
+           PRINT-OPTIMIZED STYLES
+           ============================================ */
+      @media print {
+        /* Page setup */
+        @page {
+          margin: 0.5in;
+          size: A4;
+        }
+
+        body {
+          font-size: 12pt;
+          line-height: 1.4;
+          color: #000;
+          background: #fff !important;
+        }
+
+        /* Hide unnecessary elements */
+        .main-nav,
+        .navigation-placeholder,
+        .theme-toggle,
+        .btn,
+        .progress-bar,
+        .question-card,
+        .option-card,
+        button,
+        .quiz-controls {
+          display: none !important;
+        }
+
+        /* Show only results section */
+        .quiz-results,
+        .results-section {
+          display: block !important;
+          visibility: visible !important;
+        }
+
+        /* Results styling */
+        .results-header {
+          page-break-after: avoid;
+          margin-bottom: 20pt;
+          border-bottom: 2pt solid #333;
+          padding-bottom: 10pt;
+        }
+
+        .results-header h2 {
+          font-size: 18pt;
+          color: #000 !important;
+          margin-bottom: 8pt;
+        }
+
+        /* Score displays */
+        .parameter-score,
+        .score-display {
+          font-size: 16pt;
+          font-weight: bold;
+          color: #000 !important;
+          margin-bottom: 5pt;
+        }
+
+        .parameter-label {
+          font-size: 11pt;
+          font-weight: bold;
+          color: #000 !important;
+          margin-bottom: 3pt;
+        }
+
+        .parameter-description {
+          font-size: 9pt;
+          color: #666;
+          line-height: 1.3;
+          margin-bottom: 10pt;
+        }
+
+        /* Charts and visualizations */
+        .chart-container,
+        .visualization {
+          margin: 20pt 0;
+          padding: 15pt;
+          border: 1pt solid #ccc;
+          page-break-inside: avoid;
+        }
+
+        .chart-container h3,
+        .visualization h3 {
+          font-size: 14pt;
+          color: #000 !important;
+          margin-bottom: 10pt;
+          border-bottom: 1pt solid #ccc;
+          padding-bottom: 5pt;
+        }
+
+        /* Canvas styling */
+        canvas {
+          max-width: 100% !important;
+          height: auto !important;
+          page-break-inside: avoid;
+        }
+
+        /* Tables */
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 10pt 0;
+          font-size: 10pt;
+        }
+
+        th,
+        td {
+          border: 1pt solid #ccc;
+          padding: 5pt;
+          text-align: left;
+        }
+
+        th {
+          background: #f0f0f0;
+          font-weight: bold;
+        }
+
+        /* Ensure text readability */
+        * {
+          color: #000 !important;
+          text-shadow: none !important;
+        }
+
+        /* Links */
+        a {
+          color: #000 !important;
+          text-decoration: underline;
+        }
+
+        a::after {
+          content: " (" attr(href) ")";
+          font-size: 9pt;
+          color: #666;
         }
       }
     </style>
@@ -2584,428 +2726,452 @@
       // RESULTS CALCULATION (IMPROVED)
       // ===================================
       function calculateResults() {
+        // Show loading state
+        const resultsSection = document.getElementById("results");
+        resultsSection.innerHTML = `
+          <div class="text-center py-12">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-500 mb-4"></i>
+            <p class="text-lg text-gray-300">Calculating your consciousness signature...</p>
+            <p class="text-sm text-gray-400 mt-2">This may take a few moments</p>
+          </div>
+        `;
+
         document.getElementById("test-nav").classList.add("hidden");
         document.getElementById("step-4").classList.add("hidden-step");
         document.getElementById("results").classList.remove("hidden-step");
 
-        // Calculate quality metrics first
-        calculateQualityMetrics();
+        // Simulate processing delay for better UX
+        setTimeout(() => {
+          // Calculate quality metrics first
+          calculateQualityMetrics();
 
-        // EPSILON: Enhanced d-prime calculation with robust edge case handling
-        const validEpsilonTrials = state.data.epsilon.trials.filter(
-          (t) => t.valid,
-        );
-        const violations = state.data.epsilon.violations;
-        const standards = state.data.epsilon.standards;
-
-        // Enhanced edge case handling with intelligent defaults
-        let epsilonScore = 50;
-        let dPrime = 0,
-          rtDiff = 0,
-          hitRate = 0.5,
-          faRate = 0.05;
-
-        if (violations.length === 0 && standards.length === 0) {
-          // No data collected - use population norm
-          epsilonScore = NORMATIVE_DATA.epsilon.mean;
-          dPrime = 0;
-          rtDiff = 0;
-          hitRate = 0.5;
-          faRate = 0.05;
-        } else if (violations.length === 0) {
-          // Only standard trials - conservative estimate
-          epsilonScore = Math.max(
-            30,
-            Math.min(70, NORMATIVE_DATA.epsilon.mean - 10),
+          // EPSILON: Enhanced d-prime calculation with robust edge case handling
+          const validEpsilonTrials = state.data.epsilon.trials.filter(
+            (t) => t.valid,
           );
-          dPrime = -0.5;
-          rtDiff = 0;
-          hitRate = 0.5;
-          faRate =
-            standards.length > 0
-              ? Math.min(
-                  0.3,
-                  state.data.epsilon.trials.filter((t) => t.type === "standard")
-                    .length / standards.length,
-                )
-              : 0.05;
-        } else if (standards.length === 0) {
-          // Only violation trials - optimistic estimate with uncertainty
-          epsilonScore = Math.max(
-            30,
-            Math.min(70, NORMATIVE_DATA.epsilon.mean + 5),
-          );
-          dPrime = 0.3;
-          rtDiff = 50;
-          hitRate =
-            violations.length > 0
-              ? Math.max(
-                  0.3,
-                  violations.filter((v) => v.rt < 1000).length /
-                    violations.length,
-                )
-              : 0.5;
-          faRate = 0.05;
-        } else {
-          // Sufficient data for proper calculation
-          const signalTrials = violations.length;
-          const noiseTrials = standards.length;
+          const violations = state.data.epsilon.violations;
+          const standards = state.data.epsilon.standards;
 
-          const hits = violations.length;
-          const falseAlarms = state.data.epsilon.trials.filter(
-            (t) => t.valid && t.type === "standard",
-          ).length;
+          // Enhanced edge case handling with intelligent defaults
+          let epsilonScore = 50;
+          let dPrime = 0,
+            rtDiff = 0,
+            hitRate = 0.5,
+            faRate = 0.05;
 
-          hitRate = signalTrials > 0 ? hits / signalTrials : 0.5;
-          faRate = noiseTrials > 0 ? falseAlarms / noiseTrials : 0.05;
-
-          const hitRateAdj = Math.max(0.01, Math.min(0.99, hitRate));
-          const faRateAdj = Math.max(0.01, Math.min(0.99, faRate));
-
-          dPrime = zScore(hitRateAdj) - zScore(faRateAdj);
-
-          // Enhanced RT handling with outlier detection
-          const standardRTs = standards
-            .map((s) => s.rt)
-            .filter((rt) => rt > 100 && rt < 3000);
-          const violationRTs = violations
-            .map((v) => v.rt)
-            .filter((rt) => rt > 100 && rt < 3000);
-
-          const avgStandardRT =
-            standardRTs.length > 0 ? mean(standardRTs) : 500;
-          const avgViolationRT =
-            violationRTs.length > 0 ? mean(violationRTs) : 500;
-          rtDiff = avgViolationRT - avgStandardRT;
-
-          // Robust score calculation with bounds
-          epsilonScore = Math.max(
-            0,
-            Math.min(
-              100,
-              50 + dPrime * 15 + (rtDiff > 0 ? Math.min(30, rtDiff / 10) : 0),
-            ),
-          );
-        }
-
-        // PI: Enhanced Brier score calculation with robust edge case handling
-        const piTrials = state.data.pi.trials;
-
-        // Enhanced edge case handling with intelligent defaults
-        let piScore = 50;
-        let brierScore = 0.25,
-          accuracy = 0.5,
-          calibrationScore = 50,
-          discrimination = 0;
-
-        if (piTrials.length === 0) {
-          // No data collected - use population norm with uncertainty penalty
-          piScore = Math.max(40, Math.min(60, NORMATIVE_DATA.pi.mean));
-          brierScore = 0.25;
-          accuracy = 0.5;
-          calibrationScore = 50;
-          discrimination = 0;
-        } else if (piTrials.length < 5) {
-          // Insufficient data - conservative estimate
-          piScore = Math.max(35, Math.min(65, NORMATIVE_DATA.pi.mean - 5));
-          brierScore = 0.3;
-          accuracy = 0.45;
-          calibrationScore = 45;
-          discrimination = 5;
-        } else {
-          // Sufficient data for proper calculation
-          const validPiTrials = piTrials.filter(
-            (t) =>
-              t.confidence >= 0 &&
-              t.confidence <= 100 &&
-              typeof t.correct === "boolean",
-          );
-
-          if (validPiTrials.length === 0) {
-            // All trials invalid - use conservative defaults
-            piScore = Math.max(30, Math.min(70, NORMATIVE_DATA.pi.mean - 10));
-            brierScore = 0.35;
-            accuracy = 0.4;
-            calibrationScore = 40;
-            discrimination = 0;
+          if (violations.length === 0 && standards.length === 0) {
+            // No data collected - use population norm
+            epsilonScore = NORMATIVE_DATA.epsilon.mean;
+            dPrime = 0;
+            rtDiff = 0;
+            hitRate = 0.5;
+            faRate = 0.05;
+          } else if (violations.length === 0) {
+            // Only standard trials - conservative estimate
+            epsilonScore = Math.max(
+              30,
+              Math.min(70, NORMATIVE_DATA.epsilon.mean - 10),
+            );
+            dPrime = -0.5;
+            rtDiff = 0;
+            hitRate = 0.5;
+            faRate =
+              standards.length > 0
+                ? Math.min(
+                    0.3,
+                    state.data.epsilon.trials.filter(
+                      (t) => t.type === "standard",
+                    ).length / standards.length,
+                  )
+                : 0.05;
+          } else if (standards.length === 0) {
+            // Only violation trials - optimistic estimate with uncertainty
+            epsilonScore = Math.max(
+              30,
+              Math.min(70, NORMATIVE_DATA.epsilon.mean + 5),
+            );
+            dPrime = 0.3;
+            rtDiff = 50;
+            hitRate =
+              violations.length > 0
+                ? Math.max(
+                    0.3,
+                    violations.filter((v) => v.rt < 1000).length /
+                      violations.length,
+                  )
+                : 0.5;
+            faRate = 0.05;
           } else {
-            brierScore = mean(
-              validPiTrials.map((t) =>
-                Math.pow(t.confidence / 100 - (t.correct ? 1 : 0), 2),
+            // Sufficient data for proper calculation
+            const signalTrials = violations.length;
+            const noiseTrials = standards.length;
+
+            const hits = violations.length;
+            const falseAlarms = state.data.epsilon.trials.filter(
+              (t) => t.valid && t.type === "standard",
+            ).length;
+
+            hitRate = signalTrials > 0 ? hits / signalTrials : 0.5;
+            faRate = noiseTrials > 0 ? falseAlarms / noiseTrials : 0.05;
+
+            const hitRateAdj = Math.max(0.01, Math.min(0.99, hitRate));
+            const faRateAdj = Math.max(0.01, Math.min(0.99, faRate));
+
+            dPrime = zScore(hitRateAdj) - zScore(faRateAdj);
+
+            // Enhanced RT handling with outlier detection
+            const standardRTs = standards
+              .map((s) => s.rt)
+              .filter((rt) => rt > 100 && rt < 3000);
+            const violationRTs = violations
+              .map((v) => v.rt)
+              .filter((rt) => rt > 100 && rt < 3000);
+
+            const avgStandardRT =
+              standardRTs.length > 0 ? mean(standardRTs) : 500;
+            const avgViolationRT =
+              violationRTs.length > 0 ? mean(violationRTs) : 500;
+            rtDiff = avgViolationRT - avgStandardRT;
+
+            // Robust score calculation with bounds
+            epsilonScore = Math.max(
+              0,
+              Math.min(
+                100,
+                50 + dPrime * 15 + (rtDiff > 0 ? Math.min(30, rtDiff / 10) : 0),
               ),
             );
-            accuracy = mean(validPiTrials.map((t) => (t.correct ? 1 : 0)));
+          }
 
-            // Enhanced calibration score with bounds
-            calibrationScore = Math.max(
-              0,
-              Math.min(100, (1 - brierScore) * 100),
+          // PI: Enhanced Brier score calculation with robust edge case handling
+          const piTrials = state.data.pi.trials;
+
+          // Enhanced edge case handling with intelligent defaults
+          let piScore = 50;
+          let brierScore = 0.25,
+            accuracy = 0.5,
+            calibrationScore = 50,
+            discrimination = 0;
+
+          if (piTrials.length === 0) {
+            // No data collected - use population norm with uncertainty penalty
+            piScore = Math.max(40, Math.min(60, NORMATIVE_DATA.pi.mean));
+            brierScore = 0.25;
+            accuracy = 0.5;
+            calibrationScore = 50;
+            discrimination = 0;
+          } else if (piTrials.length < 5) {
+            // Insufficient data - conservative estimate
+            piScore = Math.max(35, Math.min(65, NORMATIVE_DATA.pi.mean - 5));
+            brierScore = 0.3;
+            accuracy = 0.45;
+            calibrationScore = 45;
+            discrimination = 5;
+          } else {
+            // Sufficient data for proper calculation
+            const validPiTrials = piTrials.filter(
+              (t) =>
+                t.confidence >= 0 &&
+                t.confidence <= 100 &&
+                typeof t.correct === "boolean",
             );
 
-            // Enhanced metacognitive efficiency with outlier handling
-            const confCorrect =
-              validPiTrials.filter((t) => t.correct).length > 0
-                ? mean(
-                    validPiTrials
-                      .filter((t) => t.correct)
-                      .map((t) => t.confidence),
-                  )
-                : 50;
-            const confIncorrect =
-              validPiTrials.filter((t) => !t.correct).length > 0
-                ? mean(
-                    validPiTrials
-                      .filter((t) => !t.correct)
-                      .map((t) => t.confidence),
-                  )
-                : 50;
+            if (validPiTrials.length === 0) {
+              // All trials invalid - use conservative defaults
+              piScore = Math.max(30, Math.min(70, NORMATIVE_DATA.pi.mean - 10));
+              brierScore = 0.35;
+              accuracy = 0.4;
+              calibrationScore = 40;
+              discrimination = 0;
+            } else {
+              brierScore = mean(
+                validPiTrials.map((t) =>
+                  Math.pow(t.confidence / 100 - (t.correct ? 1 : 0), 2),
+                ),
+              );
+              accuracy = mean(validPiTrials.map((t) => (t.correct ? 1 : 0)));
 
-            // Robust discrimination calculation
-            discrimination = Math.max(
-              0,
-              Math.min(100, Math.abs(confCorrect - confIncorrect)),
+              // Enhanced calibration score with bounds
+              calibrationScore = Math.max(
+                0,
+                Math.min(100, (1 - brierScore) * 100),
+              );
+
+              // Enhanced metacognitive efficiency with outlier handling
+              const confCorrect =
+                validPiTrials.filter((t) => t.correct).length > 0
+                  ? mean(
+                      validPiTrials
+                        .filter((t) => t.correct)
+                        .map((t) => t.confidence),
+                    )
+                  : 50;
+              const confIncorrect =
+                validPiTrials.filter((t) => !t.correct).length > 0
+                  ? mean(
+                      validPiTrials
+                        .filter((t) => !t.correct)
+                        .map((t) => t.confidence),
+                    )
+                  : 50;
+
+              // Robust discrimination calculation
+              discrimination = Math.max(
+                0,
+                Math.min(100, Math.abs(confCorrect - confIncorrect)),
+              );
+
+              // Weighted combination with data quality adjustment
+              const dataQualityFactor = Math.min(
+                1,
+                validPiTrials.length / piTrials.length,
+              );
+              piScore =
+                calibrationScore * 0.5 +
+                discrimination * 0.3 +
+                accuracy * 100 * 0.2;
+              piScore =
+                piScore * dataQualityFactor + 50 * (1 - dataQualityFactor);
+            }
+          }
+
+          // BETA: Enhanced multi-component integration with robust handling
+          let betaScore = 50;
+          let avgHeartbeat = 50,
+            avgEmotion = 50,
+            avgDecision = 50;
+
+          const heartbeatData = state.data.beta.heartbeat || [];
+          const emotionData = state.data.beta.emotionBody || [];
+          const decisionData = state.data.beta.decisionSomatic || [];
+
+          if (
+            heartbeatData.length === 0 &&
+            emotionData.length === 0 &&
+            decisionData.length === 0
+          ) {
+            // No data collected - use population norm
+            betaScore = NORMATIVE_DATA.beta.mean;
+            avgHeartbeat = 50;
+            avgEmotion = 50;
+            avgDecision = 50;
+          } else {
+            // Enhanced component processing with validation
+            const validHeartbeatData = heartbeatData.filter(
+              (h) =>
+                typeof h.accuracy === "number" &&
+                h.accuracy >= 0 &&
+                h.accuracy <= 100,
+            );
+            const validEmotionData = emotionData.filter(
+              (e) =>
+                typeof e.rating === "number" &&
+                e.rating >= 0 &&
+                e.rating <= 100,
+            );
+            const validDecisionData = decisionData.filter(
+              (d) =>
+                typeof d.rating === "number" &&
+                d.rating >= 0 &&
+                d.rating <= 100,
             );
 
-            // Weighted combination with data quality adjustment
+            // Intelligent fallbacks for missing components
+            if (validHeartbeatData.length > 0) {
+              avgHeartbeat = mean(validHeartbeatData.map((h) => h.accuracy));
+            } else if (heartbeatData.length > 0) {
+              // Invalid heartbeat data - use conservative estimate
+              avgHeartbeat = Math.max(
+                30,
+                Math.min(70, NORMATIVE_DATA.beta.mean - 5),
+              );
+            } else {
+              // No heartbeat data - use population norm
+              avgHeartbeat = NORMATIVE_DATA.beta.mean;
+            }
+
+            if (validEmotionData.length > 0) {
+              avgEmotion = mean(validEmotionData.map((e) => e.rating));
+            } else if (emotionData.length > 0) {
+              avgEmotion = Math.max(30, Math.min(70, NORMATIVE_DATA.beta.mean));
+            } else {
+              avgEmotion = NORMATIVE_DATA.beta.mean;
+            }
+
+            if (validDecisionData.length > 0) {
+              avgDecision = mean(validDecisionData.map((d) => d.rating));
+            } else if (decisionData.length > 0) {
+              avgDecision = Math.max(
+                30,
+                Math.min(70, NORMATIVE_DATA.beta.mean),
+              );
+            } else {
+              avgDecision = NORMATIVE_DATA.beta.mean;
+            }
+
+            // Weighted combination with component reliability adjustment
+            const heartbeatWeight = validHeartbeatData.length > 0 ? 0.5 : 0.4;
+            const emotionWeight = validEmotionData.length > 0 ? 0.25 : 0.3;
+            const decisionWeight = validDecisionData.length > 0 ? 0.25 : 0.3;
+
+            betaScore =
+              avgHeartbeat * heartbeatWeight +
+              avgEmotion * emotionWeight +
+              avgDecision * decisionWeight;
+          }
+
+          // THETA: Enhanced threshold estimation from staircase with robust handling
+          const validTheta = state.data.theta.trials.filter(
+            (t) => t.valid && t.response !== "false_alarm",
+          );
+
+          let thetaScore = 50;
+          let thetaThreshold = 0.5,
+            thetaDPrime = 0;
+
+          if (state.data.theta.trials.length === 0) {
+            // No data collected - use population norm
+            thetaScore = NORMATIVE_DATA.theta.mean;
+            thetaThreshold = 0.5;
+            thetaDPrime = 0;
+          } else if (state.data.theta.trials.length < 10) {
+            // Insufficient data - conservative estimate with uncertainty
+            thetaScore = Math.max(
+              40,
+              Math.min(60, NORMATIVE_DATA.theta.mean - 5),
+            );
+            thetaThreshold = 0.6;
+            thetaDPrime = -0.2;
+          } else if (validTheta.length > 0 && state.data.theta.staircase) {
+            // Enhanced threshold estimation with outlier protection
+            const lastReversals = state.data.theta.staircase.reversals || [];
+            const cleanReversals = lastReversals
+              .slice(-10)
+              .filter(
+                (r) =>
+                  typeof r.intensity === "number" &&
+                  r.intensity >= 0 &&
+                  r.intensity <= 1,
+              );
+
+            if (cleanReversals.length > 0) {
+              // Robust threshold estimation using median of reversals
+              const sortedIntensities = cleanReversals
+                .map((r) => r.intensity)
+                .sort((a, b) => a - b);
+              const medianIdx = Math.floor(sortedIntensities.length / 2);
+              thetaThreshold =
+                sortedIntensities.length % 2 === 0
+                  ? (sortedIntensities[medianIdx - 1] +
+                      sortedIntensities[medianIdx]) /
+                    2
+                  : sortedIntensities[medianIdx];
+
+              // Additional protection against extreme values
+              thetaThreshold = Math.max(0.1, Math.min(0.9, thetaThreshold));
+            } else {
+              // Fallback to adaptive estimate
+              const allIntensities = state.data.theta.trials
+                .filter((t) => typeof t.intensity === "number")
+                .map((t) => t.intensity);
+              thetaThreshold =
+                allIntensities.length > 0
+                  ? Math.max(0.2, Math.min(0.8, mean(allIntensities)))
+                  : 0.5;
+            }
+
+            // Enhanced d-prime calculation with bounds
+            const hits = state.data.theta.trials.filter(
+              (t) => t.response === "hit",
+            ).length;
+            const misses = state.data.theta.trials.filter(
+              (t) => t.response === "miss",
+            ).length;
+            const fas = state.data.theta.trials.filter(
+              (t) => t.response === "false_alarm",
+            ).length;
+            const totalSignalTrials = hits + misses;
+
+            if (totalSignalTrials > 0) {
+              const thetaHitRate = Math.max(
+                0.01,
+                Math.min(0.99, hits / totalSignalTrials),
+              );
+              const noiseTrials = state.data.theta.trials.filter(
+                (t) =>
+                  t.response === "correct_rejection" ||
+                  t.response === "false_alarm",
+              ).length;
+              const thetaFARate =
+                noiseTrials > 0
+                  ? Math.max(0.01, Math.min(0.99, fas / noiseTrials))
+                  : 0.01;
+
+              thetaDPrime = zScore(thetaHitRate) - zScore(thetaFARate);
+
+              // Bound d-prime to reasonable range
+              thetaDPrime = Math.max(-3, Math.min(3, thetaDPrime));
+            } else {
+              thetaDPrime = 0;
+            }
+
+            // Enhanced score combination with reliability weighting
             const dataQualityFactor = Math.min(
               1,
-              validPiTrials.length / piTrials.length,
+              validTheta.length / state.data.theta.trials.length,
             );
-            piScore =
-              calibrationScore * 0.5 +
-              discrimination * 0.3 +
-              accuracy * 100 * 0.2;
-            piScore =
-              piScore * dataQualityFactor + 50 * (1 - dataQualityFactor);
-          }
-        }
+            const thresholdScore = (1 - thetaThreshold) * 100;
+            const dPrimeScore = Math.max(
+              0,
+              Math.min(100, 50 + thetaDPrime * 15),
+            );
 
-        // BETA: Enhanced multi-component integration with robust handling
-        let betaScore = 50;
-        let avgHeartbeat = 50,
-          avgEmotion = 50,
-          avgDecision = 50;
-
-        const heartbeatData = state.data.beta.heartbeat || [];
-        const emotionData = state.data.beta.emotionBody || [];
-        const decisionData = state.data.beta.decisionSomatic || [];
-
-        if (
-          heartbeatData.length === 0 &&
-          emotionData.length === 0 &&
-          decisionData.length === 0
-        ) {
-          // No data collected - use population norm
-          betaScore = NORMATIVE_DATA.beta.mean;
-          avgHeartbeat = 50;
-          avgEmotion = 50;
-          avgDecision = 50;
-        } else {
-          // Enhanced component processing with validation
-          const validHeartbeatData = heartbeatData.filter(
-            (h) =>
-              typeof h.accuracy === "number" &&
-              h.accuracy >= 0 &&
-              h.accuracy <= 100,
-          );
-          const validEmotionData = emotionData.filter(
-            (e) =>
-              typeof e.rating === "number" && e.rating >= 0 && e.rating <= 100,
-          );
-          const validDecisionData = decisionData.filter(
-            (d) =>
-              typeof d.rating === "number" && d.rating >= 0 && d.rating <= 100,
-          );
-
-          // Intelligent fallbacks for missing components
-          if (validHeartbeatData.length > 0) {
-            avgHeartbeat = mean(validHeartbeatData.map((h) => h.accuracy));
-          } else if (heartbeatData.length > 0) {
-            // Invalid heartbeat data - use conservative estimate
-            avgHeartbeat = Math.max(
+            thetaScore = thresholdScore * 0.6 + dPrimeScore * 0.4;
+            thetaScore =
+              thetaScore * dataQualityFactor + 50 * (1 - dataQualityFactor);
+          } else {
+            // Invalid or incomplete data - conservative fallback
+            thetaScore = Math.max(
               30,
-              Math.min(70, NORMATIVE_DATA.beta.mean - 5),
+              Math.min(70, NORMATIVE_DATA.theta.mean - 5),
             );
-          } else {
-            // No heartbeat data - use population norm
-            avgHeartbeat = NORMATIVE_DATA.beta.mean;
+            thetaThreshold = 0.6;
+            thetaDPrime = -0.3;
           }
 
-          if (validEmotionData.length > 0) {
-            avgEmotion = mean(validEmotionData.map((e) => e.rating));
-          } else if (emotionData.length > 0) {
-            avgEmotion = Math.max(30, Math.min(70, NORMATIVE_DATA.beta.mean));
-          } else {
-            avgEmotion = NORMATIVE_DATA.beta.mean;
-          }
-
-          if (validDecisionData.length > 0) {
-            avgDecision = mean(validDecisionData.map((d) => d.rating));
-          } else if (decisionData.length > 0) {
-            avgDecision = Math.max(30, Math.min(70, NORMATIVE_DATA.beta.mean));
-          } else {
-            avgDecision = NORMATIVE_DATA.beta.mean;
-          }
-
-          // Weighted combination with component reliability adjustment
-          const heartbeatWeight = validHeartbeatData.length > 0 ? 0.5 : 0.4;
-          const emotionWeight = validEmotionData.length > 0 ? 0.25 : 0.3;
-          const decisionWeight = validDecisionData.length > 0 ? 0.25 : 0.3;
-
-          betaScore =
-            avgHeartbeat * heartbeatWeight +
-            avgEmotion * emotionWeight +
-            avgDecision * decisionWeight;
-        }
-
-        // THETA: Enhanced threshold estimation from staircase with robust handling
-        const validTheta = state.data.theta.trials.filter(
-          (t) => t.valid && t.response !== "false_alarm",
-        );
-
-        let thetaScore = 50;
-        let thetaThreshold = 0.5,
-          thetaDPrime = 0;
-
-        if (state.data.theta.trials.length === 0) {
-          // No data collected - use population norm
-          thetaScore = NORMATIVE_DATA.theta.mean;
-          thetaThreshold = 0.5;
-          thetaDPrime = 0;
-        } else if (state.data.theta.trials.length < 10) {
-          // Insufficient data - conservative estimate with uncertainty
-          thetaScore = Math.max(
-            40,
-            Math.min(60, NORMATIVE_DATA.theta.mean - 5),
-          );
-          thetaThreshold = 0.6;
-          thetaDPrime = -0.2;
-        } else if (validTheta.length > 0 && state.data.theta.staircase) {
-          // Enhanced threshold estimation with outlier protection
-          const lastReversals = state.data.theta.staircase.reversals || [];
-          const cleanReversals = lastReversals
-            .slice(-10)
-            .filter(
-              (r) =>
-                typeof r.intensity === "number" &&
-                r.intensity >= 0 &&
-                r.intensity <= 1,
-            );
-
-          if (cleanReversals.length > 0) {
-            // Robust threshold estimation using median of reversals
-            const sortedIntensities = cleanReversals
-              .map((r) => r.intensity)
-              .sort((a, b) => a - b);
-            const medianIdx = Math.floor(sortedIntensities.length / 2);
-            thetaThreshold =
-              sortedIntensities.length % 2 === 0
-                ? (sortedIntensities[medianIdx - 1] +
-                    sortedIntensities[medianIdx]) /
-                  2
-                : sortedIntensities[medianIdx];
-
-            // Additional protection against extreme values
-            thetaThreshold = Math.max(0.1, Math.min(0.9, thetaThreshold));
-          } else {
-            // Fallback to adaptive estimate
-            const allIntensities = state.data.theta.trials
-              .filter((t) => typeof t.intensity === "number")
-              .map((t) => t.intensity);
-            thetaThreshold =
-              allIntensities.length > 0
-                ? Math.max(0.2, Math.min(0.8, mean(allIntensities)))
-                : 0.5;
-          }
-
-          // Enhanced d-prime calculation with bounds
-          const hits = state.data.theta.trials.filter(
-            (t) => t.response === "hit",
-          ).length;
-          const misses = state.data.theta.trials.filter(
-            (t) => t.response === "miss",
-          ).length;
-          const fas = state.data.theta.trials.filter(
-            (t) => t.response === "false_alarm",
-          ).length;
-          const totalSignalTrials = hits + misses;
-
-          if (totalSignalTrials > 0) {
-            const thetaHitRate = Math.max(
-              0.01,
-              Math.min(0.99, hits / totalSignalTrials),
-            );
-            const noiseTrials = state.data.theta.trials.filter(
-              (t) =>
-                t.response === "correct_rejection" ||
-                t.response === "false_alarm",
-            ).length;
-            const thetaFARate =
-              noiseTrials > 0
-                ? Math.max(0.01, Math.min(0.99, fas / noiseTrials))
-                : 0.01;
-
-            thetaDPrime = zScore(thetaHitRate) - zScore(thetaFARate);
-
-            // Bound d-prime to reasonable range
-            thetaDPrime = Math.max(-3, Math.min(3, thetaDPrime));
-          } else {
-            thetaDPrime = 0;
-          }
-
-          // Enhanced score combination with reliability weighting
-          const dataQualityFactor = Math.min(
-            1,
-            validTheta.length / state.data.theta.trials.length,
-          );
-          const thresholdScore = (1 - thetaThreshold) * 100;
-          const dPrimeScore = Math.max(0, Math.min(100, 50 + thetaDPrime * 15));
-
-          thetaScore = thresholdScore * 0.6 + dPrimeScore * 0.4;
-          thetaScore =
-            thetaScore * dataQualityFactor + 50 * (1 - dataQualityFactor);
-        } else {
-          // Invalid or incomplete data - conservative fallback
-          thetaScore = Math.max(
-            30,
-            Math.min(70, NORMATIVE_DATA.theta.mean - 5),
-          );
-          thetaThreshold = 0.6;
-          thetaDPrime = -0.3;
-        }
-
-        // Store results
-        state.results = {
-          epsilon: Math.round(epsilonScore),
-          pi: Math.round(piScore),
-          beta: Math.round(betaScore),
-          theta: Math.round(thetaScore),
-          details: {
-            epsilon: {
-              dPrime: dPrime || 0,
-              rtDiff: rtDiff || 0,
-              hitRate: hitRate || 0.5,
-              faRate: faRate || 0.05,
+          // Store results
+          state.results = {
+            epsilon: Math.round(epsilonScore),
+            pi: Math.round(piScore),
+            beta: Math.round(betaScore),
+            theta: Math.round(thetaScore),
+            details: {
+              epsilon: {
+                dPrime: dPrime || 0,
+                rtDiff: rtDiff || 0,
+                hitRate: hitRate || 0.5,
+                faRate: faRate || 0.05,
+              },
+              pi: {
+                brierScore: brierScore || 0.25,
+                accuracy: accuracy || 0.5,
+                calibrationScore: calibrationScore || 50,
+                discrimination: discrimination || 0,
+              },
+              beta: {
+                avgHeartbeat: avgHeartbeat || 50,
+                avgEmotion: avgEmotion || 50,
+                avgDecision: avgDecision || 50,
+              },
+              theta: {
+                threshold: thetaThreshold || 0.5,
+                dPrime: thetaDPrime || 0,
+              },
             },
-            pi: {
-              brierScore: brierScore || 0.25,
-              accuracy: accuracy || 0.5,
-              calibrationScore: calibrationScore || 50,
-              discrimination: discrimination || 0,
-            },
-            beta: {
-              avgHeartbeat: avgHeartbeat || 50,
-              avgEmotion: avgEmotion || 50,
-              avgDecision: avgDecision || 50,
-            },
-            theta: {
-              threshold: thetaThreshold || 0.5,
-              dPrime: thetaDPrime || 0,
-            },
-          },
-        };
+          };
 
-        displayResults();
+          displayResults();
+        }, 1200); // Simulate processing time
       }
 
       function calculateQualityMetrics() {

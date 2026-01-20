@@ -3,7 +3,6 @@
   <head>
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
-    <script src="assets/js/navigation.js"></script>
     <script src="assets/js/theme-manager.js"></script>
     <script src="assets/js/cdn-fallbacks.js"></script>
     <!-- Shared Navigation -->
@@ -2164,7 +2163,9 @@
       <nav class="main-nav" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
           <div class="nav-links">
-            <a href="Home.html" class="nav-link nav-brand">APGI Framework</a>
+            <a href="Home.html" class="nav-link nav-brand" tabindex="0"
+              >APGI Framework</a
+            >
 
             <!-- Assessment Tools Dropdown -->
             <div class="nav-dropdown">
@@ -2172,18 +2173,31 @@
                 class="nav-dropdown-btn"
                 aria-expanded="false"
                 aria-haspopup="true"
+                aria-label="Assessment ▼"
+                tabindex="0"
               >
                 Assessment ▼
               </button>
               <div class="dropdown-menu">
-                <a href="Quiz.html" class="dropdown-link">Quiz (Short)</a>
-                <a href="Assessment.html" class="dropdown-link active"
+                <a href="Quiz.html" class="dropdown-link" tabindex="0"
+                  >Quiz (Short)</a
+                >
+                <a
+                  href="Assessment.html"
+                  class="dropdown-link active"
+                  tabindex="0"
                   >Assessment (Full)</a
                 >
-                <a href="Assessment-OnePage.html" class="dropdown-link"
+                <a
+                  href="Assessment-OnePage.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >Assessment (One Page)</a
                 >
-                <a href="APGI-Software-System.html" class="dropdown-link"
+                <a
+                  href="APGI-Software-System.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >APGI Software System</a
                 >
               </div>
@@ -2195,25 +2209,40 @@
                 class="nav-dropdown-btn"
                 aria-expanded="false"
                 aria-haspopup="true"
+                aria-label="Visualizations ▼"
+                tabindex="0"
               >
                 Visualizations ▼
               </button>
               <div class="dropdown-menu">
-                <a href="SCI/PsyStates-Visualizer.html" class="dropdown-link"
+                <a
+                  href="SCI/PsyStates-Visualizer.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >PsyStates Visualizer</a
                 >
                 <a
                   href="SCI/Consciousness-Visualization.html"
                   class="dropdown-link"
+                  tabindex="0"
                   >Consciousness Visualization</a
                 >
-                <a href="SCI/State-Network.html" class="dropdown-link"
+                <a
+                  href="SCI/State-Network.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >3D Network</a
                 >
-                <a href="SCI/Neuromoduratory-Cascade.html" class="dropdown-link"
+                <a
+                  href="SCI/Neuromoduratory-Cascade.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >Neuromodulatory Cascade</a
                 >
-                <a href="APGI-Software-System.html" class="dropdown-link"
+                <a
+                  href="APGI-Software-System.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >APGI Software System</a
                 >
               </div>
@@ -2224,29 +2253,46 @@
                 class="nav-dropdown-btn"
                 aria-expanded="false"
                 aria-haspopup="true"
+                aria-label="Research ▼"
+                tabindex="0"
               >
                 Research ▼
               </button>
               <div class="dropdown-menu">
-                <a href="Paper.html" class="dropdown-link">Research Paper</a>
-                <a href="App-Appendix.html" class="dropdown-link"
+                <a href="Paper.html" class="dropdown-link" tabindex="0"
+                  >Research Paper</a
+                >
+                <a href="App-Appendix.html" class="dropdown-link" tabindex="0"
                   >Appendix App</a
                 >
-                <a href="App-Explorer.html" class="dropdown-link"
+                <a href="App-Explorer.html" class="dropdown-link" tabindex="0"
                   >App Explorer</a
                 >
-                <a href="APGI-Experiments.html" class="dropdown-link"
+                <a
+                  href="APGI-Experiments.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >Experiments App</a
                 >
-                <a href="API.html" class="dropdown-link">API Documentation</a>
-                <a href="APGI-Software-System.html" class="dropdown-link active"
+                <a href="API.html" class="dropdown-link" tabindex="0"
+                  >API Documentation</a
+                >
+                <a
+                  href="APGI-Software-System.html"
+                  class="dropdown-link active"
+                  tabindex="0"
                   >APGI Software System</a
                 >
-                <a href="SCI/Dashboard.html" class="dropdown-link">Dashboard</a>
-                <a href="Book-Available-Now.html" class="dropdown-link"
+                <a href="SCI/Dashboard.html" class="dropdown-link" tabindex="0"
+                  >Dashboard</a
+                >
+                <a
+                  href="Book-Available-Now.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >Book (Available Now)</a
                 >
-                <a href="Book-Outline.html" class="dropdown-link"
+                <a href="Book-Outline.html" class="dropdown-link" tabindex="0"
                   >Book Outline</a
                 >
               </div>
@@ -2257,18 +2303,28 @@
                 class="nav-dropdown-btn"
                 aria-expanded="false"
                 aria-haspopup="true"
+                aria-label="Resources ▼"
+                tabindex="0"
               >
                 Resources ▼
               </button>
               <div class="dropdown-menu">
-                <a href="Profile.html" class="dropdown-link">Profile</a>
-                <a href="APGI-Software-System.html" class="dropdown-link"
+                <a href="Profile.html" class="dropdown-link" tabindex="0"
+                  >Profile</a
+                >
+                <a
+                  href="APGI-Software-System.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >APGI Software System</a
                 >
-                <a href="Privacy-Policy.html" class="dropdown-link"
+                <a href="Privacy-Policy.html" class="dropdown-link" tabindex="0"
                   >Privacy Policy</a
                 >
-                <a href="Terms-of-Service.html" class="dropdown-link"
+                <a
+                  href="Terms-of-Service.html"
+                  class="dropdown-link"
+                  tabindex="0"
                   >Terms of Service</a
                 >
               </div>
@@ -2280,6 +2336,7 @@
               id="theme-toggle"
               aria-label="Toggle theme"
               aria-expanded="false"
+              tabindex="0"
             >
               <span class="theme-icon" id="theme-icon" aria-hidden="true"
                 >🌙</span
@@ -2291,83 +2348,85 @@
       </nav>
     </div>
     <script>
-      // Initialize dropdown functionality after navigation is loaded
-      const dropdowns = document.querySelectorAll(".nav-dropdown");
-      dropdowns.forEach((dropdown) => {
-        const button = dropdown.querySelector(".nav-dropdown-btn");
-        const menu = dropdown.querySelector(".dropdown-menu");
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize dropdown functionality after navigation is loaded
+        const dropdowns = document.querySelectorAll(".nav-dropdown");
+        dropdowns.forEach((dropdown) => {
+          const button = dropdown.querySelector(".nav-dropdown-btn");
+          const menu = dropdown.querySelector(".dropdown-menu");
 
-        if (button && menu) {
-          // Toggle dropdown on button click
-          button.addEventListener("click", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+          if (button && menu) {
+            // Toggle dropdown on button click
+            button.addEventListener("click", function (e) {
+              e.preventDefault();
+              e.stopPropagation();
 
-            // Close all other dropdowns
-            dropdowns.forEach((otherDropdown) => {
-              if (otherDropdown !== dropdown) {
-                otherDropdown.classList.remove("active");
-                const otherButton =
-                  otherDropdown.querySelector(".nav-dropdown-btn");
-                if (otherButton) {
-                  otherButton.setAttribute("aria-expanded", "false");
+              // Close all other dropdowns
+              dropdowns.forEach((otherDropdown) => {
+                if (otherDropdown !== dropdown) {
+                  otherDropdown.classList.remove("active");
+                  const otherButton =
+                    otherDropdown.querySelector(".nav-dropdown-btn");
+                  if (otherButton) {
+                    otherButton.setAttribute("aria-expanded", "false");
+                  }
                 }
+              });
+
+              // Toggle current dropdown
+              const isActive = dropdown.classList.contains("active");
+              dropdown.classList.toggle("active");
+              button.setAttribute("aria-expanded", !isActive);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener("click", function (e) {
+              if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove("active");
+                button.setAttribute("aria-expanded", "false");
               }
             });
 
-            // Toggle current dropdown
-            const isActive = dropdown.classList.contains("active");
-            dropdown.classList.toggle("active");
-            button.setAttribute("aria-expanded", !isActive);
-          });
-
-          // Close dropdown when clicking outside
-          document.addEventListener("click", function (e) {
-            if (!dropdown.contains(e.target)) {
-              dropdown.classList.remove("active");
-              button.setAttribute("aria-expanded", "false");
-            }
-          });
-
-          // Handle keyboard navigation
-          button.addEventListener("keydown", function (e) {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              button.click();
-            } else if (e.key === "Escape") {
-              dropdown.classList.remove("active");
-              button.setAttribute("aria-expanded", "false");
-              button.focus();
-            }
-          });
-
-          // Handle keyboard navigation within dropdown
-          const links = menu.querySelectorAll(".dropdown-link");
-          links.forEach((link, index) => {
-            link.addEventListener("keydown", function (e) {
-              if (e.key === "ArrowDown") {
+            // Handle keyboard navigation
+            button.addEventListener("keydown", function (e) {
+              if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                const nextLink = links[index + 1] || links[0];
-                nextLink.focus();
-              } else if (e.key === "ArrowUp") {
-                e.preventDefault();
-                const prevLink = links[index - 1] || links[links.length - 1];
-                prevLink.focus();
+                button.click();
               } else if (e.key === "Escape") {
                 dropdown.classList.remove("active");
                 button.setAttribute("aria-expanded", "false");
                 button.focus();
               }
             });
-          });
+
+            // Handle keyboard navigation for dropdown links
+            const links = menu.querySelectorAll(".dropdown-link");
+            links.forEach((link, index) => {
+              link.addEventListener("keydown", function (e) {
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  const nextLink = links[index + 1];
+                  if (nextLink) nextLink.focus();
+                } else if (e.key === "ArrowUp") {
+                  e.preventDefault();
+                  const prevLink = links[index - 1];
+                  if (prevLink) prevLink.focus();
+                } else if (e.key === "Escape") {
+                  dropdown.classList.remove("active");
+                  button.setAttribute("aria-expanded", "false");
+                  button.focus();
+                }
+              });
+            });
+          }
+        });
+
+        // Reinitialize theme toggle after navigation loads
+        if (window.themeManager) {
+          window.themeManager.setupThemeToggle();
+          window.themeManager.updateThemeUI(window.themeManager.getTheme());
         }
       });
-
-      // Reinitialize theme toggle after navigation loads
-      if (window.themeManager) {
-        window.themeManager.setupThemeToggle();
-        window.themeManager.updateThemeUI(window.themeManager.getTheme());
-      }
     </script>
 
     <header id="main-content">

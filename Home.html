@@ -1693,71 +1693,7 @@
       }
     </style>
 
-    <!-- Theme Toggle JavaScript -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        initializeThemeToggle();
-      });
-
-      function initializeThemeToggle() {
-        const themeToggle = document.getElementById("theme-toggle");
-        const themeIcon = document.getElementById("theme-icon");
-        const themeText = document.getElementById("theme-text");
-
-        if (!themeToggle) return;
-
-        // Get current theme from localStorage or system preference
-        const getCurrentTheme = () => {
-          const savedTheme = localStorage.getItem("theme");
-          if (savedTheme) return savedTheme;
-          return window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-        };
-
-        // Apply theme
-        const applyTheme = (theme) => {
-          document.documentElement.setAttribute("data-theme", theme);
-          if (themeIcon) {
-            themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
-          }
-          if (themeText) {
-            themeText.textContent = theme === "dark" ? "Light" : "Dark";
-          }
-          if (themeToggle) {
-            themeToggle.setAttribute("aria-expanded", theme === "dark");
-          }
-          localStorage.setItem("theme", theme);
-        };
-
-        // Initialize theme
-        applyTheme(getCurrentTheme());
-
-        // Handle theme toggle click
-        themeToggle.addEventListener("click", function () {
-          const currentTheme = document.documentElement.getAttribute("data-theme");
-          const newTheme = currentTheme === "dark" ? "light" : "dark";
-          applyTheme(newTheme);
-        });
-
-        // Handle keyboard navigation
-        themeToggle.addEventListener("keydown", function (e) {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            themeToggle.click();
-          }
-        });
-
-        // Listen for system theme changes
-        window
-          .matchMedia("(prefers-color-scheme: dark)")
-          .addEventListener("change", function (e) {
-            if (!localStorage.getItem("theme")) {
-              applyTheme(e.matches ? "dark" : "light");
-            }
-          });
-      }
-    </script>
+    <!-- Theme toggle functionality is handled by theme-manager.js -->
 
     <!-- HERO -->
     <header class="hero" role="banner">
@@ -2783,8 +2719,6 @@
         updateLabel("interoception-value", interoceptionPercent);
         updateLabel("somatic-value", somaticPercent);
       }
-
-      // Theme toggle functionality is handled by theme-manager.js
 
       // Handle email form submission
       emailForm.addEventListener("submit", (e) => {

@@ -612,6 +612,17 @@
     <!-- Include Navigation Component -->
     <div id="navigation-container"></div>
     <script src="assets/js/navigation-loader.js"></script>
+    <script>
+      // Reinitialize theme toggle after navigation loads
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+          if (window.themeManager) {
+            window.themeManager.setupThemeToggle();
+            window.themeManager.updateThemeUI(window.themeManager.getTheme());
+          }
+        }, 100);
+      });
+    </script>
     <main id="main-content">
       <div class="container">
         <section class="section">
@@ -1476,48 +1487,6 @@ fetch('https://api.apgi.io/v1/analyze', {
     </footer>
 
     <script>
-      // Theme Management
-      function initializeTheme() {
-        const savedTheme = localStorage.getItem("theme") || "light";
-        document.documentElement.setAttribute("data-theme", savedTheme);
-        updateThemeUI(savedTheme);
-      }
-
-      function updateThemeUI(theme) {
-        const themeToggle = document.getElementById("theme-toggle");
-        const themeIcon = themeToggle.querySelector(".theme-icon");
-        const themeText = themeToggle.querySelector(".theme-text");
-
-        if (theme === "dark") {
-          themeIcon.textContent = "☀️";
-          themeText.textContent = "Light";
-        } else {
-          themeIcon.textContent = "🌙";
-          themeText.textContent = "Dark";
-        }
-      }
-
-      function toggleTheme() {
-        const currentTheme =
-          document.documentElement.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-
-        document.documentElement.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-        updateThemeUI(newTheme);
-      }
-
-      // Initialize theme on page load
-      document.addEventListener("DOMContentLoaded", function () {
-        initializeTheme();
-
-        // Add theme toggle functionality
-        const themeToggle = document.getElementById("theme-toggle");
-        if (themeToggle) {
-          themeToggle.addEventListener("click", toggleTheme);
-        }
-      });
-
       function toggleSection(contentId, button) {
         const content = document.getElementById(contentId);
         const chevron = button.querySelector(".chevron");

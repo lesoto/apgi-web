@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI Psychological State Assessment</title>
+    <meta
+      name="description"
+      content="Take the APGI Psychological State Assessment to identify your current consciousness state. Measure prediction error, precision, threshold, and somatic bias patterns."
+    />
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -111,6 +115,144 @@
         to {
           opacity: 1;
           transform: translateY(0);
+        }
+      }
+
+      /* ============================================
+           PRINT-OPTIMIZED STYLES
+           ============================================ */
+      @media print {
+        /* Page setup */
+        @page {
+          margin: 0.5in;
+          size: A4;
+        }
+
+        body {
+          font-size: 12pt;
+          line-height: 1.4;
+          color: #000;
+          background: #fff !important;
+        }
+
+        /* Hide unnecessary elements */
+        .main-nav,
+        .navigation-placeholder,
+        .theme-toggle,
+        .btn,
+        .progress-bar,
+        .question-card,
+        .option-card,
+        button,
+        .quiz-controls {
+          display: none !important;
+        }
+
+        /* Show only results section */
+        .quiz-results,
+        .results-section {
+          display: block !important;
+          visibility: visible !important;
+        }
+
+        /* Results styling */
+        .results-header {
+          page-break-after: avoid;
+          margin-bottom: 20pt;
+          border-bottom: 2pt solid #333;
+          padding-bottom: 10pt;
+        }
+
+        .results-header h2 {
+          font-size: 18pt;
+          color: #000 !important;
+          margin-bottom: 8pt;
+        }
+
+        /* Score displays */
+        .parameter-score,
+        .score-display {
+          font-size: 16pt;
+          font-weight: bold;
+          color: #000 !important;
+          margin-bottom: 5pt;
+        }
+
+        .parameter-label {
+          font-size: 11pt;
+          font-weight: bold;
+          color: #000 !important;
+          margin-bottom: 3pt;
+        }
+
+        .parameter-description {
+          font-size: 9pt;
+          color: #666;
+          line-height: 1.3;
+          margin-bottom: 10pt;
+        }
+
+        /* Charts and visualizations */
+        .chart-container,
+        .visualization {
+          margin: 20pt 0;
+          padding: 15pt;
+          border: 1pt solid #ccc;
+          page-break-inside: avoid;
+        }
+
+        .chart-container h3,
+        .visualization h3 {
+          font-size: 14pt;
+          color: #000 !important;
+          margin-bottom: 10pt;
+          border-bottom: 1pt solid #ccc;
+          padding-bottom: 5pt;
+        }
+
+        /* Canvas styling */
+        canvas {
+          max-width: 100% !important;
+          height: auto !important;
+          page-break-inside: avoid;
+        }
+
+        /* Tables */
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 10pt 0;
+          font-size: 10pt;
+        }
+
+        th,
+        td {
+          border: 1pt solid #ccc;
+          padding: 5pt;
+          text-align: left;
+        }
+
+        th {
+          background: #f0f0f0;
+          font-weight: bold;
+        }
+
+        /* Ensure text readability */
+        * {
+          color: #000 !important;
+          text-shadow: none !important;
+        }
+
+        /* Links */
+        a {
+          color: #000 !important;
+          text-decoration: underline;
+        }
+
+        a::after {
+          content: " (" attr(href) ")";
+          font-size: 9pt;
+          color: #666;
         }
       }
     </style>
@@ -2070,6 +2212,8 @@
             ],
           },
           options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
               r: {
                 beginAtZero: true,
