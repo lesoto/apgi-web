@@ -65,7 +65,7 @@
     0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
-  /* Gradients */
+  /* Enhanced Gradients */
   --gradient-primary: linear-gradient(
     135deg,
     var(--color-secondary) 0%,
@@ -95,6 +95,42 @@
     135deg,
     var(--color-info) 0%,
     var(--color-info-dark) 100%
+  );
+
+  /* Additional Gradients */
+  --gradient-hero: linear-gradient(
+    135deg,
+    #0f172a 0%,
+    #1e293b 50%,
+    #334155 100%
+  );
+  --gradient-aurora: linear-gradient(
+    135deg,
+    #667eea 0%,
+    #764ba2 25%,
+    #f093fb 50%,
+    #f5576c 75%,
+    #fda085 100%
+  );
+  --gradient-ocean: linear-gradient(
+    135deg,
+    #00b4ff 0%,
+    #0099cc 50%,
+    #006699 100%
+  );
+  --gradient-sunset: linear-gradient(
+    135deg,
+    #ff6b6b 0%,
+    #feca57 50%,
+    #ff9ff3 100%
+  );
+  --gradient-forest: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  --gradient-galaxy: linear-gradient(135deg, #654ea3 0%, #eaafc8 100%);
+  --gradient-midnight: linear-gradient(
+    135deg,
+    #0f0c29 0%,
+    #302b63 50%,
+    #24243e 100%
   );
 
   /* Transitions */
@@ -286,7 +322,60 @@ body {
   border-color: var(--color-border-secondary);
 }
 
-/* Button Component */
+/* Gradient Utilities */
+.bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.bg-gradient-secondary {
+  background: var(--gradient-secondary);
+}
+
+.bg-gradient-success {
+  background: var(--gradient-success);
+}
+
+.bg-gradient-warning {
+  background: var(--gradient-warning);
+}
+
+.bg-gradient-danger {
+  background: var(--gradient-danger);
+}
+
+.bg-gradient-info {
+  background: var(--gradient-info);
+}
+
+.bg-gradient-hero {
+  background: var(--gradient-hero);
+}
+
+.bg-gradient-aurora {
+  background: var(--gradient-aurora);
+}
+
+.bg-gradient-ocean {
+  background: var(--gradient-ocean);
+}
+
+.bg-gradient-sunset {
+  background: var(--gradient-sunset);
+}
+
+.bg-gradient-forest {
+  background: var(--gradient-forest);
+}
+
+.bg-gradient-galaxy {
+  background: var(--gradient-galaxy);
+}
+
+.bg-gradient-midnight {
+  background: var(--gradient-midnight);
+}
+
+/* Enhanced Button Component with Gradients */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -304,6 +393,8 @@ body {
   transition: var(--transition-fast);
   user-select: none;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn:disabled {
@@ -312,16 +403,15 @@ body {
 }
 
 .btn-primary {
-  background-color: var(--color-secondary);
+  background: var(--gradient-primary);
   color: var(--color-text-inverse);
   border-color: var(--color-secondary);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--color-secondary-dark);
-  border-color: var(--color-secondary-dark);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
 }
 
 .btn-secondary {
@@ -335,6 +425,46 @@ body {
   color: var(--color-text-inverse);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
+}
+
+.btn-success {
+  background: var(--gradient-success);
+  color: var(--color-text-inverse);
+  border-color: var(--color-success);
+}
+
+.btn-warning {
+  background: var(--gradient-warning);
+  color: var(--color-text-inverse);
+  border-color: var(--color-warning);
+}
+
+.btn-danger {
+  background: var(--gradient-danger);
+  color: var(--color-text-inverse);
+  border-color: var(--color-danger);
+}
+
+.btn-info {
+  background: var(--gradient-info);
+  color: var(--color-text-inverse);
+  border-color: var(--color-info);
+}
+
+/* Button Sizes */
+.btn-sm {
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--text-xs);
+}
+
+.btn-lg {
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--text-lg);
+}
+
+.btn-block {
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Card Component */

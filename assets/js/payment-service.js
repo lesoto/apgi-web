@@ -5,10 +5,16 @@
 
 class PaymentService {
   constructor() {
-    // Use test keys for development
+    // Check if environment config is available
+    if (typeof window.envConfig === "undefined") {
+      console.error(
+        "Environment configuration not loaded. Please include environment-config.js before payment-service.js",
+      );
+    }
+
     this.stripe = null;
     this.isInitialized = false;
-    this.testMode = true;
+    this.testMode = !window.envConfig?.isProductionReady();
 
     // Test webhook endpoint for development
     this.webhookUrl = "https://webhook.site/your-webhook-url"; // Replace with actual webhook.site URL
@@ -24,10 +30,12 @@ class PaymentService {
         await this.loadStripeScript();
       }
 
-      // Use test key for development
-      const publishableKey = this.testMode
-        ? "pk_test_51234567890abcdef" // Test key
-        : "pk_live_1234567890abcdef"; // Production key (replace with actual)
+      // Get publishable key from environment config
+      const publishableKey = window.envConfig?.get("stripe.publishableKey");
+
+      if (!publishableKey) {
+        throw new Error("Stripe publishable key not configured");
+      }
 
       this.stripe = Stripe(publishableKey);
       this.isInitialized = true;

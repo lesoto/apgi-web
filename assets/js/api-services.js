@@ -3,33 +3,44 @@
  * Handles email capture, payment processing, and consultation requests
  */
 
+// Import environment configuration
+// Note: This should be loaded before this script
+if (typeof window.envConfig === "undefined") {
+  console.error(
+    "Environment configuration not loaded. Please include environment-config.js before api-services.js",
+  );
+}
+
 // Email service configurations
 const EMAIL_CONFIG = {
   mailchimp: {
-    apiKey: process.env.MAILCHIMP_API_KEY,
-    serverPrefix: process.env.MAILCHIMP_SERVER_PREFIX,
+    apiKey: window.envConfig?.get("email.mailchimp.apiKey"),
+    serverPrefix: window.envConfig?.get("email.mailchimp.serverPrefix"),
     lists: {
-      snapshot: process.env.MAILCHIMP_SNAPSHOT_LIST_ID,
-      newsletter: process.env.MAILCHIMP_NEWSLETTER_LIST_ID,
-      consultations: process.env.MAILCHIMP_CONSULTATIONS_LIST_ID,
+      snapshot: window.envConfig?.get("email.mailchimp.lists.snapshot"),
+      newsletter: window.envConfig?.get("email.mailchimp.lists.newsletter"),
+      consultations: window.envConfig?.get(
+        "email.mailchimp.lists.consultations",
+      ),
     },
   },
   convertKit: {
-    apiKey: process.env.CONVERTKIT_API_KEY,
+    apiKey: window.envConfig?.get("email.convertKit.apiKey"),
     forms: {
-      snapshot: process.env.CONVERTKIT_SNAPSHOT_FORM_ID,
-      professional: process.env.CONVERTKIT_PROFESSIONAL_FORM_ID,
+      snapshot: window.envConfig?.get("email.convertKit.forms.snapshot"),
+      professional: window.envConfig?.get(
+        "email.convertKit.forms.professional",
+      ),
     },
   },
 };
 
 // Stripe configuration
 const STRIPE_CONFIG = {
-  publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-  secretKey: process.env.STRIPE_SECRET_KEY,
+  publishableKey: window.envConfig?.get("stripe.publishableKey"),
   prices: {
-    professional: process.env.STRIPE_PROFESSIONAL_PRICE_ID,
-    enterprise: process.env.STRIPE_ENTERPRISE_PRICE_ID,
+    professional: window.envConfig?.get("stripe.prices.professional"),
+    enterprise: window.envConfig?.get("stripe.prices.enterprise"),
   },
 };
 

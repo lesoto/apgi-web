@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - APGI Framework</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind-fallback.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Scripts -->
+    <script src="assets/js/environment-config.js"></script>
+    <script src="assets/js/auth-service.js"></script>
+
+    <style>
+      body {
+        font-family: "Space Grotesk", sans-serif;
+        background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
+        min-height: 100vh;
+      }
+
+      .glass-morphism {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .status-pending {
+        background-color: #fbbf24;
+      }
+      .status-contacted {
+        background-color: #60a5fa;
+      }
+      .status-completed {
+        background-color: #34d399;
+      }
+      .status-cancelled {
+        background-color: #f87171;
+      }
+    </style>
+  </head>
+  <body class="text-white">
+    <!-- Navigation -->
+    <nav class="glass-morphism border-b border-white/20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <h1 class="text-xl font-bold">APGI Admin Dashboard</h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span id="userEmail" class="text-sm opacity-80"></span>
+            <button
+              id="logoutBtn"
+              class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Stats Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="glass-morphism rounded-lg p-6">
+          <h3 class="text-lg font-semibold mb-2">Total Consultations</h3>
+          <p id="totalConsultations" class="text-3xl font-bold">0</p>
+        </div>
+        <div class="glass-morphism rounded-lg p-6">
+          <h3 class="text-lg font-semibold mb-2">Pending</h3>
+          <p
+            id="pendingConsultations"
+            class="text-3xl font-bold text-yellow-400"
+          >
+            0
+          </p>
+        </div>
+        <div class="glass-morphism rounded-lg p-6">
+          <h3 class="text-lg font-semibold mb-2">Contacted</h3>
+          <p
+            id="contactedConsultations"
+            class="text-3xl font-bold text-blue-400"
+          >
+            0
+          </p>
+        </div>
+        <div class="glass-morphism rounded-lg p-6">
+          <h3 class="text-lg font-semibold mb-2">Completed</h3>
+          <p
+            id="completedConsultations"
+            class="text-3xl font-bold text-green-400"
+          >
+            0
+          </p>
+        </div>
+      </div>
+
+      <!-- Filters and Search -->
+      <div class="glass-morphism rounded-lg p-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-2">Search</label>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search by name, email..."
+              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Status</label>
+            <select
+              id="statusFilter"
+              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+            >
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="contacted">Contacted</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Role</label>
+            <select
+              id="roleFilter"
+              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+            >
+              <option value="">All Roles</option>
+              <option value="therapist">Therapist</option>
+              <option value="coach">Coach</option>
+              <option value="researcher">Researcher</option>
+              <option value="individual">Individual</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Date Range</label>
+            <select
+              id="dateFilter"
+              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+            >
+              <option value="">All Time</option>
+              <option value="today">Today</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consultations Table -->
+      <div class="glass-morphism rounded-lg overflow-hidden">
+        <div class="p-6 border-b border-white/20">
+          <h2 class="text-xl font-semibold">Consultation Requests</h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-white/5">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Date
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Email
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Role
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Phone
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Status
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody id="consultationsTableBody" class="divide-y divide-white/10">
+              <!-- Table rows will be generated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        <div id="noResults" class="hidden p-8 text-center">
+          <p class="text-gray-400">No consultation requests found.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consultation Details Modal -->
+    <div
+      id="consultationModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+    >
+      <div
+        class="glass-morphism rounded-lg max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold">Consultation Details</h3>
+          <button id="closeModal" class="text-gray-400 hover:text-white">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div id="consultationDetails">
+          <!-- Details will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Check authentication
+        if (!window.authService || !window.authService.isAuthenticated()) {
+          window.location.href = "/Auth.html";
+          return;
+        }
+
+        // Check if user is admin
+        if (!window.authService.isAdmin()) {
+          alert("Access denied. Admin privileges required.");
+          window.location.href = "/Home.html";
+          return;
+        }
+
+        // Initialize dashboard
+        initializeDashboard();
+      });
+
+      function initializeDashboard() {
+        loadConsultations();
+        setupEventListeners();
+        updateUserInfo();
+      }
+
+      function setupEventListeners() {
+        // Logout
+        document
+          .getElementById("logoutBtn")
+          .addEventListener("click", async function () {
+            try {
+              await window.authService.logout();
+            } catch (error) {
+              console.error("Logout error:", error);
+              window.location.href = "/Auth.html";
+            }
+          });
+
+        // Search and filters
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", filterConsultations);
+        document
+          .getElementById("statusFilter")
+          .addEventListener("change", filterConsultations);
+        document
+          .getElementById("roleFilter")
+          .addEventListener("change", filterConsultations);
+        document
+          .getElementById("dateFilter")
+          .addEventListener("change", filterConsultations);
+
+        // Modal
+        document
+          .getElementById("closeModal")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("consultationModal")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closeModal();
+          });
+      }
+
+      function updateUserInfo() {
+        const user = window.authService.getCurrentUser();
+        if (user) {
+          document.getElementById("userEmail").textContent = user.email;
+        }
+      }
+
+      async function loadConsultations() {
+        try {
+          const response = await window.authService.authenticatedFetch(
+            `${window.envConfig.getApiUrl()}/api/consultations`,
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to load consultations");
+          }
+
+          const data = await response.json();
+          window.allConsultations = data.consultations || [];
+          renderConsultations(window.allConsultations);
+          updateStats(window.allConsultations);
+        } catch (error) {
+          console.error("Error loading consultations:", error);
+          showError("Failed to load consultations");
+        }
+      }
+
+      function renderConsultations(consultations) {
+        const tbody = document.getElementById("consultationsTableBody");
+        const noResults = document.getElementById("noResults");
+
+        if (consultations.length === 0) {
+          tbody.innerHTML = "";
+          noResults.classList.remove("hidden");
+          return;
+        }
+
+        noResults.classList.add("hidden");
+        tbody.innerHTML = consultations
+          .map(
+            (consultation) => `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        ${new Date(consultation.timestamp).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium">${consultation.firstName} ${consultation.lastName}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        ${consultation.email}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <span class="px-2 py-1 text-xs rounded-full bg-blue-500/20 text-blue-300">
+                            ${consultation.role}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        ${consultation.phone || "N/A"}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs rounded-full status-${consultation.status}">
+                            ${consultation.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <button onclick="viewConsultation('${consultation.id}')" 
+                                class="text-blue-400 hover:text-blue-300 mr-3">
+                            View
+                        </button>
+                        <button onclick="updateStatus('${consultation.id}')" 
+                                class="text-green-400 hover:text-green-300">
+                            Update
+                        </button>
+                    </td>
+                </tr>
+            `,
+          )
+          .join("");
+      }
+
+      function updateStats(consultations) {
+        const stats = {
+          total: consultations.length,
+          pending: consultations.filter((c) => c.status === "pending").length,
+          contacted: consultations.filter((c) => c.status === "contacted")
+            .length,
+          completed: consultations.filter((c) => c.status === "completed")
+            .length,
+        };
+
+        document.getElementById("totalConsultations").textContent = stats.total;
+        document.getElementById("pendingConsultations").textContent =
+          stats.pending;
+        document.getElementById("contactedConsultations").textContent =
+          stats.contacted;
+        document.getElementById("completedConsultations").textContent =
+          stats.completed;
+      }
+
+      function filterConsultations() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const statusFilter = document.getElementById("statusFilter").value;
+        const roleFilter = document.getElementById("roleFilter").value;
+        const dateFilter = document.getElementById("dateFilter").value;
+
+        let filtered = window.allConsultations.filter((consultation) => {
+          // Search filter
+          if (
+            searchTerm &&
+            !(
+              consultation.firstName.toLowerCase().includes(searchTerm) ||
+              consultation.lastName.toLowerCase().includes(searchTerm) ||
+              consultation.email.toLowerCase().includes(searchTerm)
+            )
+          ) {
+            return false;
+          }
+
+          // Status filter
+          if (statusFilter && consultation.status !== statusFilter) {
+            return false;
+          }
+
+          // Role filter
+          if (roleFilter && consultation.role !== roleFilter) {
+            return false;
+          }
+
+          // Date filter
+          if (dateFilter) {
+            const consultationDate = new Date(consultation.timestamp);
+            const now = new Date();
+
+            switch (dateFilter) {
+              case "today":
+                if (consultationDate.toDateString() !== now.toDateString()) {
+                  return false;
+                }
+                break;
+              case "week":
+                const weekAgo = new Date(
+                  now.getTime() - 7 * 24 * 60 * 60 * 1000,
+                );
+                if (consultationDate < weekAgo) {
+                  return false;
+                }
+                break;
+              case "month":
+                const monthAgo = new Date(
+                  now.getTime() - 30 * 24 * 60 * 60 * 1000,
+                );
+                if (consultationDate < monthAgo) {
+                  return false;
+                }
+                break;
+            }
+          }
+
+          return true;
+        });
+
+        renderConsultations(filtered);
+      }
+
+      function viewConsultation(id) {
+        const consultation = window.allConsultations.find((c) => c.id === id);
+        if (!consultation) return;
+
+        const details = document.getElementById("consultationDetails");
+        details.innerHTML = `
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300">Name</label>
+                            <p class="mt-1">${consultation.firstName} ${consultation.lastName}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300">Email</label>
+                            <p class="mt-1">${consultation.email}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300">Phone</label>
+                            <p class="mt-1">${consultation.phone || "N/A"}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300">Role</label>
+                            <p class="mt-1">${consultation.role}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300">Needs</label>
+                        <p class="mt-1">${consultation.needs || "No specific needs mentioned"}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300">Status</label>
+                        <select id="statusSelect" class="mt-1 w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg">
+                            <option value="pending" ${consultation.status === "pending" ? "selected" : ""}>Pending</option>
+                            <option value="contacted" ${consultation.status === "contacted" ? "selected" : ""}>Contacted</option>
+                            <option value="completed" ${consultation.status === "completed" ? "selected" : ""}>Completed</option>
+                            <option value="cancelled" ${consultation.status === "cancelled" ? "selected" : ""}>Cancelled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300">Requested</label>
+                        <p class="mt-1">${new Date(consultation.timestamp).toLocaleString()}</p>
+                    </div>
+                    <div class="flex space-x-3 pt-4">
+                        <button onclick="saveConsultationStatus('${consultation.id}')" 
+                                class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+                            Save Changes
+                        </button>
+                        <button onclick="closeModal()" 
+                                class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+
+        document.getElementById("consultationModal").classList.remove("hidden");
+      }
+
+      function updateStatus(id) {
+        viewConsultation(id);
+      }
+
+      async function saveConsultationStatus(id) {
+        const newStatus = document.getElementById("statusSelect").value;
+
+        try {
+          // In a real implementation, you would call an API endpoint to update the status
+          // For now, we'll just update the local data
+          const consultation = window.allConsultations.find((c) => c.id === id);
+          if (consultation) {
+            consultation.status = newStatus;
+            consultation.updatedAt = new Date().toISOString();
+          }
+
+          renderConsultations(window.allConsultations);
+          updateStats(window.allConsultations);
+          closeModal();
+          showSuccess("Consultation status updated successfully");
+        } catch (error) {
+          console.error("Error updating consultation:", error);
+          showError("Failed to update consultation status");
+        }
+      }
+
+      function closeModal() {
+        document.getElementById("consultationModal").classList.add("hidden");
+      }
+
+      function showSuccess(message) {
+        // Simple success notification
+        const notification = document.createElement("div");
+        notification.className =
+          "fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50";
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 3000);
+      }
+
+      function showError(message) {
+        // Simple error notification
+        const notification = document.createElement("div");
+        notification.className =
+          "fixed top-4 right-4 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg z-50";
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>

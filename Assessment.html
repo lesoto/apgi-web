@@ -4,6 +4,8 @@
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
     <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/data-export-service.js"></script>
+    <script src="assets/js/export-ui.js"></script>
     <script src="assets/js/cdn-fallbacks.js"></script>
     <!-- Shared Navigation -->
     <link rel="stylesheet" href="assets/css/navigation.css" />
@@ -2585,6 +2587,27 @@
             Complete Neural Parameter Mapping with Interactions and Temporal
             Analysis
           </p>
+          <div class="mt-4">
+            <button
+              id="exportResultsBtn"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 mx-auto transition-colors"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                ></path>
+              </svg>
+              Export Results
+            </button>
+          </div>
         </div>
 
         <!-- Parameter Summary -->
@@ -2907,5 +2930,97 @@
     <!-- External Scripts -->
     <script src="assets/js/assessment-quiz.js"></script>
     <script src="assets/js/assessment-functionality.js"></script>
+
+    <!-- Export Functionality -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize export functionality
+        if (window.dataExport && window.exportUI) {
+          const exportBtn = document.getElementById("exportResultsBtn");
+
+          if (exportBtn) {
+            exportBtn.addEventListener("click", function () {
+              // Collect assessment data
+              const assessmentData = collectAssessmentData();
+
+              // Show export modal
+              window.exportUI.showModal(assessmentData);
+            });
+          }
+
+          // Function to collect assessment data
+          function collectAssessmentData() {
+            const profileName =
+              document.getElementById("profile-name")?.textContent || "Unknown";
+            const epsilonScore =
+              document.getElementById("epsilon-score")?.textContent || "0";
+            const precisionScore =
+              document.getElementById("precision-score")?.textContent || "0";
+            const thresholdScore =
+              document.getElementById("threshold-score")?.textContent || "0";
+            const somaticScore =
+              document.getElementById("somatic-score")?.textContent || "0";
+
+            const epsilonLevel =
+              document.getElementById("epsilon-level")?.textContent || "-";
+            const precisionLevel =
+              document.getElementById("precision-level")?.textContent || "-";
+            const thresholdLevel =
+              document.getElementById("threshold-level")?.textContent || "-";
+            const somaticLevel =
+              document.getElementById("somatic-level")?.textContent || "-";
+
+            return {
+              assessmentType: "Complete APGI Consciousness Assessment",
+              profileName: profileName,
+              assessmentDate: new Date().toISOString(),
+              parameters: {
+                predictionErrorSensitivity: {
+                  symbol: "ε",
+                  score: epsilonScore,
+                  level: epsilonLevel,
+                  description:
+                    "Sensitivity to prediction errors and unexpected stimuli",
+                },
+                precisionAllocation: {
+                  symbol: "π",
+                  score: precisionScore,
+                  level: precisionLevel,
+                  description:
+                    "Allocation of attentional resources and confidence weighting",
+                },
+                ignitionThreshold: {
+                  symbol: "θₜ",
+                  score: thresholdScore,
+                  level: thresholdLevel,
+                  description:
+                    "Threshold for conscious access and global ignition",
+                },
+                somaticBias: {
+                  symbol: "β",
+                  score: somaticScore,
+                  level: somaticLevel,
+                  description:
+                    "Influence of bodily states on cognitive processing",
+                },
+              },
+              summary: {
+                totalScore:
+                  parseFloat(epsilonScore) +
+                  parseFloat(precisionScore) +
+                  parseFloat(thresholdScore) +
+                  parseFloat(somaticScore),
+                averageScore:
+                  (parseFloat(epsilonScore) +
+                    parseFloat(precisionScore) +
+                    parseFloat(thresholdScore) +
+                    parseFloat(somaticScore)) /
+                  4,
+              },
+            };
+          }
+        }
+      });
+    </script>
   </body>
 </html>

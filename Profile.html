@@ -1,626 +1,729 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script src="assets/js/performance-optimizer.js"></script>
-    <script src="assets/js/accessibility-enhancer.js"></script>
-    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile Page</title>
-    <meta
-      name="description"
-      content="Manage your APGI Framework profile. View assessment history, update personal information, and track your consciousness signature over time."
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
+    <title>User Profile - APGI Framework</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/tailwind-fallback.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="assets/css/fontawesome-fallback.css" />
+
+    <!-- Scripts -->
+    <script src="assets/js/environment-config.js"></script>
+    <script src="assets/js/auth-service.js"></script>
+    <script src="assets/js/data-export-service.js"></script>
+    <script src="assets/js/export-ui.js"></script>
+
     <style>
-      .form-input {
-        transition: all 0.3s ease;
-      }
-      .form-input:focus {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      }
-      .profile-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        transition: transform 0.3s ease;
-      }
-      .profile-card:hover {
-        transform: translateY(-2px);
-      }
-      .social-icon {
-        transition: all 0.3s ease;
-      }
-      .social-icon:hover {
-        transform: scale(1.2) rotate(5deg);
-      }
-      .action-button {
-        transition: all 0.3s ease;
-      }
-      .action-button:hover {
-        transform: translateX(5px);
-      }
-      .form-section {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      }
       body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        font-family: "Space Grotesk", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
+      }
+
+      .glass-morphism {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .assessment-card {
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .assessment-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
       }
     </style>
   </head>
-  <body class="font-sans">
-    <!-- Include Navigation Component -->
-    <div id="navigation-container"></div>
-    <script src="assets/js/navigation-loader.js"></script>
-
-    <div class="container mx-auto p-6">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="form-section p-8 lg:col-span-2">
-          <div class="mb-8">
-            <h2
-              class="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
-            >
-              Profile Settings
-            </h2>
-          </div>
-          <div class="mb-6">
-            <label class="block text-gray-700 font-semibold mb-2" for="name">
-              <i class="fas fa-user mr-2 text-purple-600"></i>Name
-            </label>
-            <input
-              class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
-              id="name"
-              type="text"
-              placeholder="APGI Framework"
-              value="APGI Framework"
-            />
-          </div>
-          <div class="mb-6">
-            <label class="block text-gray-700 font-semibold mb-2" for="about">
-              <i class="fas fa-info-circle mr-2 text-purple-600"></i>About
-            </label>
-            <textarea
-              class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
-              id="about"
-              rows="4"
-              placeholder="I'm APGI Framework, the king in the north. I know Nothing."
-            >
-APGI Framework helps you to understand the world and yourself.</textarea
-            >
-          </div>
-          <div class="mb-8">
-            <label class="block text-gray-700 font-semibold mb-2" for="photo">
-              <i class="fas fa-camera mr-2 text-purple-600"></i>Book URL
-            </label>
-            <input
-              class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
-              id="photo"
-              type="text"
-              placeholder="https://apgi-framework.com/Book-Outline.html"
-              value="https://apgi-framework.com/Book-Outline.html"
-            />
-          </div>
-          <div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label
-                  class="block text-gray-700 font-semibold mb-2"
-                  for="YouTube"
-                >
-                  <i class="fab fa-youtube mr-2 text-sky-500"></i>YouTube
-                </label>
-                <input
-                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
-                  id="YouTube"
-                  type="text"
-                  placeholder="https://YouTube.com/apgi_framework"
-                  value="https://YouTube.com/apgi_framework"
-                />
-              </div>
-              <div>
-                <label
-                  class="block text-gray-700 font-semibold mb-2"
-                  for="TikTok"
-                >
-                  <i class="fab fa-tiktok mr-2 text-blue-700"></i>TikTok
-                </label>
-                <input
-                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-200"
-                  id="TikTok"
-                  type="text"
-                  placeholder="https://TikTok.com/apgi_framework"
-                  value="https://TikTok.com/apgi_framework"
-                />
-              </div>
-              <div>
-                <label
-                  class="block text-gray-700 font-semibold mb-2"
-                  for="facebook"
-                >
-                  <i class="fab fa-facebook mr-2 text-blue-600"></i>Facebook
-                </label>
-                <input
-                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                  id="facebook"
-                  type="text"
-                  placeholder="https://facebook.com/apgi_framework"
-                  value="https://facebook.com/apgi_framework"
-                />
-              </div>
-              <div>
-                <label
-                  class="block text-gray-700 font-semibold mb-2"
-                  for="instagram"
-                >
-                  <i class="fab fa-instagram mr-2 text-pink-600"></i>Instagram
-                </label>
-                <input
-                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-200"
-                  id="instagram"
-                  type="text"
-                  placeholder="https://instagram.com/apgi_framework"
-                  value="https://instagram.com/apgi_framework"
-                />
-              </div>
-              <div>
-                <label
-                  class="block text-gray-700 font-semibold mb-2"
-                  for="telegram"
-                >
-                  <i class="fab fa-telegram mr-2 text-blue-500"></i>Telegram
-                </label>
-                <input
-                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                  id="telegram"
-                  type="text"
-                  placeholder="https://t.me/apgi_framework"
-                  value="https://t.me/apgi_framework"
-                />
-              </div>
-              <div>
-                <label
-                  class="block text-gray-700 font-semibold mb-2"
-                  for="github"
-                >
-                  <i class="fab fa-github mr-2 text-gray-800"></i>Github
-                </label>
-                <input
-                  class="form-input shadow appearance-none border-2 border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-gray-200"
-                  id="github"
-                  type="text"
-                  placeholder="https://github.com/apgi_framework"
-                  value="https://github.com/apgi_framework"
-                />
-              </div>
-            </div>
-
-            <!-- Form Actions -->
-            <div class="flex flex-col sm:flex-row gap-4 mt-8">
-              <button
-                type="button"
-                id="save-profile-btn"
-                class="bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+  <body class="text-white">
+    <!-- Navigation -->
+    <nav class="glass-morphism border-b border-white/20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center space-x-8">
+            <h1 class="text-xl font-bold">APGI Profile</h1>
+            <div class="hidden md:flex space-x-6">
+              <a href="/Home.html" class="hover:text-blue-300 transition-colors"
+                >Home</a
               >
-                <i class="fas fa-save mr-2"></i>Save Profile
-              </button>
-              <button
-                type="button"
-                id="reset-profile-btn"
-                class="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition-all duration-300"
+              <a
+                href="/Assessment.html"
+                class="hover:text-blue-300 transition-colors"
+                >Assessment</a
               >
-                <i class="fas fa-undo mr-2"></i>Reset Changes
-              </button>
+              <a href="/Profile.html" class="text-blue-300">Profile</a>
             </div>
-
-            <!-- Status Messages -->
-            <div
-              id="status-message"
-              class="hidden mt-4 p-4 rounded-lg transition-all duration-300"
-            ></div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span id="userEmail" class="text-sm opacity-80"></span>
+            <button
+              id="logoutBtn"
+              class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition-colors"
+            >
+              Logout
+            </button>
           </div>
         </div>
-        <div class="profile-card rounded-2xl shadow-2xl p-8 text-white">
-          <div class="text-center mb-6">
-            <div class="relative inline-block">
-              <img
-                class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-lg"
-                src="assets/images/mismatch.jpg"
-                alt="APGI Framework"
-              />
-              <div
-                class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white"
-              ></div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- User Info Section -->
+      <div class="glass-morphism rounded-lg p-8 mb-8">
+        <div class="flex items-center space-x-6">
+          <div
+            class="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-3xl font-bold"
+          >
+            <span id="userInitials">?</span>
+          </div>
+          <div class="flex-1">
+            <h2 id="userName" class="text-2xl font-bold mb-2">Loading...</h2>
+            <p id="userEmail" class="text-gray-300 mb-4">Loading...</p>
+            <div class="flex space-x-4">
+              <button
+                id="editProfileBtn"
+                class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
+              >
+                Edit Profile
+              </button>
+              <button
+                id="changePasswordBtn"
+                class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors"
+              >
+                Change Password
+              </button>
             </div>
-            <h3 class="text-3xl font-bold mb-2">APGI Framework</h3>
-            <p class="text-white/90 text-lg">Consciousness Architecture</p>
           </div>
-          <div class="flex justify-center items-center mb-8 space-x-4">
-            <a
-              href="https://tiktok.com/@apgi_framework"
-              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
-              target="_blank"
-            >
-              <i class="fab fa-tiktok text-2xl"></i>
-            </a>
-            <a
-              href="https://youtube.com/@apgi_framework"
-              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
-              target="_blank"
-            >
-              <i class="fab fa-youtube text-2xl"></i>
-            </a>
-            <a
-              href="https://facebook.com/apgi_framework"
-              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
-              target="_blank"
-            >
-              <i class="fab fa-facebook text-2xl"></i>
-            </a>
-            <a
-              href="https://instagram.com/apgi_framework"
-              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
-              target="_blank"
-            >
-              <i class="fab fa-instagram text-2xl"></i>
-            </a>
-            <a
-              href="https://t.me/apgi_framework"
-              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
-              target="_blank"
-            >
-              <i class="fab fa-telegram text-2xl"></i>
-            </a>
-            <a
-              href="https://github.com/apgi-framework"
-              class="social-icon bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30"
-              target="_blank"
-            >
-              <i class="fab fa-github text-2xl"></i>
-            </a>
+          <div class="text-right">
+            <p class="text-sm text-gray-300">Member Since</p>
+            <p id="memberSince" class="text-lg font-semibold">Loading...</p>
           </div>
-          <div class="space-y-3">
-            <a
-              href="Home.html"
-              class="action-button block bg-white text-purple-600 hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg text-center shadow-lg"
+        </div>
+      </div>
+
+      <!-- Stats Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="glass-morphism rounded-lg p-6 text-center">
+          <h3 class="text-lg font-semibold mb-2">Total Assessments</h3>
+          <p id="totalAssessments" class="text-3xl font-bold">0</p>
+        </div>
+        <div class="glass-morphism rounded-lg p-6 text-center">
+          <h3 class="text-lg font-semibold mb-2">Average Score</h3>
+          <p id="averageScore" class="text-3xl font-bold">0</p>
+        </div>
+        <div class="glass-morphism rounded-lg p-6 text-center">
+          <h3 class="text-lg font-semibold mb-2">Last Assessment</h3>
+          <p id="lastAssessment" class="text-lg font-semibold">Never</p>
+        </div>
+        <div class="glass-morphism rounded-lg p-6 text-center">
+          <h3 class="text-lg font-semibold mb-2">Profile Type</h3>
+          <p id="profileType" class="text-lg font-semibold">Unknown</p>
+        </div>
+      </div>
+
+      <!-- Assessment History -->
+      <div class="glass-morphism rounded-lg p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-semibold">Assessment History</h2>
+          <button
+            id="exportHistoryBtn"
+            class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <i class="fas fa-globe mr-2"></i>Website
-            </a>
-            <a
-              href="Book-Available-Now.html"
-              class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center"
-            >
-              <i class="fab fa-amazon mr-2"></i>Amazon book
-            </a>
-            <a
-              href="Book-Outline.html"
-              class="action-button block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-lg text-center"
-            >
-              <i class="fas fa-download mr-2"></i>Download outline
-            </a>
-            <img
-              src="assets/images/Evolutionary-Mismatch.svg"
-              alt="APGI Framework Evolutionary Mismatch Diagram"
-            />
-          </div>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              ></path>
+            </svg>
+            Export History
+          </button>
+        </div>
+        <div
+          id="assessmentHistory"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <!-- Assessment cards will be generated by JavaScript -->
+        </div>
+        <div id="noAssessments" class="hidden text-center py-12">
+          <p class="text-gray-400 mb-4">No assessments completed yet.</p>
+          <a
+            href="/Assessment.html"
+            class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors inline-block"
+          >
+            Take Your First Assessment
+          </a>
+        </div>
+      </div>
+
+      <!-- Progress Chart -->
+      <div class="glass-morphism rounded-lg p-6">
+        <h2 class="text-xl font-semibold mb-6">Your Progress Over Time</h2>
+        <div
+          class="h-64 flex items-center justify-center bg-white/5 rounded-lg"
+        >
+          <p class="text-gray-400">
+            Progress chart will appear here as you complete more assessments
+          </p>
         </div>
       </div>
     </div>
 
-    <!-- Profile Form Interactivity Script -->
+    <!-- Edit Profile Modal -->
+    <div
+      id="editProfileModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+    >
+      <div class="glass-morphism rounded-lg max-w-md w-full p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold">Edit Profile</h3>
+          <button id="closeEditModal" class="text-gray-400 hover:text-white">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <form id="editProfileForm">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">First Name</label>
+              <input
+                type="text"
+                id="editFirstName"
+                required
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Last Name</label>
+              <input
+                type="text"
+                id="editLastName"
+                required
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Email</label>
+              <input
+                type="email"
+                id="editEmail"
+                required
+                disabled
+                class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg opacity-60"
+              />
+              <p class="text-xs text-gray-400 mt-1">Email cannot be changed</p>
+            </div>
+          </div>
+          <div class="flex space-x-3 mt-6">
+            <button
+              type="submit"
+              class="flex-1 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              id="cancelEdit"
+              class="flex-1 bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div
+      id="changePasswordModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+    >
+      <div class="glass-morphism rounded-lg max-w-md w-full p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold">Change Password</h3>
+          <button
+            id="closePasswordModal"
+            class="text-gray-400 hover:text-white"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <form id="changePasswordForm">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2"
+                >Current Password</label
+              >
+              <input
+                type="password"
+                id="currentPassword"
+                required
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">New Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                required
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2"
+                >Confirm New Password</label
+              >
+              <input
+                type="password"
+                id="confirmPassword"
+                required
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
+              />
+            </div>
+          </div>
+          <div class="flex space-x-3 mt-6">
+            <button
+              type="submit"
+              class="flex-1 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
+            >
+              Change Password
+            </button>
+            <button
+              type="button"
+              id="cancelPassword"
+              class="flex-1 bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Store original values for reset functionality
-        const originalValues = {};
-        const formInputs = document.querySelectorAll(".form-input");
-
-        // Store original values
-        formInputs.forEach((input) => {
-          originalValues[input.id] = input.value;
-
-          // Add input event listeners for real-time validation
-          input.addEventListener("input", function () {
-            validateInput(this);
-            markFormAsChanged();
-          });
-
-          // Add blur event for validation
-          input.addEventListener("blur", function () {
-            validateInput(this);
-          });
-        });
-
-        // Save profile button
-        const saveBtn = document.getElementById("save-profile-btn");
-        const resetBtn = document.getElementById("reset-profile-btn");
-        const statusMessage = document.getElementById("status-message");
-
-        if (saveBtn) {
-          saveBtn.addEventListener("click", saveProfile);
+        // Check authentication
+        if (!window.authService || !window.authService.isAuthenticated()) {
+          window.location.href = "/Auth.html";
+          return;
         }
 
-        if (resetBtn) {
-          resetBtn.addEventListener("click", resetProfile);
-        }
-
-        /**
-         * Validate individual input
-         */
-        function validateInput(input) {
-          const value = input.value.trim();
-          let isValid = true;
-          let errorMessage = "";
-
-          // URL validation for link fields
-          if (
-            input.id &&
-            [
-              "photo",
-              "YouTube",
-              "TikTok",
-              "facebook",
-              "instagram",
-              "telegram",
-              "github",
-            ].includes(input.id)
-          ) {
-            if (value && !isValidUrl(value)) {
-              isValid = false;
-              errorMessage = "Please enter a valid URL";
-            }
-          }
-
-          // Name validation
-          if (input.id === "name") {
-            if (value.length < 2) {
-              isValid = false;
-              errorMessage = "Name must be at least 2 characters";
-            }
-          }
-
-          // About validation
-          if (input.id === "about") {
-            if (value.length > 500) {
-              isValid = false;
-              errorMessage = "About section must be less than 500 characters";
-            }
-          }
-
-          // Update input styling based on validation
-          updateInputValidation(input, isValid, errorMessage);
-
-          return isValid;
-        }
-
-        /**
-         * Check if string is valid URL
-         */
-        function isValidUrl(string) {
-          try {
-            const url = new URL(string);
-            return url.protocol === "http:" || url.protocol === "https:";
-          } catch (_) {
-            return false;
-          }
-        }
-
-        /**
-         * Update input validation styling
-         */
-        function updateInputValidation(input, isValid, errorMessage) {
-          // Remove existing validation classes
-          input.classList.remove(
-            "border-green-500",
-            "border-red-500",
-            "ring-green-200",
-            "ring-red-200",
-          );
-
-          if (input.value.trim()) {
-            if (isValid) {
-              input.classList.add("border-green-500", "ring-green-200");
-              removeInputError(input);
-            } else {
-              input.classList.add("border-red-500", "ring-red-200");
-              showInputError(input, errorMessage);
-            }
-          } else {
-            removeInputError(input);
-          }
-        }
-
-        /**
-         * Show input error message
-         */
-        function showInputError(input, message) {
-          removeInputError(input); // Remove existing error first
-
-          const errorDiv = document.createElement("div");
-          errorDiv.className = "text-red-500 text-sm mt-1 input-error-message";
-          errorDiv.textContent = message;
-
-          input.parentNode.appendChild(errorDiv);
-        }
-
-        /**
-         * Remove input error message
-         */
-        function removeInputError(input) {
-          const existingError = input.parentNode.querySelector(
-            ".input-error-message",
-          );
-          if (existingError) {
-            existingError.remove();
-          }
-        }
-
-        /**
-         * Mark form as changed
-         */
-        function markFormAsChanged() {
-          saveBtn.classList.add("animate-pulse");
-          saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Profile *';
-        }
-
-        /**
-         * Save profile
-         */
-        async function saveProfile() {
-          // Validate all inputs
-          let isFormValid = true;
-          formInputs.forEach((input) => {
-            if (!validateInput(input)) {
-              isFormValid = false;
-            }
-          });
-
-          if (!isFormValid) {
-            showStatusMessage("Please fix the errors before saving.", "error");
-            return;
-          }
-
-          // Show loading state
-          saveBtn.disabled = true;
-          saveBtn.innerHTML =
-            '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
-
-          try {
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-
-            // Save to localStorage
-            const profileData = {};
-            formInputs.forEach((input) => {
-              profileData[input.id] = input.value;
-            });
-            localStorage.setItem("apgiProfile", JSON.stringify(profileData));
-
-            // Update original values
-            Object.assign(originalValues, profileData);
-
-            // Reset button state
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Profile';
-            saveBtn.classList.remove("animate-pulse");
-
-            showStatusMessage("Profile saved successfully!", "success");
-
-            // Update profile card if name changed
-            const nameInput = document.getElementById("name");
-            if (nameInput) {
-              const profileName = document.querySelector(".profile-card h3");
-              if (profileName) {
-                profileName.textContent = nameInput.value || "APGI Framework";
-              }
-            }
-          } catch (error) {
-            console.error("Error saving profile:", error);
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Profile';
-            showStatusMessage(
-              "Error saving profile. Please try again.",
-              "error",
-            );
-          }
-        }
-
-        /**
-         * Reset profile
-         */
-        function resetProfile() {
-          if (!confirm("Are you sure you want to reset all changes?")) {
-            return;
-          }
-
-          formInputs.forEach((input) => {
-            input.value = originalValues[input.id] || "";
-            updateInputValidation(input, true, "");
-          });
-
-          saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Profile';
-          saveBtn.classList.remove("animate-pulse");
-
-          showStatusMessage("Profile reset to original values.", "info");
-        }
-
-        /**
-         * Show status message
-         */
-        function showStatusMessage(message, type) {
-          statusMessage.classList.remove(
-            "hidden",
-            "bg-green-100",
-            "bg-red-100",
-            "bg-blue-100",
-            "text-green-700",
-            "text-red-700",
-            "text-blue-700",
-          );
-
-          const colors = {
-            success: "bg-green-100 text-green-700 border-green-200",
-            error: "bg-red-100 text-red-700 border-red-200",
-            info: "bg-blue-100 text-blue-700 border-blue-200",
-          };
-
-          const icons = {
-            success: "fas fa-check-circle",
-            error: "fas fa-exclamation-circle",
-            info: "fas fa-info-circle",
-          };
-
-          statusMessage.className = `mt-4 p-4 rounded-lg border ${colors[type]} transition-all duration-300`;
-          statusMessage.innerHTML = `<i class="${icons[type]} mr-2"></i>${message}`;
-
-          // Auto-hide after 5 seconds
-          setTimeout(() => {
-            statusMessage.classList.add("hidden");
-          }, 5000);
-        }
-
-        // Load saved profile on page load
-        loadSavedProfile();
-
-        /**
-         * Load saved profile from localStorage
-         */
-        function loadSavedProfile() {
-          const savedProfile = localStorage.getItem("apgiProfile");
-          if (savedProfile) {
-            try {
-              const profileData = JSON.parse(savedProfile);
-              formInputs.forEach((input) => {
-                if (profileData[input.id]) {
-                  input.value = profileData[input.id];
-                  originalValues[input.id] = profileData[input.id];
-                }
-              });
-
-              // Update profile card name
-              if (profileData.name) {
-                const profileName = document.querySelector(".profile-card h3");
-                if (profileName) {
-                  profileName.textContent = profileData.name;
-                }
-              }
-
-              showStatusMessage("Profile loaded from saved data.", "info");
-            } catch (error) {
-              console.error("Error loading saved profile:", error);
-            }
-          }
-        }
+        // Initialize profile
+        initializeProfile();
       });
+
+      function initializeProfile() {
+        loadUserProfile();
+        loadAssessmentHistory();
+        setupEventListeners();
+      }
+
+      function setupEventListeners() {
+        // Logout
+        document
+          .getElementById("logoutBtn")
+          .addEventListener("click", async function () {
+            try {
+              await window.authService.logout();
+            } catch (error) {
+              console.error("Logout error:", error);
+              window.location.href = "/Auth.html";
+            }
+          });
+
+        // Edit Profile
+        document
+          .getElementById("editProfileBtn")
+          .addEventListener("click", openEditModal);
+        document
+          .getElementById("closeEditModal")
+          .addEventListener("click", closeEditModal);
+        document
+          .getElementById("cancelEdit")
+          .addEventListener("click", closeEditModal);
+        document
+          .getElementById("editProfileForm")
+          .addEventListener("submit", handleEditProfile);
+
+        // Change Password
+        document
+          .getElementById("changePasswordBtn")
+          .addEventListener("click", openPasswordModal);
+        document
+          .getElementById("closePasswordModal")
+          .addEventListener("click", closePasswordModal);
+        document
+          .getElementById("cancelPassword")
+          .addEventListener("click", closePasswordModal);
+        document
+          .getElementById("changePasswordForm")
+          .addEventListener("submit", handleChangePassword);
+
+        // Export History
+        document
+          .getElementById("exportHistoryBtn")
+          .addEventListener("click", exportAssessmentHistory);
+
+        // Modal backdrop clicks
+        document
+          .getElementById("editProfileModal")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closeEditModal();
+          });
+        document
+          .getElementById("changePasswordModal")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closePasswordModal();
+          });
+      }
+
+      async function loadUserProfile() {
+        try {
+          const user = window.authService.getCurrentUser();
+          if (!user) {
+            window.location.href = "/Auth.html";
+            return;
+          }
+
+          // Update user info display
+          document.getElementById("userName").textContent =
+            `${user.firstName} ${user.lastName}`;
+          document.getElementById("userEmail").textContent = user.email;
+          document.getElementById("userInitials").textContent =
+            `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+          document.getElementById("memberSince").textContent = new Date(
+            user.createdAt,
+          ).toLocaleDateString();
+
+          // Load assessment stats from localStorage (in production, this would be from API)
+          loadAssessmentStats();
+        } catch (error) {
+          console.error("Error loading user profile:", error);
+          showError("Failed to load profile");
+        }
+      }
+
+      function loadAssessmentStats() {
+        // Get assessments from localStorage
+        const assessments = JSON.parse(
+          localStorage.getItem("apgi_assessments") || "[]",
+        );
+        const userAssessments = assessments.filter(
+          (a) => a.userId === window.authService.getCurrentUser().id,
+        );
+
+        // Update stats
+        document.getElementById("totalAssessments").textContent =
+          userAssessments.length;
+
+        if (userAssessments.length > 0) {
+          // Calculate average score
+          const totalScore = userAssessments.reduce((sum, a) => {
+            const avgScore = a.data?.summary?.averageScore || 0;
+            return sum + parseFloat(avgScore);
+          }, 0);
+          const averageScore = (totalScore / userAssessments.length).toFixed(1);
+          document.getElementById("averageScore").textContent = averageScore;
+
+          // Last assessment date
+          const lastAssessment = userAssessments[userAssessments.length - 1];
+          document.getElementById("lastAssessment").textContent = new Date(
+            lastAssessment.timestamp,
+          ).toLocaleDateString();
+
+          // Determine profile type based on latest assessment
+          const profileType = determineProfileType(lastAssessment.data);
+          document.getElementById("profileType").textContent = profileType;
+        } else {
+          document.getElementById("lastAssessment").textContent = "Never";
+          document.getElementById("profileType").textContent = "Unknown";
+        }
+      }
+
+      function determineProfileType(assessmentData) {
+        if (!assessmentData || !assessmentData.parameters) return "Unknown";
+
+        const { parameters } = assessmentData;
+        const epsilon = parseFloat(
+          parameters.predictionErrorSensitivity?.score || 0,
+        );
+        const precision = parseFloat(
+          parameters.precisionAllocation?.score || 0,
+        );
+        const threshold = parseFloat(parameters.ignitionThreshold?.score || 0);
+        const somatic = parseFloat(parameters.somaticBias?.score || 0);
+
+        // Simple logic to determine profile type
+        if (epsilon > 70) return "Highly Sensitive";
+        if (precision > 70) return "Precision Focused";
+        if (threshold > 70) return "High Threshold";
+        if (somatic > 70) return "Somatic Dominant";
+        if (epsilon < 30 && precision < 30 && threshold < 30 && somatic < 30)
+          return "Low Reactivity";
+        return "Balanced";
+      }
+
+      function loadAssessmentHistory() {
+        const assessments = JSON.parse(
+          localStorage.getItem("apgi_assessments") || "[]",
+        );
+        const userAssessments = assessments.filter(
+          (a) => a.userId === window.authService.getCurrentUser().id,
+        );
+
+        const historyContainer = document.getElementById("assessmentHistory");
+        const noAssessments = document.getElementById("noAssessments");
+
+        if (userAssessments.length === 0) {
+          historyContainer.innerHTML = "";
+          noAssessments.classList.remove("hidden");
+          return;
+        }
+
+        noAssessments.classList.add("hidden");
+        historyContainer.innerHTML = userAssessments
+          .reverse()
+          .map(
+            (assessment) => `
+                <div class="assessment-card glass-morphism rounded-lg p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-semibold">${assessment.type || "APGI Assessment"}</h3>
+                        <span class="text-sm text-gray-300">${new Date(assessment.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span>Prediction Error:</span>
+                            <span>${assessment.data?.parameters?.predictionErrorSensitivity?.score || "N/A"}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>Precision:</span>
+                            <span>${assessment.data?.parameters?.precisionAllocation?.score || "N/A"}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>Threshold:</span>
+                            <span>${assessment.data?.parameters?.ignitionThreshold?.score || "N/A"}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>Somatic Bias:</span>
+                            <span>${assessment.data?.parameters?.somaticBias?.score || "N/A"}</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="viewAssessment('${assessment.id}')" 
+                                class="flex-1 bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded text-sm transition-colors">
+                            View Details
+                        </button>
+                        <button onclick="exportAssessment('${assessment.id}')" 
+                                class="flex-1 bg-green-600 hover:bg-green-700 px-3 py-2 rounded text-sm transition-colors">
+                            Export
+                        </button>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function openEditModal() {
+        const user = window.authService.getCurrentUser();
+        document.getElementById("editFirstName").value = user.firstName;
+        document.getElementById("editLastName").value = user.lastName;
+        document.getElementById("editEmail").value = user.email;
+        document.getElementById("editProfileModal").classList.remove("hidden");
+      }
+
+      function closeEditModal() {
+        document.getElementById("editProfileModal").classList.add("hidden");
+      }
+
+      async function handleEditProfile(e) {
+        e.preventDefault();
+
+        const firstName = document.getElementById("editFirstName").value;
+        const lastName = document.getElementById("editLastName").value;
+
+        try {
+          await window.authService.updateProfile({ firstName, lastName });
+          closeEditModal();
+          showSuccess("Profile updated successfully");
+          loadUserProfile(); // Reload to show updated info
+        } catch (error) {
+          console.error("Error updating profile:", error);
+          showError("Failed to update profile");
+        }
+      }
+
+      function openPasswordModal() {
+        document.getElementById("changePasswordForm").reset();
+        document
+          .getElementById("changePasswordModal")
+          .classList.remove("hidden");
+      }
+
+      function closePasswordModal() {
+        document.getElementById("changePasswordModal").classList.add("hidden");
+      }
+
+      async function handleChangePassword(e) {
+        e.preventDefault();
+
+        const currentPassword =
+          document.getElementById("currentPassword").value;
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPassword) {
+          showError("New passwords do not match");
+          return;
+        }
+
+        const passwordValidation =
+          window.authService.validatePassword(newPassword);
+        if (!passwordValidation.isValid) {
+          showError(
+            "Password does not meet requirements: " +
+              passwordValidation.errors.join(", "),
+          );
+          return;
+        }
+
+        try {
+          await window.authService.changePassword({
+            currentPassword,
+            newPassword,
+          });
+          closePasswordModal();
+          showSuccess("Password changed successfully");
+        } catch (error) {
+          console.error("Error changing password:", error);
+          showError("Failed to change password");
+        }
+      }
+
+      function exportAssessmentHistory() {
+        const assessments = JSON.parse(
+          localStorage.getItem("apgi_assessments") || "[]",
+        );
+        const userAssessments = assessments.filter(
+          (a) => a.userId === window.authService.getCurrentUser().id,
+        );
+
+        if (userAssessments.length === 0) {
+          showError("No assessments to export");
+          return;
+        }
+
+        const exportData = {
+          user: window.authService.getCurrentUser(),
+          exportDate: new Date().toISOString(),
+          totalAssessments: userAssessments.length,
+          assessments: userAssessments,
+        };
+
+        if (window.exportUI) {
+          window.exportUI.showModal(exportData);
+        } else {
+          showError("Export functionality not available");
+        }
+      }
+
+      function viewAssessment(assessmentId) {
+        // In a real implementation, this would navigate to a detailed view
+        console.log("View assessment:", assessmentId);
+        showSuccess("Assessment details view coming soon!");
+      }
+
+      function exportAssessment(assessmentId) {
+        const assessments = JSON.parse(
+          localStorage.getItem("apgi_assessments") || "[]",
+        );
+        const assessment = assessments.find((a) => a.id === assessmentId);
+
+        if (!assessment) {
+          showError("Assessment not found");
+          return;
+        }
+
+        if (window.exportUI) {
+          window.exportUI.showModal(assessment.data);
+        } else {
+          showError("Export functionality not available");
+        }
+      }
+
+      function showSuccess(message) {
+        showNotification(message, "success");
+      }
+
+      function showError(message) {
+        showNotification(message, "error");
+      }
+
+      function showNotification(message, type = "info") {
+        const notification = document.createElement("div");
+        const bgColor =
+          type === "success"
+            ? "bg-green-600"
+            : type === "error"
+              ? "bg-red-600"
+              : "bg-blue-600";
+        notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 3000);
+      }
     </script>
   </body>
 </html>
