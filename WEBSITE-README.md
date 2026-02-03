@@ -1,6 +1,6 @@
-# APGI Framework Website - Development Guide
+# APGI Framework Website
 
-The APGI Framework website is a comprehensive consciousness assessment and psychological research platform that helps users understand their cognitive architecture through scientifically-grounded measurements. This guide covers development setup, code quality, and deployment procedures.
+The APGI Framework website is a consciousness assessment and psychological research platform that helps users understand their cognitive architecture through scientifically-grounded measurements. This guide covers development setup, code quality, and deployment procedures.
 
 ## 🧠 Core Concept
 
@@ -161,6 +161,65 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 - Progress indicators
 - Real-time validation
 - Mobile-optimized layout
+
+### Signature.html
+
+**Purpose**: Comprehensive APGI Signature Parameters Assessment with archetype matching and cognitive profiling
+
+**User Experience**:
+
+- Modern, clean interface using Tailwind CSS with Inter font
+- 36-question assessment across four key parameters (θₜ, ε, π, β)
+- Real-time progress tracking showing completion status
+- Custom radio button design with visual feedback
+- Comprehensive results dashboard with parameter cards and visualizations
+- **APGI Profile Archetypes** system that matches users to 7 cognitive archetypes:
+  - The Overloaded Scanner
+  - The Hypervigilant Analyst
+  - The Distractible Creator
+  - The Rigid Executor
+  - The Detached Strategist
+  - The Anxious Reactor
+  - The Balanced Operator
+
+**Key Features**:
+
+- **Advanced Archetype Matching**: Intelligent algorithm that analyzes parameter scores to identify the user's cognitive archetype
+- **Detailed Parameter Analysis**: Each parameter (Activation Threshold, Prediction Error Sensitivity, Precision Weighting, Somatic Bias) includes:
+  - Normalized scores (0-100 scale)
+  - Color-coded interpretation badges
+  - Progress bar visualizations
+  - High/Low expression profiles with real-life examples
+  - Practical tips for cognitive regulation
+
+- **Archetype Display Section**: Dark-themed, visually striking section showing:
+  - Parameter signature (θₜ, ε, π, β levels)
+  - Core issue explanation
+  - Typical failures (red-themed)
+  - Hidden strengths (green-themed)
+  - Priority adjustment (yellow-themed)
+  - Numbered action steps with "Why first" rationale
+
+- **Global Priority Rules**: Reference section with 6 universal rules for cognitive regulation:
+  - If overloaded → adjust θₜ first
+  - If anxious → adjust β before thinking
+  - If impulsive → adjust π
+  - If rigid → adjust ε
+  - If burned out → check β, not motivation
+  - Never tune interpretation before input
+
+- **Responsive Design**: Mobile-optimized layout with adaptive grid systems
+- **Accessibility**: Screen reader support and keyboard navigation
+- **Modern UI**: Gradient backgrounds, smooth transitions, and professional styling
+
+**Technical Implementation**:
+
+- Pure JavaScript with no framework dependencies
+- Tailwind CSS for modern, utility-first styling
+- LocalStorage for data persistence
+- Form validation and progress tracking
+- Dynamic content generation for results
+- Mathematical scoring algorithms with reverse-scoring for specific questions
 
 ## 🔬 Scientific & Research Pages
 
@@ -573,6 +632,7 @@ apgi-web/
 │   ├── Assessment.html           # Comprehensive assessment tool
 │   ├── APGI-Assessment.html      # Alternative assessment interface
 │   ├── Assessment-OnePage.html   # Streamlined single-page assessment
+│   ├── Signature.html            # Advanced signature parameters assessment with archetypes
 │   ├── State-Assessment.html     # Advanced state analysis
 │   └── Profile.html              # User profile management
 │
