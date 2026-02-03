@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APGI Signature Parameters Assessment</title>
+    <script src="assets/js/performance-optimizer.js"></script>
+    <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/data-export-service.js"></script>
+    <script src="assets/js/export-ui.js"></script>
+    <script src="assets/js/progress-tracker.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
@@ -41,6 +47,11 @@
         position: relative;
       }
 
+      .radio-custom:focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+      }
+
       .radio-custom:checked {
         border-color: #3b82f6;
         background-color: #3b82f6;
@@ -67,8 +78,20 @@
 
       .progress-fill {
         height: 100%;
-        background: #3b82f6;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
         transition: width 0.3s ease;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
 
       .interpretation-badge {
@@ -122,23 +145,46 @@
 
       <!-- Results Section (Hidden by default) -->
       <div id="resultsSection" class="hidden p-6 md:p-8 space-y-8 bg-white">
-        <h2 class="text-2xl font-bold text-slate-900 flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 mr-2 text-blue-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-slate-900 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 mr-2 text-blue-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              />
+            </svg>
+            Your Neurodynamic Profile
+          </h2>
+          <button
+            id="exportResultsBtn"
+            class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            aria-label="Export assessment results"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-            />
-          </svg>
-          Your Neurodynamic Profile
-        </h2>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
+            </svg>
+            Export Results
+          </button>
+        </div>
 
         <div id="resultsGrid" class="grid gap-6 md:grid-cols-2">
           <!-- Result cards injected here -->
@@ -861,6 +907,22 @@
         document.getElementById("apgiForm").classList.add("hidden");
         document.getElementById("resultsSection").classList.remove("hidden");
         window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Initialize export functionality
+        if (window.dataExport && window.exportUI) {
+          const exportBtn = document.getElementById("exportResultsBtn");
+          if (exportBtn) {
+            exportBtn.addEventListener("click", () => {
+              const assessmentData = {
+                assessmentType: "signature-parameters",
+                timestamp: new Date().toISOString(),
+                scores: scores,
+                archetype: getMatchingArchetype(scores),
+              };
+              window.exportUI.showModal(assessmentData);
+            });
+          }
+        }
       }
 
       window.onload = init;

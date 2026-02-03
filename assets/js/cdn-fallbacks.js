@@ -108,7 +108,14 @@ class CDNFallbackManager {
 
       setTimeout(() => {
         if (!this.fallbacks[key].loaded) {
-          console.warn(`CDN timeout for ${key}, loading fallback`);
+          // Only log in development mode
+          if (
+            window.location.hostname === "localhost" ||
+            window.location.hostname === "127.0.0.1" ||
+            window.location.protocol === "file:"
+          ) {
+            console.info(`CDN timeout for ${key}, loading fallback`);
+          }
           this.loadFallback(key);
         }
       }, this.getTimeout(key));
@@ -261,7 +268,14 @@ class CDNFallbackManager {
       }
     }, 5000);
 
-    console.warn(`Using fallback for ${key} due to CDN failure`);
+    // Only log in development mode
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.protocol === "file:"
+    ) {
+      console.info(`Using fallback for ${key} due to CDN failure`);
+    }
   }
 
   // Public methods

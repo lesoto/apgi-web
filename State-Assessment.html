@@ -8,6 +8,12 @@
       name="description"
       content="Take the APGI Psychological State Assessment to identify your current consciousness state. Measure prediction error, precision, threshold, and somatic bias patterns."
     />
+    <script src="assets/js/performance-optimizer.js"></script>
+    <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/data-export-service.js"></script>
+    <script src="assets/js/export-ui.js"></script>
+    <script src="assets/js/progress-tracker.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -532,11 +538,34 @@
                 --
               </div>
             </div>
-            <div
-              id="state-icon"
-              class="state-icon bg-gradient-to-br from-blue-500 to-purple-500 text-white"
-            >
-              <i class="fas fa-brain"></i>
+            <div class="flex items-center space-x-4">
+              <button
+                id="exportResultsBtn"
+                class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                aria-label="Export assessment results"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+                Export Results
+              </button>
+              <div
+                id="state-icon"
+                class="state-icon bg-gradient-to-br from-blue-500 to-purple-500 text-white"
+              >
+                <i class="fas fa-brain"></i>
+              </div>
             </div>
           </div>
 
@@ -1960,13 +1989,29 @@
         // Update state info
         document.getElementById("state-name").textContent = state.name;
         document.getElementById("state-category").textContent = state.category;
-        document.getElementById("state-desc").textContent = state.sig;
-        // Prefer long-form detail if available, otherwise fall back to concise note
-        document.getElementById("state-note").textContent =
-          stateDetails[state.name] || state.note;
-        document.getElementById("state-interpretation").textContent =
-          `This state represents ${state.name.toLowerCase()} characterized by ${state.sig.toLowerCase()}. ` +
-          `The parameter profile suggests ${getStateInterpretation(state)} ` +
+        document.getElementById("state-desc").textContent = state.description;
+        document.getElementById("state-note").textContent = state.note;
+
+        // Initialize export functionality
+        if (window.dataExport && window.exportUI) {
+          const exportBtn = document.getElementById("exportResultsBtn");
+          if (exportBtn) {
+            exportBtn.addEventListener("click", () => {
+              const assessmentData = {
+                assessmentType: "psychological-state",
+                timestamp: new Date().toISOString(),
+                state: state,
+                confidence: confidence,
+                similar: similar,
+                avgResponses: avgResponses,
+              };
+              window.exportUI.showModal(assessmentData);
+            });
+          }
+        }
+
+        // Update interpretation text
+        document.getElementById("interpretation-text").textContent =
           `Your responses indicate ${getParameterInterpretation(avgResponses)}`;
 
         // Update icon

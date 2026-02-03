@@ -1,0 +1,140 @@
+/**
+ * APGI Framework - CSS Fallbacks for Older Browsers
+ * Provides fallbacks for CSS Grid and Flexbox
+ */
+
+/* Flexbox Fallbacks */
+@supports not (display: flex) {
+  .flex-container {
+    display: block;
+  }
+
+  .flex-container > * {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+/* CSS Grid Fallbacks */
+@supports not (display: grid) {
+  .grid-container {
+    display: block;
+  }
+
+  .grid-container > * {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0.5rem;
+  }
+}
+
+/* CSS Variables Fallback */
+@supports not (--css: variables) {
+  :root {
+    --bg-primary: #ffffff;
+    --text-primary: #0f172a;
+    --accent: #3b82f6;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: #0f172a;
+  }
+
+  a {
+    color: #3b82f6;
+  }
+}
+
+/* Backdrop Filter Fallback */
+@supports not (backdrop-filter: blur(10px)) {
+  .glass-panel,
+  .nav-container {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+
+  [data-theme="dark"] .glass-panel,
+  [data-theme="dark"] .nav-container {
+    background-color: rgba(15, 23, 42, 0.95);
+  }
+}
+
+/* Custom Properties Fallback for Gradients */
+@supports not (background: conic-gradient(#fff, #000)) {
+  .gradient-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #667eea 100%);
+  }
+}
+
+/* Object-fit Fallback */
+@supports not (object-fit: cover) {
+  .object-fit-cover {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .object-fit-cover img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+  }
+}
+
+/* Sticky Position Fallback */
+@supports not (position: sticky) {
+  .sticky-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+}
+
+/* Aspect Ratio Fallback */
+@supports not (aspect-ratio: 16 / 9) {
+  .aspect-ratio-16-9 {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .aspect-ratio-16-9 > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Gap Property Fallback for Flexbox */
+@supports not (gap: 1rem) {
+  .flex-gap-1 > * + * {
+    margin-left: 1rem;
+  }
+
+  .flex-gap-2 > * + * {
+    margin-left: 2rem;
+  }
+
+  .flex-column-gap-1 > * + * {
+    margin-top: 1rem;
+  }
+}
+
+/* Gap Property Fallback for Grid */
+@supports not (gap: 1rem) {
+  .grid-gap-1 > * {
+    margin: 0.5rem;
+  }
+
+  .grid-gap-2 > * {
+    margin: 1rem;
+  }
+}

@@ -22,64 +22,21 @@
     />
     <link rel="stylesheet" href="assets/css/fontawesome-fallback.css" />
     <link rel="stylesheet" href="assets/css/design-system.css" />
+    <link rel="stylesheet" href="assets/css/fallbacks.css" />
     <style>
-      :root {
-        --bg: #ffffff;
-        --text: #1a202c;
-        --primary: #667eea;
-        --primary-light: #8094f4;
-        --secondary: #764ba2;
-        --accent: #f093fb;
-        --card-bg: #f8fafc;
-        --border: #e2e8f0;
-        --border-light: #f1f5f9;
-        --success: #48bb78;
-        --warning: #ed8936;
-        --danger: #e53e3e;
-        --info: #4299e1;
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
-        --gradient: linear-gradient(
-          135deg,
-          var(--primary) 0%,
-          var(--secondary) 100%
-        );
-        --gradient-light: linear-gradient(
-          135deg,
-          var(--primary-light) 0%,
-          var(--accent) 100%
-        );
-        --gradient-radial: radial-gradient(
-          circle at top right,
-          var(--primary-light),
-          var(--secondary)
-        );
-      }
-      [data-theme="dark"] {
-        --bg: #0f0f23;
-        --text: #e2e8f0;
-        --card-bg: #1a1a2e;
-        --border: #2d2d44;
-        --border-light: #252538;
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-        --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
-        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
-      }
+      /* Page-specific styles only - use design-system.css for colors and spacing */
 
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family:
+        font-family: var(
+          --font-body,
           "Inter",
           -apple-system,
           BlinkMacSystemFont,
-          "Segoe UI",
-          system-ui,
-          sans-serif;
+          sans-serif
+        );
       }
 
       @keyframes fadeInUp {
@@ -145,11 +102,15 @@
       }
 
       body {
-        background: linear-gradient(135deg, var(--bg) 0%, var(--card-bg) 100%);
-        color: var(--text);
+        background: linear-gradient(
+          135deg,
+          var(--color-bg-primary) 0%,
+          var(--color-bg-secondary) 100%
+        );
+        color: var(--color-text-primary);
         line-height: 1.6;
         padding: 0;
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
         min-height: 100vh;
         position: relative;
         overflow-x: hidden;
@@ -275,13 +236,13 @@
 
       .quiz-section,
       .results-container {
-        background: var(--card-bg);
-        border-radius: 20px;
-        padding: 35px;
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-xl);
+        padding: var(--space-2xl);
         box-shadow: var(--shadow-md);
-        margin-bottom: 30px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid var(--border-light);
+        margin-bottom: var(--space-xl);
+        transition: var(--transition-normal);
+        border: 1px solid var(--color-border-primary);
         backdrop-filter: blur(10px);
         position: relative;
         overflow: hidden;
@@ -295,7 +256,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: var(--gradient);
+        background: var(--gradient-primary);
         transform: scaleX(0);
         transition: transform 0.4s ease;
       }
@@ -309,7 +270,7 @@
       .results-container:hover {
         box-shadow: var(--shadow-xl);
         transform: translateY(-4px);
-        border-color: var(--primary-light);
+        border-color: var(--color-secondary-light);
       }
 
       /* Focus Indicators */
@@ -317,9 +278,9 @@
       input:focus,
       select:focus,
       textarea:focus {
-        outline: 3px solid var(--accent);
+        outline: 3px solid var(--color-secondary);
         outline-offset: 2px;
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
       }
 
       /* High Contrast Mode Support */
@@ -359,15 +320,15 @@
       }
 
       .section-icon {
-        background: var(--gradient-light);
+        background: var(--gradient-primary);
         width: 64px;
         height: 64px;
-        border-radius: 16px;
+        border-radius: var(--radius-md);
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: var(--shadow-sm);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: var(--transition-normal);
         position: relative;
       }
 
@@ -375,8 +336,8 @@
         content: "";
         position: absolute;
         inset: -2px;
-        background: var(--gradient);
-        border-radius: 18px;
+        background: var(--gradient-secondary);
+        border-radius: var(--radius-lg);
         opacity: 0;
         transition: opacity 0.3s ease;
         z-index: -1;
@@ -434,15 +395,15 @@
       }
 
       .info-box {
-        background: var(--gradient-light);
-        padding: 24px;
-        border-radius: 16px;
+        background: var(--gradient-primary);
+        padding: var(--space-lg);
+        border-radius: var(--radius-md);
         font-size: 0.95rem;
-        margin: 24px 0;
-        border-left: 4px solid var(--primary);
-        color: white;
+        margin: var(--space-lg) 0;
+        border-left: 4px solid var(--color-secondary);
+        color: var(--color-text-inverse);
         box-shadow: var(--shadow-md);
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
         position: relative;
         overflow: hidden;
       }
@@ -476,16 +437,16 @@
       .warning-box {
         background: linear-gradient(
           135deg,
-          rgba(237, 137, 54, 0.15),
-          rgba(237, 137, 54, 0.05)
+          rgba(245, 158, 11, 0.15),
+          rgba(245, 158, 11, 0.05)
         );
-        padding: 24px;
-        border-radius: 16px;
+        padding: var(--space-lg);
+        border-radius: var(--radius-md);
         font-size: 0.95rem;
-        margin: 24px 0;
-        border-left: 4px solid var(--warning);
+        margin: var(--space-lg) 0;
+        border-left: 4px solid var(--color-warning);
         box-shadow: var(--shadow-sm);
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
       }
 
       .warning-box:hover {
@@ -497,15 +458,15 @@
       .scenario-box {
         background: linear-gradient(
           135deg,
-          rgba(66, 153, 225, 0.15),
-          rgba(66, 153, 225, 0.05)
+          rgba(6, 182, 212, 0.15),
+          rgba(6, 182, 212, 0.05)
         );
-        padding: 24px;
-        border-radius: 16px;
-        margin: 24px 0;
-        border-left: 4px solid var(--info);
+        padding: var(--space-lg);
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        border-left: 4px solid var(--color-info);
         box-shadow: var(--shadow-sm);
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
       }
 
       .scenario-box:hover {
@@ -517,20 +478,20 @@
       .scenario-title {
         font-weight: 600;
         font-size: 1.1rem;
-        margin-bottom: 10px;
-        color: var(--info);
+        margin-bottom: var(--space-sm);
+        color: var(--color-info);
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--space-xs);
       }
 
       .scenario-character {
-        margin: 18px 0;
-        padding: 18px;
-        background: var(--bg);
-        border-radius: 12px;
-        border-left: 3px solid var(--primary);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        margin: var(--space-lg) 0;
+        padding: var(--space-lg);
+        background: var(--color-bg-primary);
+        border-radius: var(--radius-md);
+        border-left: 3px solid var(--color-secondary);
+        transition: var(--transition-normal);
         position: relative;
         overflow: hidden;
       }
@@ -542,7 +503,7 @@
         top: 0;
         bottom: 0;
         width: 3px;
-        background: var(--gradient);
+        background: var(--gradient-primary);
         transform: scaleY(0);
         transition: transform 0.3s ease;
       }
@@ -559,17 +520,17 @@
 
       .character-name {
         font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 5px;
+        color: var(--color-secondary);
+        margin-bottom: var(--space-xs);
         font-size: 1.05rem;
       }
 
       .character-params {
         font-size: 0.9rem;
         font-style: italic;
-        color: var(--text);
+        color: var(--color-text-primary);
         opacity: 0.7;
-        margin-bottom: 8px;
+        margin-bottom: var(--space-xs);
       }
 
       .progress {
@@ -579,8 +540,8 @@
 
       .progress-text {
         font-size: 0.95rem;
-        margin-bottom: 8px;
-        color: var(--text);
+        margin-bottom: var(--space-xs);
+        color: var(--color-text-primary);
         display: flex;
         justify-content: space-between;
         font-weight: 500;
@@ -588,8 +549,8 @@
 
       .progress-bar {
         height: 12px;
-        background: var(--border-light);
-        border-radius: 8px;
+        background: var(--color-border-tertiary);
+        border-radius: var(--radius-sm);
         overflow: hidden;
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         position: relative;
@@ -611,11 +572,11 @@
 
       .progress-fill {
         height: 100%;
-        background: var(--gradient);
+        background: var(--gradient-primary);
         background-size: 200% 200%;
         width: 0%;
         transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 8px;
+        border-radius: var(--radius-sm);
         box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
         animation: gradientShift 3s ease infinite;
         position: relative;
@@ -635,57 +596,57 @@
       }
 
       .question {
-        margin-bottom: 30px;
-        padding: 24px;
-        background: var(--bg);
-        border-radius: 16px;
-        border: 1px solid var(--border-light);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: var(--space-xl);
+        padding: var(--space-lg);
+        background: var(--color-bg-primary);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-tertiary);
+        transition: var(--transition-normal);
         animation: fadeInUp 0.5s ease;
       }
 
       .question:hover {
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
-        border-color: var(--primary-light);
+        border-color: var(--color-secondary-light);
       }
 
       .question-text {
         font-size: 1.3rem;
-        margin-bottom: 18px;
+        margin-bottom: var(--space-lg);
         font-weight: 600;
-        color: var(--text);
+        color: var(--color-text-primary);
         line-height: 1.4;
       }
 
       .question-note {
         font-size: 0.9rem;
         opacity: 0.7;
-        margin-bottom: 15px;
+        margin-bottom: var(--space-md);
         font-style: italic;
         display: flex;
         align-items: flex-start;
-        gap: 8px;
+        gap: var(--space-xs);
       }
 
       .question-note i {
         margin-top: 3px;
-        color: var(--info);
+        color: var(--color-info);
       }
 
       .options {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: var(--space-sm);
       }
 
       .option {
-        padding: 18px 22px;
-        border: 2px solid var(--border);
-        border-radius: 12px;
+        padding: var(--space-lg) var(--space-md);
+        border: 2px solid var(--color-border-primary);
+        border-radius: var(--radius-md);
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background: var(--card-bg);
+        transition: var(--transition-normal);
+        background: var(--color-bg-secondary);
         position: relative;
         overflow: hidden;
       }
@@ -697,7 +658,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: var(--gradient-light);
+        background: var(--gradient-primary);
         transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         opacity: 0.1;
       }
@@ -723,7 +684,7 @@
       }
 
       .option:hover {
-        border-color: var(--primary);
+        border-color: var(--color-secondary);
         transform: translateX(8px) scale(1.01);
         box-shadow: var(--shadow-md);
       }
@@ -737,9 +698,9 @@
       }
 
       .option.selected {
-        border-color: var(--primary);
-        background: var(--gradient-light);
-        color: white;
+        border-color: var(--color-secondary);
+        background: var(--gradient-primary);
+        color: var(--color-text-inverse);
         transform: translateX(12px) scale(1.02);
         box-shadow: var(--shadow-lg);
         animation: pulse 0.5s ease;
@@ -752,17 +713,17 @@
 
       .option-letter {
         font-weight: 700;
-        margin-right: 14px;
+        margin-right: var(--space-sm);
         display: inline-block;
         width: 32px;
         height: 32px;
         text-align: center;
         line-height: 32px;
-        color: var(--primary);
+        color: var(--color-secondary);
         background: rgba(102, 126, 234, 0.1);
         border-radius: 50%;
         font-size: 0.9rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: var(--transition-normal);
         position: relative;
         z-index: 1;
       }
@@ -773,8 +734,8 @@
       }
 
       .option.selected .option-letter {
-        background: white;
-        color: var(--primary);
+        background: var(--color-bg-primary);
+        color: var(--color-secondary);
         transform: scale(1.15) rotate(0deg);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       }
@@ -801,24 +762,24 @@
       .quiz-navigation {
         display: flex;
         justify-content: space-between;
-        margin-top: 30px;
-        gap: 15px;
+        margin-top: var(--space-xl);
+        gap: var(--space-sm);
         animation: fadeInUp 0.6s ease 0.3s both;
       }
 
       button {
-        padding: 16px 32px;
+        padding: var(--space-md) var(--space-2xl);
         border: none;
-        border-radius: 12px;
+        border-radius: var(--radius-md);
         font-size: 1rem;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: var(--transition-normal);
         font-weight: 600;
         position: relative;
         overflow: hidden;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--space-xs);
       }
 
       button::before {
@@ -857,15 +818,15 @@
       }
 
       button.secondary {
-        background: var(--border);
-        color: var(--text);
-        border: 2px solid var(--border);
+        background: var(--color-border-primary);
+        color: var(--color-text-primary);
+        border: 2px solid var(--color-border-primary);
         box-shadow: var(--shadow-sm);
       }
 
       button.secondary:hover {
-        background: var(--border-light);
-        border-color: var(--primary);
+        background: var(--color-border-tertiary);
+        border-color: var(--color-secondary);
         transform: translateY(-2px) scale(1.02);
         box-shadow: var(--shadow-md);
       }
@@ -875,9 +836,9 @@
       }
 
       button:not(.secondary) {
-        background: var(--gradient);
+        background: var(--gradient-primary);
         background-size: 200% 200%;
-        color: white;
+        color: var(--color-text-inverse);
         box-shadow: var(--shadow-md);
         animation: gradientShift 5s ease infinite;
       }
@@ -910,25 +871,25 @@
       .tabs {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
-        margin-bottom: 25px;
-        background: var(--bg);
-        padding: 10px;
-        border-radius: 16px;
-        border: 1px solid var(--border-light);
+        gap: var(--space-sm);
+        margin-bottom: var(--space-lg);
+        background: var(--color-bg-primary);
+        padding: var(--space-sm);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-tertiary);
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
       }
 
       .tab {
-        padding: 14px 24px;
+        padding: var(--space-sm) var(--space-lg);
         background: transparent;
         border: none;
-        border-radius: 10px;
+        border-radius: var(--radius-sm);
         cursor: pointer;
         font-size: 0.95rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: var(--transition-normal);
         font-weight: 500;
-        color: var(--text);
+        color: var(--color-text-primary);
         position: relative;
       }
 
@@ -949,14 +910,14 @@
       }
 
       .tab:hover {
-        background: var(--border-light);
+        background: var(--color-border-tertiary);
         transform: translateY(-2px);
       }
 
       .tab.active {
-        background: var(--gradient);
+        background: var(--gradient-primary);
         background-size: 200% 200%;
-        color: white;
+        color: var(--color-text-inverse);
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
         animation: gradientShift 5s ease infinite;
@@ -978,13 +939,13 @@
 
       .chart-container,
       .multi-chart-container {
-        margin-top: 25px;
-        padding: 25px;
-        background: var(--bg);
-        border-radius: 16px;
-        border: 1px solid var(--border-light);
+        margin-top: var(--space-lg);
+        padding: var(--space-lg);
+        background: var(--color-bg-primary);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-tertiary);
         box-shadow: var(--shadow-sm);
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
       }
 
       .chart-container:hover,
@@ -1002,13 +963,13 @@
         display: inline-block;
         width: 48%;
         margin-right: 2%;
-        margin-bottom: 25px;
+        margin-bottom: var(--space-lg);
         vertical-align: top;
-        padding: 20px;
-        background: var(--card-bg);
-        border-radius: 16px;
-        border: 1px solid var(--border-light);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: var(--space-lg);
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-tertiary);
+        transition: var(--transition-normal);
         position: relative;
         overflow: hidden;
       }
@@ -1020,7 +981,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: var(--gradient);
+        background: var(--gradient-primary);
         transform: scaleX(0);
         transition: transform 0.3s ease;
       }
@@ -1032,14 +993,14 @@
       .mini-chart:hover {
         transform: translateY(-6px);
         box-shadow: var(--shadow-lg);
-        border-color: var(--primary-light);
+        border-color: var(--color-secondary-light);
       }
 
       .mini-chart-title {
         font-weight: 600;
-        margin-bottom: 15px;
+        margin-bottom: var(--space-sm);
         text-align: center;
-        color: var(--secondary);
+        color: var(--color-accent);
         font-size: 1rem;
       }
 
@@ -1059,16 +1020,16 @@
 
       .data-table th,
       .data-table td {
-        padding: 18px;
+        padding: var(--space-lg);
         text-align: left;
-        border-bottom: 1px solid var(--border-light);
-        transition: all 0.3s ease;
+        border-bottom: 1px solid var(--color-border-tertiary);
+        transition: var(--transition-normal);
       }
 
       .data-table th {
-        background: var(--gradient);
+        background: var(--gradient-primary);
         background-size: 200% 200%;
-        color: white;
+        color: var(--color-text-inverse);
         font-weight: 600;
         animation: gradientShift 8s ease infinite;
       }
@@ -1089,12 +1050,12 @@
       .profile-name {
         font-size: 2.5rem;
         font-weight: 800;
-        background: var(--gradient);
+        background: var(--gradient-primary);
         background-size: 200% 200%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        margin: 25px 0;
+        margin: var(--space-xl) 0;
         text-align: center;
         animation:
           gradientShift 8s ease infinite,
@@ -1106,19 +1067,19 @@
         text-align: center;
         font-size: 1.2rem;
         opacity: 0.8;
-        margin-bottom: 35px;
+        margin-bottom: var(--space-2xl);
         font-weight: 400;
         animation: fadeIn 1s ease 0.3s both;
       }
 
       .dimensional-position {
-        background: var(--gradient-light);
-        padding: 30px;
-        border-radius: 16px;
-        margin: 24px 0;
-        color: white;
+        background: var(--gradient-primary);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+        color: var(--color-text-inverse);
         box-shadow: var(--shadow-md);
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
         position: relative;
         overflow: hidden;
       }
@@ -1152,8 +1113,8 @@
       .dimension-row {
         display: flex;
         align-items: center;
-        margin: 15px 0;
-        gap: 15px;
+        margin: var(--space-md) 0;
+        gap: var(--space-md);
         animation: slideInRight 0.6s ease;
         position: relative;
         z-index: 1;
@@ -1169,7 +1130,7 @@
         flex: 1;
         height: 34px;
         background: rgba(255, 255, 255, 0.2);
-        border-radius: 17px;
+        border-radius: var(--radius-lg);
         position: relative;
         overflow: hidden;
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -1190,15 +1151,15 @@
 
       .dimension-fill {
         height: 100%;
-        background: var(--gradient);
+        background: var(--gradient-primary);
         background-size: 200% 200%;
-        border-radius: 17px;
+        border-radius: var(--radius-lg);
         transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        padding-right: 10px;
-        color: white;
+        padding-right: var(--space-sm);
+        color: var(--color-text-inverse);
         font-weight: 600;
         font-size: 0.85rem;
         box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
@@ -2194,22 +2155,52 @@
 
         <div class="tabs-container">
           <div class="tabs">
-            <button class="tab active" data-tab="overview">
+            <button
+              class="tab active"
+              data-tab="overview"
+              aria-label="View overview tab"
+              role="tab"
+            >
               <i class="fas fa-eye"></i> Overview
             </button>
-            <button class="tab" data-tab="radar">
+            <button
+              class="tab"
+              data-tab="radar"
+              aria-label="View radar chart tab"
+              role="tab"
+            >
               <i class="fas fa-chart-radar"></i> Radar Chart
             </button>
-            <button class="tab" data-tab="gauge">
+            <button
+              class="tab"
+              data-tab="gauge"
+              aria-label="View gauges tab"
+              role="tab"
+            >
               <i class="fas fa-tachometer-alt"></i> Gauges
             </button>
-            <button class="tab" data-tab="interactions">
+            <button
+              class="tab"
+              data-tab="interactions"
+              aria-label="View parameter interactions tab"
+              role="tab"
+            >
               <i class="fas fa-project-diagram"></i> Parameter Interactions
             </button>
-            <button class="tab" data-tab="clinical">
+            <button
+              class="tab"
+              data-tab="clinical"
+              aria-label="View clinical context tab"
+              role="tab"
+            >
               <i class="fas fa-heartbeat"></i> Clinical Context
             </button>
-            <button class="tab" data-tab="data">
+            <button
+              class="tab"
+              data-tab="data"
+              aria-label="View data table tab"
+              role="tab"
+            >
               <i class="fas fa-table"></i> Data Table
             </button>
           </div>

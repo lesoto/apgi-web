@@ -25,59 +25,25 @@
       src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
     ></script>
     <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
+    <link rel="stylesheet" href="../assets/css/design-system.css" />
+    <link rel="stylesheet" href="../assets/css/fallbacks.css" />
     <style>
-      /* CSS Custom Properties for Theme Colors */
-      :root {
-        --bg-primary: #ffffff;
-        --bg-secondary: #f8fafc;
-        --bg-tertiary: #e2e8f0;
-        --text-primary: #0f172a;
-        --text-secondary: #334155;
-        --text-tertiary: #64748b;
-        --border-primary: #e2e8f0;
-        --border-secondary: #cbd5e1;
-        --accent-cyan: #06b6d4;
-        --accent-blue: #2563eb;
-        --accent-rose: #f43f5e;
-        --accent-purple: #9333ea;
-        --accent-green: #22c55e;
-        --accent-red: #ef4444;
-        --scrollbar-thumb: #cbd5e1;
-      }
+      /* Page-specific styles only - use design-system.css for colors and spacing */
 
-      /* Dark theme overrides */
-      [data-theme="dark"] {
-        --bg-primary: #0f172a;
-        --bg-secondary: #1e293b;
-        --bg-tertiary: #334155;
-        --text-primary: #f1f5f9;
-        --text-secondary: #cbd5e1;
-        --text-tertiary: #94a3b8;
-        --border-primary: #334155;
-        --border-secondary: #475569;
-        --accent-cyan: #22d3ee;
-        --accent-blue: #3b82f6;
-        --accent-rose: #f43f5e;
-        --accent-purple: #a855f7;
-        --accent-green: #4ade80;
-        --accent-red: #f87171;
-        --scrollbar-thumb: #475569;
-      }
-
-      /* Theme Toggle Switch */
+      /* Theme Toggle Switch - standardized */
       .theme-toggle {
         position: relative;
         width: 60px;
         height: 30px;
-        background: var(--bg-tertiary);
-        border: 2px solid var(--border-primary);
+        background: var(--color-bg-tertiary);
+        border: 2px solid var(--color-border-primary);
         border-radius: 15px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
       }
 
       .theme-toggle:hover {
-        border-color: var(--accent-cyan);
+        border-color: var(--color-info);
       }
 
       .theme-toggle-slider {
@@ -86,9 +52,9 @@
         left: 2px;
         width: 22px;
         height: 22px;
-        background: var(--accent-cyan);
+        background: var(--color-info);
         border-radius: 50%;
-        transition: all 0.3s ease;
+        transition: var(--transition-normal);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -100,48 +66,58 @@
 
       .theme-toggle-slider i {
         font-size: 12px;
-        color: var(--bg-primary);
+        color: var(--color-bg-primary);
       }
 
-      /* Apply theme colors to existing classes */
+      /* Apply theme colors to existing Tailwind classes */
       body {
-        background-color: var(--bg-primary) !important;
-        color: var(--text-primary) !important;
+        background-color: var(--color-bg-primary) !important;
+        color: var(--color-text-primary) !important;
       }
 
       .bg-slate-800 {
-        background-color: var(--bg-secondary) !important;
+        background-color: var(--color-bg-secondary) !important;
       }
+
       .bg-slate-900 {
-        background-color: var(--bg-primary) !important;
+        background-color: var(--color-bg-primary) !important;
       }
+
       .bg-slate-900\/50 {
-        background-color: var(--bg-primary) !important;
+        background-color: var(--color-bg-primary) !important;
         opacity: 0.5;
       }
+
       .text-slate-100 {
-        color: var(--text-primary) !important;
+        color: var(--color-text-primary) !important;
       }
+
       .text-slate-200 {
-        color: var(--text-secondary) !important;
+        color: var(--color-text-secondary) !important;
       }
+
       .text-slate-300 {
-        color: var(--text-secondary) !important;
+        color: var(--color-text-secondary) !important;
       }
+
       .text-slate-400 {
-        color: var(--text-tertiary) !important;
+        color: var(--color-text-tertiary) !important;
       }
+
       .text-slate-500 {
-        color: var(--text-tertiary) !important;
+        color: var(--color-text-tertiary) !important;
       }
+
       .border-slate-600 {
-        border-color: var(--border-secondary) !important;
+        border-color: var(--color-border-secondary) !important;
       }
+
       .border-slate-700 {
-        border-color: var(--border-primary) !important;
+        border-color: var(--color-border-primary) !important;
       }
+
       .border-slate-700\/50 {
-        border-color: var(--border-primary) !important;
+        border-color: var(--color-border-primary) !important;
         opacity: 0.5;
       }
       .text-cyan-300 {
@@ -244,7 +220,7 @@
   >
     <!-- Include Navigation Component -->
     <div id="navigation-container"></div>
-    <script src="assets/js/navigation-loader.js"></script>
+    <script src="../assets/js/navigation-loader.js"></script>
 
     <!-- Header -->
     <header class="mb-8 border-b border-slate-700 pb-4 relative">

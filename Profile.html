@@ -224,7 +224,10 @@
               <input
                 type="text"
                 id="editFirstName"
+                name="firstName"
                 required
+                autocomplete="given-name"
+                aria-label="First name"
                 class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
               />
             </div>
@@ -233,7 +236,10 @@
               <input
                 type="text"
                 id="editLastName"
+                name="lastName"
                 required
+                autocomplete="family-name"
+                aria-label="Last name"
                 class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
               />
             </div>
@@ -242,8 +248,11 @@
               <input
                 type="email"
                 id="editEmail"
+                name="email"
                 required
                 disabled
+                autocomplete="email"
+                aria-label="Email address"
                 class="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg opacity-60"
               />
               <p class="text-xs text-gray-400 mt-1">Email cannot be changed</p>
@@ -304,7 +313,10 @@
               <input
                 type="password"
                 id="currentPassword"
+                name="currentPassword"
                 required
+                autocomplete="current-password"
+                aria-label="Current password"
                 class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
               />
             </div>
@@ -313,7 +325,10 @@
               <input
                 type="password"
                 id="newPassword"
+                name="newPassword"
                 required
+                autocomplete="new-password"
+                aria-label="New password"
                 class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
               />
             </div>
@@ -324,7 +339,10 @@
               <input
                 type="password"
                 id="confirmPassword"
+                name="confirmPassword"
                 required
+                autocomplete="new-password"
+                aria-label="Confirm new password"
                 class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-blue-400"
               />
             </div>
@@ -350,8 +368,17 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Check if authService is available
+        if (!window.authService) {
+          console.error("Auth service not loaded");
+          showError(
+            "Authentication service failed to load. Please refresh the page.",
+          );
+          return;
+        }
+
         // Check authentication
-        if (!window.authService || !window.authService.isAuthenticated()) {
+        if (!window.authService.isAuthenticated()) {
           window.location.href = "/Auth.html";
           return;
         }
@@ -429,7 +456,11 @@
         try {
           const user = window.authService.getCurrentUser();
           if (!user) {
-            window.location.href = "/Auth.html";
+            console.error("No user found");
+            showError("User session expired. Please login again.");
+            setTimeout(() => {
+              window.location.href = "/Auth.html";
+            }, 2000);
             return;
           }
 
@@ -447,6 +478,11 @@
           loadAssessmentStats();
         } catch (error) {
           console.error("Error loading user profile:", error);
+          document.getElementById("userName").textContent =
+            "Error loading profile";
+          document.getElementById("userEmail").textContent =
+            "Please refresh the page";
+          document.getElementById("memberSince").textContent = "N/A";
           showError("Failed to load profile");
         }
       }

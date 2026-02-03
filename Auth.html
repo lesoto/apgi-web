@@ -111,7 +111,10 @@
             <input
               type="email"
               id="loginEmail"
+              name="email"
               required
+              autocomplete="email"
+              aria-label="Email address"
               class="form-input w-full px-4 py-3 rounded-lg focus:outline-none"
               placeholder="your@email.com"
             />
@@ -124,7 +127,10 @@
             <input
               type="password"
               id="loginPassword"
+              name="password"
               required
+              autocomplete="current-password"
+              aria-label="Password"
               class="form-input w-full px-4 py-3 rounded-lg focus:outline-none"
               placeholder="••••••••"
             />
@@ -132,7 +138,12 @@
 
           <div class="flex items-center justify-between">
             <label class="flex items-center">
-              <input type="checkbox" class="mr-2" />
+              <input
+                type="checkbox"
+                id="rememberMe"
+                class="mr-2"
+                aria-label="Remember me"
+              />
               <span class="text-white/80 text-sm">Remember me</span>
             </label>
             <a
@@ -161,7 +172,10 @@
               <input
                 type="text"
                 id="registerFirstName"
+                name="firstName"
                 required
+                autocomplete="given-name"
+                aria-label="First name"
                 class="form-input w-full px-4 py-3 rounded-lg focus:outline-none"
                 placeholder="John"
               />
@@ -173,7 +187,10 @@
               <input
                 type="text"
                 id="registerLastName"
+                name="lastName"
                 required
+                autocomplete="family-name"
+                aria-label="Last name"
                 class="form-input w-full px-4 py-3 rounded-lg focus:outline-none"
                 placeholder="Doe"
               />
@@ -187,7 +204,10 @@
             <input
               type="email"
               id="registerEmail"
+              name="email"
               required
+              autocomplete="email"
+              aria-label="Email address"
               class="form-input w-full px-4 py-3 rounded-lg focus:outline-none"
               placeholder="your@email.com"
             />
@@ -200,7 +220,10 @@
             <input
               type="password"
               id="registerPassword"
+              name="password"
               required
+              autocomplete="new-password"
+              aria-label="Password"
               class="form-input w-full px-4 py-3 rounded-lg focus:outline-none"
               placeholder="••••••••"
             />
@@ -216,14 +239,23 @@
             <input
               type="password"
               id="registerConfirmPassword"
+              name="confirmPassword"
               required
+              autocomplete="new-password"
+              aria-label="Confirm password"
               class="form-input w-full px-4 py-3 rounded-lg focus:outline-none"
               placeholder="••••••••"
             />
           </div>
 
           <div class="flex items-center">
-            <input type="checkbox" id="agreeTerms" required class="mr-2" />
+            <input
+              type="checkbox"
+              id="agreeTerms"
+              required
+              class="mr-2"
+              aria-label="Agree to terms and privacy policy"
+            />
             <label for="agreeTerms" class="text-white/80 text-sm">
               I agree to the
               <a href="Terms-of-Service.html" class="text-white hover:underline"
@@ -253,7 +285,10 @@
             <input
               type="email"
               id="forgotEmail"
+              name="email"
               required
+              autocomplete="email"
+              aria-label="Email address"
               class="form-input w-full px-4 py-3 rounded-lg focus:outline-none"
               placeholder="your@email.com"
             />

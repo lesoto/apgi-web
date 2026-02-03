@@ -89,11 +89,6 @@ class EnvironmentConfig {
    * Get environment variable with fallback
    */
   getEnvVar(key) {
-    // Try import.meta.env first (Vite)
-    if (typeof import.meta !== "undefined" && import.meta.env) {
-      return import.meta.env[key];
-    }
-
     // Try window.env (custom injection)
     if (typeof window !== "undefined" && window.env && window.env[key]) {
       return window.env[key];

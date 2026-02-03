@@ -16,8 +16,14 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const JWT_SECRET =
-  process.env.JWT_SECRET || "your-secret-key-change-in-production";
+
+// Security: JWT_SECRET must be set in production environments
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET === "your-secret-key-change-in-production") {
+  console.warn(
+    "WARNING: Using default JWT_SECRET. Set a strong JWT_SECRET in environment variables for production!",
+  );
+}
 
 // Security Middleware
 app.use(
@@ -25,11 +31,36 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        scriptSrc: ["'self'", "https://cdn.jsdelivr.net", "https://unpkg.com"],
-        imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'", "https://api.stripe.com"],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com",
+          "https://cdn.tailwindcss.com",
+          "https://cdnjs.cloudflare.com",
+        ],
+        fontSrc: [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "https://cdnjs.cloudflare.com",
+        ],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
+          "https://cdn.tailwindcss.com",
+          "https://cdn.jsdelivr.net",
+          "https://unpkg.com",
+          "https://cdnjs.cloudflare.com",
+          "https://js.stripe.com",
+          "https://www.googletagmanager.com",
+        ],
+        imgSrc: ["'self'", "data:", "https:", "https://*.stripe.com"],
+        connectSrc: [
+          "'self'",
+          "https://api.stripe.com",
+          "https://www.google-analytics.com",
+        ],
+        frameSrc: ["'self'", "https://js.stripe.com"],
       },
     },
   }),
@@ -38,7 +69,7 @@ app.use(
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000, // limit each IP to 1000 requests per windowMs
   message: {
     error: "Too many requests from this IP, please try again later.",
   },
@@ -49,7 +80,7 @@ app.use(limiter);
 // API-specific rate limiting
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // limit each IP to 20 API requests per windowMs
+  max: 100, // limit each IP to 100 API requests per windowMs
   message: {
     error: "Too many API requests from this IP, please try again later.",
   },
@@ -81,6 +112,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("."));
+
+// Serve favicon
+app.get("/favicon.ico", (req, res) => {
+  res.sendFile("favicon.svg", { root: "." });
+});
 
 // Store consultations in memory (replace with database in production)
 const consultations = [];
@@ -115,7 +151,16 @@ const authenticateToken = (req, res, next) => {
 // Simple API key authentication for admin endpoints
 const authenticateApiKey = (req, res, next) => {
   const apiKey = req.headers["x-api-key"];
-  const validApiKey = process.env.ADMIN_API_KEY || "dev-api-key-12345";
+  const validApiKey = process.env.ADMIN_API_KEY;
+
+  if (
+    !validApiKey ||
+    validApiKey === "your-secure-admin-api-key-change-this-in-production"
+  ) {
+    console.warn(
+      "WARNING: Using default ADMIN_API_KEY. Set a strong ADMIN_API_KEY in environment variables for production!",
+    );
+  }
 
   if (!apiKey || apiKey !== validApiKey) {
     return res.status(401).json({
@@ -154,9 +199,14 @@ app.post("/api/auth/register", apiLimiter, async (req, res) => {
       });
     }
 
+    // Sanitize and validate input
+    const sanitizedFirstName = firstName.trim().replace(/[<>]/g, "");
+    const sanitizedLastName = lastName.trim().replace(/[<>]/g, "");
+    const sanitizedEmail = email.trim().toLowerCase();
+
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(sanitizedEmail)) {
       return res.status(400).json({
         success: false,
         error: "Invalid email address",
@@ -164,7 +214,7 @@ app.post("/api/auth/register", apiLimiter, async (req, res) => {
     }
 
     // Check if user already exists
-    const existingUser = users.find((u) => u.email === email);
+    const existingUser = users.find((u) => u.email === sanitizedEmail);
     if (existingUser) {
       return res.status(409).json({
         success: false,
@@ -178,11 +228,11 @@ app.post("/api/auth/register", apiLimiter, async (req, res) => {
     // Create new user
     const newUser = {
       id: Date.now().toString(),
-      firstName,
-      lastName,
-      email,
+      firstName: sanitizedFirstName,
+      lastName: sanitizedLastName,
+      email: sanitizedEmail,
       password: hashedPassword,
-      role,
+      role: role.trim().replace(/[<>]/g, ""),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -225,7 +275,10 @@ app.post("/api/auth/login", apiLimiter, async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
+    // Sanitize input
+    const sanitizedEmail = email.trim().toLowerCase();
+
+    if (!sanitizedEmail || !password) {
       return res.status(400).json({
         success: false,
         error: "Email and password are required",
@@ -233,7 +286,7 @@ app.post("/api/auth/login", apiLimiter, async (req, res) => {
     }
 
     // Find user
-    const user = users.find((u) => u.email === email);
+    const user = users.find((u) => u.email === sanitizedEmail);
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -470,9 +523,13 @@ app.post("/api/subscribe", apiLimiter, async (req, res) => {
       });
     }
 
+    // Sanitize input
+    const sanitizedEmail = email.trim().toLowerCase();
+    const sanitizedListType = listType.trim().replace(/[<>]/g, "");
+
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(sanitizedEmail)) {
       return res.status(400).json({
         success: false,
         error: "Invalid email address",
@@ -481,7 +538,10 @@ app.post("/api/subscribe", apiLimiter, async (req, res) => {
 
     // Here you would integrate with Mailchimp, ConvertKit, etc.
     // For now, we'll store in memory
-    console.log(`Email subscription: ${email} -> ${listType}`, additionalData);
+    console.log(
+      `Email subscription: ${sanitizedEmail} -> ${sanitizedListType}`,
+      additionalData,
+    );
 
     // Simulate processing time
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -507,7 +567,11 @@ app.post("/api/create-checkout-session", apiLimiter, async (req, res) => {
   try {
     const { tier, customerEmail, priceId } = req.body;
 
-    if (!tier || !customerEmail) {
+    // Sanitize input
+    const sanitizedCustomerEmail = customerEmail.trim().toLowerCase();
+    const sanitizedTier = tier.trim().replace(/[<>]/g, "");
+
+    if (!sanitizedTier || !sanitizedCustomerEmail) {
       return res.status(400).json({
         success: false,
         error: "Tier and customer email are required",
@@ -529,7 +593,7 @@ app.post("/api/create-checkout-session", apiLimiter, async (req, res) => {
     }
 
     const session = await stripe.checkout.sessions.create({
-      customer_email: customerEmail,
+      customer_email: sanitizedCustomerEmail,
       billing_address_collection: "auto",
       line_items: [
         {
@@ -541,8 +605,8 @@ app.post("/api/create-checkout-session", apiLimiter, async (req, res) => {
       success_url: `${req.protocol}://${req.get("host")}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.protocol}://${req.get("host")}/pricing?canceled=true`,
       metadata: {
-        tier: tier,
-        customer_email: customerEmail,
+        tier: sanitizedTier,
+        customer_email: sanitizedCustomerEmail,
       },
     });
 
@@ -623,7 +687,22 @@ app.post("/api/consultations", apiLimiter, async (req, res) => {
   try {
     const { firstName, lastName, email, role, needs, phone } = req.body;
 
-    if (!firstName || !lastName || !email || !role) {
+    // Sanitize input
+    const sanitizedFirstName = firstName.trim().replace(/[<>]/g, "");
+    const sanitizedLastName = lastName.trim().replace(/[<>]/g, "");
+    const sanitizedEmail = email.trim().toLowerCase();
+    const sanitizedRole = role.trim().replace(/[<>]/g, "");
+    const sanitizedNeeds = needs ? needs.trim().replace(/[<>]/g, "") : "";
+    const sanitizedPhone = phone
+      ? phone.trim().replace(/[^0-9+\-\s]/g, "")
+      : "";
+
+    if (
+      !sanitizedFirstName ||
+      !sanitizedLastName ||
+      !sanitizedEmail ||
+      !sanitizedRole
+    ) {
       return res.status(400).json({
         success: false,
         error: "Required fields are missing",
@@ -632,7 +711,7 @@ app.post("/api/consultations", apiLimiter, async (req, res) => {
 
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(sanitizedEmail)) {
       return res.status(400).json({
         success: false,
         error: "Invalid email address",
@@ -641,12 +720,12 @@ app.post("/api/consultations", apiLimiter, async (req, res) => {
 
     const consultation = {
       id: Date.now().toString(),
-      firstName,
-      lastName,
-      email,
-      role,
-      needs: needs || "",
-      phone: phone || "",
+      firstName: sanitizedFirstName,
+      lastName: sanitizedLastName,
+      email: sanitizedEmail,
+      role: sanitizedRole,
+      needs: sanitizedNeeds,
+      phone: sanitizedPhone,
       timestamp: new Date().toISOString(),
       status: "pending",
     };
@@ -692,6 +771,91 @@ app.get("/api/consultations", authenticateApiKey, (req, res) => {
 });
 
 /**
+ * Progress Tracking Endpoints
+ */
+
+// Store progress in memory (TODO: migrate to database)
+const progressData = new Map();
+
+/**
+ * Save assessment progress
+ */
+app.post("/api/progress", async (req, res) => {
+  try {
+    const progress = req.body;
+
+    // Validate required fields
+    if (!progress.id || !progress.type) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields: id and type",
+      });
+    }
+
+    // Store progress
+    progressData.set(progress.id, {
+      ...progress,
+      lastUpdated: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      message: "Progress saved successfully",
+    });
+  } catch (error) {
+    console.error("Progress save error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
+});
+
+/**
+ * Get assessment progress
+ */
+app.get("/api/progress/:id", (req, res) => {
+  const { id } = req.params;
+  const progress = progressData.get(id);
+
+  if (progress) {
+    res.json({
+      success: true,
+      progress,
+    });
+  } else {
+    res.status(404).json({
+      success: false,
+      error: "Progress not found",
+    });
+  }
+});
+
+/**
+ * Get user assessments
+ */
+app.get("/api/assessments", (req, res) => {
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      error: "userId is required",
+    });
+  }
+
+  // Filter assessments by userId
+  const userAssessments = Array.from(progressData.values())
+    .filter((p) => p.userId === userId)
+    .sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+
+  res.json({
+    success: true,
+    assessments: userAssessments,
+  });
+});
+
+/**
  * Health Check Endpoint
  */
 app.get("/api/health", (req, res) => {
@@ -707,6 +871,13 @@ app.get("/api/health", (req, res) => {
  */
 app.get("/", (req, res) => {
   res.sendFile("Landing.html", { root: "." });
+});
+
+/**
+ * 404 Error Handler
+ */
+app.use((req, res, next) => {
+  res.status(404).sendFile("404.html", { root: "." });
 });
 
 /**
