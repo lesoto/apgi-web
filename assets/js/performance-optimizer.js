@@ -285,11 +285,31 @@ class APIPerformanceOptimizer {
   }
 
   trackUserInteractions() {
-    // Track time to interactive
+    // Track time to interactive with robust timing
     const measureTTI = () => {
-      const tti = performance.now() - performance.timing.navigationStart;
-      logger.performance("TTI", tti);
-      this.sendPerformanceMetric("TTI", tti);
+      let navigationStart;
+
+      // Use multiple timing sources for robustness
+      if (performance.timing && performance.timing.navigationStart) {
+        navigationStart = performance.timing.navigationStart;
+      } else if (performance.timeOrigin) {
+        navigationStart = performance.timeOrigin;
+      } else {
+        // Fallback: use a reasonable estimate
+        navigationStart = Date.now() - 1000; // Assume 1 second load time
+      }
+
+      const currentTime = performance.now();
+      const tti = currentTime + navigationStart - Date.now();
+
+      // Only log valid TTI values
+      if (tti > 0 && tti < 60000) {
+        // Reasonable TTI range: 0-60 seconds
+        logger.performance("TTI", tti);
+        this.sendPerformanceMetric("TTI", tti);
+      } else {
+        logger.performance("TTI_INVALID", tti);
+      }
     };
 
     if (document.readyState === "complete") {

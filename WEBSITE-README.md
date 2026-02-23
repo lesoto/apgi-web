@@ -101,26 +101,49 @@ The APGI Framework moves beyond traditional personality testing by measuring fou
 
 ### Quiz.html
 
-**Purpose**: Interactive consciousness signature assessment with real-time feedback
+**Purpose**: Comprehensive APGI Consciousness Signature Assessment with detailed parameter analysis
 
 **User Experience**:
 
-- Modern, accessible quiz interface with frosted-glass design
+- Modern, accessible quiz interface with frosted-glass design and dark/light theme support
+- Comprehensive introduction explaining the four-parameter APGI framework (θₜ, ε, π, β)
+- Real-world scenario examples showing how parameters create different phenomenological experiences
+- 24 carefully crafted questions (20 core parameters + 4 validity/stability checks)
 - Progress bar showing completion status with shimmer animation
-- Questions presented one at a time with smooth transitions
-- Radio button selections with visual feedback and checkmarks
-- Answer validation requiring selection before proceeding
-- Results visualization with radar charts showing parameter scores
-- Personalized insights based on assessment outcomes
-- Option to save or share results
+- Questions presented one at a time with smooth transitions and validation
+- Radio button selections with visual feedback and mandatory answer validation
+- Comprehensive results dashboard with multiple visualization types:
+  - Parameter profile with archetype matching (e.g., "The Balanced Navigator")
+  - Four-dimensional radar chart visualization
+  - Individual parameter gauges
+  - Parameter interaction analysis
+  - Clinical interpretation and recommendations
+  - Raw data table with lab assessment comparisons
+- Tabbed interface for different result views (Overview, Radar Chart, Gauges, Interactions, Data)
+- Print-optimized results with professional formatting
+- Share and export functionality
 
 **Key Features**:
 
-- 12-15 carefully crafted questions measuring the four APGI parameters
-- Real-time calculation of consciousness signature
-- Visual representation of results with interactive charts
-- Mobile-optimized with touch-friendly controls
-- Accessibility features with screen reader support
+- **Scientific Foundation**: Based on Predictive Processing, Global Neuronal Workspace Theory, Interoceptive Inference, and Allostatic Regulation
+- **Comprehensive Assessment**: 8-10 minute assessment measuring all four APGI parameters with behavioral proxies and scenario-based reasoning
+- **Advanced Visualization**: Interactive charts using Chart.js with radar charts, gauges, and parameter interaction diagrams
+- **Clinical Disclaimers**: Clear guidance on educational vs. diagnostic use, with professional care recommendations
+- **Methodology Transparency**: Detailed explanation of self-report vs. laboratory assessment differences
+- **Accessibility**: WCAG 2.1 AA compliance with screen reader support, keyboard navigation, and reduced motion options
+- **Responsive Design**: Mobile-optimized with touch-friendly controls and adaptive layouts
+- **Theme Support**: Dark/light theme toggle with localStorage persistence
+- **Print Optimization**: Professional print styles for assessment results
+
+**Technical Implementation**:
+
+- Pure JavaScript with Chart.js for data visualization
+- Tailwind CSS with custom design system variables
+- LocalStorage for data persistence and theme preferences
+- Form validation with real-time feedback
+- Mathematical scoring algorithms with reverse-scoring for specific questions
+- Component-based architecture with reusable UI elements
+- Performance optimization with lazy loading and efficient rendering
 
 ### APGI-Assessment.html
 
@@ -628,19 +651,19 @@ apgi-web/
 ├── 📄 Core Pages
 │   ├── Home.html                 # Main landing page with quiz
 │   ├── Landing.html              # High-conversion pricing page
-│   ├── Quiz.html                 # Interactive consciousness assessment
+│   ├── Quiz.html                 # Comprehensive consciousness signature assessment (24 questions)
 │   ├── Assessment.html           # Comprehensive assessment tool
 │   ├── APGI-Assessment.html      # Alternative assessment interface
 │   ├── Assessment-OnePage.html   # Streamlined single-page assessment
-│   ├── Signature.html            # Advanced signature parameters assessment with archetypes
+│   ├── Signature.html            # Advanced signature parameters assessment with archetypes (36 questions)
 │   ├── State-Assessment.html     # Advanced state analysis
 │   └── Profile.html              # User profile management
 │
 ├── 🧠 Scientific Module (SCI/)
+│   ├── Academic-Dashboard.html   # Academic research dashboard
 │   ├── Consciousness-Visualization.html  # Interactive state visualization
-│   ├── Dashboard.html            # Research dashboard hub
 │   ├── Neuromoduratory-Cascade.html      # Neuromodulatory pathway analysis
-│   ├── PsyStates-Visualizer.html # Psychological states with theme support
+│   ├── PsyStates-Visualizer.html # Psychological states with dark/light theme support
 │   ├── PsyStates.html           # Advanced psychological analysis
 │   └── State-Network.html       # Consciousness network topology
 │
@@ -662,7 +685,7 @@ apgi-web/
 │   └── APGI-Experiments.html    # Interactive experiments
 │
 ├── 🛠️ Technical & API
-│   ├── API.html                 # Developer documentation
+│   ├── API.html                 # Developer documentation (IMPLEMENTED with REST API)
 │   ├── APGI-Software-System.html # System architecture overview
 │   ├── App-Explorer.html        # Interactive app showcase
 │   └── App-Appendix.html        # Technical reference
@@ -670,36 +693,42 @@ apgi-web/
 ├── 📄 Legal & Administrative
 │   ├── Privacy-Policy.html      # Data protection and privacy
 │   ├── Terms-of-Service.html    # Usage terms and conditions
-│   └── 404.html                 # Custom error page
+│   └── 404.html                 # Custom error page (IMPLEMENTED)
 │
 ├── 🎨 Assets & Components
 │   ├── assets/
 │   │   ├── css/                 # Stylesheets and design system
+│   │   │   ├── design-system.css           # Unified design system
+│   │   │   ├── navigation.css              # Navigation component styles
+│   │   │   ├── buttons.css                 # Button component styles
+│   │   │   ├── tailwind-built.css          # Custom Tailwind build
+│   │   │   └── [Additional CSS files]      # Fallbacks and utilities
 │   │   ├── js/                  # JavaScript functionality
-│   │   │   ├── theme-manager.js           # Dark/light theme support
-│   │   │   ├── accessibility-enhancer.js  # Accessibility features
-│   │   │   ├── payment-service.js         # Stripe integration
+│   │   │   ├── assessment-quiz.js          # Quiz.html core functionality
+│   │   │   ├── quiz-functionality.js       # Quiz.html interactive features
+│   │   │   ├── theme-manager.js            # Dark/light theme support
+│   │   │   ├── accessibility-enhancer.js  # WCAG compliance features
+│   │   │   ├── payment-service.js         # Stripe integration (IMPLEMENTED)
 │   │   │   ├── form-handler.js           # Form validation
-│   │   │   └── site-search.js            # Search functionality
+│   │   │   ├── site-search.js            # Search functionality
+│   │   │   └── [40+ additional JS files]  # Comprehensive functionality suite
 │   │   ├── images/              # Static images and graphics
 │   │   └── security/            # Security configurations
 │   └── components/
 │       └── navigation.html      # Shared navigation component
 │
 ├── 📋 Documentation
-│   ├── README.md                # This development guide
-│   ├── TODO.md                  # Development roadmap
-│   ├── REPORT.md                # Project status reports
+│   ├── WEBSITE-README.md       # This comprehensive development guide
+│   ├── semantic-html-audit.md  # HTML structure audit report
 │   └── docs/                    # Additional documentation
-│       ├── testing-guide.md     # Testing procedures
-│       └── webhook-testing.md   # API testing guide
 │
 └── ⚙️ Configuration
     ├── package.json              # Node.js dependencies and scripts
     ├── server.js                # Express backend server (IMPLEMENTED)
-    ├── .env                     # Environment variables
+    ├── .env.example             # Environment variables template
     ├── .gitignore               # Git ignore patterns
     ├── eslint.config.mjs        # Code linting configuration
+    ├── tailwind.config.js        # Tailwind CSS configuration
     └── favicon.svg              # Site favicon
 ```
 
@@ -883,16 +912,8 @@ The application supports multiple deployment environments:
 - **Professional**: Therapist and practitioner networks
 - **Developer**: API integration and custom solutions
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the LICENSE file for details.
-
 ### Attribution
 
 - **APGI Framework**: Consciousness assessment and research platform
 - **Scientific Foundation**: Based on peer-reviewed consciousness research
 - **Community-driven development and improvement**
-
-## Last Updated
-
-January 2026

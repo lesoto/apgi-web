@@ -1503,6 +1503,160 @@ fetch('https://api.apgi.io/v1/analyze', {
           </div>
         </section>
 
+        <!-- Interactive API Explorer Section -->
+        <section class="section">
+          <div id="api-explorer">
+            <button
+              class="section-header"
+              onclick="toggleSection('api-explorer-content', this)"
+            >
+              <h2>Interactive API Explorer</h2>
+              <svg
+                class="chevron rotated"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+            <div id="api-explorer-content" class="section-content">
+              <div class="card">
+                <h3>Try the APGI API</h3>
+                <p>
+                  Test API endpoints directly from your browser. No API key
+                  required for demo endpoints.
+                </p>
+
+                <div style="margin: 20px 0">
+                  <label
+                    for="endpoint-select"
+                    style="display: block; margin-bottom: 8px; font-weight: 600"
+                    >Select Endpoint:</label
+                  >
+                  <select
+                    id="endpoint-select"
+                    style="
+                      width: 100%;
+                      padding: 10px;
+                      border: 1px solid var(--border-color);
+                      border-radius: 6px;
+                      background: var(--bg-secondary);
+                      color: var(--text-primary);
+                    "
+                  >
+                    <option value="profile">Generate Cognitive Profile</option>
+                    <option value="states">List Psychological States</option>
+                    <option value="compare">Compare Profiles</option>
+                    <option value="predict">State Prediction</option>
+                  </select>
+                </div>
+
+                <div id="parameter-inputs" style="margin: 20px 0">
+                  <!-- Dynamic parameter inputs will be inserted here -->
+                </div>
+
+                <div style="margin: 20px 0">
+                  <button
+                    id="try-api-btn"
+                    style="
+                      background: var(--threshold-blue);
+                      color: white;
+                      border: none;
+                      padding: 12px 24px;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      font-weight: 600;
+                    "
+                  >
+                    Try API
+                  </button>
+                  <button
+                    id="clear-response-btn"
+                    style="
+                      background: var(--precision-red);
+                      color: white;
+                      border: none;
+                      padding: 12px 24px;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      font-weight: 600;
+                      margin-left: 10px;
+                    "
+                  >
+                    Clear Response
+                  </button>
+                </div>
+
+                <div id="api-response" style="margin-top: 20px">
+                  <div style="display: flex; gap: 10px; margin-bottom: 10px">
+                    <button
+                      class="tab-btn"
+                      data-tab="response"
+                      style="
+                        background: var(--bg-secondary);
+                        border: 1px solid var(--border-color);
+                        padding: 8px 16px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                      "
+                    >
+                      Response
+                    </button>
+                    <button
+                      class="tab-btn"
+                      data-tab="headers"
+                      style="
+                        background: var(--bg-secondary);
+                        border: 1px solid var(--border-color);
+                        padding: 8px 16px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                      "
+                    >
+                      Headers
+                    </button>
+                    <button
+                      class="tab-btn"
+                      data-tab="curl"
+                      style="
+                        background: var(--bg-secondary);
+                        border: 1px solid var(--border-color);
+                        padding: 8px 16px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                      "
+                    >
+                      cURL
+                    </button>
+                  </div>
+                  <div
+                    id="response-content"
+                    style="
+                      background: var(--bg-darker);
+                      border: 1px solid var(--border-color);
+                      border-radius: 6px;
+                      padding: 15px;
+                      font-family: &quot;Courier New&quot;, monospace;
+                      font-size: 14px;
+                      max-height: 400px;
+                      overflow-y: auto;
+                    "
+                  >
+                    Click "Try API" to see the response here...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- FAQ Section -->
         <section class="section">
           <div id="faq">
@@ -1664,6 +1818,353 @@ fetch('https://api.apgi.io/v1/analyze', {
             }
           }
         });
+      });
+
+      // API Explorer Functionality
+      const apiExplorer = {
+        endpoints: {
+          profile: {
+            method: "POST",
+            url: "https://api.apgi.io/v1/profile/generate",
+            description: "Generate cognitive profile from assessment data",
+            parameters: [
+              {
+                name: "responses",
+                type: "textarea",
+                placeholder: "JSON array of assessment responses",
+                required: true,
+              },
+              {
+                name: "assessment_type",
+                type: "select",
+                options: ["full_apgi", "quick_scan", "focused"],
+                required: true,
+              },
+              { name: "include_confidence", type: "checkbox", default: true },
+            ],
+          },
+          states: {
+            method: "GET",
+            url: "https://api.apgi.io/v1/states",
+            description: "List all available psychological states",
+            parameters: [
+              {
+                name: "category",
+                type: "select",
+                options: ["all", "cognitive", "emotional", "behavioral"],
+                required: false,
+              },
+              {
+                name: "limit",
+                type: "number",
+                placeholder: "Number of results (max 50)",
+                default: 20,
+              },
+            ],
+          },
+          compare: {
+            method: "POST",
+            url: "https://api.apgi.io/v1/profile/compare",
+            description: "Compare two cognitive profiles",
+            parameters: [
+              {
+                name: "profile1_id",
+                type: "text",
+                placeholder: "First profile ID",
+                required: true,
+              },
+              {
+                name: "profile2_id",
+                type: "text",
+                placeholder: "Second profile ID",
+                required: true,
+              },
+              {
+                name: "metrics",
+                type: "select",
+                options: [
+                  "all",
+                  "similarity",
+                  "compatibility",
+                  "team_dynamics",
+                ],
+                default: "all",
+              },
+            ],
+          },
+          predict: {
+            method: "POST",
+            url: "https://api.apgi.io/v1/states/predict",
+            description: "Predict psychological state transitions",
+            parameters: [
+              {
+                name: "profile_id",
+                type: "text",
+                placeholder: "Profile ID",
+                required: true,
+              },
+              {
+                name: "current_state",
+                type: "select",
+                options: ["focused_work", "stress", "creativity", "rest"],
+                required: true,
+              },
+              {
+                name: "target_context",
+                type: "text",
+                placeholder: 'Target context (e.g., "high_pressure_meeting")',
+                required: false,
+              },
+            ],
+          },
+        },
+
+        init() {
+          this.setupEventListeners();
+          this.updateParameterInputs();
+        },
+
+        setupEventListeners() {
+          const endpointSelect = document.getElementById("endpoint-select");
+          const tryApiBtn = document.getElementById("try-api-btn");
+          const clearBtn = document.getElementById("clear-response-btn");
+
+          endpointSelect.addEventListener("change", () =>
+            this.updateParameterInputs(),
+          );
+          tryApiBtn.addEventListener("click", () => this.tryAPI());
+          clearBtn.addEventListener("click", () => this.clearResponse());
+
+          // Tab switching
+          document.querySelectorAll(".tab-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) =>
+              this.switchTab(e.target.dataset.tab),
+            );
+          });
+        },
+
+        updateParameterInputs() {
+          const endpoint = document.getElementById("endpoint-select").value;
+          const config = this.endpoints[endpoint];
+          const container = document.getElementById("parameter-inputs");
+
+          container.innerHTML = "";
+
+          config.parameters.forEach((param) => {
+            const div = document.createElement("div");
+            div.style.marginBottom = "15px";
+
+            const label = document.createElement("label");
+            label.textContent = param.name + (param.required ? " *" : "");
+            label.style.display = "block";
+            label.style.marginBottom = "5px";
+            label.style.fontWeight = "600";
+
+            let input;
+            if (param.type === "select") {
+              input = document.createElement("select");
+              param.options.forEach((option) => {
+                const opt = document.createElement("option");
+                opt.value = option;
+                opt.textContent = option;
+                input.appendChild(opt);
+              });
+            } else if (param.type === "textarea") {
+              input = document.createElement("textarea");
+              input.rows = 4;
+              input.placeholder = param.placeholder;
+            } else if (param.type === "checkbox") {
+              input = document.createElement("input");
+              input.type = "checkbox";
+              if (param.default) input.checked = true;
+            } else {
+              input = document.createElement("input");
+              input.type = param.type;
+              input.placeholder = param.placeholder;
+              if (param.default) input.value = param.default;
+            }
+
+            input.id = `param-${param.name}`;
+            input.style.width = "100%";
+            input.style.padding = "10px";
+            input.style.border = "1px solid var(--border-color)";
+            input.style.borderRadius = "6px";
+            input.style.background = "var(--bg-secondary)";
+            input.style.color = "var(--text-primary)";
+
+            div.appendChild(label);
+            div.appendChild(input);
+            container.appendChild(div);
+          });
+        },
+
+        async tryAPI() {
+          const endpoint = document.getElementById("endpoint-select").value;
+          const config = this.endpoints[endpoint];
+
+          // Collect parameters
+          const params = {};
+          config.parameters.forEach((param) => {
+            const input = document.getElementById(`param-${param.name}`);
+            if (input) {
+              if (input.type === "checkbox") {
+                params[param.name] = input.checked;
+              } else {
+                params[param.name] = input.value;
+              }
+            }
+          });
+
+          // Show loading state
+          const responseContent = document.getElementById("response-content");
+          responseContent.innerHTML = "Loading...";
+
+          try {
+            // Simulate API call (in production, this would be a real API call)
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+
+            const mockResponse = this.generateMockResponse(endpoint, params);
+            this.displayResponse(mockResponse, config);
+          } catch (error) {
+            this.displayError(error);
+          }
+        },
+
+        generateMockResponse(endpoint, params) {
+          const responses = {
+            profile: {
+              status: "success",
+              data: {
+                profile_id: "prof_" + Math.random().toString(36).substr(2, 9),
+                parameters: {
+                  epsilon: Math.round(Math.random() * 100),
+                  pi: Math.round(Math.random() * 100),
+                  theta_t: Math.round(Math.random() * 100),
+                  beta: Math.round(Math.random() * 100),
+                },
+                confidence: 0.87,
+                generated_at: new Date().toISOString(),
+              },
+            },
+            states: {
+              status: "success",
+              data: [
+                {
+                  id: "focused_work",
+                  name: "Focused Work",
+                  category: "cognitive",
+                  intensity: 0.8,
+                },
+                {
+                  id: "creative_flow",
+                  name: "Creative Flow",
+                  category: "cognitive",
+                  intensity: 0.9,
+                },
+                {
+                  id: "stress_response",
+                  name: "Stress Response",
+                  category: "emotional",
+                  intensity: 0.7,
+                },
+              ],
+            },
+            compare: {
+              status: "success",
+              data: {
+                similarity_score: 0.73,
+                compatibility: "high",
+                team_dynamics: "complementary",
+                analysis:
+                  "Both profiles show high precision allocation but different error sensitivity patterns",
+              },
+            },
+            predict: {
+              status: "success",
+              data: {
+                current_state: params.current_state,
+                predicted_states: [
+                  {
+                    state: "deep_focus",
+                    probability: 0.65,
+                    time_to_transition: "15 min",
+                  },
+                  {
+                    state: "creative_insight",
+                    probability: 0.25,
+                    time_to_transition: "30 min",
+                  },
+                ],
+                confidence: 0.78,
+              },
+            },
+          };
+
+          return (
+            responses[endpoint] || {
+              status: "error",
+              message: "Unknown endpoint",
+            }
+          );
+        },
+
+        displayResponse(response, config) {
+          this.currentResponse = response;
+          this.currentConfig = config;
+
+          const responseContent = document.getElementById("response-content");
+          responseContent.innerHTML = `<strong>Status:</strong> ${response.status}<br><br>`;
+          responseContent.innerHTML += `<strong>Response:</strong><br><pre>${JSON.stringify(response.data || response, null, 2)}</pre>`;
+        },
+
+        displayError(error) {
+          const responseContent = document.getElementById("response-content");
+          responseContent.innerHTML = `<strong style="color: var(--precision-red);">Error:</strong> ${error.message}`;
+        },
+
+        clearResponse() {
+          document.getElementById("response-content").innerHTML =
+            'Click "Try API" to see the response here...';
+        },
+
+        switchTab(tab) {
+          // Update tab button styles
+          document.querySelectorAll(".tab-btn").forEach((btn) => {
+            btn.style.background = "var(--bg-secondary)";
+          });
+          document.querySelector(`[data-tab="${tab}"]`).style.background =
+            "var(--threshold-blue)";
+
+          // Update content
+          const responseContent = document.getElementById("response-content");
+
+          if (tab === "response") {
+            this.displayResponse(this.currentResponse, this.currentConfig);
+          } else if (tab === "headers") {
+            responseContent.innerHTML = `<pre>${JSON.stringify(
+              {
+                "Content-Type": "application/json",
+                "X-API-Version": "v1",
+                "X-Rate-Limit-Remaining": "947",
+                "X-Response-Time": "124ms",
+              },
+              null,
+              2,
+            )}</pre>`;
+          } else if (tab === "curl") {
+            const endpoint = document.getElementById("endpoint-select").value;
+            const config = this.endpoints[endpoint];
+            responseContent.innerHTML = `<pre>curl -X ${config.method} "${config.url}" \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -d '{"key": "value"}'</pre>`;
+          }
+        },
+      };
+
+      // Initialize API Explorer when DOM is ready
+      document.addEventListener("DOMContentLoaded", () => {
+        apiExplorer.init();
       });
     </script>
   </body>

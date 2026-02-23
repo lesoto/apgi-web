@@ -31,6 +31,9 @@ class APGIThemeManager {
     // Create theme toggle if it doesn't exist
     this.createThemeToggle();
 
+    // Setup listeners for existing theme toggle buttons
+    this.setupExistingToggles();
+
     // Listen for system theme changes
     this.setupSystemThemeListener();
   }
@@ -121,6 +124,16 @@ class APGIThemeManager {
 
     // Update initial state
     this.updateThemeToggle(this.getCurrentTheme());
+  }
+
+  setupExistingToggles() {
+    const toggles = document.querySelectorAll(".theme-toggle");
+    toggles.forEach((toggle) => {
+      if (!toggle.hasAttribute("data-apgi-listener")) {
+        toggle.addEventListener("click", () => this.toggleTheme());
+        toggle.setAttribute("data-apgi-listener", "true");
+      }
+    });
   }
 
   updateThemeToggle(themeName) {

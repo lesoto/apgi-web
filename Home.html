@@ -3,8 +3,7 @@
   <head>
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
-    <script src="assets/js/theme-manager.js"></script>
-    <script src="assets/js/form-handler.js"></script>
+    <script src="assets/js/unified-theme-manager.js"></script>
     <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,7 +19,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="favicon.svg" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind-built.css" />
     <link
       rel="stylesheet"
       href="assets/css/tailwind-fallback.css"
@@ -38,8 +37,6 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
-      integrity="sha384-J1/3uCQHbgOYWzJUxz9iRJIGsNcuCRbE6yM4Fvt+pwefH+GHSi5Zz7sOCrA0LL/3"
-      crossorigin="anonymous"
     />
     <link rel="preload" href="https://unpkg.com/lucide@latest" as="script" />
 
@@ -143,10 +140,10 @@
       }
       header,
       section {
-        padding: 4rem 1rem;
+        padding: var(--space-3xl) var(--space-lg);
       }
       footer {
-        padding: 2rem 1rem;
+        padding: var(--space-2xl) var(--space-lg);
       }
 
       .container {
@@ -180,7 +177,7 @@
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin: 0 0 2rem;
+        margin: 0 0 var(--space-xl);
         position: relative;
         max-width: 900px;
         margin-left: auto;
@@ -235,7 +232,7 @@
       }
 
       p {
-        margin: 0 0 1.75rem;
+        margin: 0 0 var(--space-lg);
         color: var(--text-secondary);
         font-size: clamp(1rem, 2vw, 1.1rem);
         line-height: 1.7;
@@ -252,8 +249,8 @@
 
       /* Enhanced list styling */
       ul {
-        padding-left: 1.5rem;
-        margin: 1.5rem 0;
+        padding-left: var(--space-lg);
+        margin: var(--space-lg) 0;
       }
 
       li {
@@ -275,7 +272,7 @@
         justify-content: center;
         background: var(--accent);
         color: white;
-        padding: 1rem 2rem;
+        padding: var(--space-md) var(--space-xl);
         border: none;
         border-radius: var(--radius-lg);
         font-size: clamp(0.95rem, 2vw, 1.1rem);
@@ -424,7 +421,7 @@
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin: 0 0 2rem;
+        margin: 0 0 var(--space-xl);
         position: relative;
         max-width: 900px;
         margin-left: auto;
@@ -464,7 +461,7 @@
         justify-content: center;
         background: var(--accent);
         color: white;
-        padding: 1.25rem 2.5rem;
+        padding: var(--space-lg) var(--space-xl);
         border: none;
         border-radius: var(--radius-lg);
         font-size: clamp(1rem, 2.5vw, 1.1rem);
@@ -589,7 +586,7 @@
         left: 6px;
         background: var(--accent);
         color: white;
-        padding: 8px;
+        padding: var(--space-sm);
         text-decoration: none;
         border-radius: var(--radius-sm);
         z-index: 10000;
@@ -636,9 +633,9 @@
 
       /* Section Styles */
       section {
-        margin: 3rem auto;
+        margin: var(--space-3xl) auto;
         max-width: 1200px;
-        padding: 4rem 2rem;
+        padding: var(--space-3xl) var(--space-xl);
         text-align: center;
         border-radius: var(--radius-lg);
         background: var(--bg-primary);
@@ -703,7 +700,7 @@
       }
 
       .framework-diagram {
-        margin: 3rem auto;
+        margin: var(--space-3xl) auto;
         text-align: center;
         max-width: 100%;
       }
@@ -732,8 +729,8 @@
       }
 
       blockquote {
-        margin: 1.5rem 0;
-        padding: 1.5rem 2rem;
+        margin: var(--space-lg) 0;
+        padding: var(--space-lg) var(--space-xl);
         border-left: 4px solid var(--accent);
         background: var(--bg-secondary);
         border-radius: var(--radius);
@@ -762,7 +759,7 @@
         text-align: right;
         font-style: normal;
         font-weight: 600;
-        padding: 0.75rem 0 0;
+        padding: var(--space-md) 0;
         color: var(--text-muted);
         font-size: 0.9rem;
       }
@@ -778,7 +775,7 @@
 
       input[type="text"],
       input[type="email"] {
-        padding: 1rem 1.25rem;
+        padding: var(--space-md) var(--space-xl);
         border: 2px solid var(--border-color);
         border-radius: var(--radius);
         font-size: 1rem;
@@ -818,7 +815,7 @@
         text-align: center;
         font-size: 0.9rem;
         color: var(--text-muted);
-        padding: 2rem 1rem;
+        padding: var(--space-3xl) var(--space-xl);
         background: var(--bg-secondary);
         border-top: 1px solid var(--border-color);
       }
@@ -831,13 +828,15 @@
 
       footer a:hover {
         text-decoration: underline;
+        transform: translateY(-2px);
       }
+
       /* Theme Toggle */
       .theme-toggle {
         background: transparent;
         border: none;
         border-radius: var(--radius-sm);
-        padding: 0.4rem 0.8rem;
+        padding: var(--space-sm) var(--space-md);
         cursor: pointer;
         font-size: 0.9rem;
         font-weight: 500;
@@ -862,7 +861,7 @@
         backdrop-filter: blur(20px);
         border: 1px solid var(--border-color);
         border-radius: var(--radius-xl);
-        padding: 2.5rem;
+        padding: var(--space-xl) var(--space-md);
         box-shadow: var(--shadow-lg);
         transition: var(--transition);
         text-align: center;
@@ -875,7 +874,7 @@
 
       .question {
         margin-bottom: 2rem;
-        padding: 1.5rem;
+        padding-left: var(--space-lg);
         background: var(--bg-secondary);
         backdrop-filter: blur(10px);
         border-radius: var(--radius-lg);
@@ -925,9 +924,9 @@
 
       .options label {
         display: block;
-        margin: 1rem 0;
+        margin: var(--space-md) 0;
         cursor: pointer;
-        padding: 1.25rem;
+        padding: var(--space-xl);
         border-radius: var(--radius);
         border: 2px solid var(--border-light);
         background: var(--bg-primary);
@@ -1050,11 +1049,11 @@
         }
 
         .container {
-          padding: 0 2rem;
+          padding: 0 var(--space-xl);
         }
 
         .hero {
-          padding: clamp(8rem, 15vw, 12rem) 2rem;
+          padding: clamp(8rem, 15vw, 12rem) var(--space-xl);
         }
       }
 
@@ -1068,8 +1067,8 @@
         }
 
         .hero {
-          padding: clamp(5rem, 12vw, 8rem) 1rem;
-          margin-bottom: 3rem;
+          padding: clamp(5rem, 12vw, 8rem) var(--space-md);
+          margin-bottom: var(--space-3xl);
           min-height: 100vh;
         }
 
@@ -1109,7 +1108,7 @@
         }
 
         .hero {
-          padding: clamp(4rem, 10vw, 6rem) 1rem;
+          padding: clamp(4rem, 10vw, 6rem) var(--space-md);
           margin-bottom: 2rem;
           border-radius: 0 0 var(--radius-lg) var(--radius-lg);
           min-height: 100vh;
@@ -1127,14 +1126,14 @@
         }
 
         .hero .btn {
-          padding: 1rem 2rem;
+          padding: var(--space-md) var(--space-xl);
           font-size: clamp(0.9rem, 2.5vw, 1rem);
         }
 
         .btn {
           width: 100%;
           margin-bottom: 1rem;
-          padding: 1rem 1.5rem;
+          padding: var(--space-md) var(--space-xl);
           font-size: clamp(0.9rem, 2.5vw, 1rem);
         }
 
@@ -1147,13 +1146,13 @@
         }
 
         section {
-          margin: 2rem auto;
-          padding: 3rem 1.5rem;
+          margin: var(--space-xl) auto;
+          padding: var(--space-3xl) var(--space-lg);
         }
 
         #quiz-container {
-          padding: 1.5rem;
-          margin: 0 1rem;
+          padding: var(--space-lg);
+          margin: 0 var(--space-md);
           border-radius: var(--radius-lg);
         }
 
@@ -1165,7 +1164,7 @@
         .theme-toggle {
           top: 15px;
           right: 15px;
-          padding: 8px 16px;
+          padding: var(--space-sm) var(--space-lg);
           min-width: 100px;
           font-size: 12px;
         }
@@ -1176,7 +1175,7 @@
           margin-right: 0;
           flex-shrink: 0;
           font-size: 0.85rem;
-          padding: 0.4rem 0.6rem;
+          padding: var(--space-sm) var(--space-md);
         }
       }
 
@@ -1191,7 +1190,7 @@
 
         header,
         section {
-          padding: 2rem 1rem;
+          padding: var(--space-xl) var(--space-md);
         }
 
         h1 {
@@ -1203,7 +1202,7 @@
         }
 
         .btn {
-          padding: 0.75rem 1.5rem;
+          padding: var(--space-md) var(--space-xl);
           font-size: 0.9rem;
         }
 
@@ -1221,7 +1220,7 @@
 
         /* Quiz mobile improvements */
         #quiz-container {
-          margin: 0 0.5rem;
+          margin: 0 0 var(--space-lg);
           padding: 1rem;
         }
 
@@ -1256,13 +1255,13 @@
 
         #quiz-container {
           padding: 1rem;
-          margin: 0 0.5rem;
+          margin: 0 0 var(--space-lg);
         }
 
         .theme-toggle {
           top: 10px;
           right: 10px;
-          padding: 6px 12px;
+          padding: var(--space-sm) 12px;
           min-width: 80px;
           font-size: 11px;
         }
@@ -1432,7 +1431,7 @@
 
       .score-item {
         background: var(--bg-secondary);
-        padding: 1.5rem;
+        padding-left: var(--space-lg);
         border-radius: var(--radius-lg);
         border: 1px solid var(--border-color);
         text-align: center;
@@ -1462,7 +1461,7 @@
 
       .score-level {
         display: inline-block;
-        padding: 0.25rem 0.75rem;
+        padding: var(--space-lg) var(--space-xl);
         border-radius: var(--radius-sm);
         font-size: 0.8rem;
         font-weight: 600;
@@ -1523,7 +1522,7 @@
       .strengths-section,
       .challenges-section {
         background: var(--bg-secondary);
-        padding: 1.5rem;
+        padding-left: var(--space-lg);
         border-radius: var(--radius-lg);
       }
 
@@ -1693,7 +1692,7 @@
 
     <!-- HERO -->
     <header class="hero" role="banner">
-      <div class="container text-center">
+      <section class="container text-center">
         <div class="flex items-center justify-center gap-2 mb-4">
           <p class="caption-sm tracking-widest uppercase text-slate-600">
             Consciousness Assessment Framework
@@ -1725,7 +1724,7 @@
             >Take Free Assessment</a
           >
         </div>
-      </div>
+      </section>
     </header>
 
     <!-- MAIN CONTENT -->
@@ -2094,7 +2093,7 @@
       </section>
 
       <!-- SOCIAL PROOF -->
-      <section class="testimonials">
+      <article class="testimonials">
         <div class="container">
           <h2 class="section-title">What Readers Are Saying</h2>
 
@@ -2116,7 +2115,7 @@
             <footer>— Jordan M., product manager</footer>
           </blockquote>
         </div>
-      </section>
+      </article>
 
       <!-- AUTHOR -->
       <section id="author">

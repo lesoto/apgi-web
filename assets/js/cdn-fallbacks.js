@@ -108,15 +108,18 @@ class CDNFallbackManager {
 
       setTimeout(() => {
         if (!this.fallbacks[key].loaded) {
-          // Only log in development mode
-          if (
-            window.location.hostname === "localhost" ||
-            window.location.hostname === "127.0.0.1" ||
-            window.location.protocol === "file:"
-          ) {
-            console.info(`CDN timeout for ${key}, loading fallback`);
+          // Check if resource is actually needed before showing warning
+          if (this.isResourceNeeded(key)) {
+            // Only log in development mode
+            if (
+              window.location.hostname === "localhost" ||
+              window.location.hostname === "127.0.0.1" ||
+              window.location.protocol === "file:"
+            ) {
+              console.info(`CDN timeout for ${key}, loading fallback`);
+            }
+            this.loadFallback(key);
           }
-          this.loadFallback(key);
         }
       }, this.getTimeout(key));
     });
@@ -134,6 +137,42 @@ class CDNFallbackManager {
       recharts: 4000,
     };
     return timeouts[key] || 5000;
+  }
+
+  /**
+   * Check if a CDN resource is actually needed on the current page
+   * Reduces false positive fallback warnings
+   * @param {string} key - Resource key to check
+   * @returns {boolean} Whether the resource is needed
+   */
+  isResourceNeeded(key) {
+    switch (key) {
+      case "fontawesome":
+        // Check if any FontAwesome icons are used
+        return !!document.querySelector(".fa, .fas, .far, .fab, .fal");
+      case "lucide":
+        // Check if Lucide icons are used
+        return !!document.querySelector('[class*="lucide"], [data-lucide]');
+      case "chartjs":
+        // Check if Chart.js is used
+        return (
+          !!document.querySelector("canvas") ||
+          !!document.querySelector("[data-chart]")
+        );
+      case "plotly":
+        // Check if Plotly is used
+        return (
+          !!document.querySelector(".plotly") ||
+          !!document.querySelector("[data-plotly]")
+        );
+      case "tailwindcss":
+        // Check if Tailwind classes are used
+        return !!document.querySelector(
+          '[class*="bg-"], [class*="text-"], [class*="p-"], [class*="m-"]',
+        );
+      default:
+        return true; // Default to needed for unknown resources
+    }
   }
 
   handleCDNFailure(element) {

@@ -10,7 +10,7 @@
     <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind-built.css" />
     <link rel="stylesheet" href="assets/css/tailwind-fallback.css" />
 
     <!-- Fonts -->
@@ -436,13 +436,14 @@
       // Initialize auth service
       document.addEventListener("DOMContentLoaded", async () => {
         // Check if user is already logged in
-        if (AuthService.isAuthenticated()) {
+        if (window.authService && window.authService.isAuthenticated()) {
           window.location.href = "Profile.html";
           return;
         }
 
         // Handle URL actions (email verification, password reset)
-        const urlAction = await AuthService.handleUrlActions();
+        // TODO: Implement URL action handling when needed
+        const urlAction = null;
         if (urlAction) {
           handleUrlAction(urlAction);
         }
@@ -536,7 +537,7 @@
             const email = document.getElementById("loginEmail").value;
             const password = document.getElementById("loginPassword").value;
 
-            const result = await AuthService.login(email, password);
+            const result = await window.authService.login(email, password);
             if (result.success) {
               if (result.requiresVerification) {
                 showMessage(
@@ -592,7 +593,7 @@
               return;
             }
 
-            const result = await AuthService.register({
+            const result = await window.authService.register({
               firstName,
               lastName,
               email,
@@ -619,7 +620,7 @@
             e.preventDefault();
             const email = document.getElementById("forgotEmail").value;
 
-            const result = await AuthService.forgotPassword(email);
+            const result = await window.authService.forgotPassword(email);
             if (result.success) {
               showMessage(result.message, "success");
               setTimeout(() => {

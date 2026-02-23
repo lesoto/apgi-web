@@ -80,9 +80,19 @@ class ThemeManager {
         if (theme === "dark") {
           moonIcon.classList.remove("hidden");
           sunIcon.classList.add("hidden");
+          // Handle opacity-based icons (like in Terms of Service)
+          if (sunIcon.style.opacity !== undefined) {
+            sunIcon.style.opacity = "0";
+            moonIcon.style.opacity = "1";
+          }
         } else {
           moonIcon.classList.add("hidden");
           sunIcon.classList.remove("hidden");
+          // Handle opacity-based icons (like in Terms of Service)
+          if (sunIcon.style.opacity !== undefined) {
+            sunIcon.style.opacity = "1";
+            moonIcon.style.opacity = "0";
+          }
         }
       }
 

@@ -313,11 +313,55 @@ function initializeAssessment() {
     showQuestion();
   }
 
+  function showValidationError(message) {
+    // Remove any existing error messages
+    const existingError = document.querySelector(".validation-error");
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Create error message
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "validation-error";
+    errorDiv.textContent = message;
+    errorDiv.style.cssText = `
+      background-color: #fee;
+      color: #c53030;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border-left: 4px solid #e53e3e;
+      margin-bottom: 16px;
+      font-size: 14px;
+      animation: slideInRight 0.3s ease-out;
+    `;
+
+    // Insert error message before the question container
+    const questionContainer = document.querySelector(".question-container");
+    if (questionContainer) {
+      questionContainer.parentNode.insertBefore(errorDiv, questionContainer);
+    }
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+      if (errorDiv.parentNode) {
+        errorDiv.remove();
+      }
+    }, 3000);
+
+    // Focus on the first option
+    const firstOption = document.querySelector(
+      `input[name="quiz-question-${currentSection}-${currentQuestion}"]`,
+    );
+    if (firstOption) {
+      firstOption.focus();
+    }
+  }
+
   function showNextQuestion() {
     const currentQuestionId =
       quizData.sections[currentSection].questions[currentQuestion].id;
     if (answers[currentQuestionId] === null) {
-      alert("Please select an answer before proceeding.");
+      showValidationError("Please select an answer before proceeding.");
       return;
     }
 

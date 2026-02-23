@@ -12,6 +12,10 @@ class APGIQuiz {
     this.init();
   }
 
+  /**
+   * Initialize the quiz application
+   * Sets up navigation, theme, loads saved progress, renders initial state, and binds event listeners
+   */
   init() {
     this.loadNavigation();
     this.setupThemeToggle();
@@ -33,14 +37,17 @@ class APGIQuiz {
 
   // Theme button updates are now handled by theme-manager.js
 
-  // Load saved progress from localStorage
+  /**
+   * Load saved quiz progress from localStorage
+   * Restores progress if less than 24 hours old, otherwise clears stale data
+   */
   loadSavedProgress() {
     try {
       const savedProgress = localStorage.getItem("apgi_quiz_progress");
       if (savedProgress) {
         const progress = JSON.parse(savedProgress);
 
-        // Check if the saved progress is still valid (not too old)
+        // Check if saved progress is still valid (not too old)
         const savedTime = new Date(progress.timestamp);
         const now = new Date();
         const hoursDiff = (now - savedTime) / (1000 * 60 * 60);
@@ -64,7 +71,10 @@ class APGIQuiz {
     }
   }
 
-  // Save current progress to localStorage
+  /**
+   * Save current quiz progress to localStorage
+   * Stores answers, current position, and timestamp for session recovery
+   */
   saveProgress() {
     try {
       const progress = {
@@ -205,6 +215,11 @@ class APGIQuiz {
     const nextBtn = document.getElementById("next-btn");
     const prevBtn = document.getElementById("prev-btn");
 
+    // Always start with next button disabled for proper validation
+    if (nextBtn) {
+      nextBtn.disabled = true;
+    }
+
     // Check if there's already a selected answer for this question
     const section = this.quizData.sections[this.currentSection];
     const question = section.questions[this.currentQuestion];
@@ -236,7 +251,11 @@ class APGIQuiz {
     }
   }
 
-  // Get progress percentage
+  /**
+   * Calculate quiz progress as percentage
+   * Returns completion percentage based on total questions vs answered questions
+   * @returns {number} Progress percentage (0-100)
+   */
   getProgress() {
     const totalQuestions = this.quizData.sections.reduce(
       (sum, section) => sum + section.questions.length,
@@ -246,19 +265,23 @@ class APGIQuiz {
     return (answeredQuestions / totalQuestions) * 100;
   }
 
-  // Next question
+  /**
+   * Navigate to the next question
+   * Validates answer selection, saves progress, and advances to next question or shows results
+   */
   nextQuestion() {
     const section = this.quizData.sections[this.currentSection];
     const question = section.questions[this.currentQuestion];
     const selector = `input[name="quiz-question-${this.currentSection}-${this.currentQuestion}"]:checked`;
     const selectedOption = document.querySelector(selector);
 
+    // Validate that an answer is selected
     if (!selectedOption) {
       this.showValidationError("Please select an answer before continuing.");
       return;
     }
 
-    // Save answer
+    // Save answer and progress
     this.answers[question.id] = parseInt(selectedOption.value);
     this.saveProgress(); // Save progress after answering
 
@@ -269,6 +292,7 @@ class APGIQuiz {
       this.currentQuestion = 0;
     }
 
+    // Check if quiz is complete or render next question
     if (this.currentSection >= this.quizData.sections.length) {
       this.showResults();
     } else {
@@ -276,7 +300,11 @@ class APGIQuiz {
     }
   }
 
-  // Show validation error
+  /**
+   * Display validation error message to user
+   * Shows accessible error message with auto-dismiss and focus management
+   * @param {string} message - Error message to display
+   */
   showValidationError(message) {
     // Remove any existing error messages
     const existingError = document.querySelector(".validation-error");
@@ -284,9 +312,11 @@ class APGIQuiz {
       existingError.remove();
     }
 
-    // Create error message
+    // Create error message with accessibility improvements
     const errorDiv = document.createElement("div");
     errorDiv.className = "validation-error";
+    errorDiv.setAttribute("role", "alert");
+    errorDiv.setAttribute("aria-live", "polite");
     errorDiv.textContent = message;
     errorDiv.style.cssText = `
       background-color: #fee;
@@ -297,6 +327,7 @@ class APGIQuiz {
       margin-bottom: 16px;
       font-size: 14px;
       animation: slideInRight 0.3s ease-out;
+      box-shadow: 0 2px 4px rgba(229, 62, 62, 0.1);
     `;
 
     // Insert error message before the question container

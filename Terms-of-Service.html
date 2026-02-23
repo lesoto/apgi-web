@@ -3,244 +3,381 @@
   <head>
     <script src="assets/js/performance-optimizer.js"></script>
     <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Terms of Service - APGI Framework</title>
+    <meta
+      name="description"
+      content="Legal terms governing your use of the APGI Framework consciousness assessment and educational platform"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
+
+    <!-- Design System -->
+    <link rel="stylesheet" href="assets/css/design-system.css" />
+    <link rel="stylesheet" href="assets/css/tailwind-built.css" />
+    <link
+      rel="stylesheet"
+      href="assets/css/tailwind-fallback.css"
+      media="all and (prefers-reduced-data: no), (prefers-color-scheme: no), (prefers-contrast: no)"
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/tailwind-fallback.css"
+      media="(prefers-reduced-data: reduce) or (prefers-color-scheme: dark) or (prefers-contrast: high)"
+    />
+
+    <!-- Performance optimization: Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+      integrity="sha384-J1/3uCQHbgOYWzJUxz9iRJIGsNcuCRbE6yM4Fvt+pwefH+GHSi5Z1eh8kuyVylOCEebvmRK+hACkrA6LToCK5+FsvX+J6bnBBHslT+noJQ"
+      crossorigin="anonymous"
+    />
+    <link rel="preload" href="https://unpkg.com/lucide@latest" as="script" />
+
+    <!-- Lucide Icons -->
+    <script
+      src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"
+      integrity="sha384-+BtA6NbrkZ1eh8kuyVylOCEebvmRK+hACkrA6LToCK5+FsvX+J6bnBBHslT+noJQ"
+      crossorigin="anonymous"
+    ></script>
+
     <style>
-      :root {
-        --bg: #fafbfc;
-        --bg-secondary: #ffffff;
-        --text: #1a1d23;
-        --text-secondary: #4a5568;
-        --text-muted: #718096;
-        --accent: #3b82f6;
-        --accent-light: #dbeafe;
-        --accent-hover: #2563eb;
-        --border: #e2e8f0;
-        --border-light: #f1f5f9;
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        --radius: 8px;
-        --max-width: 800px;
+      /* Modern Terms of Service Page Styles */
+
+      /* Theme Toggle Styles */
+      .theme-toggle {
+        position: fixed;
+        top: var(--space-lg);
+        right: var(--space-lg);
+        z-index: var(--z-fixed);
+        background: var(--color-bg-primary);
+        border: 1px solid var(--color-border-primary);
+        border-radius: var(--radius-full);
+        padding: var(--space-sm);
+        box-shadow: var(--shadow-md);
+        transition: var(--transition-normal);
       }
 
-      * {
-        box-sizing: border-box;
+      .theme-toggle:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-lg);
       }
 
-      body {
-        margin: 0;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial, sans-serif;
+      .theme-toggle-slider {
+        width: 60px;
+        height: 32px;
+        background: var(--color-bg-tertiary);
+        border-radius: var(--radius-full);
+        position: relative;
+        cursor: pointer;
+        transition: var(--transition-normal);
+      }
+
+      .theme-toggle-slider::before {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background: var(--color-secondary);
+        border-radius: var(--radius-full);
+        top: 4px;
+        left: 4px;
+        transition: var(--transition-normal);
+      }
+
+      [data-theme="dark"] .theme-toggle-slider {
+        background: var(--color-bg-quaternary);
+      }
+
+      [data-theme="dark"] .theme-toggle-slider::before {
+        transform: translateX(28px);
+        background: var(--color-accent);
+      }
+
+      /* Hero Section */
+      .hero-section {
+        background: var(--gradient-hero);
+        color: var(--color-text-inverse);
+        padding: var(--space-3xl) 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         background: linear-gradient(
           135deg,
-          var(--bg) 0%,
-          var(--bg-secondary) 100%
+          rgba(102, 126, 234, 0.1) 0%,
+          rgba(118, 75, 162, 0.1) 100%
         );
-        color: var(--text);
-        line-height: 1.7;
-        font-size: 16px;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        padding: 20px;
+        pointer-events: none;
       }
 
-      .container {
-        max-width: var(--max-width);
-        margin: 0 auto;
+      /* Content Container */
+      .content-wrapper {
+        background: var(--color-bg-primary);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-xl);
+        margin: -var(--space-2xl) auto 0;
+        position: relative;
+        z-index: 10;
+        max-width: 900px;
+        border: 1px solid var(--color-border-primary);
       }
 
-      header {
-        text-align: center;
-        margin-bottom: 3rem;
-      }
-
-      h1 {
-        font-size: 2.5rem;
+      /* Typography */
+      .page-title {
+        font-family: var(--font-display);
+        font-size: var(--text-4xl);
         font-weight: 700;
-        color: var(--text);
-        margin-bottom: 1rem;
-        line-height: 1.2;
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-md);
+        line-height: var(--leading-tight);
       }
 
-      .subtitle {
-        font-size: 1.1rem;
-        color: var(--text-secondary);
-        margin-bottom: 2rem;
+      .section-title {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: 600;
+        color: var(--color-text-primary);
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-lg);
+        padding-bottom: var(--space-sm);
+        border-bottom: 2px solid var(--color-secondary);
+        position: relative;
       }
 
-      .last-updated {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        background: var(--bg-secondary);
-        padding: 0.5rem 1rem;
-        border-radius: var(--radius);
-        display: inline-block;
+      .section-title:first-child {
+        margin-top: 0;
       }
 
-      main {
-        background: var(--bg-secondary);
-        border-radius: var(--radius);
-        padding: 2rem;
+      .subsection-title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 600;
+        color: var(--color-text-primary);
+        margin-top: var(--space-xl);
+        margin-bottom: var(--space-md);
+      }
+
+      /* Content Elements */
+      .content-text {
+        color: var(--color-text-secondary);
+        line-height: var(--leading-relaxed);
+        margin-bottom: var(--space-md);
+      }
+
+      .content-list {
+        color: var(--color-text-secondary);
+        line-height: var(--leading-relaxed);
+        margin-bottom: var(--space-md);
+        padding-left: var(--space-xl);
+      }
+
+      .content-list li {
+        margin-bottom: var(--space-sm);
+        position: relative;
+      }
+
+      .content-list li::marker {
+        color: var(--color-secondary);
+        font-weight: 600;
+      }
+
+      /* Alert Boxes */
+      .alert-box {
+        border-radius: var(--radius-lg);
+        padding: var(--space-lg);
+        margin: var(--space-xl) 0;
+        border: 1px solid;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .alert-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+      }
+
+      .alert-warning {
+        background: rgba(245, 158, 11, 0.05);
+        border-color: var(--color-warning);
+        color: var(--color-warning-dark);
+      }
+
+      .alert-warning::before {
+        background: var(--gradient-warning);
+      }
+
+      .alert-info {
+        background: rgba(59, 130, 246, 0.05);
+        border-color: var(--color-secondary);
+        color: var(--color-secondary-dark);
+      }
+
+      .alert-info::before {
+        background: var(--gradient-primary);
+      }
+
+      .alert-title {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: var(--space-sm);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+      }
+
+      /* Navigation */
+      .back-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        padding: var(--space-md) var(--space-lg);
+        background: var(--gradient-primary);
+        color: var(--color-text-inverse);
+        text-decoration: none;
+        border-radius: var(--radius-lg);
+        font-weight: 500;
+        transition: var(--transition-normal);
+        box-shadow: var(--shadow-md);
+      }
+
+      .back-nav:hover {
+        transform: translateY(-2px);
         box-shadow: var(--shadow-lg);
-        margin-bottom: 2rem;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--text);
-        margin-top: 2.5rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid var(--accent);
-      }
-
-      h2:first-child {
-        margin-top: 0;
-      }
-
-      h3 {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: var(--text);
-        margin-top: 2rem;
-        margin-bottom: 0.75rem;
-      }
-
-      p {
-        margin-bottom: 1rem;
-        color: var(--text-secondary);
-      }
-
-      ul,
-      ol {
-        margin-bottom: 1rem;
-        padding-left: 1.5rem;
-        color: var(--text-secondary);
-      }
-
-      li {
-        margin-bottom: 0.5rem;
-      }
-
-      a {
-        color: var(--accent);
         text-decoration: none;
-        transition: color 0.2s ease;
+        color: var(--color-text-inverse);
       }
 
-      a:hover {
-        color: var(--accent-hover);
-        text-decoration: underline;
-      }
-
-      strong {
-        color: var(--text);
-        font-weight: 600;
-      }
-
-      .warning-box {
-        background: #fef3c7;
-        border: 1px solid #f59e0b;
-        border-radius: var(--radius);
-        padding: 1.5rem;
-        margin: 2rem 0;
-      }
-
-      .warning-box h3 {
-        margin-top: 0;
-        color: #d97706;
-      }
-
-      .contact-info {
-        background: var(--accent-light);
-        border: 1px solid var(--accent);
-        border-radius: var(--radius);
-        padding: 1.5rem;
-        margin: 2rem 0;
-      }
-
-      .contact-info h3 {
-        margin-top: 0;
-        color: var(--accent);
-      }
-
-      footer {
+      /* Footer */
+      .page-footer {
+        background: var(--color-bg-secondary);
+        border-top: 1px solid var(--color-border-primary);
+        padding: var(--space-2xl) 0;
         text-align: center;
-        padding: 2rem 0;
-        color: var(--text-muted);
-        font-size: 0.9rem;
+        margin-top: var(--space-3xl);
       }
 
-      .back-link {
-        display: inline-block;
-        margin-top: 1rem;
-        padding: 0.75rem 1.5rem;
-        background: var(--accent);
-        color: white;
-        text-decoration: none;
-        border-radius: var(--radius);
-        transition: background-color 0.2s ease;
-      }
-
-      .back-link:hover {
-        background: var(--accent-hover);
-        color: white;
-        text-decoration: none;
-      }
-
+      /* Responsive Design */
       @media (max-width: 768px) {
-        body {
-          padding: 80px 15px 30px;
+        .hero-section {
+          padding: var(--space-2xl) var(--space-md);
         }
 
-        h1 {
-          font-size: 2rem;
+        .content-wrapper {
+          margin: -var(--space-xl) var(--space-md) 0;
+          border-radius: var(--radius-lg);
         }
 
-        main {
-          padding: 1.5rem;
+        .page-title {
+          font-size: var(--text-3xl);
         }
 
-        h2 {
-          font-size: 1.3rem;
+        .section-title {
+          font-size: var(--text-xl);
         }
 
-        h3 {
-          font-size: 1.1rem;
+        .theme-toggle {
+          top: var(--space-md);
+          right: var(--space-md);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .content-wrapper {
+          margin: -var(--space-lg) var(--space-sm) 0;
+        }
+
+        .page-title {
+          font-size: var(--text-2xl);
+        }
+
+        .section-title {
+          font-size: var(--text-lg);
+        }
+
+        .alert-box {
+          padding: var(--space-md);
         }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <header>
-        <h1>Terms of Service</h1>
-        <p class="subtitle">
-          Legal terms governing your use of the APGI Framework
-        </p>
-      </header>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" aria-label="Toggle theme">
+      <div class="theme-toggle-slider">
+        <i
+          data-lucide="sun"
+          class="absolute top-1 left-1 w-4 h-4 text-white"
+          style="opacity: 1; transition: opacity 0.3s"
+        ></i>
+        <i
+          data-lucide="moon"
+          class="absolute top-1 right-1 w-4 h-4 text-white"
+          style="opacity: 0; transition: opacity 0.3s"
+        ></i>
+      </div>
+    </button>
 
-      <main id="main">
-        <h2>1. Acceptance of Terms</h2>
-        <p>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container mx-auto px-6 text-center relative z-10">
+        <h1 class="page-title text-white mb-6">Terms of Service</h1>
+        <p class="text-xl text-white/90 max-w-3xl mx-auto">
+          Legal terms governing your use of the APGI Framework consciousness
+          assessment and educational platform
+        </p>
+        <div class="mt-8">
+          <span
+            class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm"
+          >
+            <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>
+            Last updated: February 2026
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="content-wrapper mx-auto px-8 py-12">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="section-title">1. Acceptance of Terms</h2>
+        <p class="content-text">
           By accessing and using the APGI (Adaptive Predictive Coding
           Integration) Framework website and services, you agree to be bound by
           these Terms of Service ("Terms"). If you do not agree to these Terms,
           please do not use our services.
         </p>
-        <p>
+        <p class="content-text">
           These Terms govern your use of our consciousness assessments,
           educational content, visualizations, and all other features available
           on our website.
         </p>
 
-        <h2>2. Description of Service</h2>
-        <p>The APGI Framework provides:</p>
-        <ul>
+        <h2 class="section-title">2. Description of Service</h2>
+        <p class="content-text">The APGI Framework provides:</p>
+        <ul class="content-list">
           <li>
             <strong>Educational Content:</strong> Information about
             consciousness research and predictive coding theory
@@ -263,9 +400,9 @@
           </li>
         </ul>
 
-        <h2>3. User Responsibilities</h2>
-        <p>As a user of our services, you agree to:</p>
-        <ul>
+        <h2 class="section-title">3. User Responsibilities</h2>
+        <p class="content-text">As a user of our services, you agree to:</p>
+        <ul class="content-list">
           <li>Provide accurate and complete information when required</li>
           <li>
             Use the services for legitimate educational and research purposes
@@ -282,9 +419,12 @@
           </li>
         </ul>
 
-        <div class="warning-box">
-          <h3>Important Medical Disclaimer</h3>
-          <p>
+        <div class="alert-box alert-warning">
+          <h3 class="alert-title">
+            <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+            Important Medical Disclaimer
+          </h3>
+          <p class="content-text mb-0">
             The APGI Framework and its assessments are
             <strong>not</strong> medical devices and should not be used as a
             substitute for professional medical advice, diagnosis, or treatment.
@@ -293,160 +433,180 @@
           </p>
         </div>
 
-        <h2>4. Intellectual Property</h2>
-        <p>
+        <h2 class="section-title">4. Intellectual Property</h2>
+        <p class="content-text">
           All content on the APGI Framework website, including but not limited
           to text, graphics, logos, images, data compilations, software, and
           assessments, is the property of APGI Framework or its content
           suppliers and is protected by intellectual property laws.
         </p>
-        <p>You may not:</p>
-        <ul>
+        <p class="content-text">You may not:</p>
+        <ul class="content-list">
           <li>
             Reproduce, distribute, or create derivative works without explicit
             permission
           </li>
           <li>Use our content for commercial purposes without authorization</li>
-          <li>Remove copyright or trademark notices from our content</li>
-          <li>
-            Reverse engineer or attempt to extract source code from our
-            applications
-          </li>
+          <li>Remove or modify copyright notices or proprietary markings</li>
+          <li>Frame or mirror any portion of our website without permission</li>
         </ul>
 
-        <h2>5. User-Generated Content</h2>
-        <p>
-          If you submit content to our platform (such as assessment responses,
-          comments, or feedback), you grant us a non-exclusive, royalty-free
-          license to use, analyze, and improve our services. You retain
-          ownership of your original content.
+        <h2 class="section-title">5. Privacy and Data Protection</h2>
+        <p class="content-text">
+          Your privacy is important to us. Our use of your personal information
+          is governed by our Privacy Policy, which is incorporated into these
+          Terms by reference. By using our services, you consent to the
+          collection and use of your information as described in our Privacy
+          Policy.
         </p>
-        <p>
-          We may use anonymized data from assessments for research purposes to
-          advance understanding of consciousness and cognitive processes.
-        </p>
-
-        <h2>6. Privacy and Data Protection</h2>
-        <p>
-          Your privacy is important to us. Our collection and use of personal
-          information is governed by our
-          <a href="Privacy-Policy.html">Privacy Policy</a>. By using our
-          services, you consent to the collection and use of information as
-          described in our Privacy Policy.
+        <p class="content-text">
+          We implement appropriate security measures to protect your personal
+          information, but no method of transmission over the internet is 100%
+          secure.
         </p>
 
-        <h2>7. Service Availability</h2>
-        <p>
+        <h2 class="section-title">6. Service Availability</h2>
+        <p class="content-text">
           We strive to maintain high availability of our services, but we cannot
-          guarantee uninterrupted access. We reserve the right to:
+          guarantee uninterrupted access. We reserve the right to modify,
+          suspend, or discontinue any part of our services at any time without
+          notice.
         </p>
-        <ul>
-          <li>Temporarily suspend services for maintenance or upgrades</li>
-          <li>Modify or discontinue features at our discretion</li>
-          <li>Limit access to prevent abuse or ensure fair usage</li>
-        </ul>
-
-        <h2>8. Disclaimers of Warranty</h2>
-        <p>
-          The APGI Framework services are provided "as is" without warranties of
-          any kind, either express or implied. We disclaim all warranties,
-          including but not limited to:
-        </p>
-        <ul>
-          <li>Accuracy or reliability of assessment results</li>
-          <li>Fitness for a particular purpose</li>
-          <li>Non-infringement of intellectual property rights</li>
-          <li>Compatibility with specific devices or browsers</li>
-        </ul>
-
-        <h2>9. Limitation of Liability</h2>
-        <p>
-          To the fullest extent permitted by law, APGI Framework shall not be
-          liable for any indirect, incidental, special, consequential, or
-          punitive damages arising from your use of our services, including but
-          not limited to:
-        </p>
-        <ul>
-          <li>Loss of data or information</li>
-          <li>Personal injury or emotional distress</li>
-          <li>Business interruption or loss of opportunity</li>
-          <li>Decisions made based on assessment results</li>
-        </ul>
-        <p>
-          Our total liability for any claims arising from these Terms shall not
-          exceed the amount you paid for our services, if any.
+        <p class="content-text">
+          We are not liable for any loss or damage resulting from service
+          interruptions, including but not limited to loss of data, assessment
+          results, or research progress.
         </p>
 
-        <h2>10. Indemnification</h2>
-        <p>
-          You agree to indemnify and hold APGI Framework harmless from any
-          claims, damages, or expenses arising from your use of our services,
-          violation of these Terms, or infringement of third-party rights.
+        <h2 class="section-title">7. Limitation of Liability</h2>
+        <p class="content-text">
+          To the maximum extent permitted by law, APGI Framework shall not be
+          liable for any indirect, incidental, special, or consequential damages
+          arising out of or in connection with your use of our services.
+        </p>
+        <p class="content-text">
+          Our total liability for any claims arising from your use of the
+          services shall not exceed the amount you paid, if any, for accessing
+          the services during the twelve (12) months preceding the claim.
         </p>
 
-        <h2>11. Termination</h2>
-        <p>
-          We may terminate or suspend your access to our services at any time,
-          with or without cause, without prior notice. Upon termination, all
-          rights and licenses granted to you under these Terms will immediately
-          cease.
+        <h2 class="section-title">8. Indemnification</h2>
+        <p class="content-text">
+          You agree to indemnify and hold harmless APGI Framework, its officers,
+          directors, employees, and agents from any claims, liabilities,
+          damages, losses, and expenses, including reasonable attorney's fees,
+          arising out of or in connection with your use of our services or
+          violation of these Terms.
         </p>
 
-        <h2>12. Governing Law</h2>
-        <p>
+        <h2 class="section-title">9. Termination</h2>
+        <p class="content-text">
+          We may terminate or suspend your access to our services immediately,
+          without prior notice or liability, for any reason, including if you
+          breach the Terms.
+        </p>
+        <p class="content-text">
+          Upon termination, your right to use the services will cease
+          immediately. All provisions of the Terms which by their nature should
+          survive termination shall survive.
+        </p>
+
+        <h2 class="section-title">10. Governing Law</h2>
+        <p class="content-text">
           These Terms shall be governed by and construed in accordance with the
-          laws of the jurisdiction in which APGI Framework is based, without
-          regard to conflict of law principles.
+          laws of the jurisdiction in which APGI Framework operates, without
+          regard to its conflict of law provisions.
         </p>
-
-        <h2>13. Dispute Resolution</h2>
-        <p>
+        <p class="content-text">
           Any disputes arising from these Terms or your use of our services
-          shall be resolved through binding arbitration in accordance with the
-          rules of the relevant arbitration association, rather than in court,
-          except that you may assert claims in small claims court if your claims
-          qualify.
+          shall be resolved through arbitration in accordance with the rules of
+          the relevant arbitration association.
         </p>
 
-        <h2>14. Changes to Terms</h2>
-        <p>
+        <h2 class="section-title">11. Changes to Terms</h2>
+        <p class="content-text">
           We reserve the right to modify these Terms at any time. Changes will
           be effective immediately upon posting on our website. Your continued
-          use of our services after such modifications constitutes acceptance of
-          the updated Terms.
+          use of our services after any changes constitutes acceptance of the
+          new Terms.
+        </p>
+        <p class="content-text">
+          We will notify users of significant changes via email or prominent
+          notices on our website.
         </p>
 
-        <h2>15. Severability</h2>
-        <p>
-          If any provision of these Terms is found to be unenforceable, the
-          remaining provisions will remain in full force and effect.
-        </p>
-
-        <h2>16. Entire Agreement</h2>
-        <p>
-          These Terms, together with our Privacy Policy, constitute the entire
-          agreement between you and APGI Framework regarding your use of our
-          services.
-        </p>
-
-        <div class="contact-info">
-          <h3>Contact Information</h3>
-          <p>
-            If you have questions about these Terms of Service, please contact
-            us:
+        <div class="alert-box alert-info">
+          <h3 class="alert-title">
+            <i data-lucide="info" class="w-5 h-5"></i>
+            Contact Information
+          </h3>
+          <p class="content-text mb-4">
+            If you have any questions about these Terms of Service, please
+            contact us:
           </p>
-          <p><strong>Email:</strong> legal@apgiframework.com</p>
-          <p>
-            <strong>Website:</strong>
-            <a href="https://apgiframework.com">apgiframework.com</a>
-          </p>
+          <ul class="content-list mb-0">
+            <li><strong>Email:</strong> legal@apgi-framework.com</li>
+            <li>
+              <strong>Website:</strong>
+              <a href="#" class="text-secondary hover:underline"
+                >www.apgi-framework.com</a
+              >
+            </li>
+            <li>
+              <strong>Response Time:</strong> We typically respond within 3-5
+              business days
+            </li>
+          </ul>
         </div>
-      </main>
 
-      <footer>
-        <p>&copy; 2026 APGI Framework. All rights reserved.</p>
-        <a href="Home.html" class="back-link">Back to Home</a>
-      </footer>
-    </div>
+        <div class="mt-12 text-center">
+          <a href="index.html" class="back-nav">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            Back to Home
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      <div class="container mx-auto px-6">
+        <p class="text-muted mb-4">
+          © 2026 APGI Framework. All rights reserved.
+        </p>
+        <div class="flex justify-center space-x-6 text-sm text-muted">
+          <a
+            href="Privacy-Policy.html"
+            class="hover:text-secondary transition-colors"
+            >Privacy Policy</a
+          >
+          <a href="#" class="hover:text-secondary transition-colors"
+            >Cookie Policy</a
+          >
+          <a href="#" class="hover:text-secondary transition-colors"
+            >Accessibility</a
+          >
+          <a href="#" class="hover:text-secondary transition-colors">Sitemap</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Theme Management Script -->
+    <script>
+      // Initialize theme compatibility with theme-manager.js
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Lucide icons
+        if (typeof lucide !== "undefined") {
+          lucide.createIcons();
+        }
+
+        // Ensure theme toggle works with centralized theme manager
+        const themeToggle = document.querySelector(".theme-toggle");
+        if (themeToggle && window.themeManager) {
+          // The centralized theme manager will handle the toggle
+          window.themeManager.updateThemeUI(window.themeManager.getTheme());
+        }
+      });
+    </script>
   </body>
 </html>

@@ -3,24 +3,29 @@
 
 class FormHandler {
   constructor() {
-    this.apiEndpoint = "https://api.apgiframework.com/v1/forms"; // Placeholder API endpoint
+    this.apiEndpoint = "/api/subscribe"; // Use local API endpoint for development
     this.init();
   }
 
   init() {
-    // Handle newsletter signup (Home.html)
+    // Initialize form event listeners
+    this.setupFormListeners();
+  }
+
+  setupFormListeners() {
+    // Handle newsletter signup form on Home.html
     const emailForm = document.getElementById("email-form");
     if (emailForm) {
       emailForm.addEventListener("submit", this.handleEmailSubmit.bind(this));
     }
 
-    // Handle book chapter request (Book-Outline.html)
+    // Handle book chapter request forms
     const subscriptionForms = document.querySelectorAll(".subscription-form");
     subscriptionForms.forEach((form) => {
       form.addEventListener("submit", this.handleSubscriptionSubmit.bind(this));
     });
 
-    // Handle any form with data-form-handler attribute
+    // Handle dynamic forms with data attributes
     const dynamicForms = document.querySelectorAll("[data-form-handler]");
     dynamicForms.forEach((form) => {
       form.addEventListener("submit", this.handleDynamicSubmit.bind(this));

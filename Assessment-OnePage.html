@@ -2110,6 +2110,7 @@
           // Display results
           displayResults();
       }, 800); // End of setTimeout
+      } // End of calculateResults function
 
       function displayResults() {
         // Show results section
@@ -2214,6 +2215,8 @@
           },
         });
 
+        // Simulate processing delay for better UX
+        setTimeout(() => {
           // Reset button state
           calculateBtn.innerHTML = originalContent;
           calculateBtn.disabled = false;
