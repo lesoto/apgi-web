@@ -14,6 +14,29 @@ const bcrypt = require("bcryptjs");
 
 dotenv.config();
 
+// Validate required environment variables
+const requiredEnvVars = ["JWT_SECRET", "ADMIN_API_KEY", "STRIPE_SECRET_KEY"];
+const missingVars = requiredEnvVars.filter(
+  (varName) =>
+    !process.env[varName] ||
+    process.env[varName].includes("your-") ||
+    process.env[varName].includes("change-this-in-production") ||
+    process.env[varName].includes("placeholder"),
+);
+
+if (missingVars.length > 0) {
+  console.error(
+    "ERROR: Missing or placeholder environment variables:",
+    missingVars.join(", "),
+  );
+  console.error(
+    "Please set proper values in your .env file before starting the server.",
+  );
+  if (process.env.NODE_ENV === "production") {
+    process.exit(1);
+  }
+}
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -536,8 +559,35 @@ app.post("/api/subscribe", apiLimiter, async (req, res) => {
       });
     }
 
-    // Here you would integrate with Mailchimp, ConvertKit, etc.
-    // For now, we'll store in memory
+    // EMAIL PROVIDER INTEGRATION REQUIRED
+    // ====================================
+    // The code below only stores emails in memory.
+    // To integrate with real email providers, uncomment and configure one of the following:
+
+    /*
+    // Mailchimp Integration Example:
+    const mailchimp = require('@mailchimp/mailchimp_marketing');
+    mailchimp.setConfig({
+      apiKey: process.env.VITE_MAILCHIMP_API_KEY,
+      server: process.env.VITE_MAILCHIMP_SERVER_PREFIX
+    });
+    
+    const listId = process.env[`VITE_MAILCHIMP_${sanitizedListType.toUpperCase()}_LIST_ID`];
+    await mailchimp.lists.addListMember(listId, {
+      email_address: sanitizedEmail,
+      status: 'subscribed'
+    });
+    */
+
+    /*
+    // ConvertKit Integration Example:
+    const convertkit = require('convertkit-api');
+    const ck = new convertkit(process.env.VITE_CONVERTKIT_API_KEY);
+    const formId = process.env[`VITE_CONVERTKIT_${sanitizedListType.toUpperCase()}_FORM_ID`];
+    await ck.subscribers.subscribe({ form_id: formId, email: sanitizedEmail });
+    */
+
+    // TEMPORARY: Store in memory only (no emails sent)
     console.log(
       `Email subscription: ${sanitizedEmail} -> ${sanitizedListType}`,
       additionalData,
@@ -853,6 +903,44 @@ app.get("/api/assessments", (req, res) => {
     success: true,
     assessments: userAssessments,
   });
+});
+
+/**
+ * Store quiz results
+ */
+app.post("/api/quiz-results", (req, res) => {
+  try {
+    const quizResult = req.body;
+
+    // Validate required fields
+    if (!quizResult.userId || !quizResult.quizId || !quizResult.answers) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields: userId, quizId, answers",
+      });
+    }
+
+    // Store quiz result with timestamp
+    const resultId = `quiz_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    progressData.set(resultId, {
+      ...quizResult,
+      id: resultId,
+      type: "quiz-result",
+      timestamp: new Date().toISOString(),
+    });
+
+    res.json({
+      success: true,
+      message: "Quiz results saved successfully",
+      resultId,
+    });
+  } catch (error) {
+    console.error("Quiz results save error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
 });
 
 /**

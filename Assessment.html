@@ -2238,7 +2238,7 @@
                   >3D Network</a
                 >
                 <a
-                  href="SCI/Neuromoduratory-Cascade.html"
+                  href="SCI/Neuromodulatory-Cascade.html"
                   class="dropdown-link"
                   tabindex="0"
                   >Neuromodulatory Cascade</a
@@ -2929,8 +2929,76 @@
       </div>
     </div>
 
-    <!-- External Scripts -->
-    <script src="assets/js/assessment-quiz.js"></script>
+    <!-- Lazy Loading Script -->
+    <script>
+      // Lazy load assessment quiz when quiz section becomes visible
+      const quizSection = document.getElementById("quiz-section");
+      const introductionSection = document.getElementById(
+        "introduction-section",
+      );
+      let quizLoaded = false;
+
+      function loadQuizScript() {
+        if (quizLoaded) return;
+
+        const script = document.createElement("script");
+        script.src = "assets/js/assessment-quiz.js";
+        script.onload = () => {
+          quizLoaded = true;
+          console.log("Assessment quiz loaded successfully");
+        };
+        script.onerror = () => {
+          console.error("Failed to load assessment quiz script");
+        };
+        document.head.appendChild(script);
+      }
+
+      // Set up Intersection Observer to detect when quiz section becomes visible
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && !quizLoaded) {
+                loadQuizScript();
+                observer.disconnect();
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+          },
+        );
+
+        // Observe the quiz section
+        if (quizSection) {
+          observer.observe(quizSection);
+        }
+      } else {
+        // Fallback for browsers that don't support IntersectionObserver
+        // Load when user clicks to start quiz
+        document.addEventListener(
+          "click",
+          (e) => {
+            if (e.target.closest("#start-quiz-btn") && !quizLoaded) {
+              loadQuizScript();
+            }
+          },
+          true,
+        );
+      }
+
+      // Also load if user navigates to quiz section via UI
+      const startQuizBtn = document.getElementById("start-quiz-btn");
+      if (startQuizBtn) {
+        startQuizBtn.addEventListener("click", () => {
+          if (!quizLoaded) {
+            loadQuizScript();
+          }
+        });
+      }
+    </script>
+
+    <!-- Assessment Functionality Script (loaded after quiz) -->
     <script src="assets/js/assessment-functionality.js"></script>
 
     <!-- Export Functionality -->

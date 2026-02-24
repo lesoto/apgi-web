@@ -429,6 +429,9 @@
             <div class="space-y-4">
               <form id="snapshotForm" class="space-y-4" data-form-handler>
                 <div class="flex flex-col sm:flex-row gap-3">
+                  <label for="emailInput" class="sr-only"
+                    >Email address for free snapshot</label
+                  >
                   <input
                     type="email"
                     id="emailInput"
@@ -1069,6 +1072,9 @@
             class="max-w-md mx-auto space-y-4"
             data-form-handler
           >
+            <label for="ctaEmailInput" class="sr-only"
+              >Email address for free snapshot</label
+            >
             <input
               type="email"
               id="ctaEmailInput"
@@ -1111,33 +1117,71 @@
           <div>
             <h3 class="font-bold mb-4 text-blue-400">Product</h3>
             <ul class="space-y-2 text-sm">
-              <li><a href="#" class="footer-link">Features</a></li>
-              <li><a href="#" class="footer-link">Pricing</a></li>
-              <li><a href="#" class="footer-link">Research</a></li>
+              <li><a href="#features" class="footer-link">Features</a></li>
+              <li><a href="#pricing" class="footer-link">Pricing</a></li>
+              <li>
+                <a href="APGI-Experiments.html" class="footer-link">Research</a>
+              </li>
             </ul>
           </div>
           <div>
             <h3 class="font-bold mb-4 text-blue-400">Company</h3>
             <ul class="space-y-2 text-sm">
-              <li><a href="#" class="footer-link">About</a></li>
-              <li><a href="#" class="footer-link">Blog</a></li>
-              <li><a href="#" class="footer-link">Contact</a></li>
+              <li><a href="#about" class="footer-link">About</a></li>
+              <li>
+                <a href="#" class="footer-link" onclick="alert('Coming soon!')"
+                  >Blog</a
+                >
+              </li>
+              <li><a href="#contact" class="footer-link">Contact</a></li>
             </ul>
           </div>
           <div>
             <h3 class="font-bold mb-4 text-blue-400">Legal</h3>
             <ul class="space-y-2 text-sm">
-              <li><a href="#" class="footer-link">Privacy</a></li>
-              <li><a href="#" class="footer-link">Terms</a></li>
-              <li><a href="#" class="footer-link">Compliance</a></li>
+              <li>
+                <a href="Privacy-Policy.html" class="footer-link">Privacy</a>
+              </li>
+              <li>
+                <a href="Terms-of-Service.html" class="footer-link">Terms</a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="footer-link"
+                  onclick="alert('Compliance documentation coming soon!')"
+                  >Compliance</a
+                >
+              </li>
             </ul>
           </div>
           <div>
             <h3 class="font-bold mb-4 text-blue-400">Follow</h3>
             <ul class="space-y-2 text-sm">
-              <li><a href="#" class="footer-link">Twitter</a></li>
-              <li><a href="#" class="footer-link">LinkedIn</a></li>
-              <li><a href="#" class="footer-link">GitHub</a></li>
+              <li>
+                <a
+                  href="#"
+                  class="footer-link"
+                  onclick="alert('Twitter profile coming soon!')"
+                  >Twitter</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="footer-link"
+                  onclick="alert('LinkedIn profile coming soon!')"
+                  >LinkedIn</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="footer-link"
+                  onclick="alert('GitHub repository coming soon!')"
+                  >GitHub</a
+                >
+              </li>
             </ul>
           </div>
         </div>
@@ -1196,8 +1240,12 @@
                 </li>
               </ul>
               <form id="freeTierForm" class="space-y-4" data-form-handler>
+                <label for="freeTierEmail" class="sr-only"
+                  >Email address for free tier access</label
+                >
                 <input
                   type="email"
+                  id="freeTierEmail"
                   placeholder="Enter your email"
                   class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400"
                   required
@@ -1328,8 +1376,12 @@
               />
             </div>
 
+            <label for="consultationEmail" class="sr-only"
+              >Work email for consultation</label
+            >
             <input
               type="email"
+              id="consultationEmail"
               placeholder="Work Email"
               class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400"
               required

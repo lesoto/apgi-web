@@ -12,7 +12,25 @@ class AnalyticsManager {
       trackDownloads: true,
       respectDoNotTrack: true,
     };
+
+    // Validate configuration
+    this.validateConfig();
     this.init();
+  }
+
+  validateConfig() {
+    if (!this.config.domain || this.config.domain === "apgi-framework.com") {
+      console.warn(
+        "Analytics: Using placeholder domain. Please update with actual production domain.",
+      );
+    }
+
+    if (!this.config.apiEndpoint) {
+      console.error("Analytics: API endpoint not configured");
+      return false;
+    }
+
+    return true;
   }
 
   isDevelopment() {

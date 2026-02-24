@@ -342,8 +342,15 @@
         }
       }
 
+      // Sanitize HTML to prevent XSS
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
       function renderConsultations(consultations) {
-        const tbody = document.getElementById("consultationsTableBody");
+        const tbody = document.getElementById("consultationsTable");
         const noResults = document.getElementById("noResults");
 
         if (consultations.length === 0) {
@@ -357,29 +364,23 @@
           .map(
             (consultation) => `
                 <tr class="hover:bg-white/5 transition-colors">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        ${new Date(consultation.timestamp).toLocaleDateString()}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium">${consultation.firstName} ${consultation.lastName}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        ${consultation.email}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <span class="px-2 py-1 text-xs rounded-full bg-blue-500/20 text-blue-300">
-                            ${consultation.role}
+                    <td class="px-4 py-3 text-sm">${escapeHtml(consultation.timestamp)}</td>
+                    <td class="px-4 py-3 text-sm">${escapeHtml(consultation.firstName + " " + consultation.lastName)}</td>
+                    <td class="px-4 py-3 text-sm">${escapeHtml(consultation.email)}</td>
+                    <td class="px-4 py-3 text-sm">${escapeHtml(consultation.role)}</td>
+                    <td class="px-4 py-3 text-sm">${escapeHtml(consultation.phone || "N/A")}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <span class="px-2 py-1 text-xs rounded-full ${
+                          consultation.status === "completed"
+                            ? "bg-green-500/20 text-green-400"
+                            : consultation.status === "cancelled"
+                              ? "bg-red-500/20 text-red-400"
+                              : "bg-yellow-500/20 text-yellow-400"
+                        }">
+                            ${escapeHtml(consultation.status)}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        ${consultation.phone || "N/A"}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 text-xs rounded-full status-${consultation.status}">
-                            ${consultation.status}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <td class="px-4 py-3 text-sm">
                         <button onclick="viewConsultation('${consultation.id}')" 
                                 class="text-blue-400 hover:text-blue-300 mr-3">
                             View
@@ -491,24 +492,24 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-300">Name</label>
-                            <p class="mt-1">${consultation.firstName} ${consultation.lastName}</p>
+                            <p class="mt-1">${escapeHtml(consultation.firstName + " " + consultation.lastName)}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-300">Email</label>
-                            <p class="mt-1">${consultation.email}</p>
+                            <p class="mt-1">${escapeHtml(consultation.email)}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-300">Phone</label>
-                            <p class="mt-1">${consultation.phone || "N/A"}</p>
+                            <p class="mt-1">${escapeHtml(consultation.phone || "N/A")}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-300">Role</label>
-                            <p class="mt-1">${consultation.role}</p>
+                            <p class="mt-1">${escapeHtml(consultation.role)}</p>
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-300">Needs</label>
-                        <p class="mt-1">${consultation.needs || "No specific needs mentioned"}</p>
+                        <p class="mt-1">${escapeHtml(consultation.needs || "No specific needs mentioned")}</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-300">Status</label>

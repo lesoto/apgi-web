@@ -569,8 +569,8 @@
               <img
                 src="../assets/images/ads/APGI-AD-SELF-EXPLORERS-1.png"
                 alt="Facebook advertisement for Individual Self Explorers showing a person on a journey of self-discovery with APGI Framework tools and consciousness mapping"
+                style="width: 100%; height: 100%; object-fit: cover"
               />
-              style="width: 100%; height: 100%; object-fit: cover;">
             </div>
           </div>
         </div>
@@ -722,6 +722,12 @@
 
         // Update button states
         buttons.forEach((btn) => btn.classList.remove("active"));
+
+        // Add null guard for event.target
+        if (!event || !event.target) {
+          return;
+        }
+
         event.target.classList.add("active");
 
         // Show/hide sections

@@ -6,13 +6,27 @@
 class SiteSearch {
   constructor() {
     this.searchIndex = [];
+    this.isInitialized = false;
     this.init();
+  }
+
+  validateSearchIndex() {
+    if (!this.searchIndex || this.searchIndex.length === 0) {
+      console.warn(
+        "Site search: No pages indexed. Search functionality may not work properly.",
+      );
+      return false;
+    }
+    return true;
   }
 
   init() {
     this.createSearchIndex();
-    this.setupSearchUI();
-    this.bindEvents();
+    if (this.validateSearchIndex()) {
+      this.setupSearchUI();
+      this.bindEvents();
+      this.isInitialized = true;
+    }
   }
 
   // Create search index from page content

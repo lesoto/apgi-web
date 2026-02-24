@@ -2507,8 +2507,31 @@
       </div>
     </main>
 
-    <!-- Quiz Functionality Script -->
-    <script src="assets/js/assessment-quiz.js"></script>
-    <script src="assets/js/quiz-functionality.js"></script>
+    <!-- Lazy Loading Script -->
+    <script>
+      // Quiz.html always shows the quiz, so load immediately but asynchronously
+      function loadQuizScript() {
+        const script = document.createElement("script");
+        script.src = "assets/js/assessment-quiz.js";
+        script.onload = () => {
+          console.log("Quiz assessment loaded successfully");
+          // Load quiz functionality after quiz data is available
+          const functionalityScript = document.createElement("script");
+          functionalityScript.src = "assets/js/quiz-functionality.js";
+          document.head.appendChild(functionalityScript);
+        };
+        script.onerror = () => {
+          console.error("Failed to load assessment quiz script");
+        };
+        document.head.appendChild(script);
+      }
+
+      // Load quiz script immediately for Quiz.html since it's always needed
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", loadQuizScript);
+      } else {
+        loadQuizScript();
+      }
+    </script>
   </body>
 </html>

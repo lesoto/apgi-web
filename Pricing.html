@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      APGI Framework Pricing Plans | Choose Your Cognitive Architecture Journey
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Epilogue:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --threshold-blue: #00b4ff;
+        --precision-red: #ff3366;
+        --modulator-green: #00cc99;
+        --error-yellow: #ffcc00;
+        --workspace-purple: #9966ff;
+        --slate-gray: #2c3e50;
+        --deep-black: #0a0e14;
+        --off-white: #f8f9fa;
+      }
+
+      body {
+        font-family: "Epilogue", sans-serif;
+        background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 100%);
+        color: var(--off-white);
+        overflow-x: hidden;
+        line-height: 1.6;
+      }
+
+      .pricing-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .pricing-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--threshold-blue);
+        box-shadow: 0 20px 40px rgba(0, 180, 255, 0.2);
+      }
+
+      .pricing-card.featured {
+        border-color: var(--threshold-blue);
+        background: rgba(0, 180, 255, 0.1);
+      }
+
+      .pricing-card.featured::before {
+        content: "MOST POPULAR";
+        position: absolute;
+        top: 20px;
+        right: -30px;
+        background: var(--threshold-blue);
+        color: white;
+        padding: 5px 40px;
+        font-size: 12px;
+        font-weight: 600;
+        transform: rotate(45deg);
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--threshold-blue),
+          var(--workspace-purple)
+        );
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 180, 255, 0.3);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--threshold-blue);
+        padding: 12px 24px;
+        border: 2px solid var(--threshold-blue);
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+      }
+
+      .btn-secondary:hover {
+        background: var(--threshold-blue);
+        color: white;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .feature-list li {
+        padding: 8px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .feature-list li::before {
+        content: "✓";
+        color: var(--modulator-green);
+        font-weight: bold;
+        margin-right: 12px;
+        font-size: 18px;
+      }
+
+      .comparison-table {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 16px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .comparison-table th {
+        background: rgba(255, 255, 255, 0.05);
+        font-weight: 600;
+      }
+
+      .check-icon {
+        color: var(--modulator-green);
+        font-size: 20px;
+      }
+
+      .cross-icon {
+        color: var(--precision-red);
+        font-size: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .pricing-grid {
+          grid-template-columns: 1fr !important;
+        }
+
+        .comparison-table {
+          font-size: 14px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+          padding: 12px 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="relative z-50">
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="text-2xl font-bold">
+            <span style="color: var(--threshold-blue)">APGI</span>_FRAMEWORK
+          </div>
+          <div class="hidden md:flex space-x-8">
+            <a href="Home.html" class="hover:text-blue-400 transition">Home</a>
+            <a href="Landing.html" class="hover:text-blue-400 transition"
+              >Overview</a
+            >
+            <a href="pricing.html" class="text-blue-400 font-semibold"
+              >Pricing</a
+            >
+            <a href="Assessment.html" class="hover:text-blue-400 transition"
+              >Assessment</a
+            >
+            <a
+              href="Book-Available-Now.html"
+              class="hover:text-blue-400 transition"
+              >Book</a
+            >
+          </div>
+          <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-20 px-6">
+      <div class="container mx-auto text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">
+          Choose Your
+          <span style="color: var(--threshold-blue)">Cognitive Journey</span>
+        </h1>
+        <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          Select the APGI Framework access level that matches your professional
+          needs. All plans include our core cognitive architecture assessment
+          and personalized insights.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <span
+            class="px-4 py-2 bg-green-500/20 text-green-400 rounded-full text-sm"
+          >
+            ✓ 30-day money-back guarantee
+          </span>
+          <span
+            class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-full text-sm"
+          >
+            ✓ Cancel anytime
+          </span>
+          <span
+            class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-full text-sm"
+          >
+            ✓ Instant access
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="py-12 px-6">
+      <div class="container mx-auto">
+        <div
+          class="pricing-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
+        >
+          <!-- Individual Explorer -->
+          <div class="pricing-card rounded-xl p-8">
+            <h3 class="text-2xl font-bold mb-2">Individual Explorer</h3>
+            <p class="text-gray-400 mb-6">
+              Perfect for self-discovery and personal growth
+            </p>
+            <div class="mb-6">
+              <span class="text-4xl font-bold">$149</span>
+              <span class="text-gray-400"> one-time</span>
+              <div class="text-sm text-gray-400">+ $49/year ongoing</div>
+            </div>
+            <ul class="feature-list mb-8">
+              <li>Complete APGI Assessment</li>
+              <li>Personal Cognitive Blueprint</li>
+              <li>Mobile App Access</li>
+              <li>Basic Progress Tracking</li>
+              <li>Community Access</li>
+              <li>Email Support</li>
+            </ul>
+            <a
+              href="funnels/1_individual_self_explorers.html"
+              class="btn-primary w-full text-center"
+            >
+              Get Started
+            </a>
+          </div>
+
+          <!-- Professional -->
+          <div class="pricing-card rounded-xl p-8 featured">
+            <h3 class="text-2xl font-bold mb-2">Professional</h3>
+            <p class="text-gray-400 mb-6">
+              For therapists, coaches, and consultants
+            </p>
+            <div class="mb-6">
+              <span class="text-4xl font-bold">$899</span>
+              <span class="text-gray-400"> /year</span>
+            </div>
+            <ul class="feature-list mb-8">
+              <li>Everything in Individual</li>
+              <li>Client Management Tools</li>
+              <li>Advanced Analytics</li>
+              <li>Session Templates</li>
+              <li>Priority Support</li>
+              <li>Professional Certification</li>
+              <li>Monthly Group Coaching</li>
+            </ul>
+            <a
+              href="funnels/2_therapists_coaches.html"
+              class="btn-primary w-full text-center"
+            >
+              Get Started
+            </a>
+          </div>
+
+          <!-- Academic Researcher -->
+          <div class="pricing-card rounded-xl p-8">
+            <h3 class="text-2xl font-bold mb-2">Academic Researcher</h3>
+            <p class="text-gray-400 mb-6">
+              For research institutions and academics
+            </p>
+            <div class="mb-6">
+              <span class="text-4xl font-bold">$1,999</span>
+              <span class="text-gray-400"> /year</span>
+            </div>
+            <ul class="feature-list mb-8">
+              <li>Everything in Professional</li>
+              <li>Research Data Export</li>
+              <li>Statistical Analysis Tools</li>
+              <li>IRB-Ready Documentation</li>
+              <li>Collaboration Features</li>
+              <li>API Access</li>
+              <li>Publication Support</li>
+            </ul>
+            <a
+              href="funnels/3_academic_researchers.html"
+              class="btn-primary w-full text-center"
+            >
+              Get Started
+            </a>
+          </div>
+
+          <!-- Enterprise -->
+          <div class="pricing-card rounded-xl p-8">
+            <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+            <p class="text-gray-400 mb-6">For organizations and teams</p>
+            <div class="mb-6">
+              <span class="text-4xl font-bold">$25K</span>
+              <span class="text-gray-400"> /year</span>
+            </div>
+            <ul class="feature-list mb-8">
+              <li>Everything in Academic</li>
+              <li>Unlimited Users</li>
+              <li>Custom Integrations</li>
+              <li>Dedicated Support</li>
+              <li>On-site Training</li>
+              <li>Custom Analytics</li>
+              <li>SLA Guarantee</li>
+            </ul>
+            <a
+              href="funnels/4_organizational_development.html"
+              class="btn-secondary w-full text-center"
+            >
+              Contact Sales
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Comparison Table -->
+    <section class="py-16 px-6">
+      <div class="container mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">
+          Compare <span style="color: var(--threshold-blue)">All Features</span>
+        </h2>
+
+        <div class="overflow-x-auto">
+          <table class="comparison-table w-full">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Individual</th>
+                <th>Professional</th>
+                <th>Academic</th>
+                <th>Enterprise</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Core Assessment</strong></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Personal Blueprint</strong></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Mobile App</strong></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Client Management</strong></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Research Tools</strong></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>API Access</strong></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="check-icon">✓</span></td>
+                <td><span class="check-icon">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Custom Integrations</strong></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="check-icon">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Dedicated Support</strong></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="cross-icon">✗</span></td>
+                <td><span class="check-icon">✓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 px-6">
+      <div class="container mx-auto max-w-4xl">
+        <h2 class="text-3xl font-bold text-center mb-12">
+          Frequently Asked
+          <span style="color: var(--threshold-blue)">Questions</span>
+        </h2>
+
+        <div class="space-y-6">
+          <div
+            class="bg-white/5 backdrop-blur rounded-lg p-6 border border-white/10"
+          >
+            <h3 class="text-xl font-semibold mb-3">
+              Can I switch plans later?
+            </h3>
+            <p class="text-gray-300">
+              Yes! You can upgrade or downgrade your plan at any time. When
+              upgrading, you'll only pay the prorated difference for the
+              remainder of your billing period.
+            </p>
+          </div>
+
+          <div
+            class="bg-white/5 backdrop-blur rounded-lg p-6 border border-white/10"
+          >
+            <h3 class="text-xl font-semibold mb-3">Is there a free trial?</h3>
+            <p class="text-gray-300">
+              We offer a 30-day money-back guarantee on all plans. Try the full
+              APGI Framework risk-free and get a full refund if you're not
+              satisfied.
+            </p>
+          </div>
+
+          <div
+            class="bg-white/5 backdrop-blur rounded-lg p-6 border border-white/10"
+          >
+            <h3 class="text-xl font-semibold mb-3">
+              What's included in the ongoing $49/year fee?
+            </h3>
+            <p class="text-gray-300">
+              The annual fee covers continuous access to your cognitive
+              blueprint, mobile app updates, new assessment modules, and cloud
+              sync across all your devices.
+            </p>
+          </div>
+
+          <div
+            class="bg-white/5 backdrop-blur rounded-lg p-6 border border-white/10"
+          >
+            <h3 class="text-xl font-semibold mb-3">
+              Do you offer discounts for students or nonprofits?
+            </h3>
+            <p class="text-gray-300">
+              Yes! We offer 50% discounts for verified students and registered
+              nonprofit organizations. Contact our support team for more
+              information.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-6">
+      <div class="container mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-6">
+          Ready to Transform Your
+          <span style="color: var(--threshold-blue)">Understanding</span>?
+        </h2>
+        <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          Join thousands of professionals using the APGI Framework to unlock
+          deeper insights into cognitive architecture and human potential.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="Assessment.html" class="btn-primary text-lg px-8">
+            Take Free Assessment
+          </a>
+          <a href="Book-Available-Now.html" class="btn-secondary text-lg px-8">
+            Learn More
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-white/10">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2024 APGI Framework. All rights reserved.</p>
+        <div class="mt-4 space-x-6">
+          <a href="Privacy-Policy.html" class="text-gray-400 hover:text-white"
+            >Privacy Policy</a
+          >
+          <a href="Terms-of-Service.html" class="text-gray-400 hover:text-white"
+            >Terms of Service</a
+          >
+          <a href="contact.html" class="text-gray-400 hover:text-white"
+            >Contact</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function toggleMobileMenu() {
+        // Mobile menu toggle implementation
+        console.log("Mobile menu toggle");
+      }
+    </script>
+  </body>
+</html>

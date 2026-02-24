@@ -3,6 +3,13 @@
  * Handles user registration, login, session management, and JWT tokens
  */
 
+// Development mode check
+const isDev =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname.includes("dev") ||
+  window.envConfig?.isDevelopment();
+
 class AuthService {
   constructor() {
     this.baseURL = window.envConfig?.getApiUrl();
@@ -18,18 +25,10 @@ class AuthService {
    * Initialize authentication service
    */
   init() {
-    // Check for existing session
-    this.token = localStorage.getItem(this.tokenKey);
-    const userData = localStorage.getItem(this.userKey);
-
-    if (this.token && userData) {
-      try {
-        this.currentUser = JSON.parse(userData);
-        this.setupTokenRefresh();
-      } catch (error) {
-        console.error("Invalid user data in storage:", error);
-        this.clearSession();
-      }
+    // Check for existing session in memory only
+    // Note: Tokens are no longer stored in localStorage for security
+    if (this.token && this.currentUser) {
+      this.setupTokenRefresh();
     }
   }
 
@@ -64,7 +63,7 @@ class AuthService {
         password: userData.password,
       });
     } catch (error) {
-      console.error("Registration error:", error);
+      if (isDev) console.error("Registration error:", error);
       throw error;
     }
   }
@@ -92,8 +91,9 @@ class AuthService {
       this.token = data.token;
       this.currentUser = data.user;
 
-      localStorage.setItem(this.tokenKey, this.token);
-      localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
+      // Tokens are now stored in memory only for security
+      // localStorage.setItem(this.tokenKey, this.token);
+      // localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
 
       // Setup token refresh
       this.setupTokenRefresh();
@@ -104,7 +104,7 @@ class AuthService {
         token: this.token,
       };
     } catch (error) {
-      console.error("Login error:", error);
+      if (isDev) console.error("Login error:", error);
       throw error;
     }
   }
@@ -125,7 +125,7 @@ class AuthService {
         });
       }
     } catch (error) {
-      console.error("Logout error:", error);
+      if (isDev) console.error("Logout error:", error);
     } finally {
       // Always clear local session
       this.clearSession();
@@ -138,6 +138,8 @@ class AuthService {
   clearSession() {
     this.token = null;
     this.currentUser = null;
+
+    // Clear any remaining localStorage items
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
 
@@ -211,7 +213,7 @@ class AuthService {
       if (error.message.includes("Session expired")) {
         throw error;
       }
-      console.error("Authenticated fetch error:", error);
+      if (isDev) console.error("Authenticated fetch error:", error);
       throw error;
     }
   }
@@ -262,12 +264,13 @@ class AuthService {
       if (response.ok) {
         const data = await response.json();
         this.token = data.token;
-        localStorage.setItem(this.tokenKey, this.token);
+        // Token stored in memory only for security
+        // localStorage.setItem(this.tokenKey, this.token);
       } else {
         this.clearSession();
       }
     } catch (error) {
-      console.error("Token refresh error:", error);
+      if (isDev) console.error("Token refresh error:", error);
       this.clearSession();
     }
   }
@@ -296,11 +299,12 @@ class AuthService {
 
       // Update local user data
       this.currentUser = { ...this.currentUser, ...data.user };
-      localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
+      // User data stored in memory only for security
+      // localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
 
       return data;
     } catch (error) {
-      console.error("Profile update error:", error);
+      if (isDev) console.error("Profile update error:", error);
       throw error;
     }
   }
@@ -329,7 +333,7 @@ class AuthService {
 
       return data;
     } catch (error) {
-      console.error("Password change error:", error);
+      if (isDev) console.error("Password change error:", error);
       throw error;
     }
   }
@@ -355,7 +359,7 @@ class AuthService {
 
       return data;
     } catch (error) {
-      console.error("Password reset request error:", error);
+      if (isDev) console.error("Password reset request error:", error);
       throw error;
     }
   }
@@ -381,7 +385,7 @@ class AuthService {
 
       return data;
     } catch (error) {
-      console.error("Password reset error:", error);
+      if (isDev) console.error("Password reset error:", error);
       throw error;
     }
   }

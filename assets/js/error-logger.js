@@ -3,18 +3,32 @@
  * Provides structured error logging with multiple output destinations
  */
 
+// Development mode check
+const isDev =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname.includes("dev") ||
+  window.envConfig?.isDevelopment();
+
 class ErrorLogger {
   constructor(options = {}) {
     this.enableConsole = options.enableConsole !== false;
     this.enableLocalStorage = options.enableLocalStorage !== false;
     this.enableRemote = options.enableRemote || false;
     this.remoteEndpoint = options.remoteEndpoint || null;
+    this.enableSentry = options.enableSentry || false;
     this.maxLocalLogs = options.maxLocalLogs || 1000;
     this.logLevel = options.logLevel || "error"; // error, warn, info, debug
 
     this.logs = [];
     this.sessionId = this.generateSessionId();
     this.userAgent = navigator.userAgent;
+
+    // Initialize Sentry if enabled and DSN is available
+    if (this.enableSentry && window.envConfig?.get("sentry.dsn") && !isDev) {
+      this.initSentry();
+    }
+
     this.init();
   }
 
@@ -369,6 +383,40 @@ class ErrorLogger {
 
     return health;
   }
+
+  /**
+   * Initialize Sentry integration
+   */
+  initSentry() {
+    try {
+      // Note: In production, include Sentry SDK before this script
+      if (typeof window.Sentry !== "undefined") {
+        window.Sentry.init({
+          dsn: window.envConfig.get("sentry.dsn"),
+          environment: window.envConfig.get("environment") || "production",
+          tracesSampleRate: 0.1,
+          beforeSend(event) {
+            // Filter out sensitive data
+            if (event.exception) {
+              event.exception.values[0].stacktrace = {
+                frames: event.exception.values[0].stacktrace?.frames?.map(
+                  (frame) => ({
+                    filename: frame.filename,
+                    function: frame.function,
+                    lineno: frame.lineno,
+                    colno: frame.colno,
+                  }),
+                ),
+              };
+            }
+            return event;
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Failed to initialize Sentry:", error);
+    }
+  }
 }
 
 // Initialize global error logger
@@ -376,6 +424,7 @@ const errorLogger = new ErrorLogger({
   enableConsole: true,
   enableLocalStorage: true,
   enableRemote: false, // Set to true and provide endpoint for production
+  enableSentry: true, // Enable Sentry integration
   logLevel: "error",
 });
 

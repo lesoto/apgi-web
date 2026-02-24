@@ -345,13 +345,19 @@
 
       @media (max-width: 968px) {
         .viz-grid {
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(2, 1fr);
         }
         .pricing-grid {
           grid-template-columns: 1fr;
         }
         .pricing-card.featured {
           transform: scale(1);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .viz-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -363,7 +369,12 @@
       <div class="container">
         <div class="header-content">
           <div class="logo">APGI_ORGANIZATIONAL</div>
-          <a href="#pricing" class="btn btn-primary">Schedule Demo</a>
+          <button
+            onclick="alert('Demo scheduling coming soon!')"
+            class="btn btn-primary"
+          >
+            Schedule Demo
+          </button>
         </div>
       </div>
     </header>
@@ -418,9 +429,12 @@
           </div>
         </div>
 
-        <a href="#pricing" class="btn btn-primary"
-          >Discover Your Team's Blueprint</a
+        <button
+          onclick="alert('Team blueprint discovery coming soon!')"
+          class="btn btn-primary"
         >
+          Discover Your Team's Blueprint
+        </button>
       </div>
     </section>
 
@@ -566,11 +580,13 @@
               <li>Monthly reports</li>
               <li>Email support</li>
             </ul>
-            <a
-              href="#contact"
+            <button
+              onclick="alert('Contact form coming soon!')"
               class="btn btn-primary"
               style="width: 100%; text-align: center"
-              >Get Started</a
+            >
+              Get Started
+            </button>
             >
           </div>
 
@@ -587,11 +603,13 @@
               <li>Leadership development modules</li>
               <li>Dedicated success manager</li>
             </ul>
-            <a
-              href="#contact"
+            <button
+              onclick="alert('Contact form coming soon!')"
               class="btn btn-primary"
               style="width: 100%; text-align: center"
-              >Most Popular</a
+            >
+              Most Popular
+            </button>
             >
           </div>
 
@@ -608,17 +626,18 @@
               <li>On-site training</li>
               <li>Annual org health report</li>
             </ul>
-            <a
-              href="#contact"
+            <button
+              onclick="alert('Sales contact coming soon!')"
               class="btn btn-primary"
               style="width: 100%; text-align: center"
-              >Contact Sales</a
             >
+              Contact Sales
+            </button>
           </div>
         </div>
 
         <p style="text-align: center; color: #8a9db5; margin-top: 40px">
-          🎁 Free Assessment: First 25 employees mapped at no cost
+          Free Assessment: First 25 employees mapped at no cost
         </p>
       </div>
     </section>

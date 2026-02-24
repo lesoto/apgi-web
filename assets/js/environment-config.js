@@ -46,16 +46,10 @@ class EnvironmentConfig {
 
       // Stripe Configuration
       stripe: {
-        publishableKey:
-          this.getEnvVar("VITE_STRIPE_PUBLISHABLE_KEY") ||
-          "pk_test_51234567890abcdef",
+        publishableKey: this.getEnvVar("VITE_STRIPE_PUBLISHABLE_KEY"),
         prices: {
-          professional:
-            this.getEnvVar("VITE_STRIPE_PROFESSIONAL_PRICE_ID") ||
-            "price_1Oxyz1234567890",
-          enterprise:
-            this.getEnvVar("VITE_STRIPE_ENTERPRISE_PRICE_ID") ||
-            "price_1Oxyz1234567891",
+          professional: this.getEnvVar("VITE_STRIPE_PROFESSIONAL_PRICE_ID"),
+          enterprise: this.getEnvVar("VITE_STRIPE_ENTERPRISE_PRICE_ID"),
         },
       },
 
@@ -143,9 +137,7 @@ class EnvironmentConfig {
 
     return requiredConfigs.every((path) => {
       const value = this.get(path);
-      return (
-        value !== null && value !== "" && value !== "pk_test_51234567890abcdef"
-      );
+      return value !== null && value !== "" && value !== undefined;
     });
   }
 

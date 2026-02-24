@@ -3,6 +3,12 @@
  * Tracks assessment progress with database storage
  */
 
+// Import console utility
+const { safeConsole } =
+  typeof window.consoleUtils !== "undefined"
+    ? window.consoleUtils
+    : { safeConsole: console };
+
 class ProgressTracker {
   constructor() {
     this.storageKey = "apgi-progress";
@@ -45,7 +51,7 @@ class ProgressTracker {
    */
   recordAnswer(questionId, answer) {
     if (!this.currentAssessment) {
-      console.warn("No active assessment to record answer");
+      safeConsole.warn("No active assessment to record answer");
       return null;
     }
 
@@ -109,7 +115,7 @@ class ProgressTracker {
    */
   completeAssessment(results = null) {
     if (!this.currentAssessment) {
-      console.warn("No active assessment to complete");
+      safeConsole.warn("No active assessment to complete");
       return null;
     }
 
@@ -155,7 +161,7 @@ class ProgressTracker {
         JSON.stringify(this.currentAssessment),
       );
     } catch (error) {
-      console.error("Failed to save progress:", error);
+      safeConsole.error("Failed to save progress:", error);
     }
   }
 
@@ -179,7 +185,7 @@ class ProgressTracker {
         }
       }
     } catch (error) {
-      console.error("Failed to load progress:", error);
+      safeConsole.error("Failed to load progress:", error);
     }
 
     return null;
@@ -213,7 +219,7 @@ class ProgressTracker {
 
       return await response.json();
     } catch (error) {
-      console.error("Failed to send progress to server:", error);
+      safeConsole.error("Failed to send progress to server:", error);
       // Store in localStorage as fallback
       this.saveProgress();
     }
@@ -228,7 +234,7 @@ class ProgressTracker {
       if (!response.ok) throw new Error("Failed to fetch assessments");
       return await response.json();
     } catch (error) {
-      console.error("Failed to fetch user assessments:", error);
+      safeConsole.error("Failed to fetch user assessments:", error);
       return [];
     }
   }
@@ -241,7 +247,7 @@ class ProgressTracker {
     try {
       localStorage.removeItem(this.storageKey);
     } catch (error) {
-      console.error("Failed to clear progress:", error);
+      safeConsole.error("Failed to clear progress:", error);
     }
   }
 

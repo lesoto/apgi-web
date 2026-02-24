@@ -3,13 +3,21 @@
  * Handles Stripe integration and payment processing
  */
 
+// Development mode check
+const isDev =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname.includes("dev") ||
+  window.envConfig?.isDevelopment();
+
 class PaymentService {
   constructor() {
     // Check if environment config is available
     if (typeof window.envConfig === "undefined") {
-      console.error(
-        "Environment configuration not loaded. Please include environment-config.js before payment-service.js",
-      );
+      if (isDev)
+        console.error(
+          "Environment configuration not loaded. Please include environment-config.js before payment-service.js",
+        );
     }
 
     this.stripe = null;
@@ -40,15 +48,16 @@ class PaymentService {
       this.stripe = Stripe(publishableKey);
       this.isInitialized = true;
 
-      console.log(
-        "Payment service initialized in",
-        this.testMode ? "test" : "production",
-        "mode",
-      );
+      if (isDev)
+        console.log(
+          "Payment service initialized in",
+          this.testMode ? "test" : "production",
+          "mode",
+        );
 
       return true;
     } catch (error) {
-      console.error("Failed to initialize payment service:", error);
+      if (isDev) console.error("Failed to initialize payment service:", error);
       return false;
     }
   }
@@ -136,7 +145,7 @@ class PaymentService {
 
       return await response.json();
     } catch (error) {
-      console.error("Error creating checkout session:", error);
+      if (isDev) console.error("Error creating checkout session:", error);
       throw error;
     }
   }
@@ -182,7 +191,7 @@ class PaymentService {
         throw new Error(result.error.message);
       }
     } catch (error) {
-      console.error("Error redirecting to checkout:", error);
+      if (isDev) console.error("Error redirecting to checkout:", error);
       throw error;
     }
   }
@@ -234,7 +243,7 @@ class PaymentService {
         throw new Error("Failed to create payment session");
       }
     } catch (error) {
-      console.error("Payment error:", error);
+      if (isDev) console.error("Payment error:", error);
       this.showError("Payment processing failed. Please try again.");
     } finally {
       this.hideLoading();
@@ -253,6 +262,7 @@ class PaymentService {
                 <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
                     <h3 class="text-lg font-semibold mb-4">Enter Your Email</h3>
                     <p class="text-gray-600 mb-4">We'll use this to send your receipt and account details.</p>
+                    <label for="payment-email" class="sr-only">Email for receipt and account details</label>
                     <input type="email" id="payment-email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="your@email.com">
                     <div class="flex gap-3 mt-4">
                         <button id="payment-cancel" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
@@ -420,7 +430,7 @@ class PaymentService {
       };
 
       // Log webhook payload for testing
-      console.log("Webhook payload (for testing):", webhookPayload);
+      if (isDev) console.log("Webhook payload (for testing):", webhookPayload);
 
       // In a real implementation, you would send this to your webhook endpoint
       // For testing, you can use webhook.site to capture the payload
@@ -437,7 +447,7 @@ class PaymentService {
         });
       }
     } catch (error) {
-      console.error("Webhook test failed:", error);
+      if (isDev) console.error("Webhook test failed:", error);
     }
   }
 
@@ -454,7 +464,7 @@ class PaymentService {
    */
   setWebhookUrl(url) {
     this.webhookUrl = url;
-    console.log("Webhook URL set to:", url);
+    if (isDev) console.log("Webhook URL set to:", url);
   }
 
   /**

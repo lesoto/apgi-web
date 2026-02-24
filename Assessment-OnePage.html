@@ -1404,7 +1404,7 @@
                       <a href="SCI/PsyStates-Visualizer.html" class="dropdown-link">PsyStates Visualizer</a>
                       <a href="SCI/Consciousness-Visualization.html" class="dropdown-link">Consciousness Visualization</a>
                       <a href="SCI/State-Network.html" class="dropdown-link">3D Network</a>
-                      <a href="SCI/Neuromoduratory-Cascade.html" class="dropdown-link">Neuromodulatory Cascade</a>
+                      <a href="SCI/Neuromodulatory-Cascade.html" class="dropdown-link">Neuromodulatory Cascade</a>
                     </div>
                   </div>
                   <div class="nav-dropdown">
@@ -2052,9 +2052,12 @@
 
       function calculateResults() {
         // Show loading state
-        const calculateBtn = document.querySelector('button[onclick="calculateResults()"]');
+        const calculateBtn = document.querySelector(
+          'button[onclick="calculateResults()"]',
+        );
         const originalContent = calculateBtn.innerHTML;
-        calculateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+        calculateBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Calculating...';
         calculateBtn.disabled = true;
 
         // Validate all questions answered
@@ -2076,31 +2079,31 @@
 
           // Calculate state-dependent profiles
           stateProfiles.resting = {
-          predictionError: parameters.predictionError,
-          precision: parameters.precision,
-          threshold: parameters.threshold,
-          somaticBias: parameters.somaticBias,
-        };
+            predictionError: parameters.predictionError,
+            precision: parameters.precision,
+            threshold: parameters.threshold,
+            somaticBias: parameters.somaticBias,
+          };
 
           stateProfiles.stressed = {
-          predictionError: Math.min(
-            100,
-            parameters.predictionError + (responses.q5 || 50) * 0.5,
-          ),
-          precision: Math.min(100, parameters.precision + 20),
-          threshold: Math.max(0, parameters.threshold - 15),
-          somaticBias: Math.min(100, parameters.somaticBias + 15),
-        };
+            predictionError: Math.min(
+              100,
+              parameters.predictionError + (responses.q5 || 50) * 0.5,
+            ),
+            precision: Math.min(100, parameters.precision + 20),
+            threshold: Math.max(0, parameters.threshold - 15),
+            somaticBias: Math.min(100, parameters.somaticBias + 15),
+          };
 
           stateProfiles.focused = {
-          predictionError: Math.max(0, parameters.predictionError - 20),
-          precision: Math.min(100, parameters.precision + 10),
-          threshold: Math.min(
-            100,
-            parameters.threshold + (responses.q6 || 50) * 0.3,
-          ),
-          somaticBias: Math.max(0, parameters.somaticBias - 10),
-        };
+            predictionError: Math.max(0, parameters.predictionError - 20),
+            precision: Math.min(100, parameters.precision + 10),
+            threshold: Math.min(
+              100,
+              parameters.threshold + (responses.q6 || 50) * 0.3,
+            ),
+            somaticBias: Math.max(0, parameters.somaticBias - 10),
+          };
 
           // Store behavioral data
           behavioralData.noveltyResponse = responses.q8;
@@ -2109,7 +2112,7 @@
 
           // Display results
           displayResults();
-      }, 800); // End of setTimeout
+        }, 800); // End of setTimeout
       } // End of calculateResults function
 
       function displayResults() {
@@ -2222,7 +2225,9 @@
           calculateBtn.disabled = false;
 
           // Scroll to results
-          document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+          document
+            .getElementById("results")
+            .scrollIntoView({ behavior: "smooth" });
         }, 800); // End of setTimeout
       }
 
