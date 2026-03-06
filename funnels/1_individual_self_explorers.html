@@ -670,6 +670,8 @@
         }
       }
     </style>
+    <!-- Stripe for payment processing -->
+    <script src="https://js.stripe.com/v3/"></script>
   </head>
   <body>
     <!-- Background particles -->
@@ -983,10 +985,7 @@
             normative database, community events, priority support
           </p>
 
-          <button
-            onclick="alert('Sign up form coming soon!')"
-            class="cta-button"
-          >
+          <button id="start-mapping-btn" class="cta-button">
             Start Mapping Your Mind
           </button>
 
@@ -1011,5 +1010,40 @@
 
     <!-- Conversion Tracking Script -->
     <script src="../assets/js/funnel-tracking.js"></script>
+
+    <!-- Stripe Checkout Script -->
+    <script>
+      // Initialize Stripe (replace with actual publishable key in production)
+      const stripe = Stripe("pk_test_placeholder_publishable_key");
+
+      document
+        .getElementById("start-mapping-btn")
+        .addEventListener("click", async () => {
+          try {
+            const response = await fetch("/api/create-checkout-session", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                tier: "individual",
+                customerEmail: "placeholder@example.com", // In production, get from user input
+              }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              // Redirect to Stripe Checkout
+              window.location.href = data.url;
+            } else {
+              alert("Error creating checkout session: " + data.error);
+            }
+          } catch (error) {
+            console.error("Checkout error:", error);
+            alert("An error occurred. Please try again.");
+          }
+        });
+    </script>
   </body>
 </html>

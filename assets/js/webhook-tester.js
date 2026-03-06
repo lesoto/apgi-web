@@ -5,7 +5,9 @@
 
 class WebhookTester {
   constructor() {
-    this.webhookUrl = "https://webhook.site/your-webhook-url"; // Replace with actual webhook.site URL
+    this.webhookUrl =
+      window.envConfig?.get("webhook.url") ||
+      "https://webhook.site/your-webhook-url";
     this.testEvents = [];
     this.isListening = false;
   }
@@ -170,7 +172,7 @@ class WebhookTester {
                         <input type="url" id="webhook-url-input" class="flex-1 px-2 py-1 border rounded text-sm" value="${this.webhookUrl}">
                         <button id="set-webhook-url" class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600">Set</button>
                     </div>
-                    <p class="text-xs text-gray-500 mt-1">Get a test URL from <a href="https://webhook.site" target="_blank" class="text-blue-500">webhook.site</a></p>
+                    <p class="text-xs text-gray-500 mt-1">Get a test URL from <a href="https://webhook.site" target="_blank" rel="noopener noreferrer" class="text-blue-500">webhook.site</a></p>
                 </div>
                 
                 <div class="mb-4">

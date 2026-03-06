@@ -25,10 +25,19 @@ class AuthService {
    * Initialize authentication service
    */
   init() {
-    // Check for existing session in memory only
-    // Note: Tokens are no longer stored in localStorage for security
-    if (this.token && this.currentUser) {
-      this.setupTokenRefresh();
+    // Load from localStorage on initialization
+    const storedToken = localStorage.getItem(this.tokenKey);
+    const storedUser = localStorage.getItem(this.userKey);
+
+    if (storedToken && storedUser) {
+      try {
+        this.token = storedToken;
+        this.currentUser = JSON.parse(storedUser);
+        this.setupTokenRefresh();
+      } catch (error) {
+        // Clear invalid data
+        this.clearSession();
+      }
     }
   }
 
@@ -91,9 +100,9 @@ class AuthService {
       this.token = data.token;
       this.currentUser = data.user;
 
-      // Tokens are now stored in memory only for security
-      // localStorage.setItem(this.tokenKey, this.token);
-      // localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
+      // Store in localStorage for persistence
+      localStorage.setItem(this.tokenKey, this.token);
+      localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
 
       // Setup token refresh
       this.setupTokenRefresh();
@@ -264,8 +273,8 @@ class AuthService {
       if (response.ok) {
         const data = await response.json();
         this.token = data.token;
-        // Token stored in memory only for security
-        // localStorage.setItem(this.tokenKey, this.token);
+        // Store refreshed token in localStorage
+        localStorage.setItem(this.tokenKey, this.token);
       } else {
         this.clearSession();
       }
@@ -299,8 +308,8 @@ class AuthService {
 
       // Update local user data
       this.currentUser = { ...this.currentUser, ...data.user };
-      // User data stored in memory only for security
-      // localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
+      // Store updated user data in localStorage
+      localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
 
       return data;
     } catch (error) {

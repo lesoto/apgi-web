@@ -16,8 +16,6 @@
     <link rel="stylesheet" href="assets/css/fontawesome-fallback.css" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap");
-
       :root {
         --font-display: "Playfair Display", serif;
         --font-body: "Inter", sans-serif;
@@ -338,16 +336,11 @@
 
         <div class="flex justify-center mb-10">
           <div class="book-cover-container">
-            <div
-              class="book-cover-placeholder bg-gradient-to-br from-purple-600 via-blue-600 to-orange-500 rounded-lg shadow-2xl w-48 h-72 flex items-center justify-center transform hover:scale-105 transition-transform duration-300"
-            >
-              <div class="text-white text-center p-4">
-                <div class="text-3xl mb-2">🧠</div>
-                <div class="text-sm font-bold">
-                  WHEN<br />CONSCIOUSNESS<br />TURNS ON
-                </div>
-              </div>
-            </div>
+            <img
+              src="assets/images/APGI-Framework-Diagram.png"
+              alt="APGI Framework Book Cover"
+              class="book-cover rounded-lg shadow-2xl w-48 h-72 object-cover transform hover:scale-105 transition-transform duration-300"
+            />
           </div>
         </div>
 
@@ -358,37 +351,47 @@
           <div class="format-card">
             <h2 class="format-title text-2xl text-center mb-6">EBOOK</h2>
             <div class="platform-grid grid grid-cols-2 gap-3 mb-6">
-              <button
-                onclick="alert('Apple Books link coming soon!')"
+              <a
+                href="https://books.apple.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="platform-btn btn-primary flex items-center justify-center text-decoration-none"
               >
                 <span class="mr-2">📚</span> APPLE
-              </button>
-              <button
-                onclick="alert('Kindle link coming soon!')"
+              </a>
+              <a
+                href="https://www.amazon.com/kindle"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="platform-btn btn-secondary flex items-center justify-center text-decoration-none"
               >
                 <span class="mr-2">📱</span> KINDLE
-              </button>
-              <button
-                onclick="alert('Google Play Books link coming soon!')"
+              </a>
+              <a
+                href="https://play.google.com/books"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="platform-btn btn-secondary flex items-center justify-center text-decoration-none"
               >
                 <span class="mr-2">🎭</span> GOOGLE
-              </button>
-              <button
-                onclick="alert('Kobo link coming soon!')"
+              </a>
+              <a
+                href="https://www.kobo.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="platform-btn btn-secondary flex items-center justify-center text-decoration-none"
               >
                 <span class="mr-2">📚</span> KOBO
-              </button>
+              </a>
             </div>
-            <button
-              onclick="alert('Direct download coming soon!')"
+            <a
+              href="https://gumroad.com/l/apgi-framework"
+              target="_blank"
+              rel="noopener noreferrer"
               class="download-btn w-full rounded-xl py-3 px-4 mb-6 inline-block text-center text-decoration-none"
             >
               EPUB DIRECT DOWNLOAD
-            </button>
+            </a>
             <p class="description-text">
               Works great as an e-book, especially on color e-readers and
               tablets (the book has 300+ color drawings). The best ebook
@@ -399,37 +402,47 @@
           <div class="format-card">
             <h2 class="format-title text-2xl text-center mb-6">AUDIOBOOK</h2>
             <div class="platform-grid grid grid-cols-2 gap-3 mb-6">
-              <button
-                onclick="alert('Apple Books audiobook link coming soon!')"
+              <a
+                href="https://books.apple.com/audiobooks"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="platform-btn btn-primary flex items-center justify-center text-decoration-none"
               >
                 <span class="mr-2">📚</span> APPLE
-              </button>
-              <button
-                onclick="alert('Audible link coming soon!')"
+              </a>
+              <a
+                href="https://www.audible.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="platform-btn btn-secondary flex items-center justify-center text-decoration-none"
               >
                 <span class="mr-2">🎧</span> AUDIBLE
-              </button>
-              <button
-                onclick="alert('Spotify link coming soon!')"
+              </a>
+              <a
+                href="https://open.spotify.com/category/audiobooks"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="platform-btn btn-secondary flex items-center justify-center text-decoration-none"
               >
                 <span class="mr-2">🎵</span> SPOTIFY
-              </button>
-              <button
-                onclick="alert('Kobo audiobook link coming soon!')"
+              </a>
+              <a
+                href="https://www.kobo.com/audiobooks"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="platform-btn btn-secondary flex items-center justify-center text-decoration-none"
               >
                 <span class="mr-2">📚</span> KOBO
-              </button>
+              </a>
             </div>
-            <button
-              onclick="alert('Direct MP3 download coming soon!')"
+            <a
+              href="https://gumroad.com/l/apgi-framework-audiobook"
+              target="_blank"
+              rel="noopener noreferrer"
               class="download-btn w-full rounded-xl py-3 px-4 mb-6 inline-block text-center text-decoration-none"
             >
               MP3 DIRECT DOWNLOAD
-            </button>
+            </a>
             <p class="description-text">
               Comes along with a
               <a href="Home.html" class="highlight-link">website</a> with the

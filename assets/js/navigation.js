@@ -10,7 +10,7 @@ class APGINavigation {
       PsyStates: "PsyStates.html",
       "PsyStates-Visualizer": "PsyStates-Visualizer.html",
       "Consciousness-Visualization": "Consciousness-Visualization.html",
-      "Neuromoduratory-Cascade": "Neuromoduratory-Cascade.html",
+      "Neuromodulatory-Cascade": "Neuromodulatory-Cascade.html",
       "Book-Outline": "Book-Outline.html",
       Paper: "Paper.html",
       "Privacy-Policy": "Privacy-Policy.html",

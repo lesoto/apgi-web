@@ -53,36 +53,8 @@
     </style>
   </head>
   <body class="text-white">
-    <!-- Navigation -->
-    <nav class="glass-morphism border-b border-white/20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex items-center space-x-8">
-            <h1 class="text-xl font-bold">APGI Profile</h1>
-            <div class="hidden md:flex space-x-6">
-              <a href="/Home.html" class="hover:text-blue-300 transition-colors"
-                >Home</a
-              >
-              <a
-                href="/Assessment.html"
-                class="hover:text-blue-300 transition-colors"
-                >Assessment</a
-              >
-              <a href="/Profile.html" class="text-blue-300">Profile</a>
-            </div>
-          </div>
-          <div class="flex items-center space-x-4">
-            <span id="userEmail" class="text-sm opacity-80"></span>
-            <button
-              id="logoutBtn"
-              class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition-colors"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <!-- Navigation Component -->
+    <div id="navigation-container"></div>
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -366,6 +338,43 @@
       </div>
     </div>
 
+    <!-- Assessment Details Modal -->
+    <div
+      id="assessmentDetailsModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+    >
+      <div
+        class="glass-morphism rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div
+          class="flex justify-between items-center p-6 border-b border-white/10"
+        >
+          <h3 class="text-xl font-semibold">Assessment Details</h3>
+          <button
+            id="closeAssessmentModal"
+            class="text-gray-400 hover:text-white"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div id="assessmentDetailsContent" class="p-6">
+          <!-- Assessment details will be populated here -->
+        </div>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // Check if authService is available
@@ -450,6 +459,16 @@
           .addEventListener("click", function (e) {
             if (e.target === this) closePasswordModal();
           });
+
+        // Assessment Details Modal
+        document
+          .getElementById("closeAssessmentModal")
+          .addEventListener("click", closeAssessmentModal);
+        document
+          .getElementById("assessmentDetailsModal")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closeAssessmentModal();
+          });
       }
 
       async function loadUserProfile() {
@@ -468,6 +487,7 @@
           document.getElementById("userName").textContent =
             `${user.firstName} ${user.lastName}`;
           document.getElementById("userEmail").textContent = user.email;
+          document.getElementById("userEmailNav").textContent = user.email;
           document.getElementById("userInitials").textContent =
             `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
           document.getElementById("memberSince").textContent = new Date(
@@ -481,6 +501,8 @@
           document.getElementById("userName").textContent =
             "Error loading profile";
           document.getElementById("userEmail").textContent =
+            "Please refresh the page";
+          document.getElementById("userEmailNav").textContent =
             "Please refresh the page";
           document.getElementById("memberSince").textContent = "N/A";
           showError("Failed to load profile");
@@ -648,6 +670,12 @@
         document.getElementById("changePasswordModal").classList.add("hidden");
       }
 
+      function closeAssessmentModal() {
+        document
+          .getElementById("assessmentDetailsModal")
+          .classList.add("hidden");
+      }
+
       async function handleChangePassword(e) {
         e.preventDefault();
 
@@ -713,9 +741,171 @@
       }
 
       function viewAssessment(assessmentId) {
-        // In a real implementation, this would navigate to a detailed view
-        console.log("View assessment:", assessmentId);
-        showSuccess("Assessment details view coming soon!");
+        const assessments = JSON.parse(
+          localStorage.getItem("apgi_assessments") || "[]",
+        );
+        const assessment = assessments.find((a) => a.id === assessmentId);
+
+        if (!assessment) {
+          showError("Assessment not found");
+          return;
+        }
+
+        const content = document.getElementById("assessmentDetailsContent");
+
+        // Build detailed view
+        const parameters = assessment.data?.parameters || {};
+        const summary = assessment.data?.summary || {};
+
+        content.innerHTML = `
+          <div class="space-y-6">
+            <div class="bg-white/5 rounded-lg p-4">
+              <h4 class="text-lg font-semibold mb-2">Assessment Overview</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div><strong>Type:</strong> ${assessment.type || "APGI Assessment"}</div>
+                <div><strong>Date:</strong> ${new Date(assessment.timestamp).toLocaleString()}</div>
+                <div><strong>Average Score:</strong> ${summary.averageScore || "N/A"}</div>
+                <div><strong>Profile Type:</strong> ${determineProfileType(assessment.data)}</div>
+              </div>
+            </div>
+
+            <div class="bg-white/5 rounded-lg p-4">
+              <h4 class="text-lg font-semibold mb-4">Parameters</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${
+                  parameters.predictionErrorSensitivity
+                    ? `
+                  <div class="bg-white/10 rounded p-3">
+                    <h5 class="font-medium">Prediction Error Sensitivity</h5>
+                    <div class="text-sm text-gray-300">
+                      <div>Score: ${parameters.predictionErrorSensitivity.score || "N/A"}</div>
+                      <div>Description: ${parameters.predictionErrorSensitivity.description || "N/A"}</div>
+                    </div>
+                  </div>
+                `
+                    : ""
+                }
+
+                ${
+                  parameters.precisionAllocation
+                    ? `
+                  <div class="bg-white/10 rounded p-3">
+                    <h5 class="font-medium">Precision Allocation</h5>
+                    <div class="text-sm text-gray-300">
+                      <div>Score: ${parameters.precisionAllocation.score || "N/A"}</div>
+                      <div>Description: ${parameters.precisionAllocation.description || "N/A"}</div>
+                    </div>
+                  </div>
+                `
+                    : ""
+                }
+
+                ${
+                  parameters.ignitionThreshold
+                    ? `
+                  <div class="bg-white/10 rounded p-3">
+                    <h5 class="font-medium">Ignition Threshold</h5>
+                    <div class="text-sm text-gray-300">
+                      <div>Score: ${parameters.ignitionThreshold.score || "N/A"}</div>
+                      <div>Description: ${parameters.ignitionThreshold.description || "N/A"}</div>
+                    </div>
+                  </div>
+                `
+                    : ""
+                }
+
+                ${
+                  parameters.somaticBias
+                    ? `
+                  <div class="bg-white/10 rounded p-3">
+                    <h5 class="font-medium">Somatic Bias</h5>
+                    <div class="text-sm text-gray-300">
+                      <div>Score: ${parameters.somaticBias.score || "N/A"}</div>
+                      <div>Description: ${parameters.somaticBias.description || "N/A"}</div>
+                    </div>
+                  </div>
+                `
+                    : ""
+                }
+              </div>
+            </div>
+
+            ${
+              summary.interpretation
+                ? `
+              <div class="bg-white/5 rounded-lg p-4">
+                <h4 class="text-lg font-semibold mb-2">Interpretation</h4>
+                <p class="text-sm text-gray-300">${summary.interpretation}</p>
+              </div>
+            `
+                : ""
+            }
+
+            <div class="bg-white/5 rounded-lg p-4">
+              <h4 class="text-lg font-semibold mb-2">Recommendations</h4>
+              <div class="space-y-2 text-sm text-gray-300">
+                ${generateRecommendations(assessment.data)}
+              </div>
+            </div>
+          </div>
+        `;
+
+        document
+          .getElementById("assessmentDetailsModal")
+          .classList.remove("hidden");
+      }
+
+      function generateRecommendations(assessmentData) {
+        if (!assessmentData || !assessmentData.parameters)
+          return "<p>No recommendations available.</p>";
+
+        const { parameters } = assessmentData;
+        const recommendations = [];
+
+        const epsilon = parseFloat(
+          parameters.predictionErrorSensitivity?.score || 0,
+        );
+        const precision = parseFloat(
+          parameters.precisionAllocation?.score || 0,
+        );
+        const threshold = parseFloat(parameters.ignitionThreshold?.score || 0);
+        const somatic = parseFloat(parameters.somaticBias?.score || 0);
+
+        if (epsilon > 70) {
+          recommendations.push(
+            "<li>Consider practices that help manage sensitivity to prediction errors, such as mindfulness or gradual exposure techniques.</li>",
+          );
+        }
+
+        if (precision > 70) {
+          recommendations.push(
+            "<li>Your precision-focused approach suggests you may benefit from detailed planning and structured learning environments.</li>",
+          );
+        }
+
+        if (threshold > 70) {
+          recommendations.push(
+            "<li>With a high ignition threshold, you might need stronger stimuli or more time to process new information.</li>",
+          );
+        }
+
+        if (somatic > 70) {
+          recommendations.push(
+            "<li>Your somatic bias indicates you may learn best through physical activities and hands-on experiences.</li>",
+          );
+        }
+
+        if (recommendations.length === 0) {
+          recommendations.push(
+            "<li>Your balanced profile suggests you can adapt to various learning and processing styles effectively.</li>",
+          );
+        }
+
+        return (
+          "<ul class='list-disc list-inside space-y-1'>" +
+          recommendations.join("") +
+          "</ul>"
+        );
       }
 
       function exportAssessment(assessmentId) {
@@ -760,6 +950,70 @@
           document.body.removeChild(notification);
         }, 3000);
       }
+
+      // Load user profile
+      async function loadUserProfile() {
+        try {
+          // Check if user is authenticated
+          if (!window.authService || !window.authService.isAuthenticated()) {
+            showError("Please log in to view your profile");
+            setTimeout(() => {
+              window.location.href = "/Auth.html";
+            }, 2000);
+            return;
+          }
+
+          const response = await fetch("/api/auth/profile", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${window.authService.token}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to load profile");
+          }
+
+          const data = await response.json();
+
+          if (data.success && data.user) {
+            const user = data.user;
+            document.getElementById("userInitials").textContent =
+              (user.firstName?.[0] || "") + (user.lastName?.[0] || "");
+            document.getElementById("userName").textContent =
+              `${user.firstName || ""} ${user.lastName || ""}`.trim() || "User";
+            document.getElementById("userEmail").textContent = user.email || "";
+            document.getElementById("memberSince").textContent =
+              new Date(user.createdAt).toLocaleDateString() || "Unknown";
+          } else {
+            throw new Error(data.error || "Invalid response");
+          }
+        } catch (error) {
+          console.error("Profile load error:", error);
+          showError("Failed to load profile. Please try logging in again.");
+          setTimeout(() => {
+            window.location.href = "/Auth.html";
+          }, 2000);
+        }
+      }
+
+      // Initialize auth service and load profile
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize auth service if not already done
+        if (!window.authService) {
+          window.authService = new AuthService();
+        }
+
+        // Load user profile
+        loadUserProfile();
+
+        // Load assessments and other data
+        loadUserAssessments();
+      });
     </script>
+
+    <!-- Navigation Component Loader -->
+    <script src="assets/js/navigation-loader.js"></script>
   </body>
 </html>

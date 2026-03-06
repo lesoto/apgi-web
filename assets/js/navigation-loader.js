@@ -138,7 +138,6 @@
                             <a href="Quiz.html" class="mobile-menu-link">Quiz</a>
                             <a href="Assessment.html" class="mobile-menu-link">Assessment</a>
                             <a href="Profile.html" class="mobile-menu-link">Profile</a>
-                            <a href="API.html" class="mobile-menu-link">API</a>
                         </div>
                         
                         <!-- Theme Toggle -->

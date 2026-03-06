@@ -11,6 +11,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const sqlite3 = require("sqlite3").verbose();
 
 dotenv.config();
 
@@ -39,6 +40,107 @@ if (missingVars.length > 0) {
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Security middleware with CSP
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com",
+          "https://cdn.tailwindcss.com",
+          "https://cdnjs.cloudflare.com",
+        ],
+        fontSrc: [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "https://cdnjs.cloudflare.com",
+        ],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.tailwindcss.com",
+          "https://cdn.jsdelivr.net",
+          "https://unpkg.com",
+          "https://cdnjs.cloudflare.com",
+          "https://js.stripe.com",
+          "https://www.googletagmanager.com",
+        ],
+        imgSrc: ["'self'", "data:", "https:", "https://*.stripe.com"],
+        connectSrc: [
+          "'self'",
+          "https://api.stripe.com",
+          "https://www.google-analytics.com",
+        ],
+        frameSrc: ["'self'", "https://js.stripe.com"],
+      },
+    },
+  }),
+);
+const db = new sqlite3.Database("./apgi.db", (err) => {
+  if (err) {
+    console.error("Error opening database:", err.message);
+  } else {
+    console.log("Connected to SQLite database.");
+    initializeDatabase();
+  }
+});
+
+// Initialize database tables
+function initializeDatabase() {
+  // Users table
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role TEXT DEFAULT 'user',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
+
+  // Consultations table
+  db.run(`CREATE TABLE IF NOT EXISTS consultations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT,
+    preferredDate TEXT,
+    preferredTime TEXT,
+    consultationType TEXT,
+    message TEXT,
+    status TEXT DEFAULT 'pending',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
+
+  // Progress table
+  db.run(`CREATE TABLE IF NOT EXISTS progress (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER NOT NULL,
+    assessmentId TEXT NOT NULL,
+    progressData TEXT,
+    completedAt DATETIME,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES users (id)
+  )`);
+
+  // Quiz results table
+  db.run(`CREATE TABLE IF NOT EXISTS quiz_results (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER NOT NULL,
+    quizId TEXT NOT NULL,
+    answers TEXT NOT NULL,
+    score INTEGER,
+    completedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES users (id)
+  )`);
+}
 
 // Security: JWT_SECRET must be set in production environments
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -69,7 +171,6 @@ app.use(
         scriptSrc: [
           "'self'",
           "'unsafe-inline'",
-          "'unsafe-eval'",
           "https://cdn.tailwindcss.com",
           "https://cdn.jsdelivr.net",
           "https://unpkg.com",
@@ -143,9 +244,6 @@ app.get("/favicon.ico", (req, res) => {
 
 // Store consultations in memory (replace with database in production)
 const consultations = [];
-
-// Store users in memory (replace with database in production)
-const users = [];
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
@@ -237,51 +335,97 @@ app.post("/api/auth/register", apiLimiter, async (req, res) => {
     }
 
     // Check if user already exists
-    const existingUser = users.find((u) => u.email === sanitizedEmail);
-    if (existingUser) {
-      return res.status(409).json({
-        success: false,
-        error: "User with this email already exists",
-      });
-    }
+    db.get(
+      "SELECT * FROM users WHERE email = ?",
+      [sanitizedEmail],
+      (err, existingUser) => {
+        if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({
+            success: false,
+            error: "Internal server error",
+          });
+        }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+        if (existingUser) {
+          return res.status(409).json({
+            success: false,
+            error: "User with this email already exists",
+          });
+        }
 
-    // Create new user
-    const newUser = {
-      id: Date.now().toString(),
-      firstName: sanitizedFirstName,
-      lastName: sanitizedLastName,
-      email: sanitizedEmail,
-      password: hashedPassword,
-      role: role.trim().replace(/[<>]/g, ""),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+        // Hash password
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+          if (err) {
+            console.error("Password hashing error:", err);
+            return res.status(500).json({
+              success: false,
+              error: "Internal server error",
+            });
+          }
 
-    users.push(newUser);
+          // Create new user
+          const stmt = db.prepare(`
+          INSERT INTO users (firstName, lastName, email, password, role)
+          VALUES (?, ?, ?, ?, ?)
+        `);
 
-    // Generate JWT token
-    const token = jwt.sign(
-      {
-        id: newUser.id,
-        email: newUser.email,
-        role: newUser.role,
+          stmt.run(
+            [
+              sanitizedFirstName,
+              sanitizedLastName,
+              sanitizedEmail,
+              hashedPassword,
+              role.trim().replace(/[<>]/g, ""),
+            ],
+            function (err) {
+              if (err) {
+                console.error("Database insertion error:", err);
+                return res.status(500).json({
+                  success: false,
+                  error: "Internal server error",
+                });
+              }
+
+              // Get the created user
+              db.get(
+                "SELECT id, firstName, lastName, email, role, createdAt, updatedAt FROM users WHERE id = ?",
+                [this.lastID],
+                (err, newUser) => {
+                  if (err) {
+                    console.error("Database retrieval error:", err);
+                    return res.status(500).json({
+                      success: false,
+                      error: "Internal server error",
+                    });
+                  }
+
+                  // Generate JWT token
+                  const token = jwt.sign(
+                    {
+                      id: newUser.id,
+                      email: newUser.email,
+                      role: newUser.role,
+                    },
+                    JWT_SECRET,
+                    { expiresIn: "24h" },
+                  );
+
+                  res.status(201).json({
+                    success: true,
+                    message: "User registered successfully",
+                    user: newUser,
+                    token,
+                  });
+                },
+              );
+            },
+          );
+
+          stmt.finalize();
+        });
       },
-      JWT_SECRET,
-      { expiresIn: "24h" },
     );
-
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = newUser;
-
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully",
-      user: userWithoutPassword,
-      token,
-    });
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({
@@ -309,43 +453,65 @@ app.post("/api/auth/login", apiLimiter, async (req, res) => {
     }
 
     // Find user
-    const user = users.find((u) => u.email === sanitizedEmail);
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        error: "Invalid email or password",
-      });
-    }
+    db.get(
+      "SELECT * FROM users WHERE email = ?",
+      [sanitizedEmail],
+      (err, user) => {
+        if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({
+            success: false,
+            error: "Internal server error",
+          });
+        }
 
-    // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(401).json({
-        success: false,
-        error: "Invalid email or password",
-      });
-    }
+        if (!user) {
+          return res.status(401).json({
+            success: false,
+            error: "Invalid email or password",
+          });
+        }
 
-    // Generate JWT token
-    const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        role: user.role,
+        // Verify password
+        bcrypt.compare(password, user.password, (err, isValidPassword) => {
+          if (err) {
+            console.error("Password comparison error:", err);
+            return res.status(500).json({
+              success: false,
+              error: "Internal server error",
+            });
+          }
+
+          if (!isValidPassword) {
+            return res.status(401).json({
+              success: false,
+              error: "Invalid email or password",
+            });
+          }
+
+          // Generate JWT token
+          const token = jwt.sign(
+            {
+              id: user.id,
+              email: user.email,
+              role: user.role,
+            },
+            JWT_SECRET,
+            { expiresIn: "24h" },
+          );
+
+          // Remove password from response
+          const { password: _, ...userWithoutPassword } = user;
+
+          res.json({
+            success: true,
+            message: "Login successful",
+            user: userWithoutPassword,
+            token,
+          });
+        });
       },
-      JWT_SECRET,
-      { expiresIn: "24h" },
     );
-
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
-
-    res.json({
-      success: true,
-      message: "Login successful",
-      user: userWithoutPassword,
-      token,
-    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({
@@ -360,21 +526,31 @@ app.post("/api/auth/login", apiLimiter, async (req, res) => {
  */
 app.get("/api/auth/profile", authenticateToken, async (req, res) => {
   try {
-    const user = users.find((u) => u.id === req.user.id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        error: "User not found",
-      });
-    }
+    db.get(
+      "SELECT id, firstName, lastName, email, role, createdAt, updatedAt FROM users WHERE id = ?",
+      [req.user.id],
+      (err, user) => {
+        if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({
+            success: false,
+            error: "Internal server error",
+          });
+        }
 
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
+        if (!user) {
+          return res.status(404).json({
+            success: false,
+            error: "User not found",
+          });
+        }
 
-    res.json({
-      success: true,
-      user: userWithoutPassword,
-    });
+        res.json({
+          success: true,
+          user: user,
+        });
+      },
+    );
   } catch (error) {
     console.error("Profile error:", error);
     res.status(500).json({
@@ -394,28 +570,75 @@ app.put(
   async (req, res) => {
     try {
       const { firstName, lastName } = req.body;
-      const userIndex = users.findIndex((u) => u.id === req.user.id);
 
-      if (userIndex === -1) {
-        return res.status(404).json({
-          success: false,
-          error: "User not found",
-        });
-      }
+      db.get(
+        "SELECT id FROM users WHERE id = ?",
+        [req.user.id],
+        (err, user) => {
+          if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({
+              success: false,
+              error: "Internal server error",
+            });
+          }
 
-      // Update user data
-      if (firstName) users[userIndex].firstName = firstName;
-      if (lastName) users[userIndex].lastName = lastName;
-      users[userIndex].updatedAt = new Date().toISOString();
+          if (!user) {
+            return res.status(404).json({
+              success: false,
+              error: "User not found",
+            });
+          }
 
-      // Remove password from response
-      const { password: _, ...userWithoutPassword } = users[userIndex];
+          // Update user data
+          const updates = [];
+          const values = [];
 
-      res.json({
-        success: true,
-        message: "Profile updated successfully",
-        user: userWithoutPassword,
-      });
+          if (firstName) {
+            updates.push("firstName = ?");
+            values.push(firstName);
+          }
+          if (lastName) {
+            updates.push("lastName = ?");
+            values.push(lastName);
+          }
+
+          updates.push("updatedAt = datetime('now')");
+          values.push(req.user.id);
+
+          const sql = `UPDATE users SET ${updates.join(", ")} WHERE id = ?`;
+
+          db.run(sql, values, function (err) {
+            if (err) {
+              console.error("Database error:", err);
+              return res.status(500).json({
+                success: false,
+                error: "Internal server error",
+              });
+            }
+
+            // Get updated user data
+            db.get(
+              "SELECT id, firstName, lastName, email, role, createdAt, updatedAt FROM users WHERE id = ?",
+              [req.user.id],
+              (err, updatedUser) => {
+                if (err) {
+                  console.error("Database error:", err);
+                  return res.status(500).json({
+                    success: false,
+                    error: "Internal server error",
+                  });
+                }
+
+                res.json({
+                  success: true,
+                  user: updatedUser,
+                });
+              },
+            );
+          });
+        },
+      );
     } catch (error) {
       console.error("Profile update error:", error);
       res.status(500).json({
@@ -444,35 +667,61 @@ app.post(
         });
       }
 
-      const user = users.find((u) => u.id === req.user.id);
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          error: "User not found",
-        });
-      }
+      db.get(
+        "SELECT password FROM users WHERE id = ?",
+        [req.user.id],
+        async (err, user) => {
+          if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({
+              success: false,
+              error: "Internal server error",
+            });
+          }
 
-      // Verify current password
-      const isValidPassword = await bcrypt.compare(
-        currentPassword,
-        user.password,
+          if (!user) {
+            return res.status(404).json({
+              success: false,
+              error: "User not found",
+            });
+          }
+
+          // Verify current password
+          const isValidPassword = await bcrypt.compare(
+            currentPassword,
+            user.password,
+          );
+          if (!isValidPassword) {
+            return res.status(401).json({
+              success: false,
+              error: "Current password is incorrect",
+            });
+          }
+
+          // Hash new password
+          const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+          // Update password in database
+          db.run(
+            "UPDATE users SET password = ?, updatedAt = datetime('now') WHERE id = ?",
+            [hashedNewPassword, req.user.id],
+            (err) => {
+              if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({
+                  success: false,
+                  error: "Internal server error",
+                });
+              }
+
+              res.json({
+                success: true,
+                message: "Password changed successfully",
+              });
+            },
+          );
+        },
       );
-      if (!isValidPassword) {
-        return res.status(401).json({
-          success: false,
-          error: "Current password is incorrect",
-        });
-      }
-
-      // Hash new password
-      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-      user.password = hashedNewPassword;
-      user.updatedAt = new Date().toISOString();
-
-      res.json({
-        success: true,
-        message: "Password changed successfully",
-      });
     } catch (error) {
       console.error("Change password error:", error);
       res.status(500).json({
@@ -632,6 +881,7 @@ app.post("/api/create-checkout-session", apiLimiter, async (req, res) => {
     const prices = {
       professional: "price_1Oxyz1234567890", // Replace with actual price ID
       enterprise: "price_1Oxyz1234567891", // Replace with actual price ID
+      individual: "price_1Oxyz1234567892", // Replace with actual price ID
     };
 
     const actualPriceId = priceId || prices[tier];
@@ -830,7 +1080,7 @@ const progressData = new Map();
 /**
  * Save assessment progress
  */
-app.post("/api/progress", async (req, res) => {
+app.post("/api/progress", authenticateToken, async (req, res) => {
   try {
     const progress = req.body;
 
@@ -864,7 +1114,7 @@ app.post("/api/progress", async (req, res) => {
 /**
  * Get assessment progress
  */
-app.get("/api/progress/:id", (req, res) => {
+app.get("/api/progress/:id", authenticateToken, (req, res) => {
   const { id } = req.params;
   const progress = progressData.get(id);
 
@@ -884,7 +1134,7 @@ app.get("/api/progress/:id", (req, res) => {
 /**
  * Get user assessments
  */
-app.get("/api/assessments", (req, res) => {
+app.get("/api/assessments", authenticateToken, (req, res) => {
   const { userId } = req.query;
 
   if (!userId) {
@@ -908,7 +1158,7 @@ app.get("/api/assessments", (req, res) => {
 /**
  * Store quiz results
  */
-app.post("/api/quiz-results", (req, res) => {
+app.post("/api/quiz-results", authenticateToken, async (req, res) => {
   try {
     const quizResult = req.body;
 
@@ -977,29 +1227,66 @@ app.get("/success", (req, res) => {
   // Here you would verify the session with Stripe
   // and show appropriate success message
 
-  res.send(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Payment Successful - APGI</title>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-                .success { color: #28a745; font-size: 2em; margin-bottom: 20px; }
-                .message { color: #666; margin-bottom: 30px; }
-                .btn { background: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; }
-            </style>
-        </head>
-        <body>
-            <div class="success">✓ Payment Successful!</div>
-            <div class="message">
-                Thank you for joining APGI! Check your email for next steps.
-            </div>
-            <a href="/" class="btn">Return to Dashboard</a>
-        </body>
-        </html>
-    `);
+  // For now, just serve the success page with the session_id parameter
+  if (session_id) {
+    return res.sendFile("Payment-Success.html", { root: "." });
+  }
+
+  // If no session_id, redirect to home or show error
+  res.redirect("/");
+});
+
+// Frontend configuration endpoint
+app.get("/config.js", (req, res) => {
+  res.setHeader("Content-Type", "application/javascript");
+
+  // Sanitize environment variables for frontend consumption
+  const frontendConfig = {
+    // API Configuration
+    VITE_API_BASE_URL: process.env.API_BASE_URL || "http://localhost:3001/api",
+    VITE_API_TIMEOUT: process.env.API_TIMEOUT || "10000",
+
+    // Stripe Configuration (public only)
+    VITE_STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY || "",
+    VITE_STRIPE_PROFESSIONAL_PRICE_ID:
+      process.env.STRIPE_PROFESSIONAL_PRICE_ID || "",
+    VITE_STRIPE_ENTERPRISE_PRICE_ID:
+      process.env.STRIPE_ENTERPRISE_PRICE_ID || "",
+
+    // Email Service Configuration (public only)
+    VITE_EMAIL_PROVIDER: process.env.EMAIL_PROVIDER || "local",
+    VITE_MAILCHIMP_SERVER_PREFIX: process.env.MAILCHIMP_SERVER_PREFIX || "",
+    VITE_MAILCHIMP_SNAPSHOT_LIST_ID:
+      process.env.MAILCHIMP_SNAPSHOT_LIST_ID || "",
+    VITE_MAILCHIMP_NEWSLETTER_LIST_ID:
+      process.env.MAILCHIMP_NEWSLETTER_LIST_ID || "",
+    VITE_MAILCHIMP_CONSULTATIONS_LIST_ID:
+      process.env.MAILCHIMP_CONSULTATIONS_LIST_ID || "",
+    VITE_CONVERTKIT_SNAPSHOT_FORM_ID:
+      process.env.CONVERTKIT_SNAPSHOT_FORM_ID || "",
+    VITE_CONVERTKIT_PROFESSIONAL_FORM_ID:
+      process.env.CONVERTKIT_PROFESSIONAL_FORM_ID || "",
+
+    // Analytics Configuration (public only)
+    VITE_ANALYTICS_PROVIDER: process.env.ANALYTICS_PROVIDER || "local",
+    VITE_GA_TRACKING_ID: process.env.GA_TRACKING_ID || "",
+    VITE_PLAUSIBLE_DOMAIN: process.env.PLAUSIBLE_DOMAIN || "",
+
+    // Feature Flags
+    VITE_ENABLE_ANALYTICS: process.env.ENABLE_ANALYTICS || "false",
+    VITE_ENABLE_EMAIL_CAPTURE: process.env.ENABLE_EMAIL_CAPTURE || "true",
+    VITE_ENABLE_PAYMENTS: process.env.ENABLE_PAYMENTS || "true",
+    VITE_DEBUG_MODE: process.env.DEBUG_MODE || "false",
+
+    // Application Configuration
+    VITE_NODE_ENV: process.env.NODE_ENV || "development",
+    VITE_LOG_LEVEL: process.env.LOG_LEVEL || "info",
+  };
+
+  // Generate JavaScript code with sanitized config
+  const configJS = `window.env = ${JSON.stringify(frontendConfig)};`;
+
+  res.send(configJS);
 });
 
 // Start server

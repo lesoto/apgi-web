@@ -6,13 +6,56 @@
     <title>
       APGI Framework Pricing Plans | Choose Your Cognitive Architecture Journey
     </title>
+    <meta
+      name="description"
+      content="Choose the APGI Framework access level that matches your professional needs. Individual, Professional, Academic, and Enterprise plans with comprehensive consciousness assessment tools and cognitive optimization resources."
+    />
+
+    <!-- Open Graph Meta Tags -->
+    <meta
+      property="og:title"
+      content="APGI Framework Pricing Plans | Choose Your Cognitive Architecture Journey"
+    />
+    <meta
+      property="og:description"
+      content="Choose the APGI Framework access level that matches your professional needs. Individual, Professional, Academic, and Enterprise plans with comprehensive consciousness assessment tools and cognitive optimization resources."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://apgi-framework.com/Pricing.html" />
+    <meta
+      property="og:image"
+      content="https://apgi-framework.com/favicon.svg"
+    />
+    <meta property="og:image:alt" content="APGI Framework - Pricing Plans" />
+    <meta property="og:site_name" content="APGI Framework" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="APGI Framework Pricing Plans | Choose Your Cognitive Architecture Journey"
+    />
+    <meta
+      name="twitter:description"
+      content="Choose the APGI Framework access level that matches your professional needs. Individual, Professional, Academic, and Enterprise plans with comprehensive consciousness assessment tools and cognitive optimization resources."
+    />
+    <meta
+      name="twitter:image"
+      content="https://apgi-framework.com/favicon.svg"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Epilogue:wght@300;400;600;800&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind-built.css" />
+    <link
+      rel="stylesheet"
+      href="assets/css/tailwind-fallback.css"
+      media="all and (prefers-reduced-data: no), (prefers-color-scheme: no), (prefers-contrast: no)"
+    />
     <style>
       :root {
         --threshold-blue: #00b4ff;
@@ -171,48 +214,8 @@
     </style>
   </head>
   <body>
-    <!-- Navigation -->
-    <nav class="relative z-50">
-      <div class="container mx-auto px-6 py-4">
-        <div class="flex items-center justify-between">
-          <div class="text-2xl font-bold">
-            <span style="color: var(--threshold-blue)">APGI</span>_FRAMEWORK
-          </div>
-          <div class="hidden md:flex space-x-8">
-            <a href="Home.html" class="hover:text-blue-400 transition">Home</a>
-            <a href="Landing.html" class="hover:text-blue-400 transition"
-              >Overview</a
-            >
-            <a href="pricing.html" class="text-blue-400 font-semibold"
-              >Pricing</a
-            >
-            <a href="Assessment.html" class="hover:text-blue-400 transition"
-              >Assessment</a
-            >
-            <a
-              href="Book-Available-Now.html"
-              class="hover:text-blue-400 transition"
-              >Book</a
-            >
-          </div>
-          <button class="md:hidden text-white" onclick="toggleMobileMenu()">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </nav>
+    <!-- Navigation Component -->
+    <div id="navigation-container"></div>
 
     <!-- Hero Section -->
     <section class="py-20 px-6">
@@ -544,11 +547,15 @@
       </div>
     </footer>
 
+    <!-- Navigation Component Loader -->
+    <script src="assets/js/navigation-loader.js"></script>
     <script>
-      function toggleMobileMenu() {
-        // Mobile menu toggle implementation
-        console.log("Mobile menu toggle");
-      }
+      // Load navigation component
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof loadNavigation === "function") {
+          loadNavigation("navigation-container");
+        }
+      });
     </script>
   </body>
 </html>

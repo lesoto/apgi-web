@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script src="assets/js/performance-optimizer.js"></script>
+    <script src="assets/js/accessibility-enhancer.js"></script>
+    <script src="assets/js/unified-theme-manager.js"></script>
+    <script src="assets/js/cdn-fallbacks.js"></script>
+    <script src="/config.js"></script>
+    <script src="assets/js/environment-config.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact Us - APGI Framework</title>
+    <meta
+      name="description"
+      content="Get in touch with the APGI Framework team. We're here to help with your consciousness assessment and cognitive optimization journey."
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
+    <link rel="stylesheet" href="assets/css/tailwind-built.css" />
+    <link
+      rel="stylesheet"
+      href="assets/css/tailwind-fallback.css"
+      media="all and (prefers-reduced-data: no), (prefers-color-scheme: no), (prefers-contrast: no)"
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/tailwind-fallback.css"
+      media="(prefers-reduced-data: reduce) or (prefers-color-scheme: dark) or (prefers-contrast: high)"
+    />
+
+    <!-- Performance optimization: Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" href="https://unpkg.com/lucide@latest" as="script" />
+
+    <!-- Resource hints -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//unpkg.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="assets/css/design-system.css" />
+    <!-- Lucide Icons -->
+    <script
+      src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      :root {
+        /* Modern Typography */
+        --font-display:
+          "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-body:
+          "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Modern Color Palette */
+        --primary: #0f172a;
+        --primary-light: #1e293b;
+        --accent: #3b82f6;
+        --accent-light: #60a5fa;
+        --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+        /* Semantic Colors */
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #06b6d4;
+
+        /* Neutral Colors */
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8fafc;
+        --bg-tertiary: #f1f5f9;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --border-light: #f1f5f9;
+
+        /* Effects & Shadows */
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+        /* Transitions */
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-fast: all 0.15s ease;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: var(--text-primary);
+      }
+
+      .contact-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .contact-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        color: white;
+      }
+
+      .contact-title {
+        font-family: var(--font-display);
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .contact-subtitle {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .contact-form {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: var(--shadow-xl);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .contact-info {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: var(--shadow-xl);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        display: block;
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .form-input,
+      .form-textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        transition: var(--transition);
+        background: var(--bg-primary);
+      }
+
+      .form-textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .form-input:focus,
+      .form-textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: var(--transition);
+        width: 100%;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #2563eb;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 0.5rem;
+        transition: var(--transition);
+      }
+
+      .contact-item:hover {
+        background: var(--bg-tertiary);
+        transform: translateX(4px);
+      }
+
+      .contact-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--accent);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+      }
+
+      .contact-details h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+      }
+
+      .contact-details p {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+
+      .success-message,
+      .error-message {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        display: none;
+      }
+
+      .success-message {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid var(--success);
+        color: var(--success);
+      }
+
+      .error-message {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid var(--danger);
+        color: var(--danger);
+      }
+
+      @media (max-width: 768px) {
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .contact-title {
+          font-size: 2rem;
+        }
+
+        .contact-container {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Component -->
+    <div id="navigation-container"></div>
+
+    <div class="contact-container">
+      <div class="contact-header">
+        <h1 class="contact-title">Get in Touch</h1>
+        <p class="contact-subtitle">
+          Have questions about the APGI Framework? We're here to help you on
+          your consciousness optimization journey.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Contact Form -->
+        <div class="contact-form">
+          <h2
+            style="
+              font-family: var(--font-display);
+              font-size: 1.5rem;
+              font-weight: 600;
+              margin-bottom: 1.5rem;
+              color: var(--text-primary);
+            "
+          >
+            Send us a Message
+          </h2>
+
+          <div class="success-message" id="successMessage">
+            Thank you for your message! We'll get back to you soon.
+          </div>
+
+          <div class="error-message" id="errorMessage">
+            There was an error sending your message. Please try again.
+          </div>
+
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name" class="form-label">Name *</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="form-input"
+                placeholder="Your full name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">Email *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="your.email@example.com"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="subject" class="form-label">Subject *</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                class="form-input"
+                placeholder="How can we help you?"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="form-label">Message *</label>
+              <textarea
+                id="message"
+                name="message"
+                class="form-textarea"
+                placeholder="Tell us more about your question or feedback..."
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+          <h2
+            style="
+              font-family: var(--font-display);
+              font-size: 1.5rem;
+              font-weight: 600;
+              margin-bottom: 1.5rem;
+              color: var(--text-primary);
+            "
+          >
+            Other Ways to Reach Us
+          </h2>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i data-lucide="mail"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Email</h3>
+              <p>support@apgi-framework.com</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i data-lucide="phone"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Phone</h3>
+              <p>+1 (555) 123-4567</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i data-lucide="clock"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Response Time</h3>
+              <p>Usually within 24 hours</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i data-lucide="map-pin"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Location</h3>
+              <p>Remote-first team</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Component Loader -->
+    <script src="assets/js/navigation-loader.js"></script>
+    <script>
+      // Load navigation component
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof loadNavigation === "function") {
+          loadNavigation("navigation-container");
+        }
+      });
+
+      // Contact form handling
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(e.target);
+          const data = Object.fromEntries(formData.entries());
+
+          // Hide previous messages
+          document.getElementById("successMessage").style.display = "none";
+          document.getElementById("errorMessage").style.display = "none";
+
+          try {
+            // In a real implementation, this would send to your backend
+            // For now, we'll simulate a successful submission
+            console.log("Contact form submission:", data);
+
+            // Show success message
+            document.getElementById("successMessage").style.display = "block";
+
+            // Reset form
+            e.target.reset();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } catch (error) {
+            console.error("Contact form error:", error);
+            document.getElementById("errorMessage").style.display = "block";
+          }
+        });
+
+      // Initialize Lucide icons
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>

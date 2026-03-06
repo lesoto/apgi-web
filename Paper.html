@@ -45,6 +45,12 @@
         --radius-md: 0.5rem;
         --radius-lg: 0.75rem;
         --radius-xl: 1rem;
+        --space-xs: 0.25rem;
+        --space-sm: 0.5rem;
+        --space-md: 1rem;
+        --space-lg: 1.5rem;
+        --space-xl: 2rem;
+        --space-2xl: 3rem;
         --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -1378,9 +1384,242 @@
       html:not(.dark) .text-7xl {
         font-size: 4.5rem;
       }
+
+      /* ============================================
+           READING PROGRESS BAR
+           ============================================ */
+      #reading-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+        z-index: 9999;
+        transition: width 0.1s linear;
+        border-radius: 0 2px 2px 0;
+      }
+
+      /* ============================================
+           STATS STRIP
+           ============================================ */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        text-align: center;
+      }
+
+      @media (min-width: 768px) {
+        .stats-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      .stat-number {
+        font-size: 2.75rem;
+        font-weight: 800;
+        line-height: 1;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: "Space Grotesk", sans-serif;
+        letter-spacing: -0.04em;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--text-muted);
+      }
+
+      .stat-divider {
+        display: none;
+      }
+
+      @media (min-width: 768px) {
+        .stat-divider {
+          display: block;
+          width: 1px;
+          background: var(--border-color);
+          margin: 0 auto;
+        }
+      }
+
+      /* ============================================
+           MATH FORMULATION SECTION
+           ============================================ */
+      .equation-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: var(--space-xl);
+        font-family: "JetBrains Mono", monospace;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .equation-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+      }
+
+      .equation-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+        margin-bottom: 0.75rem;
+      }
+
+      .equation-main {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .equation-vars {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 2;
+        border-top: 1px solid var(--border-color);
+        padding-top: 0.75rem;
+        margin-top: 0.75rem;
+      }
+
+      .var-highlight {
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+
+      /* ============================================
+           PULL QUOTE / CALLOUT
+           ============================================ */
+      .pull-quote {
+        border-left: 4px solid var(--accent-color);
+        padding: 1.5rem 2rem;
+        background: rgba(37, 99, 235, 0.05);
+        border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+        margin: 2rem 0;
+        font-size: 1.125rem;
+        font-style: italic;
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+
+      .dark .pull-quote {
+        background: rgba(59, 130, 246, 0.08);
+      }
+
+      /* ============================================
+           SECTION LABELS
+           ============================================ */
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.7rem;
+        font-family: "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+      }
+
+      .section-label-line {
+        width: 2rem;
+        height: 1px;
+        background: var(--border-color);
+      }
+
+      /* ============================================
+           FLOATING TOC DOTS
+           ============================================ */
+      #toc-dots {
+        position: fixed;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 30;
+        display: none;
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      @media (min-width: 1280px) {
+        #toc-dots {
+          display: flex;
+        }
+      }
+
+      .toc-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+      }
+
+      .toc-dot:hover,
+      .toc-dot.active {
+        background: var(--accent-color);
+        transform: scale(1.4);
+      }
+
+      .toc-dot[data-label]::after {
+        content: attr(data-label);
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.7rem;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--text-muted);
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        background: var(--bg-secondary);
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-color);
+        pointer-events: none;
+      }
+
+      .toc-dot:hover::after {
+        opacity: 1;
+      }
     </style>
   </head>
   <body class="antialiased overflow-x-hidden">
+    <!-- Reading Progress Bar -->
+    <div id="reading-progress" aria-hidden="true"></div>
+
+    <!-- Floating TOC Dots -->
+    <nav id="toc-dots" aria-label="Page sections">
+      <button class="toc-dot active" data-target="main-content" data-label="Hero" aria-label="Go to hero"></button>
+      <button class="toc-dot" data-target="concepts" data-label="Components" aria-label="Go to framework components"></button>
+      <button class="toc-dot" data-target="contributions" data-label="Contributions" aria-label="Go to contributions"></button>
+      <button class="toc-dot" data-target="architecture" data-label="Architecture" aria-label="Go to architecture"></button>
+      <button class="toc-dot" data-target="math-formulation" data-label="Equations" aria-label="Go to equations"></button>
+      <button class="toc-dot" data-target="clinical" data-label="Clinical" aria-label="Go to clinical"></button>
+      <button class="toc-dot" data-target="predictions" data-label="Predictions" aria-label="Go to predictions"></button>
+      <button class="toc-dot" data-target="access" data-label="Access" aria-label="Go to access"></button>
+    </nav>
+
     <!-- Include Navigation Component -->
     <div id="navigation-container"></div>
     <script>
@@ -1488,6 +1727,14 @@
               Theoretical Framework
             </div>
             <div class="badge badge-secondary">2025</div>
+            <div class="badge badge-secondary">
+              <i data-lucide="clock" style="width: 0.75rem; height: 0.75rem;"></i>
+              ~18 min read
+            </div>
+            <div class="badge badge-secondary">
+              <i data-lucide="book-open" style="width: 0.75rem; height: 0.75rem;"></i>
+              Preprint
+            </div>
           </div>
 
           <h1
@@ -1567,7 +1814,7 @@
           </div>
         </div>
 
-        <div class="hidden lg:block" id="abstract">
+        <div id="abstract">
           <div
             class="glass-panel p-8 rounded-2xl relative overflow-hidden shadow-2xl"
           >
@@ -1654,6 +1901,33 @@
       </div>
     </section>
 
+    <!-- Stats Strip -->
+    <section
+      class="py-16 border-y"
+      style="background: var(--bg-primary); border-color: var(--border-color);"
+    >
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="stats-grid">
+          <div>
+            <div class="stat-number" data-count-to="6">6</div>
+            <div class="stat-label">Framework Components</div>
+          </div>
+          <div>
+            <div class="stat-number" data-count-to="4">4</div>
+            <div class="stat-label">Clinical Applications</div>
+          </div>
+          <div>
+            <div class="stat-number" data-count-to="3">3</div>
+            <div class="stat-label">Epistemic Levels</div>
+          </div>
+          <div>
+            <div class="stat-number" data-count-to="9">9+</div>
+            <div class="stat-label">Testable Predictions</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section
       class="py-16 bg-gradient-to-r from-indigo-900/30 to-purple-900/30 border-y border-indigo-500/20"
       style="
@@ -1687,6 +1961,30 @@
             prediction errors signal threats to homeostatic integrity that
             cannot be resolved by unconscious processing.
           </p>
+
+          <!-- Three pillars -->
+          <div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 1rem; max-width: 56rem; margin: 2rem auto 0; text-align: left;">
+            <div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 1rem;">
+              <!-- Responsive: 3 cols on md+ -->
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; max-width: 56rem; margin: 1.5rem auto 0; text-align: left;">
+            <div style="padding: 1.25rem 1.5rem; background: rgba(255,255,255,0.06); border-radius: 0.75rem; border: 1px solid rgba(99,102,241,0.2);">
+              <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #818cf8; font-family: 'JetBrains Mono', monospace; margin-bottom: 0.5rem;">Thermodynamic</div>
+              <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Metabolic Gating</div>
+              <div style="font-size: 0.875rem; color: var(--text-secondary);">Consciousness costs energy; deployed only when expected utility justifies the metabolic investment.</div>
+            </div>
+            <div style="padding: 1.25rem 1.5rem; background: rgba(255,255,255,0.06); border-radius: 0.75rem; border: 1px solid rgba(99,102,241,0.2);">
+              <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #818cf8; font-family: 'JetBrains Mono', monospace; margin-bottom: 0.5rem;">Information-Theoretic</div>
+              <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Precision Weighting</div>
+              <div style="font-size: 0.875rem; color: var(--text-secondary);">Confidence-modulated prediction errors determine which signals are worthy of broadcast.</div>
+            </div>
+            <div style="padding: 1.25rem 1.5rem; background: rgba(255,255,255,0.06); border-radius: 0.75rem; border: 1px solid rgba(99,102,241,0.2);">
+              <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #818cf8; font-family: 'JetBrains Mono', monospace; margin-bottom: 0.5rem;">Computational</div>
+              <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Phase Transition</div>
+              <div style="font-size: 0.875rem; color: var(--text-secondary);">Ignition is a bifurcation event — sudden, non-linear, system-wide — not a gradual process.</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1698,6 +1996,11 @@
     >
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-20">
+          <div class="section-label mx-auto" style="justify-content: center;">
+            <span class="section-label-line"></span>
+            Section 01
+            <span class="section-label-line"></span>
+          </div>
           <h2 class="text-4xl font-bold mb-6">Framework Components</h2>
           <div
             class="w-24 h-1 bg-gradient-to-r mx-auto rounded-full mb-6"
@@ -1825,6 +2128,28 @@
               >
             </div>
           </div>
+
+          <div class="ignition-card" style="border-color: rgba(99,102,241,0.3); background: linear-gradient(135deg, rgba(99,102,241,0.05), var(--card-bg));">
+            <div class="icon-box bg-indigo-500/10 text-indigo-400">
+              <i data-lucide="layers" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Epistemic Architecture</h3>
+            <p class="leading-relaxed" style="color: var(--text-secondary)">
+              Three-level hierarchy distinguishing thermodynamic, information-theoretic,
+              and computational claims — providing a unified, falsifiable framework
+              that bridges physical substrate and phenomenal experience.
+            </p>
+            <div
+              class="mt-6 pt-4 border-t"
+              style="border-color: var(--border-color); margin-top: auto"
+            >
+              <span
+                class="text-xs font-mono uppercase tracking-wider"
+                style="color: var(--text-muted)"
+                >Unifying Layer</span
+              >
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1836,6 +2161,11 @@
     >
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
+          <div class="section-label mx-auto" style="justify-content: center;">
+            <span class="section-label-line"></span>
+            Section 02
+            <span class="section-label-line"></span>
+          </div>
           <h2 class="text-3xl font-bold mb-4">
             Major Theoretical Contributions
           </h2>
@@ -1920,6 +2250,79 @@
       </div>
     </section>
 
+    <!-- Mathematical Formulation Section -->
+    <section
+      id="math-formulation"
+      class="py-24"
+      style="background: var(--bg-primary);"
+    >
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <div class="section-label mx-auto" style="justify-content: center;">
+            <span class="section-label-line"></span>
+            Mathematical Core
+            <span class="section-label-line"></span>
+          </div>
+          <h2 class="text-3xl font-bold mb-4">Formal Specification</h2>
+          <div class="h-1 w-20 mx-auto rounded-full" style="background: linear-gradient(to right, #6366f1, #8b5cf6)"></div>
+          <p class="mt-6 max-w-3xl mx-auto" style="color: var(--text-secondary)">
+            The APGI framework is grounded in precise mathematical formulations
+            linking thermodynamic, information-theoretic, and computational levels of analysis.
+          </p>
+        </div>
+
+        <div class="grid-2" style="gap: 1.5rem; margin-bottom: 2rem;">
+          <div class="equation-card">
+            <div class="equation-label">Eq. 1 — Ignition Criterion</div>
+            <div class="equation-main">I(t) = Σ [ α(t) · PE(x, t) ] ≥ Θ<sub style="font-size: 0.7em;">allostatic</sub></div>
+            <div class="equation-vars">
+              <div><span class="var-highlight">I(t)</span> &nbsp;— Ignition drive at time <em>t</em></div>
+              <div><span class="var-highlight">α(t)</span> &nbsp;— Adaptive precision weight (time-varying)</div>
+              <div><span class="var-highlight">PE(x,t)</span> &nbsp;— Interoceptive prediction error for signal <em>x</em></div>
+              <div><span class="var-highlight">Θ<sub style="font-size:0.75em">allostatic</sub></span> &nbsp;— Dynamic allostatic threshold</div>
+            </div>
+          </div>
+
+          <div class="equation-card">
+            <div class="equation-label">Eq. 2 — Precision Weighting</div>
+            <div class="equation-main">α(t) = σ<sup>−2</sup><sub style="font-size: 0.7em;">prior</sub> / [ σ<sup>−2</sup><sub style="font-size: 0.7em;">prior</sub> + σ<sup>−2</sup><sub style="font-size: 0.7em;">likelihood</sub> ]</div>
+            <div class="equation-vars">
+              <div><span class="var-highlight">σ<sup>−2</sup><sub style="font-size:0.75em">prior</sub></span> &nbsp;— Inverse variance of prior prediction</div>
+              <div><span class="var-highlight">σ<sup>−2</sup><sub style="font-size:0.75em">likelihood</sub></span> &nbsp;— Inverse variance of sensory evidence</div>
+              <div>Higher α → prediction errors weighted more heavily, lowering ignition threshold</div>
+            </div>
+          </div>
+
+          <div class="equation-card">
+            <div class="equation-label">Eq. 3 — Allostatic Set-Point Dynamics</div>
+            <div class="equation-main">dΘ/dt = −κ · (Θ − Θ<sub style="font-size: 0.7em;">baseline</sub>) + η · M(t)</div>
+            <div class="equation-vars">
+              <div><span class="var-highlight">κ</span> &nbsp;— Mean-reversion rate to baseline</div>
+              <div><span class="var-highlight">Θ<sub style="font-size:0.75em">baseline</sub></span> &nbsp;— Species/individual baseline threshold</div>
+              <div><span class="var-highlight">M(t)</span> &nbsp;— Metabolic load at time <em>t</em></div>
+              <div><span class="var-highlight">η</span> &nbsp;— Metabolic coupling coefficient</div>
+            </div>
+          </div>
+
+          <div class="equation-card">
+            <div class="equation-label">Eq. 4 — Thermodynamic Cost Function</div>
+            <div class="equation-main">C<sub style="font-size: 0.7em;">conscious</sub> = ∫ P(t) dt ≫ C<sub style="font-size: 0.7em;">unconscious</sub></div>
+            <div class="equation-vars">
+              <div><span class="var-highlight">C<sub style="font-size:0.75em">conscious</sub></span> &nbsp;— Metabolic cost of conscious processing</div>
+              <div><span class="var-highlight">P(t)</span> &nbsp;— Power dissipation during global broadcast</div>
+              <div>Consciousness is deployed only when expected utility exceeds thermodynamic cost</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pull-quote max-w-4xl mx-auto">
+          "When precision-weighted interoceptive prediction errors exceed the dynamic allostatic threshold,
+          the system undergoes a bifurcation — a phase transition from local, unconscious processing
+          to global, conscious broadcast. This is not gradual but sudden, as in all critical transitions."
+        </div>
+      </div>
+    </section>
+
     <section
       id="architecture"
       class="py-24 border-y"
@@ -1927,6 +2330,11 @@
     >
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12">
+          <div class="section-label mx-auto" style="justify-content: center;">
+            <span class="section-label-line"></span>
+            Section 04
+            <span class="section-label-line"></span>
+          </div>
           <h2 class="text-3xl font-bold mb-4">System Architecture</h2>
           <div
             class="h-1 w-20 mx-auto rounded-full"
@@ -2243,6 +2651,11 @@
     <section id="clinical" class="py-24" style="background: var(--bg-primary)">
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
+          <div class="section-label mx-auto" style="justify-content: center;">
+            <span class="section-label-line"></span>
+            Section 05
+            <span class="section-label-line"></span>
+          </div>
           <h2 class="text-3xl font-bold mb-4">Clinical Translation</h2>
           <div
             class="h-1 w-20 mx-auto rounded-full"
@@ -2405,6 +2818,11 @@
     >
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16">
+          <div class="section-label mx-auto" style="justify-content: center;">
+            <span class="section-label-line"></span>
+            Section 06
+            <span class="section-label-line"></span>
+          </div>
           <h2 class="text-3xl font-bold mb-4">Testable Predictions</h2>
           <div
             class="h-1 w-20 mx-auto rounded-full"
@@ -2744,6 +3162,49 @@
     <script>
       // Initialize Lucide icons
       lucide.createIcons();
+
+      // ============================================
+      // READING PROGRESS BAR
+      // ============================================
+      const progressBar = document.getElementById('reading-progress');
+      function updateProgress() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = Math.min(progress, 100) + '%';
+      }
+      window.addEventListener('scroll', updateProgress, { passive: true });
+
+      // ============================================
+      // FLOATING TOC — active section tracking
+      // ============================================
+      const tocDots = document.querySelectorAll('#toc-dots .toc-dot');
+      const sections = ['main-content', 'concepts', 'contributions', 'architecture', 'math-formulation', 'clinical', 'predictions', 'access'];
+
+      function updateActiveDot() {
+        let current = sections[0];
+        const offset = 120;
+        for (const id of sections) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= offset) {
+            current = id;
+          }
+        }
+        tocDots.forEach(dot => {
+          dot.classList.toggle('active', dot.dataset.target === current);
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveDot, { passive: true });
+
+      tocDots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          const target = document.getElementById(dot.dataset.target);
+          if (target) {
+            window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+          }
+        });
+      });
 
       // ============================================
       // DOWNLOAD HANDLING

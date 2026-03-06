@@ -53,25 +53,8 @@
     </style>
   </head>
   <body class="text-white">
-    <!-- Navigation -->
-    <nav class="glass-morphism border-b border-white/20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <div class="flex items-center">
-            <h1 class="text-xl font-bold">APGI Admin Dashboard</h1>
-          </div>
-          <div class="flex items-center space-x-4">
-            <span id="userEmail" class="text-sm opacity-80"></span>
-            <button
-              id="logoutBtn"
-              class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition-colors"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <!-- Navigation Component -->
+    <div id="navigation-container"></div>
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -595,6 +578,17 @@
           document.body.removeChild(notification);
         }, 3000);
       }
+    </script>
+
+    <!-- Navigation Component Loader -->
+    <script src="assets/js/navigation-loader.js"></script>
+    <script>
+      // Load navigation component
+      document.addEventListener("DOMContentLoaded", function () {
+        if (typeof loadNavigation === "function") {
+          loadNavigation("navigation-container");
+        }
+      });
     </script>
   </body>
 </html>

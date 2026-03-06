@@ -25,7 +25,9 @@ class PaymentService {
     this.testMode = !window.envConfig?.isProductionReady();
 
     // Test webhook endpoint for development
-    this.webhookUrl = "https://webhook.site/your-webhook-url"; // Replace with actual webhook.site URL
+    this.webhookUrl =
+      window.envConfig?.get("webhook.url") ||
+      "https://webhook.site/your-webhook-url";
   }
 
   /**

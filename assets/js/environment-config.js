@@ -46,11 +46,20 @@ class EnvironmentConfig {
 
       // Stripe Configuration
       stripe: {
-        publishableKey: this.getEnvVar("VITE_STRIPE_PUBLISHABLE_KEY"),
+        publishableKey:
+          this.getEnvVar("VITE_STRIPE_PUBLISHABLE_KEY") ||
+          "pk_test_placeholder_key_for_development",
         prices: {
           professional: this.getEnvVar("VITE_STRIPE_PROFESSIONAL_PRICE_ID"),
           enterprise: this.getEnvVar("VITE_STRIPE_ENTERPRISE_PRICE_ID"),
         },
+      },
+
+      // Webhook Configuration
+      webhook: {
+        url:
+          this.getEnvVar("VITE_WEBHOOK_URL") ||
+          "https://webhook.site/your-webhook-url",
       },
 
       // Analytics Configuration
