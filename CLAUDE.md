@@ -27,7 +27,9 @@ npm run screenshots  # Puppeteer screenshot workflow (screenshot-workflow.js)
 This is a **vanilla HTML/JS frontend + Express.js backend** monorepo. There is no frontend build step beyond Tailwind CSS compilation.
 
 ### Backend (`server.js`)
+
 Single Express.js server that serves both static files and a REST API on port 3001. It:
+
 - Serves static HTML pages directly (`express.static(".")`)
 - Exposes REST API at `/api/*`
 - Injects frontend config at `/config.js` (reads server-side env vars, exposes as `window.env`)
@@ -38,6 +40,7 @@ Single Express.js server that serves both static files and a REST API on port 30
 **Required env vars**: `JWT_SECRET`, `ADMIN_API_KEY`, `STRIPE_SECRET_KEY` (server exits in production if missing).
 
 ### Frontend Architecture
+
 Pages are standalone HTML files that load JS via `<script>` tags. Global singletons are established in this order:
 
 1. **`/config.js`** (served by backend) → sets `window.env`
@@ -49,21 +52,26 @@ Pages are standalone HTML files that load JS via `<script>` tags. Global singlet
 Pages in subdirectories (`SCI/`, `funnels/`) must adjust relative paths when loading these scripts.
 
 ### Page Groups
+
 - **Root pages**: `Landing.html`, `Home.html`, `Quiz.html`, `Assessment.html`, `Profile.html`, `Pricing.html`, `Auth.html`, `Admin-Dashboard.html`, etc.
 - **`SCI/`**: Scientific visualization tools (PsyStates, Academic Dashboard, Consciousness Visualization, etc.)
 - **`funnels/`**: Audience-specific marketing pages (individual, therapists, academic, organizational, healthcare, tech)
 - **`components/`**: Shared navigation component loaded dynamically
 
 ### Navigation
+
 `components/navigation.html` is fetched and injected at runtime by `navigation-loader.js`. It detects subdirectories via `window.location.pathname` and adjusts the fetch path. If loading fails, an embedded fallback navigation is rendered.
 
 ### CSS
+
 - Tailwind config in `tailwind.config.js` (scans all `.html` files)
 - Custom fonts: Space Grotesk (display), IBM Plex Sans (body)
 - Multiple fallback CSS files for offline/CDN-failure scenarios (`assets/css/tailwind-fallback.css`, `fontawesome-fallback.css`, etc.)
 
 ### CDN Fallbacks
+
 The `assets/js/` directory contains fallback implementations for CDN-loaded libraries (React, ReactDOM, D3, Chart.js, Plotly, Recharts, Lucide) used when CDN is unavailable.
 
 ### Test/Dev Mode
+
 `payment-service.js` and `auth-service.js` detect dev mode via `window.location.hostname === "localhost"` and simulate API calls rather than hitting real endpoints. The payment service also uses `window.envConfig.isProductionReady()` to determine test vs. live Stripe mode.
