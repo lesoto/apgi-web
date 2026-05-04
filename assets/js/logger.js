@@ -76,7 +76,7 @@ class Logger {
   }
 
   info(...args) {
-    if (this.shouldLog("info")) {
+    if (this.shouldLog("info") && this.isDevelopment) {
       const formatted = this.formatMessage("info", ...args);
       console.info(...formatted);
     }

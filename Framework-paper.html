@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      APGI Framework — Allostatic Precision-Gating of Conscious Access
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --apgi-threshold: #00b4ff;
+        --apgi-precision: #ff3366;
+        --apgi-neuromod: #00cc99;
+        --apgi-error: #ffcc00;
+        --apgi-workspace: #9966ff;
+        --bg-base: #0a0f1a;
+        --bg-surface: #1a1f2e;
+        --bg-elevated: #242938;
+        --text-primary: #ffffff;
+        --text-secondary: #e2e8f0;
+        --text-muted: #94a3b8;
+        --text-subtle: #64748b;
+        --border-subtle: rgba(255, 255, 255, 0.06);
+        --border-default: rgba(255, 255, 255, 0.12);
+        --glow-threshold:
+          0 0 20px rgba(0, 180, 255, 0.3), 0 0 60px rgba(0, 180, 255, 0.1);
+        --glow-precision:
+          0 0 20px rgba(255, 51, 102, 0.3), 0 0 60px rgba(255, 51, 102, 0.1);
+        --glow-workspace:
+          0 0 20px rgba(153, 102, 255, 0.3), 0 0 60px rgba(153, 102, 255, 0.1);
+        --glow-error:
+          0 0 20px rgba(255, 204, 0, 0.3), 0 0 60px rgba(255, 204, 0, 0.1);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg-base);
+        color: var(--text-primary);
+        font-family: "Inter", system-ui, sans-serif;
+        line-height: 1.625;
+        overflow-x: hidden;
+      }
+
+      /* Neural background texture */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 20% 20%,
+            rgba(0, 180, 255, 0.04) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 60% 80% at 80% 80%,
+            rgba(153, 102, 255, 0.04) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 40% 40% at 60% 30%,
+            rgba(255, 51, 102, 0.03) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(10, 15, 26, 0.85);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .nav-logo {
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 0.875rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--apgi-threshold);
+      }
+
+      .nav-series {
+        font-size: 0.75rem;
+        color: var(--text-subtle);
+        letter-spacing: 0.1em;
+      }
+
+      .nav-back {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        padding: 0.4rem 1rem;
+        border: 1px solid var(--border-default);
+        border-radius: 4px;
+        transition: all 0.25s ease;
+      }
+      .nav-back:hover {
+        color: var(--text-primary);
+        border-color: var(--apgi-threshold);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 8rem 2rem 4rem;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .paper-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(0, 180, 255, 0.08);
+        border: 1px solid rgba(0, 180, 255, 0.25);
+        border-radius: 9999px;
+        padding: 0.35rem 1rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--apgi-threshold);
+        margin-bottom: 2rem;
+        width: fit-content;
+        animation: apgi-reveal 0.6s ease forwards;
+      }
+
+      .paper-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--apgi-threshold);
+        box-shadow: 0 0 8px var(--apgi-threshold);
+        animation: neural-pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes neural-pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+          box-shadow: 0 0 12px var(--apgi-threshold);
+        }
+      }
+
+      .hero-equation {
+        font-family: "Computer Modern", "Georgia", serif;
+        font-size: clamp(2rem, 5vw, 4rem);
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        margin-bottom: 2rem;
+        opacity: 0;
+        animation: apgi-reveal 0.6s ease 0.1s forwards;
+      }
+
+      .eq-precision {
+        color: var(--apgi-precision);
+      }
+      .eq-error {
+        color: var(--apgi-error);
+      }
+      .eq-threshold {
+        color: var(--apgi-threshold);
+      }
+      .eq-operator {
+        color: var(--text-muted);
+      }
+
+      h1 {
+        font-family: "Crimson Pro", Georgia, serif;
+        font-size: clamp(2rem, 4.5vw, 3.5rem);
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+        opacity: 0;
+        animation: apgi-reveal 0.6s ease 0.2s forwards;
+      }
+
+      .hero-subtitle {
+        font-family: "Crimson Pro", Georgia, serif;
+        font-style: italic;
+        font-size: clamp(1.1rem, 2vw, 1.4rem);
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        max-width: 700px;
+        opacity: 0;
+        animation: apgi-reveal 0.6s ease 0.3s forwards;
+      }
+
+      .hero-abstract {
+        font-size: 1rem;
+        color: var(--text-muted);
+        max-width: 680px;
+        line-height: 1.75;
+        margin-bottom: 2.5rem;
+        opacity: 0;
+        animation: apgi-reveal 0.6s ease 0.4s forwards;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        opacity: 0;
+        animation: apgi-reveal 0.6s ease 0.5s forwards;
+      }
+
+      .authority-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-default);
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .authority-badge strong {
+        color: var(--text-primary);
+      }
+
+      @keyframes apgi-reveal {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── SECTION LAYOUT ── */
+      section {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 5rem 2rem;
+      }
+
+      .section-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--apgi-threshold);
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        font-family: "Crimson Pro", Georgia, serif;
+        font-size: clamp(1.75rem, 3vw, 2.5rem);
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 2rem;
+      }
+
+      /* ── DIVIDER ── */
+      .divider {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+      .divider hr {
+        border: none;
+        border-top: 1px solid var(--border-subtle);
+      }
+
+      /* ── PARAMETER CARDS ── */
+      .param-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.25rem;
+        margin-top: 2.5rem;
+      }
+
+      .param-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 1.75rem;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .param-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+      }
+
+      .param-card--threshold::before {
+        background: var(--apgi-threshold);
+      }
+      .param-card--precision::before {
+        background: var(--apgi-precision);
+      }
+      .param-card--error::before {
+        background: var(--apgi-error);
+      }
+      .param-card--workspace::before {
+        background: var(--apgi-workspace);
+      }
+      .param-card--neuromod::before {
+        background: var(--apgi-neuromod);
+      }
+
+      .param-card:hover {
+        transform: translateY(-2px);
+      }
+      .param-card--threshold:hover {
+        box-shadow: var(--glow-threshold);
+        border-color: rgba(0, 180, 255, 0.3);
+      }
+      .param-card--precision:hover {
+        box-shadow: var(--glow-precision);
+        border-color: rgba(255, 51, 102, 0.3);
+      }
+      .param-card--error:hover {
+        box-shadow: var(--glow-error);
+        border-color: rgba(255, 204, 0, 0.3);
+      }
+      .param-card--workspace:hover {
+        box-shadow: var(--glow-workspace);
+        border-color: rgba(153, 102, 255, 0.3);
+      }
+
+      .param-symbol {
+        font-family: "Computer Modern", "Georgia", serif;
+        font-size: 2rem;
+        font-weight: 400;
+        line-height: 1;
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+
+      .param-card--threshold .param-symbol {
+        color: var(--apgi-threshold);
+      }
+      .param-card--precision .param-symbol {
+        color: var(--apgi-precision);
+      }
+      .param-card--error .param-symbol {
+        color: var(--apgi-error);
+      }
+      .param-card--workspace .param-symbol {
+        color: var(--apgi-workspace);
+      }
+      .param-card--neuromod .param-symbol {
+        color: var(--apgi-neuromod);
+      }
+
+      .param-card h3 {
+        font-family: "Inter", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .param-card p {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      /* ── EQUATION BLOCK ── */
+      .equation-block {
+        background: var(--bg-surface);
+        border: 1px solid rgba(255, 204, 0, 0.2);
+        border-radius: 12px;
+        padding: 2.5rem;
+        margin: 2rem 0;
+        text-align: center;
+        position: relative;
+      }
+
+      .equation-block::before {
+        content: "Core Equation";
+        position: absolute;
+        top: -0.6rem;
+        left: 1.5rem;
+        background: var(--bg-surface);
+        padding: 0 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--apgi-error);
+      }
+
+      .equation-main {
+        font-family: "Computer Modern", "Georgia", serif;
+        font-size: clamp(1.5rem, 3vw, 2.25rem);
+        letter-spacing: 0.06em;
+        margin-bottom: 0.75rem;
+      }
+
+      .equation-expanded {
+        font-family: "Computer Modern", "Georgia", serif;
+        font-size: clamp(1rem, 2vw, 1.4rem);
+        color: var(--text-muted);
+        letter-spacing: 0.04em;
+        margin-bottom: 1.5rem;
+      }
+
+      .equation-caption {
+        font-size: 0.8rem;
+        color: var(--text-subtle);
+        max-width: 500px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* ── CLAIMS LIST ── */
+      .claims-list {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .claim-item {
+        display: flex;
+        gap: 1rem;
+        padding: 1.25rem;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: 10px;
+      }
+
+      .claim-num {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(0, 180, 255, 0.12);
+        border: 1px solid rgba(0, 180, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--apgi-threshold);
+      }
+
+      .claim-text {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .claim-text strong {
+        display: block;
+        color: var(--text-secondary);
+        margin-bottom: 0.25rem;
+        font-size: 0.875rem;
+      }
+
+      /* ── GAPS TABLE ── */
+      .gaps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .gap-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: 10px;
+        padding: 1.5rem;
+      }
+
+      .gap-tag {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 0.25rem 0.6rem;
+        border-radius: 4px;
+        margin-bottom: 0.75rem;
+        display: inline-block;
+      }
+
+      .gap-tag--computational {
+        background: rgba(0, 180, 255, 0.15);
+        color: var(--apgi-threshold);
+      }
+      .gap-tag--embodied {
+        background: rgba(255, 51, 102, 0.15);
+        color: var(--apgi-precision);
+      }
+      .gap-tag--metabolic {
+        background: rgba(0, 204, 153, 0.15);
+        color: var(--apgi-neuromod);
+      }
+
+      .gap-card h4 {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+      }
+
+      .gap-card p {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      /* ── CITATIONS ── */
+      .citations-block {
+        background: var(--bg-surface);
+        border-left: 3px solid var(--apgi-threshold);
+        border-radius: 0 10px 10px 0;
+        padding: 1.5rem 2rem;
+        margin-top: 2rem;
+      }
+
+      .citation-row {
+        display: flex;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-subtle);
+        align-items: flex-start;
+      }
+
+      .citation-row:last-child {
+        border-bottom: none;
+      }
+
+      .citation-author {
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--apgi-threshold);
+        width: 120px;
+      }
+
+      .citation-text {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+
+      /* ── APPLICATIONS ── */
+      .apps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .app-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        border-radius: 10px;
+        padding: 1.25rem;
+      }
+
+      .app-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .app-card h4 {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        margin-bottom: 0.35rem;
+      }
+
+      .app-card p {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.55;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        position: relative;
+        z-index: 1;
+        background: var(--bg-surface);
+        border-top: 1px solid var(--border-subtle);
+        padding: 3rem 2rem;
+      }
+
+      .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .footer-brand {
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 0.875rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--apgi-threshold);
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-desc {
+        font-size: 0.8rem;
+        color: var(--text-subtle);
+        max-width: 300px;
+      }
+
+      .footer-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .footer-nav a {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-nav a:hover {
+        color: var(--apgi-threshold);
+      }
+
+      .footer-eq {
+        font-family: "Computer Modern", "Georgia", serif;
+        font-size: 1.5rem;
+        opacity: 0.3;
+      }
+
+      @media (max-width: 640px) {
+        .param-grid {
+          grid-template-columns: 1fr;
+        }
+        .claims-list {
+          grid-template-columns: 1fr;
+        }
+        h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-logo">APGI</div>
+      <span class="nav-series">Paper 1 of 4</span>
+      <a href="Papers-index.html" class="nav-back">← All Papers</a>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <div class="hero">
+      <div class="paper-badge">Paper 1 · APGI Framework</div>
+
+      <div class="hero-equation">
+        <span class="eq-precision">Π</span><span class="eq-operator"> × </span
+        ><span class="eq-error">|ε|</span><span class="eq-operator"> > </span
+        ><span class="eq-threshold">Bₜ</span>
+      </div>
+
+      <h1>Allostatic Precision-Gating<br />of Conscious Access</h1>
+
+      <p class="hero-subtitle">
+        A Computational Framework Linking Predictive Processing, Interoception,
+        and Global Workspace Dynamics
+      </p>
+
+      <p class="hero-abstract">
+        In an energy-constrained brain, how does the nervous system decide which
+        information gains global access — rising into awareness — and which
+        remains unconscious? APGI proposes a formal answer: conscious access
+        occurs when accumulated precision-weighted prediction errors, with
+        interoceptive signals amplified by somatic markers, exceed a dynamically
+        regulated threshold. This framework integrates the Free Energy
+        Principle, interoceptive predictive processing, and Global Neuronal
+        Workspace Theory into a single, falsifiable computational model.
+      </p>
+
+      <div class="hero-meta">
+        <div class="authority-badge">
+          <strong>Free Energy Principle</strong>&nbsp;· Friston
+        </div>
+        <div class="authority-badge">
+          <strong>Global Workspace Theory</strong>&nbsp;· Dehaene
+        </div>
+        <div class="authority-badge">
+          <strong>Somatic Marker Hypothesis</strong>&nbsp;· Damasio
+        </div>
+        <div class="authority-badge">
+          <strong>6+</strong>&nbsp;falsification protocols
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"><hr /></div>
+
+    <!-- ── CORE EQUATION ── -->
+    <section>
+      <div class="section-label">Formal Definition</div>
+      <h2>The Precision-Gating Equation</h2>
+
+      <div class="equation-block">
+        <div class="equation-main">
+          S<sub>t</sub> = <span class="eq-precision">Πᵉ</span>·|zᵉ| +
+          <span class="eq-precision">Πⁱ_eff</span>·|zⁱ| &gt;
+          <span class="eq-threshold">θ_t</span>
+        </div>
+        <div class="equation-expanded">
+          where &nbsp;<span class="eq-precision">Πⁱ_eff</span> =
+          <span class="eq-precision">Πⁱ_baseline</span> · exp(β·M(c,a))
+        </div>
+        <div class="equation-caption">
+          S_t is the accumulated precision-weighted surprise at time t. When it
+          exceeds the dynamically adjusted threshold θ_t, global neuronal
+          ignition occurs — information becomes conscious.
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><hr /></div>
+
+    <!-- ── PARAMETERS ── -->
+    <section>
+      <div class="section-label">Framework Parameters</div>
+      <h2>Four Variables. One Threshold.</h2>
+
+      <div class="param-grid">
+        <div class="param-card param-card--precision">
+          <span class="param-symbol">Π</span>
+          <h3>Interoceptive Precision</h3>
+          <p>
+            The inverse variance of prediction error distributions. Bodily
+            signals receive preferential weighting when homeostatic stability is
+            threatened — precision amplifies internal signals above external
+            noise.
+          </p>
+        </div>
+        <div class="param-card param-card--error">
+          <span class="param-symbol">|ε|</span>
+          <h3>Prediction Error</h3>
+          <p>
+            The mismatch between predicted and actual sensory signals — both
+            exteroceptive (world) and interoceptive (body). Large errors carry
+            more weight. Surprise drives the system toward ignition.
+          </p>
+        </div>
+        <div class="param-card param-card--threshold">
+          <span class="param-symbol">Bₜ</span>
+          <h3>Ignition Threshold</h3>
+          <p>
+            The dynamic gate that must be crossed for conscious access. Actively
+            modulated by metabolic state — the brain adjusts its own sensitivity
+            based on energy availability and allostatic demands.
+          </p>
+        </div>
+        <div class="param-card param-card--neuromod">
+          <span class="param-symbol">M</span>
+          <h3>Somatic Marker</h3>
+          <p>
+            Learned interoceptive associations that modulate neural gain.
+            Somatic markers encode embodied memory of past homeostatic states,
+            shaping which signals receive amplified precision-weighting.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><hr /></div>
+
+    <!-- ── THREE CRITICAL GAPS ── -->
+    <section>
+      <div class="section-label">Theoretical Contribution</div>
+      <h2>Three Gaps. One Unified Framework.</h2>
+      <p
+        style="
+          color: var(--text-muted);
+          max-width: 640px;
+          margin-bottom: 1rem;
+          line-height: 1.75;
+        "
+      >
+        Prior accounts of consciousness left three critical explanatory gaps
+        unresolved. APGI bridges all three with a single computational
+        architecture.
+      </p>
+
+      <div class="gaps-grid">
+        <div class="gap-card">
+          <span class="gap-tag gap-tag--computational">Computational Gap</span>
+          <h4>How is threshold set?</h4>
+          <p>
+            Previous models lacked a mechanistic account of what determines the
+            ignition threshold. APGI formalizes threshold as dynamically
+            regulated by metabolic state and allostatic demands.
+          </p>
+        </div>
+        <div class="gap-card">
+          <span class="gap-tag gap-tag--embodied">Embodied Gap</span>
+          <h4>Why does the body matter?</h4>
+          <p>
+            Consciousness research neglected interoception. APGI integrates
+            somatic markers and interoceptive precision-weighting as primary
+            modulators of what reaches global access.
+          </p>
+        </div>
+        <div class="gap-card">
+          <span class="gap-tag gap-tag--metabolic">Metabolic Gap</span>
+          <h4>Why is it so expensive?</h4>
+          <p>
+            Global neuronal broadcast costs 5–10% extra glucose in
+            frontoparietal-thalamic networks. APGI explains this via the
+            energy-information trade-off at threshold crossing.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><hr /></div>
+
+    <!-- ── KEY CLAIMS ── -->
+    <section>
+      <div class="section-label">Core Predictions</div>
+      <h2>Five Falsifiable Claims</h2>
+
+      <ul class="claims-list">
+        <li class="claim-item">
+          <div class="claim-num">1</div>
+          <div class="claim-text">
+            <strong>Interoceptive Precision Weighting</strong>
+            Bodily prediction errors receive precision weights distinct from and
+            preferential over exteroceptive signals when homeostatic stability
+            is threatened.
+          </div>
+        </li>
+        <li class="claim-item">
+          <div class="claim-num">2</div>
+          <div class="claim-text">
+            <strong>Metabolic Threshold Modulation</strong>
+            The ignition threshold θ_t is dynamically adjusted by metabolic
+            state. Fasted, fatigued, or anesthetized states raise the threshold;
+            arousal lowers it.
+          </div>
+        </li>
+        <li class="claim-item">
+          <div class="claim-num">3</div>
+          <div class="claim-text">
+            <strong>Global Broadcast Signature</strong>
+            Conscious access correlates with global neuronal broadcast — late
+            (≥300ms) widespread activity — not merely local cortical
+            amplification.
+          </div>
+        </li>
+        <li class="claim-item">
+          <div class="claim-num">4</div>
+          <div class="claim-text">
+            <strong>Ignition Latency Formula</strong>
+            Time-to-ignition follows t ≈ τ_S · ln(θ_t/(θ_t − S₀)), with the
+            200–500ms accumulation window reflecting thalamocortical integration
+            timescales.
+          </div>
+        </li>
+        <li class="claim-item">
+          <div class="claim-num">5</div>
+          <div class="claim-text">
+            <strong>Somatic Marker Gain Control</strong>
+            Individual differences in somatic marker strength predict biases in
+            interoceptive precision — explaining variability in anxiety, autism,
+            and depersonalization phenotypes.
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <div class="divider"><hr /></div>
+
+    <!-- ── CITATIONS ── -->
+    <section>
+      <div class="section-label">Research Foundation</div>
+      <h2>Grounded in Peer-Reviewed Evidence</h2>
+
+      <div class="citations-block">
+        <div class="citation-row">
+          <span class="citation-author">Friston (2010)</span>
+          <span class="citation-text"
+            >Free Energy Principle — precision-weighted prediction error
+            minimization as the organizing principle of neural computation</span
+          >
+        </div>
+        <div class="citation-row">
+          <span class="citation-author">Dehaene & Changeux (2011)</span>
+          <span class="citation-text"
+            >Global Neuronal Workspace Theory — frontoparietal broadcast as the
+            neural correlate of conscious access</span
+          >
+        </div>
+        <div class="citation-row">
+          <span class="citation-author">Damasio (1994)</span>
+          <span class="citation-text"
+            >Somatic Marker Hypothesis — learned interoceptive associations
+            modulating decision-making and neural gain</span
+          >
+        </div>
+        <div class="citation-row">
+          <span class="citation-author">Anderson (2005)</span>
+          <span class="citation-text"
+            >40% higher detection rates for interoceptively salient stimuli —
+            direct empirical support for precision amplification</span
+          >
+        </div>
+        <div class="citation-row">
+          <span class="citation-author">Khalsa et al. (2018)</span>
+          <span class="citation-text"
+            >Interoceptive dysfunction in autism and anxiety — supports
+            framework's clinical phenotyping predictions</span
+          >
+        </div>
+        <div class="citation-row">
+          <span class="citation-author">Alkire et al. (2008)</span>
+          <span class="citation-text"
+            >Anesthesia reduces metabolic activity in frontoparietal networks —
+            confirms metabolic threshold coupling</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><hr /></div>
+
+    <!-- ── APPLICATIONS ── -->
+    <section>
+      <div class="section-label">Clinical & Research Applications</div>
+      <h2>From Theory to Practice</h2>
+
+      <div class="apps-grid">
+        <div class="app-card">
+          <div class="app-icon">🧠</div>
+          <h4>Psychiatric Phenotyping</h4>
+          <p>
+            Computational biomarkers for anxiety, autism, and depersonalization
+            based on precision weighting profiles.
+          </p>
+        </div>
+        <div class="app-card">
+          <div class="app-icon">📡</div>
+          <h4>EEG/fMRI Protocols</h4>
+          <p>
+            Six pre-registered validation experiments with specified effect
+            sizes, power calculations, and falsification criteria.
+          </p>
+        </div>
+        <div class="app-card">
+          <div class="app-icon">💊</div>
+          <h4>Anesthesia Monitoring</h4>
+          <p>
+            Threshold dynamics as real-time consciousness depth markers during
+            surgical sedation.
+          </p>
+        </div>
+        <div class="app-card">
+          <div class="app-icon">🔬</div>
+          <h4>BCI Design</h4>
+          <p>
+            Brain-computer interface targets based on thalamocortical ignition
+            signatures and precision-gating states.
+          </p>
+        </div>
+        <div class="app-card">
+          <div class="app-icon">🌍</div>
+          <h4>Evolutionary Justification</h4>
+          <p>
+            Explains the 5–10% metabolic premium of consciousness through
+            flexible integration and deliberate action.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand">APGI Framework</div>
+          <p class="footer-desc">
+            Allostatic Precision-Gated Ignition — a computational account of
+            consciousness grounded in neuroscience.
+          </p>
+        </div>
+        <nav class="footer-nav">
+          <a href="Papers-index.html">← All Papers</a>
+          <a href="Lquid-networks-paper.html">Paper 2: Liquid Networks →</a>
+          <a href="Multi-scale-consciousness-paper.html"
+            >Paper 3: Multi-Scale →</a
+          >
+          <a href="Epistemic-architecture-paper.html"
+            >Paper 4: Epistemic Architecture →</a
+          >
+        </nav>
+        <div class="footer-eq">
+          <span class="eq-precision">Π</span
+          ><span style="color: var(--text-subtle)"> × </span
+          ><span class="eq-error">|ε|</span
+          ><span style="color: var(--text-subtle)"> > </span
+          ><span class="eq-threshold">Bₜ</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -27,39 +27,32 @@ window.APGI_CONFIG = {
   EMAILJS_TEMPLATE_ID: "template_placeholder",
   EMAILJS_USER_ID: "user_placeholder",
 
-  // Chart settings
   CHART_DEFAULT_HEIGHT: 400,
   CHART_DEFAULT_WIDTH: 600,
 
-  // Performance settings
   LAZY_LOAD_THRESHOLD: 200,
   DEBOUNCE_DELAY: 250,
 
-  // Accessibility settings
   HIGH_CONTRAST_MODE: false,
   REDUCED_MOTION: false,
 
-  // Development settings
   DEV_MODE:
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1" ||
     window.location.hostname.includes(".local"),
 
-  // Social media links
   SOCIAL_LINKS: {
     twitter: "https://twitter.com/apgiframework",
-    linkedin: "https://linkedin.com/company/apgi-framework",
+    tiktok: "https://tiktok.com/@apgiframework",
     github: "https://github.com/apgi-framework",
   },
 };
 
-// Environment-specific overrides
 if (window.APGI_CONFIG.DEV_MODE) {
   window.APGI_CONFIG.ENABLE_DEBUG_MODE = true;
   window.APGI_CONFIG.ENABLE_ANALYTICS = false;
 }
 
-// Export for module usage if needed
 if (typeof module !== "undefined" && module.exports) {
   module.exports = window.APGI_CONFIG;
 }

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APGI Signature | The Coordinate System of Consciousness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: 'IBM+Plex+Sans', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+        }
+        .ignition-glow {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .active-ignition {
+            box-shadow: 0 0 50px rgba(96, 165, 250, 0.4);
+            border-color: rgba(96, 165, 250, 0.6);
+        }
+        input[type="range"] {
+            accent-color: #3b82f6;
+        }
+        .parameter-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                APGI Signature
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto italic">
+                "An APGI signature is the brain's ignition fingerprint for a state or disorder."
+            </p>
+            <div class="mt-4 flex justify-center gap-4 text-sm font-mono text-blue-400">
+                <span>S<sub>APGI</sub> = ⟨ε, π, θ<sub>t</sub>, β⟩</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Sidebar: Parameters & Presets -->
+            <div class="lg:col-span-1 space-y-6">
+                <section class="glass p-6">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <i data-lucide="sliders-horizontal" class="w-5 h-5 text-blue-400"></i>
+                        Parameter Vector
+                    </h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Epsilon (ε) -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="parameter-label text-red-400">ε (Prediction Error)</label>
+                                <span id="epsilon-val" class="font-mono text-slate-300">0.50</span>
+                            </div>
+                            <input type="range" id="epsilon" min="0" max="1" step="0.01" value="0.5" class="w-full">
+                            <p class="text-xs text-slate-500 mt-1">What breaks the model (Threat vs Reward)</p>
+                        </div>
+
+                        <!-- Pi (π) -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="parameter-label text-green-400">π (Precision)</label>
+                                <span id="pi-val" class="font-mono text-slate-300">0.50</span>
+                            </div>
+                            <input type="range" id="pi" min="0" max="1" step="0.01" value="0.5" class="w-full">
+                            <p class="text-xs text-slate-500 mt-1">Trust/Amplification of error</p>
+                        </div>
+
+                        <!-- Theta_t (θt) -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="parameter-label text-blue-400">θ<sub>t</sub> (Threshold)</label>
+                                <span id="theta-val" class="font-mono text-slate-300">0.30</span>
+                            </div>
+                            <input type="range" id="theta" min="0" max="1" step="0.01" value="0.3" class="w-full">
+                            <p class="text-xs text-slate-500 mt-1">Barrier to conscious access</p>
+                        </div>
+
+                        <!-- Beta (β) -->
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="parameter-label text-purple-400">β (Somatic Bias)</label>
+                                <span id="beta-val" class="font-mono text-slate-300">0.50</span>
+                            </div>
+                            <input type="range" id="beta" min="0" max="1" step="0.01" value="0.5" class="w-full">
+                            <p class="text-xs text-slate-500 mt-1">Visceral vs Abstract anchoring</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="glass p-6">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="bookmark" class="w-5 h-5 text-indigo-400"></i>
+                        Signature Presets
+                    </h2>
+                    <div class="grid grid-cols-2 gap-2" id="presets-container">
+                        <!-- State Presets -->
+                        <button class="preset-btn px-3 py-2 rounded bg-slate-800/50 hover:bg-slate-700 text-sm border border-slate-700 transition" data-type="state" data-id="flow">Flow</button>
+                        <button class="preset-btn px-3 py-2 rounded bg-slate-800/50 hover:bg-slate-700 text-sm border border-slate-700 transition" data-type="state" data-id="anxiety">Anxiety</button>
+                        <button class="preset-btn px-3 py-2 rounded bg-slate-800/50 hover:bg-slate-700 text-sm border border-slate-700 transition" data-type="disorder" data-id="ocd">OCD</button>
+                        <button class="preset-btn px-3 py-2 rounded bg-slate-800/50 hover:bg-slate-700 text-sm border border-slate-700 transition" data-type="disorder" data-id="psychosis">Psychosis</button>
+                        <button class="preset-btn px-3 py-2 rounded bg-slate-800/50 hover:bg-slate-700 text-sm border border-slate-700 transition" data-type="disorder" data-id="depression">Depression</button>
+                        <button class="preset-btn px-3 py-2 rounded bg-slate-800/50 hover:bg-slate-700 text-sm border border-slate-700 transition" data-type="state" data-id="dissociation">Dissociation</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Main Panel: Visualization & Result -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Ignition Monitor -->
+                <div id="ignition-monitor" class="glass p-8 transition-all duration-500 ignition-glow">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-1">Ignition Monitor</h3>
+                            <p id="ignition-status" class="text-slate-400 text-sm">Monitoring vector dynamics...</p>
+                        </div>
+                        <div id="ignition-indicator" class="px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-slate-800 text-slate-500">
+                            Offline
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Weighted Error Meter -->
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-sm font-mono">
+                                <span>Weighted Error (ε × π)</span>
+                                <span id="weighted-error-val">0.25</span>
+                            </div>
+                            <div class="h-4 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                                <div id="weighted-error-bar" class="h-full bg-blue-500 w-1/4 transition-all duration-300"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-500">
+                                <span>0.0</span>
+                                <span id="threshold-marker">Threshold θt: 0.30</span>
+                                <span>1.0</span>
+                            </div>
+                        </div>
+
+                        <!-- Somatic Impact Meter -->
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-sm font-mono">
+                                <span>Somatic Impact (Ignition × β)</span>
+                                <span id="somatic-impact-val">0.00</span>
+                            </div>
+                            <div class="h-4 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                                <div id="somatic-impact-bar" class="h-full bg-purple-500 w-0 transition-all duration-300"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-500">
+                                <span>Abstract</span>
+                                <span>Visceral</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phenomenology Report -->
+                <div class="glass p-8">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-indigo-300">
+                        <i data-lucide="activity" class="w-5 h-5"></i>
+                        Phenomenological Profile
+                    </h3>
+                    <div id="report-content" class="space-y-4">
+                        <div class="p-4 bg-slate-900/50 rounded-lg border border-slate-800">
+                            <p class="text-slate-300 italic">Adjust parameters to generate a signature report...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Specs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass p-6">
+                        <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Mechanics</h4>
+                        <ul class="space-y-2 text-sm text-slate-400">
+                            <li class="flex justify-between">
+                                <span>Condition:</span>
+                                <code class="text-blue-400">ε · π > θt</code>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Stability:</span>
+                                <span id="stability-tag">Dynamic</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Regime:</span>
+                                <span id="regime-tag">Metasensitive</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="glass p-6">
+                        <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Neural Correlates</h4>
+                        <p id="neural-correlates" class="text-xs text-slate-400 leading-relaxed">
+                            Loading mappings...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="mt-16 text-center text-slate-600 text-xs">
+            <p>© 2026 APGI Framework | Computational Phenomenology Unit</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Parameter elements
+        const params = {
+            epsilon: document.getElementById('epsilon'),
+            pi: document.getElementById('pi'),
+            theta: document.getElementById('theta'),
+            beta: document.getElementById('beta')
+        };
+
+        const displays = {
+            epsilon: document.getElementById('epsilon-val'),
+            pi: document.getElementById('pi-val'),
+            theta: document.getElementById('theta-val'),
+            beta: document.getElementById('beta-val'),
+            weightedErrorVal: document.getElementById('weighted-error-val'),
+            weightedErrorBar: document.getElementById('weighted-error-bar'),
+            somaticImpactVal: document.getElementById('somatic-impact-val'),
+            somaticImpactBar: document.getElementById('somatic-impact-bar'),
+            thresholdMarker: document.getElementById('threshold-marker'),
+            ignitionStatus: document.getElementById('ignition-status'),
+            ignitionIndicator: document.getElementById('ignition-indicator'),
+            ignitionMonitor: document.getElementById('ignition-monitor'),
+            reportContent: document.getElementById('report-content'),
+            stabilityTag: document.getElementById('stability-tag'),
+            regimeTag: document.getElementById('regime-tag'),
+            neuralCorrelates: document.getElementById('neural-correlates')
+        };
+
+        const presets = {
+            flow: { epsilon: 0.15, pi: 0.90, theta: 0.20, beta: 0.60, name: "Flow State", desc: "Absorption, high focus, low self-awareness." },
+            anxiety: { epsilon: 0.85, pi: 0.70, theta: 0.40, beta: 0.85, name: "Acute Anxiety", desc: "Threat monitoring, somatic hyper-arousal." },
+            ocd: { epsilon: 0.40, pi: 0.95, theta: 0.25, beta: 0.70, name: "OCD Signature", desc: "Rigid error amplification, high π on threat." },
+            psychosis: { epsilon: 0.70, pi: 0.30, theta: 0.15, beta: 0.40, name: "Early Psychosis", desc: "Internal error misattribution, high noise." },
+            depression: { epsilon: 0.10, pi: 0.20, theta: 0.60, beta: 0.25, name: "MDD Signature", desc: "Suppressed reward ε, high threshold θt." },
+            dissociation: { epsilon: 0.50, pi: 0.10, theta: 0.50, beta: 0.05, name: "Dissociative State", desc: "Low somatic anchoring, detached awareness." }
+        };
+
+        function update() {
+            const e = parseFloat(params.epsilon.value);
+            const p = parseFloat(params.pi.value);
+            const t = parseFloat(params.theta.value);
+            const b = parseFloat(params.beta.value);
+
+            displays.epsilon.textContent = e.toFixed(2);
+            displays.pi.textContent = p.toFixed(2);
+            displays.theta.textContent = t.toFixed(2);
+            displays.beta.textContent = b.toFixed(2);
+
+            const weightedError = e * p;
+            displays.weightedErrorVal.textContent = weightedError.toFixed(2);
+            displays.weightedErrorBar.style.width = (weightedError * 100) + '%';
+            displays.thresholdMarker.textContent = `Threshold θt: ${t.toFixed(2)}`;
+
+            const isIgnited = weightedError > t;
+            const somaticImpact = isIgnited ? (weightedError - t) * b : 0;
+            
+            displays.somaticImpactVal.textContent = somaticImpact.toFixed(2);
+            displays.somaticImpactBar.style.width = (Math.min(somaticImpact, 1) * 100) + '%';
+
+            // Ignition States
+            if (isIgnited) {
+                displays.ignitionIndicator.textContent = "Ignited";
+                displays.ignitionIndicator.className = "px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500 text-white";
+                displays.ignitionMonitor.classList.add('active-ignition');
+                displays.ignitionStatus.textContent = "Weighted error exceeds threshold. State active.";
+                updatePhenomenology(e, p, t, b, weightedError, true);
+            } else {
+                displays.ignitionIndicator.textContent = "Offline";
+                displays.ignitionIndicator.className = "px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-slate-800 text-slate-500";
+                displays.ignitionMonitor.classList.remove('active-ignition');
+                displays.ignitionStatus.textContent = "Sub-threshold weighted error. No ignition.";
+                updatePhenomenology(e, p, t, b, weightedError, false);
+            }
+
+            updateTechnicalTags(e, p, t, b);
+        }
+
+        function updatePhenomenology(e, p, t, b, we, ignited) {
+            let html = "";
+            if (!ignited) {
+                html = `
+                    <div class="p-4 bg-slate-900/50 rounded-lg border border-slate-800">
+                        <p class="text-slate-400">The current parameter vector is insufficient for ignition. Consciousness remains in a baseline or dormant state. Error signaling is currently suppressed or filtered.</p>
+                    </div>`;
+            } else {
+                let focus = b > 0.6 ? "Visceral/Affective" : (b < 0.3 ? "Abstract/Detached" : "Balanced");
+                let intensity = we > 0.8 ? "Intrusive/Overwhelming" : (we < 0.4 ? "Subtle/Ambient" : "Clear");
+                let stability = (we - t) < 0.1 ? "Metastable/Flickering" : "Stable";
+
+                html = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                            <h4 class="text-xs font-bold text-blue-400 uppercase mb-2">Qualitative Experience</h4>
+                            <p class="text-sm text-slate-200">${intensity} awareness focused on ${focus.toLowerCase()} inputs. Experience is currently ${stability.toLowerCase()}.</p>
+                        </div>
+                        <div class="p-4 bg-purple-900/20 rounded-lg border border-purple-500/30">
+                            <h4 class="text-xs font-bold text-purple-400 uppercase mb-2">Cognitive Impact</h4>
+                            <p class="text-sm text-slate-200">${p > 0.7 ? "High precision is driving rigid model updates." : "Low precision suggests uncertainty or confusion in the model."}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
+                        <h4 class="text-xs font-bold text-indigo-400 uppercase mb-2">Signature Invariant</h4>
+                        <p class="text-xs text-slate-300">The state is maintained by a ${e > 0.6 ? "strong error signal" : "weak error signal"} amplified by ${p > 0.6 ? "high trust (π)" : "low trust (π)"}. Somatic anchoring (β) is ${b > 0.6 ? "dominant" : "subordinate"}.</p>
+                    </div>`;
+            }
+            displays.reportContent.innerHTML = html;
+        }
+
+        function updateTechnicalTags(e, p, t, b) {
+            // Stability Tag
+            if (p > 0.8 && t < 0.3) displays.stabilityTag.textContent = "Rigid / Self-Reinforcing";
+            else if (p < 0.3) displays.stabilityTag.textContent = "Volatile / Noise-Sensitive";
+            else displays.stabilityTag.textContent = "Dynamic / Adaptive";
+
+            // Regime Tag
+            if (t > 0.7) displays.regimeTag.textContent = "Dissociative / Guarded";
+            else if (t < 0.2) displays.regimeTag.textContent = "Hyper-Sensitive";
+            else displays.regimeTag.textContent = "Homeostatic";
+
+            // Neural Correlates
+            let correlates = [];
+            if (e > 0.6) correlates.push("Increased Cortical Mismatch Signaling");
+            if (p > 0.6) correlates.push("Cholinergic/Dopaminergic Gain Elevation");
+            if (t < 0.3) correlates.push("Fronto-Parietal Barrier Permeability");
+            if (b > 0.6) correlates.push("Insular Hyper-activation");
+            if (b < 0.2) correlates.push("DMN/Sensory Detachment");
+
+            displays.neuralCorrelates.textContent = correlates.length > 0 ? correlates.join(" • ") : "Baseline Neural Processing";
+        }
+
+        // Event Listeners
+        Object.values(params).forEach(input => {
+            input.addEventListener('input', update);
+        });
+
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const data = presets[btn.dataset.id];
+                params.epsilon.value = data.epsilon;
+                params.pi.value = data.pi;
+                params.theta.value = data.theta;
+                params.beta.value = data.beta;
+                update();
+            });
+        });
+
+        // Initialize
+        update();
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "APGI Framework - Consciousness Assessment",
+  "short_name": "APGI Framework",
+  "description": "Discover your unique consciousness signature with the APGI Framework. Scientifically-validated assessment for understanding how your mind processes information.",
+  "start_url": "/Home.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48 32x32 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["education", "health", "lifestyle"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}

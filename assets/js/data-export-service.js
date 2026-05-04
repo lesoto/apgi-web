@@ -204,7 +204,7 @@ class DataExportService {
         </div>
         
         <div class="footer">
-          <p>© 2024 APGI Framework - Allostatic Precision-Gated Ignition</p>
+          <p>© 2026 APGI Framework - Allostatic Precision-Gated Ignition</p>
           <p>This report contains confidential assessment data.</p>
         </div>
       </body>

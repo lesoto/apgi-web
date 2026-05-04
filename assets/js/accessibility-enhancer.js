@@ -120,7 +120,7 @@ class APGIAccessibility {
       facebook: "Facebook",
       twitter: "Twitter",
       instagram: "Instagram",
-      linkedin: "LinkedIn",
+      tiktok: "Tiktok",
       youtube: "YouTube",
       github: "GitHub",
     };
@@ -232,104 +232,46 @@ class APGIAccessibility {
   }
 
   enhanceFocusIndicators() {
-    // Add enhanced focus styles
-    const style = document.createElement("style");
-    style.textContent = `
-      /* Enhanced focus indicators */
-      *:focus {
-        outline: 2px solid #2563eb !important;
-        outline-offset: 2px !important;
-      }
-      
-      *:focus:not(:focus-visible) {
-        outline: 2px solid transparent !important;
-      }
-      
-      *:focus-visible {
-        outline: 2px solid #2563eb !important;
-        outline-offset: 2px !important;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2) !important;
-      }
-      
-      /* High contrast focus for better visibility */
-      @media (prefers-contrast: high) {
-        *:focus-visible {
-          outline: 3px solid #000000 !important;
-          outline-offset: 2px !important;
+    // Focus styles now handled via CSS in Home.html
+    // This method kept for backward compatibility but logic moved to CSS
+    // to avoid runtime DOM manipulation and reduce layout thrashing
+
+    // Only add dynamic enhancements for elements created after page load
+    this.setupDynamicFocusEnhancement();
+  }
+
+  setupDynamicFocusEnhancement() {
+    // Use MutationObserver to enhance dynamically added elements
+    const observer = new MutationObserver((mutations) => {
+      let shouldEnhance = false;
+      mutations.forEach((mutation) => {
+        if (mutation.addedNodes.length > 0) {
+          shouldEnhance = true;
         }
+      });
+
+      if (shouldEnhance) {
+        // Batch DOM reads/writes to prevent layout thrashing
+        requestAnimationFrame(() => {
+          this.addARIALabelsToNewElements();
+        });
       }
-      
-      /* Skip links styling */
-      .skip-link {
-        position: absolute;
-        top: -40px;
-        left: 6px;
-        background: #2563eb;
-        color: white;
-        padding: 8px;
-        text-decoration: none;
-        border-radius: 4px;
-        z-index: 10000;
-        transition: top 0.3s;
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  addARIALabelsToNewElements() {
+    // Only process elements that don't already have ARIA labels
+    const newButtons = document.querySelectorAll(
+      "button:not([aria-label]):not([aria-labelledby])",
+    );
+    newButtons.forEach((button) => {
+      const text = button.textContent.trim();
+      if (text) {
+        button.setAttribute("aria-label", text);
       }
-      
-      .skip-link:focus {
-        top: 6px;
-      }
-      
-      /* Enhanced button focus */
-      button:focus-visible,
-      .btn:focus-visible {
-        transform: translateY(-1px);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
-      }
-      
-      /* Link focus improvements */
-      a:focus-visible {
-        text-decoration: underline;
-        text-decoration-thickness: 2px;
-        text-underline-offset: 2px;
-      }
-      
-      /* Form field focus improvements */
-      input:focus-visible,
-      textarea:focus-visible,
-      select:focus-visible {
-        border-color: #2563eb !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
-      }
-      
-      /* Interactive element focus */
-      [role="button"]:focus-visible,
-      [tabindex="0"]:focus-visible {
-        outline: 2px solid #2563eb !important;
-        outline-offset: 2px !important;
-      }
-      
-      /* High contrast mode improvements */
-      @media (prefers-contrast: high) {
-        .btn, button {
-          border: 2px solid #000000 !important;
-        }
-        
-        a {
-          text-decoration: underline !important;
-        }
-        
-        input, textarea, select {
-          border: 2px solid #000000 !important;
-        }
-      }
-      
-      /* Reduced motion for focus animations */
-      @media (prefers-reduced-motion: reduce) {
-        *:focus-visible {
-          transition: none !important;
-          animation: none !important;
-        }
-      }
-    `;
-    document.head.appendChild(style);
+    });
   }
 
   addScreenReaderSupport() {
@@ -344,34 +286,38 @@ class APGIAccessibility {
   }
 
   addLiveRegions() {
-    // Create live region container
-    if (!document.getElementById("accessibility-live-region")) {
-      const liveRegion = document.createElement("div");
-      liveRegion.id = "accessibility-live-region";
-      liveRegion.setAttribute("aria-live", "polite");
-      liveRegion.setAttribute("aria-atomic", "true");
-      liveRegion.style.position = "absolute";
-      liveRegion.style.left = "-10000px";
-      liveRegion.style.width = "1px";
-      liveRegion.style.height = "1px";
-      liveRegion.style.overflow = "hidden";
-      document.body.appendChild(liveRegion);
-    }
+    // Create live region container only if not exists
+    if (document.getElementById("accessibility-live-region")) return;
 
-    // Announce loading states
+    const liveRegion = document.createElement("div");
+    liveRegion.id = "accessibility-live-region";
+    liveRegion.setAttribute("aria-live", "polite");
+    liveRegion.setAttribute("aria-atomic", "true");
+    // Use CSS to hide visually but keep accessible
+    liveRegion.className = "sr-only";
+    document.body.appendChild(liveRegion);
+
+    // Batch mutation observations for better performance
+    this.setupLoadingAnnouncements();
+  }
+
+  setupLoadingAnnouncements() {
+    // Debounced loading state announcements
+    let debounceTimer;
     const loadingElements = document.querySelectorAll(
       '.loading, [id*="loading"]',
     );
+
     loadingElements.forEach((element) => {
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === "childList") {
-            const text = element.textContent.trim();
-            if (text) {
-              this.announceToScreenReader(text);
-            }
+      const observer = new MutationObserver(() => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          const text = element.textContent.trim();
+          if (text && text !== this.lastAnnouncement) {
+            this.announceToScreenReader(text);
+            this.lastAnnouncement = text;
           }
-        });
+        }, 100);
       });
 
       observer.observe(element, { childList: true, subtree: true });
